@@ -106,6 +106,16 @@
         <li class="main "><a href="#skipper-features">Skipper Features</a></li>
             <li><a href="#3-minutes-skipper-in-kubernetes-introduction">3 Minutes Skipper in Kubernetes introduction</a></li>
             <li><a href="#skipper-ingress-annotations">Skipper Ingress Annotations</a></li>
+        <li class="main "><a href="#basic-http-manipulations">Basic HTTP manipulations</a></li>
+            <li><a href="#add-a-request-header">Add a request Header</a></li>
+            <li><a href="#add-a-response-header">Add a response Header</a></li>
+            <li><a href="#set-the-path">Set the Path</a></li>
+            <li><a href="#set-the-querystring">Set the Querystring</a></li>
+            <li><a href="#redirect">Redirect</a></li>
+            <li><a href="#cookies">Cookies</a></li>
+            <li><a href="#authorization">Authorization</a></li>
+            <li><a href="#diagnosis-throttling-latency">Diagnosis - Throttling - Latency</a></li>
+            <li><a href="#flowid-to-trace-request-flows">FlowID to trace request flows</a></li>
         <li class="main "><a href="#blue-green-deployments">Blue-Green deployments</a></li>
         <li class="main "><a href="#filters">Filters</a></li>
             <li><a href="#circuitbreaker">Circuitbreaker</a></li>
@@ -342,6 +352,80 @@ automatically.</p>
 </tr>
 </tbody>
 </table>
+<h1 id="basic-http-manipulations">Basic HTTP manipulations</h1>
+<p>HTTP manipulations are done by using skipper filters.
+A basic example how to use skipper filters in ingress:</p>
+<pre><code>apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    zalando.org/skipper-filter: consecutiveBreaker(15)
+  name: app
+spec:
+  rules:
+  - host: app-default.example.org
+    http:
+      paths:
+      - backend:
+          serviceName: app-svc
+          servicePort: 80
+</code></pre>
+<h2 id="add-a-request-header">Add a request Header</h2>
+<p>Add a header in the request path to your backend.</p>
+<pre><code>setRequestHeader("X-Foo", "bar")
+</code></pre>
+<h2 id="add-a-response-header">Add a response Header</h2>
+<p>Add a header in the response path of your clients.</p>
+<pre><code>setResponseHeader("X-Foo", "bar")
+</code></pre>
+<h2 id="set-the-path">Set the Path</h2>
+<p>Change the path in the request path to your backend.</p>
+<pre><code>setPath("/newPath/")
+</code></pre>
+<h2 id="set-the-querystring">Set the Querystring</h2>
+<p>Set the Querystring in the request path to your backend.</p>
+<pre><code>setQuery("text", "godoc skipper")
+</code></pre>
+<h2 id="redirect">Redirect</h2>
+<p>Create a redirect with HTTP code 301 to https://foo.example.org/.</p>
+<pre><code>redirectTo(301, "https://foo.example.org/")
+</code></pre>
+<h2 id="cookies">Cookies</h2>
+<p>Set a Cookie in the request path to your backend.</p>
+<pre><code>requestCookie("test-session", "abc")
+</code></pre>
+<p>Set a Cookie in the response path of your clients.</p>
+<pre><code>responseCookie("test-session", "abc", 31536000)
+responseCookie("test-session", "abc", 31536000, "change-only")
+
+// response cookie without HttpOnly:
+jsCookie("test-session-info", "abc-debug", 31536000, "change-only")
+</code></pre>
+<h2 id="authorization">Authorization</h2>
+<p>Our <a href="https://godoc.org/github.com/zalando/skipper/filters/auth">filter auth
+godoc</a>
+shows how to use filters for authorization.</p>
+<h3 id="basic-auth">Basic Auth</h3>
+<pre><code>% htpasswd -nbm myName myPassword
+
+basicAuth("/path/to/htpasswd")
+basicAuth("/path/to/htpasswd", "My Website")
+</code></pre>
+<h2 id="diagnosis-throttling-latency">Diagnosis - Throttling - Latency</h2>
+<p>For diagnosis purpose there are filters that enables you to throttle
+the bandwidth or add latency. For the full list of filters see our
+<a href="https://godoc.org/github.com/zalando/skipper/filters/diag">diag filter godoc page</a>.</p>
+<pre><code>bandwidth(30) // incoming in kb/s
+backendBandwidth(30) // outgoing in kb/s
+backendLatency(120) // in ms
+</code></pre>
+<h2 id="flowid-to-trace-request-flows">FlowID to trace request flows</h2>
+<p>To trace request flows skipper can generate a unique Flow Id for
+every HTTP request that it receives.
+Skipper sets the X-Flow-Id header to a unique value. Read more about
+this in our <a href="https://godoc.org/github.com/zalando/skipper/filters/flowid">flowid filter godoc</a>.</p>
+<pre><code> flowId("reuse")
+</code></pre>
 <h1 id="blue-green-deployments">Blue-Green deployments</h1>
 <p>To do blue-green deployments you have to have control over traffic
 switching. Skipper gives you the opportunity to set weights to backend

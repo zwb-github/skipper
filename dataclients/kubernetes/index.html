@@ -105,6 +105,7 @@
         <li class="main active"><a href="#kubernetes">Kubernetes</a></li>
         <li class="main "><a href="#skipper-features">Skipper Features</a></li>
             <li><a href="#3-minutes-skipper-in-kubernetes-introduction">3 Minutes Skipper in Kubernetes introduction</a></li>
+            <li><a href="#skipper-ingress-annotations">Skipper Ingress Annotations</a></li>
         <li class="main "><a href="#blue-green-deployments">Blue-Green deployments</a></li>
         <li class="main "><a href="#filters">Filters</a></li>
             <li><a href="#circuitbreaker">Circuitbreaker</a></li>
@@ -309,6 +310,38 @@ something that configures your frontend loadbalancer, for example
 <a href="https://github.com/zalando-incubator/kube-ingress-aws-controller">kube-aws-ingress-controller</a>,
 and your DNS, <a href="https://github.com/kubernetes-incubator/external-dns">external-dns</a>
 automatically.</p>
+<h2 id="skipper-ingress-annotations">Skipper Ingress Annotations</h2>
+<table>
+<thead>
+<tr>
+<th>Annotation</th>
+<th>example data</th>
+<th>usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>zalando.org/backend-weights</td>
+<td>{"my-app-1": 80, "my-app-2": 20}</td>
+<td>green-blue deployments</td>
+</tr>
+<tr>
+<td>zalando.org/skipper-filter</td>
+<td>consecutiveBreaker(15)</td>
+<td>arbitrary filters</td>
+</tr>
+<tr>
+<td>zalando.org/skipper-predicate</td>
+<td>QueryParam("version", "^alpha$")</td>
+<td>arbitrary predicates</td>
+</tr>
+<tr>
+<td>zalando.org/ratelimit</td>
+<td>ratelimit(50, "1m")</td>
+<td>deprecated, use zalando.org/skipper-filter instead</td>
+</tr>
+</tbody>
+</table>
 <h1 id="blue-green-deployments">Blue-Green deployments</h1>
 <p>To do blue-green deployments you have to have control over traffic
 switching. Skipper gives you the opportunity to set weights to backend

@@ -105,10 +105,12 @@
         <li class="main active"><a href="#kubernetes">Kubernetes</a></li>
         <li class="main "><a href="#skipper-features">Skipper Features</a></li>
             <li><a href="#3-minutes-skipper-in-kubernetes-introduction">3 Minutes Skipper in Kubernetes introduction</a></li>
-            <li><a href="#blue-green-deployments">Blue-Green deployments</a></li>
+        <li class="main "><a href="#blue-green-deployments">Blue-Green deployments</a></li>
+        <li class="main "><a href="#filters">Filters</a></li>
             <li><a href="#circuitbreaker">Circuitbreaker</a></li>
             <li><a href="#ratelimits">Ratelimits</a></li>
-        <li class="main "><a href="#use-predicates">use Predicates</a></li>
+            <li><a href="#shadow-traffic">Shadow Traffic</a></li>
+        <li class="main "><a href="#predicates">Predicates</a></li>
             <li><a href="#feature-toggle">Feature Toggle</a></li>
             <li><a href="#ip-whitelisting">IP Whitelisting</a></li>
             <li><a href="#ab-test">A/B test</a></li>
@@ -307,7 +309,7 @@ something that configures your frontend loadbalancer, for example
 <a href="https://github.com/zalando-incubator/kube-ingress-aws-controller">kube-aws-ingress-controller</a>,
 and your DNS, <a href="https://github.com/kubernetes-incubator/external-dns">external-dns</a>
 automatically.</p>
-<h2 id="blue-green-deployments">Blue-Green deployments</h2>
+<h1 id="blue-green-deployments">Blue-Green deployments</h1>
 <p>To do blue-green deployments you have to have control over traffic
 switching. Skipper gives you the opportunity to set weights to backend
 services in your ingress specification. <code>zalando.org/backend-weights</code>
@@ -341,6 +343,9 @@ spec:
           servicePort: http
         path: /
 </code></pre>
+<h1 id="filters">Filters</h1>
+<p>Filters can modify http requests and responses. There are a plenty of
+things you can do with them.</p>
 <h2 id="circuitbreaker">Circuitbreaker</h2>
 <h3 id="consecutive-breaker">Consecutive Breaker</h3>
 <p>The <a href="https://godoc.org/github.com/zalando/skipper/filters/circuit#NewConsecutiveBreaker">consecutiveBreaker</a>
@@ -450,7 +455,27 @@ spec:
           serviceName: app-svc
           servicePort: 80
 </code></pre>
-<h1 id="use-predicates">use Predicates</h1>
+<h2 id="shadow-traffic">Shadow Traffic</h2>
+<p>If you want to test a new replacement of a production service with
+production load, you can copy incoming requests to your new endpoint
+and ignore the responses from your new backend. This can be done by
+the <a href="https://godoc.org/github.com/zalando/skipper/filters/tee">tee() and teenf() filters</a>.</p>
+<pre><code>apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    zalando.org/skipper-filter: teenf("https://app-new.example.org")
+  name: app
+spec:
+  rules:
+  - host: app-default.example.org
+    http:
+      paths:
+      - backend:
+          serviceName: app-svc
+          servicePort: 80
+</code></pre>
+<h1 id="predicates">Predicates</h1>
 <p><a href="https://godoc.org/github.com/zalando/skipper/predicates">Predicates</a>
 are influencing the route matching, which you might want to carefully
 test before using it in production. This enables you to do feature

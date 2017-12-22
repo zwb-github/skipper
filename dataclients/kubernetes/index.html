@@ -410,7 +410,7 @@ spec:
           serviceName: app-svc
           servicePort: 80
 </code></pre>
-<p>If you need to service rate limit service to service communication and
+<p>If you need to rate limit service to service communication and
 you use Authorization headers to protect your backend from your
 clients, then you can pass a 3 parameter to group clients by "Authorization
 Header":</p>
@@ -513,17 +513,16 @@ spec:
           servicePort: 80
 </code></pre>
 <h3 id="ab-test">A/B test</h3>
-<p>Implementing A/B tests are heavy to build and Skipper can help you to
-do that. You have to have a traffic split somewhere and have your
+<p>Implementing A/B testing is heavy. Skipper can help you to do
+that. You need to have a traffic split somewhere and have your
 customers sticky to either A or B flavor of your application. Most
 likely people would implement using cookies. Skipper can set a
 <a href="https://godoc.org/github.com/zalando/skipper/filters/cookie">cookie with responseCookie()</a>
 in a response to the client and the
-<a href="https://godoc.org/github.com/zalando/skipper/predicates/cookie">cookie
-predicate</a>
+<a href="https://godoc.org/github.com/zalando/skipper/predicates/cookie">cookie predicate</a>
 can be used to match the route based on the cookie. Like this you can
-have sticky sessions to either A or B for your clients.
-This example shows to have 10% traffic using A and the rest using B.</p>
+have sticky sessions to either A or B for your clients.  This example
+shows to have 10% traffic using A and the rest using B.</p>
 <p>10% choice of setting the Cookie "flavor" to "A":</p>
 <pre><code>apiVersion: extensions/v1beta1
 kind: Ingress

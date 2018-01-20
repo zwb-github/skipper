@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>Operations - Skipper</title>
+        <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../css/font-awesome-4.5.0.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="../css/highlight.css">
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+        <script src="../js/jquery-1.10.2.min.js"></script>
+        <script src="../js/bootstrap-3.0.3.min.js"></script>
+        <script src="../js/highlight.pack.js"></script> 
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="..">Skipper</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+                <!-- Main navigation -->
+                <ul class="nav navbar-nav">
+                    <li >
+                        <a href="..">Architecture</a>
+                    </li>
+                    <li >
+                        <a href="../deployments/">Deployments</a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Data Clients <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            
+<li >
+    <a href="../dataclients/eskip-file/">Eskip</a>
+</li>
+                            
+<li >
+    <a href="../dataclients/etcd/">Etcd</a>
+</li>
+                            
+<li >
+    <a href="../dataclients/inkeeper-api/">Inkeeper API</a>
+</li>
+                            
+<li >
+    <a href="../dataclients/kubernetes/">Kubernetes</a>
+</li>
+                            
+<li >
+    <a href="../dataclients/route-string/">Route String</a>
+</li>
+                        </ul>
+                    </li>
+                    <li >
+                        <a href="../scripts/">Scripts</a>
+                    </li>
+                    <li class="active">
+                        <a href="./">Operations</a>
+                    </li>
+                </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                        <i class="fa fa-search"></i> Search
+                    </a>
+                </li>
+                    <li >
+                        <a rel="next" href="../scripts/">
+                            <i class="fa fa-arrow-left"></i> Previous
+                        </a>
+                    </li>
+                    <li class="disabled">
+                        <a rel="prev" >
+                            Next <i class="fa fa-arrow-right"></i>
+                        </a>
+                    </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+        <div class="container">
+                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+        <li class="main active"><a href="#operations">Operations</a></li>
+            <li><a href="#connection-options">Connection Options</a></li>
+            <li><a href="#monitoring">Monitoring</a></li>
+            <li><a href="#dataclient">Dataclient</a></li>
+    </ul>
+</div></div>
+                <div class="col-md-9" role="main">
+
+<h1 id="operations">Operations</h1>
+<p>This is the work in progress operations guide for showing information,
+which are relevant for production use.</p>
+<p>Skipper is proven to scale with number of routes beyond 200.000 routes
+per instance. Skipper is running with peaks to 45.000 http requests
+per second using multiple instances.</p>
+<h2 id="connection-options">Connection Options</h2>
+<p>Skipper's connection options are allowing you to set Go's <a href="https://golang.org/pkg/net/http/#Server">http.Server</a>
+Options on the client side and <a href="https://golang.org/pkg/net/http/#Transport">http.Transport</a> on the backend side.</p>
+<p>"It is recommended to read
+<a href="https://blog.cloudflare.com/the-complete-guide-to-golang-net-http-timeouts/">this blog post about net http timeouts</a>
+in order to better understand the impact of these settings.</p>
+<h3 id="backend">Backend</h3>
+<p>Backend is the side skipper opens a client connection to.</p>
+<p>Closing idle connections is required for DNS failover, because Go's
+<a href="https://golang.org/pkg/net/http/#Transport">http.Transport</a> caches
+DNS lookups and needs to create new connections for doing so. Skipper
+will start a goroutine and use the specified
+<a href="https://golang.org/pkg/time/#Duration">time.Duration</a> to call
+CloseIdleConnections() on that
+<a href="https://golang.org/pkg/net/http/#Transport">http.Transport</a>.</p>
+<pre><code>-close-idle-conns-period string
+    period of closing all idle connections in seconds or as a
+    duration string. Not closing when less than 0 (default "20")
+</code></pre>
+<p>This will set MaxIdleConnsPerHost on the
+<a href="https://golang.org/pkg/net/http/#Transport">http.Transport</a> to limit
+the number of idle connections per backend such that we do not run out
+of sockets.</p>
+<pre><code>-idle-conns-num int
+    maximum idle connections per backend host (default 64)
+</code></pre>
+<p>This will set MaxIdleConns on the
+<a href="https://golang.org/pkg/net/http/#Transport">http.Transport</a> to limit
+the number for all backends such that we do not run out of sockets.</p>
+<pre><code>-max-idle-connection-backend int
+    sets the maximum idle connections for all backend connections
+</code></pre>
+<p>This will set TLSHandshakeTimeout on the
+<a href="https://golang.org/pkg/net/http/#Transport">http.Transport</a> to have
+timeouts based on TLS connections.</p>
+<pre><code>-tls-timeout-backend duration
+    sets the TLS handshake timeout for backend connections (default 1m0s)
+</code></pre>
+<p>This will set Timeout on
+<a href="https://golang.org/pkg/net/#Dialer">net.Dialer</a> that is the
+implementation of DialContext, which is the TCP connection pool used in the
+<a href="https://golang.org/pkg/net/http/#Transport">http.Transport</a>.</p>
+<pre><code>-timeout-backend duration
+    sets the TCP client connection timeout for backend connections (default 1m0s)
+</code></pre>
+<p>This will set KeepAlive on
+<a href="https://golang.org/pkg/net/#Dialer">net.Dialer</a> that is the
+implementation of DialContext, which is the TCP connection pool used in the
+<a href="https://golang.org/pkg/net/http/#Transport">http.Transport</a>.</p>
+<pre><code>-keepalive-backend duration
+    sets the keepalive for backend connections (default 30s)
+</code></pre>
+<p>This will set DualStack (IPv4 and IPv6) on
+<a href="https://golang.org/pkg/net/#Dialer">net.Dialer</a> that is the
+implementation of DialContext, which is the TCP connection pool used in the
+<a href="https://golang.org/pkg/net/http/#Transport">http.Transport</a>.</p>
+<pre><code>-enable-dualstack-backend
+    enables DualStack for backend connections (default true)
+</code></pre>
+<h3 id="client">Client</h3>
+<p>Client is the side skipper gets incoming calls from.
+Here we can set timeouts in different parts of the http connection.</p>
+<p>This will set ReadTimeout in
+<a href="https://golang.org/pkg/net/http/#Server">http.Server</a> handling
+incoming calls from your clients.</p>
+<pre><code>-read-timeout-server duration
+    set ReadTimeout for http server connections (default 5m0s)
+</code></pre>
+<p>This will set ReadHeaderTimeout in
+<a href="https://golang.org/pkg/net/http/#Server">http.Server</a> handling
+incoming calls from your clients.</p>
+<pre><code>-read-header-timeout-server duration
+    set ReadHeaderTimeout for http server connections (default 1m0s)
+</code></pre>
+<p>This will set WriteTimeout in
+<a href="https://golang.org/pkg/net/http/#Server">http.Server</a> handling
+incoming calls from your clients.</p>
+<pre><code>-write-timeout-server duration
+    set WriteTimeout for http server connections (default 1m0s)
+</code></pre>
+<p>This will set IdleTimeout in
+<a href="https://golang.org/pkg/net/http/#Server">http.Server</a> handling
+incoming calls from your clients.</p>
+<pre><code>-idle-timeout-server duration
+    maximum idle connections per backend host (default 1m0s)
+</code></pre>
+<p>This will set MaxHeaderBytes in
+<a href="https://golang.org/pkg/net/http/#Server">http.Server</a> to limit the
+size of the http header from your clients.</p>
+<pre><code>-max-header-bytes int
+    set MaxHeaderBytes for http server connections (default 1048576)
+</code></pre>
+<h2 id="monitoring">Monitoring</h2>
+<p>Monitoring is one of the most important things you need to run in
+production and skipper has a <a href="https://godoc.org/github.com/zalando/skipper">godoc page</a>
+for the <a href="https://godoc.org/github.com/zalando/skipper/metrics">metrics package</a>,
+describing options and most keys you will find in the metrics handler
+endpoint. The default is listening on :9911/metrics.</p>
+<h3 id="prometheus">Prometheus</h3>
+<p>In case you want to get metrics in <a href="https://prometheus.io/">Prometheus</a> format exposed, use this
+option to enable it:</p>
+<pre><code>-enable-prometheus-metrics
+</code></pre>
+<p>It will return <a href="https://prometheus.io/">Prometheus</a> metrics on the
+common metrics endpoint :9911/metrics.</p>
+<h3 id="connection-metrics">Connection metrics</h3>
+<p>This option will enable known loadbalancer connections metrics, like
+counters for active and new connections. This feature sets a metrics
+callback on <a href="https://golang.org/pkg/net/http/#Server">http.Server</a> and
+uses a counter to collect
+<a href="https://golang.org/pkg/net/http/#ConnState">http.ConnState</a>.</p>
+<pre><code>-enable-connection-metrics
+    enables connection metrics for http server connections
+</code></pre>
+<p>It will expose them in /metrics, for example json structure looks like this example:</p>
+<pre><code>{
+  "counters": {
+    "skipper.lb-conn-active": {
+      "count": 6
+    },
+    "skipper.lb-conn-closed": {
+      "count": 6
+    },
+    "skipper.lb-conn-idle": {
+      "count": 6
+    },
+    "skipper.lb-conn-new": {
+      "count": 6
+    }
+  },
+  /* stripped a lot of metrics here */
+}
+</code></pre>
+<h3 id="application-metrics">Application metrics</h3>
+<p>Application metrics for your proxied applications you can enable with the option:</p>
+<pre><code>-serve-host-metrics
+    enables reporting total serve time metrics for each host
+</code></pre>
+<p>This will make sure you will get stats for each "Host" header as "timers":</p>
+<pre><code>"timers": {
+  "skipper.servehost.app1_example_com.GET.200": {
+    "15m.rate": 0.06830666203045982,
+    "1m.rate": 2.162612637718806e-06,
+    "5m.rate": 0.008312609284452856,
+    "75%": 236603815,
+    "95%": 236603815,
+    "99%": 236603815,
+    "99.9%": 236603815,
+    "count": 3,
+    "max": 236603815,
+    "mean": 116515451.66666667,
+    "mean.rate": 0.0030589345776699827,
+    "median": 91273391,
+    "min": 21669149,
+    "stddev": 89543653.71950394
+  },
+  "skipper.servehost.app1_example_com.GET.304": {
+    "15m.rate": 0.3503336738177459,
+    "1m.rate": 0.07923086447313292,
+    "5m.rate": 0.27019839341602214,
+    "75%": 99351895.25,
+    "95%": 105381847,
+    "99%": 105381847,
+    "99.9%": 105381847,
+    "count": 4,
+    "max": 105381847,
+    "mean": 47621612,
+    "mean.rate": 0.03087161486272533,
+    "median": 41676170.5,
+    "min": 1752260,
+    "stddev": 46489302.203724876
+  },
+  "skipper.servehost.app1_example_com.GET.401": {
+    "15m.rate": 0.16838468990057648,
+    "1m.rate": 0.01572861413072501,
+    "5m.rate": 0.1194724817779537,
+    "75%": 91094832,
+    "95%": 91094832,
+    "99%": 91094832,
+    "99.9%": 91094832,
+    "count": 2,
+    "max": 91094832,
+    "mean": 58090623,
+    "mean.rate": 0.012304914018033056,
+    "median": 58090623,
+    "min": 25086414,
+    "stddev": 33004209
+  }
+},
+</code></pre>
+<p>To change the sampling type of how metrics are handled from
+<a href="https://godoc.org/github.com/rcrowley/go-metrics#UniformSample">uniform</a>
+to <a href="https://godoc.org/github.com/rcrowley/go-metrics#ExpDecaySample">exponential decay</a>,
+you can use the following option, which is better for not so huge
+utilized applications (less than 100 requests per second):</p>
+<pre><code>-metrics-exp-decay-sample
+    use exponentially decaying sample in metrics
+</code></pre>
+<h3 id="go-metrics">Go metrics</h3>
+<p>Metrics from the
+<a href="https://golang.org/pkg/runtime/#MemStats">go runtime memstats</a>
+are exposed from skipper to the metrics endpoint, default listener
+:9911, on path /metrics :</p>
+<pre><code>"gauges": {
+  "skipper.runtime.MemStats.Alloc": {
+    "value": 3083680
+  },
+  "skipper.runtime.MemStats.BuckHashSys": {
+    "value": 1452675
+  },
+  "skipper.runtime.MemStats.DebugGC": {
+    "value": 0
+  },
+  "skipper.runtime.MemStats.EnableGC": {
+    "value": 1
+  },
+  "skipper.runtime.MemStats.Frees": {
+    "value": 121
+  },
+  "skipper.runtime.MemStats.HeapAlloc": {
+    "value": 3083680
+  },
+  "skipper.runtime.MemStats.HeapIdle": {
+    "value": 778240
+  },
+  "skipper.runtime.MemStats.HeapInuse": {
+    "value": 4988928
+  },
+  "skipper.runtime.MemStats.HeapObjects": {
+    "value": 24005
+  },
+  "skipper.runtime.MemStats.HeapReleased": {
+    "value": 0
+  },
+  "skipper.runtime.MemStats.HeapSys": {
+    "value": 5767168
+  },
+  "skipper.runtime.MemStats.LastGC": {
+    "value": 1516098381155094500
+  },
+  "skipper.runtime.MemStats.Lookups": {
+    "value": 2
+  },
+  "skipper.runtime.MemStats.MCacheInuse": {
+    "value": 6944
+  },
+  "skipper.runtime.MemStats.MCacheSys": {
+    "value": 16384
+  },
+  "skipper.runtime.MemStats.MSpanInuse": {
+    "value": 77368
+  },
+  "skipper.runtime.MemStats.MSpanSys": {
+    "value": 81920
+  },
+  "skipper.runtime.MemStats.Mallocs": {
+    "value": 1459
+  },
+  "skipper.runtime.MemStats.NextGC": {
+    "value": 4194304
+  },
+  "skipper.runtime.MemStats.NumGC": {
+    "value": 0
+  },
+  "skipper.runtime.MemStats.PauseTotalNs": {
+    "value": 683352
+  },
+  "skipper.runtime.MemStats.StackInuse": {
+    "value": 524288
+  },
+  "skipper.runtime.MemStats.StackSys": {
+    "value": 524288
+  },
+  "skipper.runtime.MemStats.Sys": {
+    "value": 9246968
+  },
+  "skipper.runtime.MemStats.TotalAlloc": {
+    "value": 35127624
+  },
+  "skipper.runtime.NumCgoCall": {
+    "value": 0
+  },
+  "skipper.runtime.NumGoroutine": {
+    "value": 11
+  },
+  "skipper.runtime.NumThread": {
+    "value": 9
+  }
+},
+"histograms": {
+  "skipper.runtime.MemStats.PauseNs": {
+    "75%": 82509.25,
+    "95%": 132609,
+    "99%": 132609,
+    "99.9%": 132609,
+    "count": 12,
+    "max": 132609,
+    "mean": 56946,
+    "median": 39302.5,
+    "min": 28749,
+    "stddev": 31567.015005117817
+  }
+</code></pre>
+<p>}</p>
+<h2 id="dataclient">Dataclient</h2>
+<p>Dataclients poll some kind of data source for routes. To change the timeout for calls that polls a dataclient, which could be the kubernetes API, use the following option:</p>
+<pre><code>-source-poll-timeout int
+    polling timeout of the routing data sources, in milliseconds (default 3000)
+</code></pre></div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>var base_url = '..';</script>
+        <script src="../js/base.js"></script>
+        <script src="../search/require.js"></script>
+        <script src="../search/search.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form role="form">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="Keyboard Shortcuts Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Keyboard Shortcuts</h4>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td><kbd>&larr;</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td><kbd>&rarr;</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    </body>
+</html>

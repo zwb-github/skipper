@@ -76,6 +76,12 @@
 </li>
                         </ul>
                     </li>
+                    <li >
+                        <a href="../../scripts/">Scripts</a>
+                    </li>
+                    <li >
+                        <a href="../../operations/">Operations</a>
+                    </li>
                 </ul>
 
             <ul class="nav navbar-nav navbar-right">
@@ -333,7 +339,7 @@ automatically.</p>
 <tr>
 <td>zalando.org/backend-weights</td>
 <td>{"my-app-1": 80, "my-app-2": 20}</td>
-<td>green-blue deployments</td>
+<td>blue-green deployments</td>
 </tr>
 <tr>
 <td>zalando.org/skipper-filter</td>
@@ -412,7 +418,7 @@ basicAuth("/path/to/htpasswd")
 basicAuth("/path/to/htpasswd", "My Website")
 </code></pre>
 <h2 id="diagnosis-throttling-latency">Diagnosis - Throttling - Latency</h2>
-<p>For diagnosis purpose there are filters that enables you to throttle
+<p>For diagnosis purpose there are filters that enable you to throttle
 the bandwidth or add latency. For the full list of filters see our
 <a href="https://godoc.org/github.com/zalando/skipper/filters/diag">diag filter godoc page</a>.</p>
 <pre><code>bandwidth(30) // incoming in kb/s
@@ -461,7 +467,7 @@ spec:
         path: /
 </code></pre>
 <h1 id="filters">Filters</h1>
-<p>Filters can modify http requests and responses. There are a plenty of
+<p>Filters can modify http requests and responses. There are plenty of
 things you can do with them.</p>
 <h2 id="circuitbreaker">Circuitbreaker</h2>
 <h3 id="consecutive-breaker">Consecutive Breaker</h3>

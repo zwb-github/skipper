@@ -4,7 +4,7 @@
     
     <url>
      <loc>/</loc>
-     <lastmod>2018-01-20</lastmod>
+     <lastmod>2018-02-03</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -12,7 +12,7 @@
     
     <url>
      <loc>/deployments/</loc>
-     <lastmod>2018-01-20</lastmod>
+     <lastmod>2018-02-03</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -21,31 +21,47 @@
         
     <url>
      <loc>/dataclients/eskip-file/</loc>
-     <lastmod>2018-01-20</lastmod>
+     <lastmod>2018-02-03</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>/dataclients/etcd/</loc>
-     <lastmod>2018-01-20</lastmod>
+     <lastmod>2018-02-03</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>/dataclients/inkeeper-api/</loc>
-     <lastmod>2018-01-20</lastmod>
+     <lastmod>2018-02-03</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>/dataclients/kubernetes/</loc>
-     <lastmod>2018-01-20</lastmod>
+     <lastmod>2018-02-03</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>/dataclients/route-string/</loc>
-     <lastmod>2018-01-20</lastmod>
+     <lastmod>2018-02-03</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    
+
+    
+        
+    <url>
+     <loc>/kubernetes/ingress-controller/</loc>
+     <lastmod>2018-02-03</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>/kubernetes/ingress-usage/</loc>
+     <lastmod>2018-02-03</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
@@ -54,7 +70,7 @@
     
     <url>
      <loc>/scripts/</loc>
-     <lastmod>2018-01-20</lastmod>
+     <lastmod>2018-02-03</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -62,7 +78,7 @@
     
     <url>
      <loc>/operations/</loc>
-     <lastmod>2018-01-20</lastmod>
+     <lastmod>2018-02-03</lastmod>
      <changefreq>daily</changefreq>
     </url>
     

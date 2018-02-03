@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../img/favicon.ico">
+        <title>Ingress Usage - Skipper</title>
+        <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../../css/font-awesome-4.5.0.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="../../css/highlight.css">
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+        <script src="../../js/jquery-1.10.2.min.js"></script>
+        <script src="../../js/bootstrap-3.0.3.min.js"></script>
+        <script src="../../js/highlight.pack.js"></script> 
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="../..">Skipper</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+                <!-- Main navigation -->
+                <ul class="nav navbar-nav">
+                    <li >
+                        <a href="../..">Architecture</a>
+                    </li>
+                    <li >
+                        <a href="../../deployments/">Deployments</a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Data Clients <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            
+<li >
+    <a href="../../dataclients/eskip-file/">Eskip</a>
+</li>
+                            
+<li >
+    <a href="../../dataclients/etcd/">Etcd</a>
+</li>
+                            
+<li >
+    <a href="../../dataclients/inkeeper-api/">Inkeeper API</a>
+</li>
+                            
+<li >
+    <a href="../../dataclients/kubernetes/">Kubernetes</a>
+</li>
+                            
+<li >
+    <a href="../../dataclients/route-string/">Route String</a>
+</li>
+                        </ul>
+                    </li>
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Kubernetes <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            
+<li >
+    <a href="../ingress-controller/">Ingress Controller Deployment</a>
+</li>
+                            
+<li class="active">
+    <a href="./">Ingress Usage</a>
+</li>
+                        </ul>
+                    </li>
+                    <li >
+                        <a href="../../scripts/">Scripts</a>
+                    </li>
+                    <li >
+                        <a href="../../operations/">Operations</a>
+                    </li>
+                </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                        <i class="fa fa-search"></i> Search
+                    </a>
+                </li>
+                    <li >
+                        <a rel="next" href="../ingress-controller/">
+                            <i class="fa fa-arrow-left"></i> Previous
+                        </a>
+                    </li>
+                    <li >
+                        <a rel="prev" href="../../scripts/">
+                            Next <i class="fa fa-arrow-right"></i>
+                        </a>
+                    </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+        <div class="container">
+                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+        <li class="main active"><a href="#skipper-ingress-usage">Skipper Ingress Usage</a></li>
+            <li><a href="#skipper-ingress-annotations">Skipper Ingress Annotations</a></li>
+        <li class="main "><a href="#http-host-header-routing">HTTP Host header routing</a></li>
+        <li class="main "><a href="#basic-http-manipulations">Basic HTTP manipulations</a></li>
+            <li><a href="#add-a-request-header">Add a request Header</a></li>
+            <li><a href="#add-a-response-header">Add a response Header</a></li>
+            <li><a href="#set-the-path">Set the Path</a></li>
+            <li><a href="#set-the-querystring">Set the Querystring</a></li>
+            <li><a href="#redirect">Redirect</a></li>
+            <li><a href="#cookies">Cookies</a></li>
+            <li><a href="#authorization">Authorization</a></li>
+            <li><a href="#diagnosis-throttling-latency">Diagnosis - Throttling - Latency</a></li>
+            <li><a href="#flowid-to-trace-request-flows">FlowID to trace request flows</a></li>
+        <li class="main "><a href="#blue-green-deployments">Blue-Green deployments</a></li>
+        <li class="main "><a href="#filters">Filters</a></li>
+            <li><a href="#circuitbreaker">Circuitbreaker</a></li>
+            <li><a href="#ratelimits">Ratelimits</a></li>
+            <li><a href="#shadow-traffic">Shadow Traffic</a></li>
+        <li class="main "><a href="#predicates">Predicates</a></li>
+            <li><a href="#feature-toggle">Feature Toggle</a></li>
+            <li><a href="#ip-whitelisting">IP Whitelisting</a></li>
+            <li><a href="#ab-test">A/B test</a></li>
+        <li class="main "><a href="#chaining-filters-and-predicates">Chaining Filters and Predicates</a></li>
+    </ul>
+</div></div>
+                <div class="col-md-9" role="main">
+
+<h1 id="skipper-ingress-usage">Skipper Ingress Usage</h1>
+<p>This documentation is meant for people deploying to Kubernetes
+Clusters and describes to use Ingress and low level and high level
+features Skipper provides</p>
+<h2 id="skipper-ingress-annotations">Skipper Ingress Annotations</h2>
+<table>
+<thead>
+<tr>
+<th>Annotation</th>
+<th>example data</th>
+<th>usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>zalando.org/backend-weights</td>
+<td>{"my-app-1": 80, "my-app-2": 20}</td>
+<td>blue-green deployments</td>
+</tr>
+<tr>
+<td>zalando.org/skipper-filter</td>
+<td>consecutiveBreaker(15)</td>
+<td>arbitrary filters</td>
+</tr>
+<tr>
+<td>zalando.org/skipper-predicate</td>
+<td>QueryParam("version", "^alpha$")</td>
+<td>arbitrary predicates</td>
+</tr>
+<tr>
+<td>zalando.org/ratelimit</td>
+<td>ratelimit(50, "1m")</td>
+<td>deprecated, use zalando.org/skipper-filter instead</td>
+</tr>
+</tbody>
+</table>
+<h1 id="http-host-header-routing">HTTP Host header routing</h1>
+<p>HTTP host header is defined within the rules <code>host</code> section and this
+route will match by http <code>Host: app-default.example.org</code> and route to
+endpoints selected by the Kubernetes service <code>app-svc</code> on port <code>80</code>.</p>
+<pre><code>apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: app
+spec:
+  rules:
+  - host: app-default.example.org
+    http:
+      paths:
+      - backend:
+          serviceName: app-svc
+          servicePort: 80
+</code></pre>
+<h1 id="basic-http-manipulations">Basic HTTP manipulations</h1>
+<p>HTTP manipulations are done by using skipper filters.
+A basic example how to use skipper filters in ingress:</p>
+<pre><code>apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    zalando.org/skipper-filter: consecutiveBreaker(15)
+  name: app
+spec:
+  rules:
+  - host: app-default.example.org
+    http:
+      paths:
+      - backend:
+          serviceName: app-svc
+          servicePort: 80
+</code></pre>
+<h2 id="add-a-request-header">Add a request Header</h2>
+<p>Add a header in the request path to your backend.</p>
+<pre><code>setRequestHeader("X-Foo", "bar")
+</code></pre>
+<h2 id="add-a-response-header">Add a response Header</h2>
+<p>Add a header in the response path of your clients.</p>
+<pre><code>setResponseHeader("X-Foo", "bar")
+</code></pre>
+<h2 id="set-the-path">Set the Path</h2>
+<p>Change the path in the request path to your backend.</p>
+<pre><code>setPath("/newPath/")
+</code></pre>
+<h2 id="set-the-querystring">Set the Querystring</h2>
+<p>Set the Querystring in the request path to your backend.</p>
+<pre><code>setQuery("text", "godoc skipper")
+</code></pre>
+<h2 id="redirect">Redirect</h2>
+<p>Create a redirect with HTTP code 301 to https://foo.example.org/.</p>
+<pre><code>redirectTo(301, "https://foo.example.org/")
+</code></pre>
+<h2 id="cookies">Cookies</h2>
+<p>Set a Cookie in the request path to your backend.</p>
+<pre><code>requestCookie("test-session", "abc")
+</code></pre>
+<p>Set a Cookie in the response path of your clients.</p>
+<pre><code>responseCookie("test-session", "abc", 31536000)
+responseCookie("test-session", "abc", 31536000, "change-only")
+
+// response cookie without HttpOnly:
+jsCookie("test-session-info", "abc-debug", 31536000, "change-only")
+</code></pre>
+<h2 id="authorization">Authorization</h2>
+<p>Our <a href="https://godoc.org/github.com/zalando/skipper/filters/auth">filter auth
+godoc</a>
+shows how to use filters for authorization.</p>
+<h3 id="basic-auth">Basic Auth</h3>
+<pre><code>% htpasswd -nbm myName myPassword
+
+basicAuth("/path/to/htpasswd")
+basicAuth("/path/to/htpasswd", "My Website")
+</code></pre>
+<h2 id="diagnosis-throttling-latency">Diagnosis - Throttling - Latency</h2>
+<p>For diagnosis purpose there are filters that enable you to throttle
+the bandwidth or add latency. For the full list of filters see our
+<a href="https://godoc.org/github.com/zalando/skipper/filters/diag">diag filter godoc page</a>.</p>
+<pre><code>bandwidth(30) // incoming in kb/s
+backendBandwidth(30) // outgoing in kb/s
+backendLatency(120) // in ms
+</code></pre>
+<h2 id="flowid-to-trace-request-flows">FlowID to trace request flows</h2>
+<p>To trace request flows skipper can generate a unique Flow Id for
+every HTTP request that it receives.
+Skipper sets the X-Flow-Id header to a unique value. Read more about
+this in our <a href="https://godoc.org/github.com/zalando/skipper/filters/flowid">flowid filter godoc</a>.</p>
+<pre><code> flowId("reuse")
+</code></pre>
+<h1 id="blue-green-deployments">Blue-Green deployments</h1>
+<p>To do blue-green deployments you have to have control over traffic
+switching. Skipper gives you the opportunity to set weights to backend
+services in your ingress specification. <code>zalando.org/backend-weights</code>
+is a hash map, which key relates to the <code>serviceName</code> of the backend
+and the value is the weight of traffic you want to send to the
+particular backend. It works for more than 2 backends, but for
+simplicity this example shows 2 backends, which should be the default
+case for supporting blue-green deployments.</p>
+<p>In the following example <strong>my-app-1</strong> service will get <strong>80%</strong> of the traffic
+and <strong>my-app-2</strong> will get <strong>20%</strong> of the traffic:</p>
+<pre><code>apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: my-app
+  labels:
+    application: my-app
+  annotations:
+    zalando.org/backend-weights: |
+      {"my-app-1": 80, "my-app-2": 20}
+spec:
+  rules:
+  - host: my-app.example.org
+    http:
+      paths:
+      - backend:
+          serviceName: my-app-1
+          servicePort: http
+        path: /
+      - backend:
+          serviceName: my-app-2
+          servicePort: http
+        path: /
+</code></pre>
+<h1 id="filters">Filters</h1>
+<p>Filters can modify http requests and responses. There are plenty of
+things you can do with them.</p>
+<h2 id="circuitbreaker">Circuitbreaker</h2>
+<h3 id="consecutive-breaker">Consecutive Breaker</h3>
+<p>The <a href="https://godoc.org/github.com/zalando/skipper/filters/circuit#NewConsecutiveBreaker">consecutiveBreaker</a>
+filter is a breaker for the ingress route that open if the backend failures
+for the route reach a value of N (in this example N=15), where N is a
+mandatory argument of the filter and there are some more optional arguments
+<a href="https://godoc.org/github.com/zalando/skipper/filters/circuit#NewConsecutiveBreaker">documented</a>:</p>
+<pre><code>consecutiveBreaker(15)
+</code></pre>
+<p>The ingress spec would look like this:</p>
+<pre><code>apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    zalando.org/skipper-filter: consecutiveBreaker(15)
+  name: app
+spec:
+  rules:
+  - host: app-default.example.org
+    http:
+      paths:
+      - backend:
+          serviceName: app-svc
+          servicePort: 80
+</code></pre>
+<h3 id="rate-breaker">Rate Breaker</h3>
+<p>The <a href="https://godoc.org/github.com/zalando/skipper/filters/circuit#NewRateBreaker">rateBreaker</a>
+filter is a breaker for the ingress route that open if the backend
+failures for the route reach a value of N within a window of the last
+M requests, where N (in this example 30) and M (in this example 300)
+are mandatory arguments of the filter and there are some more optional arguments
+<a href="https://godoc.org/github.com/zalando/skipper/filters/circuit#NewRateBreaker">documented</a>.</p>
+<pre><code>rateBreaker(30, 300)
+</code></pre>
+<p>The ingress spec would look like this:</p>
+<pre><code>apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    zalando.org/skipper-filter: rateBreaker(30, 300)
+  name: app
+spec:
+  rules:
+  - host: app-default.example.org
+    http:
+      paths:
+      - backend:
+          serviceName: app-svc
+          servicePort: 80
+</code></pre>
+<h2 id="ratelimits">Ratelimits</h2>
+<p>There are two kind of ratelimits:</p>
+<ol>
+<li>Client side ratelimits are used to slow down login enumeration
+attacks, that targets your login pages. This is a security protection
+for DDOS or login attacks.</li>
+<li>Service or backend side ratelimits are used to protect your
+services due too much traffic. This can be used in an emergency
+situation to make sure you calm down ingress traffic or in general if
+you know how much calls per duration your backend is able to handle.</li>
+</ol>
+<p>Ratelimits are enforced per route.</p>
+<p>More details you will find in <a href="https://godoc.org/github.com/zalando/skipper/filters/ratelimit">ratelimit package</a>
+and <a href="https://godoc.org/github.com/zalando/skipper/dataclients/kubernetes">kubernetes dataclient</a> documentation.</p>
+<h3 id="client-ratelimits">Client Ratelimits</h3>
+<p>The example shows 20 calls per hour per client, based on
+X-Forwarded-For header or IP incase there is no X-Forwarded-For header
+set, are allowed to each skipper instance for the given ingress.</p>
+<pre><code>apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    zalando.org/skipper-filter: localRatelimit(20, "1h")
+  name: app
+spec:
+  rules:
+  - host: app-default.example.org
+    http:
+      paths:
+      - backend:
+          serviceName: app-svc
+          servicePort: 80
+</code></pre>
+<p>If you need to rate limit service to service communication and
+you use Authorization headers to protect your backend from your
+clients, then you can pass a 3 parameter to group clients by "Authorization
+Header":</p>
+<pre><code>apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    zalando.org/skipper-filter: localRatelimit(20, "1h", "auth")
+  name: app
+spec:
+  rules:
+  - host: app-default.example.org
+    http:
+      paths:
+      - backend:
+          serviceName: app-svc
+          servicePort: 80
+</code></pre>
+<h3 id="service-ratelimits">Service Ratelimits</h3>
+<p>The example shows 50 calls per minute are allowed to each skipper
+instance for the given ingress.</p>
+<pre><code>apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    zalando.org/skipper-filter: ratelimit(50, "1m")
+  name: app
+spec:
+  rules:
+  - host: app-default.example.org
+    http:
+      paths:
+      - backend:
+          serviceName: app-svc
+          servicePort: 80
+</code></pre>
+<h2 id="shadow-traffic">Shadow Traffic</h2>
+<p>If you want to test a new replacement of a production service with
+production load, you can copy incoming requests to your new endpoint
+and ignore the responses from your new backend. This can be done by
+the <a href="https://godoc.org/github.com/zalando/skipper/filters/tee">tee() and teenf() filters</a>.</p>
+<pre><code>apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    zalando.org/skipper-filter: teenf("https://app-new.example.org")
+  name: app
+spec:
+  rules:
+  - host: app-default.example.org
+    http:
+      paths:
+      - backend:
+          serviceName: app-svc
+          servicePort: 80
+</code></pre>
+<h1 id="predicates">Predicates</h1>
+<p><a href="https://godoc.org/github.com/zalando/skipper/predicates">Predicates</a>
+are influencing the route matching, which you might want to carefully
+test before using it in production. This enables you to do feature
+toggles or time based enabling endpoints.</p>
+<p>You can use all kinds of <a href="https://godoc.org/github.com/zalando/skipper/predicates">predicates</a>
+with <a href="https://godoc.org/github.com/zalando/skipper/filters">filters</a> together.</p>
+<h2 id="feature-toggle">Feature Toggle</h2>
+<p>Feature toggles are often implemented as query string to select a new
+feature. Normally you would have to implement this in your
+application, but Skipper can help you with that and you can select
+routes with an ingress definition.</p>
+<p>You create 2 ingresses that matches the same route, here host header
+match to <code>app-default.example.org</code> and one ingress has a defined query
+parameter to select the route to the alpha version deployment. If the
+query string in the URL has <code>version=alpha</code> set, for example
+<code>https://app-default.example.org/mypath?version=alpha</code>, the service
+<code>alpha-svc</code> will get the traffic, if not <code>prod-svc</code>.</p>
+<p>alpha-svc:</p>
+<pre><code>apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    zalando.org/skipper-predicate: QueryParam("version", "^alpha$")
+  name: alpha-app
+spec:
+  rules:
+  - host: app-default.example.org
+    http:
+      paths:
+      - backend:
+          serviceName: alpha-svc
+          servicePort: 80
+</code></pre>
+<p>prod-svc:</p>
+<pre><code>apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: prod-app
+spec:
+  rules:
+  - host: app-default.example.org
+    http:
+      paths:
+      - backend:
+          serviceName: prod-svc
+          servicePort: 80
+</code></pre>
+<h2 id="ip-whitelisting">IP Whitelisting</h2>
+<p>This ingress route will only allow traffic from networks 1.2.3.0/24 and 195.168.0.0/17</p>
+<pre><code>apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    zalando.org/skipper-predicate: Source("1.2.3.0/24", "195.168.0.0/17")
+  name: app
+spec:
+  rules:
+  - host: app-default.example.org
+    http:
+      paths:
+      - backend:
+          serviceName: app-svc
+          servicePort: 80
+</code></pre>
+<h2 id="ab-test">A/B test</h2>
+<p>Implementing A/B testing is heavy. Skipper can help you to do
+that. You need to have a traffic split somewhere and have your
+customers sticky to either A or B flavor of your application. Most
+likely people would implement using cookies. Skipper can set a
+<a href="https://godoc.org/github.com/zalando/skipper/filters/cookie">cookie with responseCookie()</a>
+in a response to the client and the
+<a href="https://godoc.org/github.com/zalando/skipper/predicates/cookie">cookie predicate</a>
+can be used to match the route based on the cookie. Like this you can
+have sticky sessions to either A or B for your clients.  This example
+shows to have 10% traffic using A and the rest using B.</p>
+<p>10% choice of setting the Cookie "flavor" to "A":</p>
+<pre><code>apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    zalando.org/skipper-predicate: Traffic(.1)
+    zalando.org/skipper-filter: responseCookie("flavor, "A", 31536000)
+  name: app
+spec:
+  rules:
+  - host: app-default.example.org
+    http:
+      paths:
+      - backend:
+          serviceName: a-app-svc
+          servicePort: 80
+</code></pre>
+<p>Rest is setting Cookie "flavor" to "B":</p>
+<pre><code>apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    zalando.org/skipper-filter: responseCookie("flavor, "B", 31536000)
+  name: app
+spec:
+  rules:
+  - host: app-default.example.org
+    http:
+      paths:
+      - backend:
+          serviceName: b-app-svc
+          servicePort: 80
+</code></pre>
+<p>To be sticky, you have to create 2 ingress with predicate to match
+routes with the cookie we set before. For "A" this would be:</p>
+<pre><code>apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    zalando.org/skipper-predicate: Cookie("flavor", /^A$/)
+  name: app
+spec:
+  rules:
+  - host: app-default.example.org
+    http:
+      paths:
+      - backend:
+          serviceName: a-app-svc
+          servicePort: 80
+</code></pre>
+<p>For "B" this would be:</p>
+<pre><code>apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    zalando.org/skipper-predicate: Cookie("flavor", /^B$/)
+  name: app
+spec:
+  rules:
+  - host: app-default.example.org
+    http:
+      paths:
+      - backend:
+          serviceName: b-app-svc
+          servicePort: 80
+</code></pre>
+<h1 id="chaining-filters-and-predicates">Chaining Filters and Predicates</h1>
+<p>You can set multiple filters in a chain similar to the <a href="https://godoc.org/github.com/zalando/skipper/eskip">eskip format</a>.</p>
+<pre><code>apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    zalando.org/skipper-predicate: Cookie("flavor", /^B$/) &amp;&amp; Source("1.2.3.0/24", "195.168.0.0/17")
+    zalando.org/skipper-filter: localRatelimit(50, "10m") -&gt; requestCookie("test-session", "abc")
+  name: app
+spec:
+  rules:
+  - host: app-default.example.org
+    http:
+      paths:
+      - backend:
+          serviceName: app-svc
+          servicePort: 80
+</code></pre></div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>var base_url = '../..';</script>
+        <script src="../../js/base.js"></script>
+        <script src="../../search/require.js"></script>
+        <script src="../../search/search.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form role="form">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="Keyboard Shortcuts Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Keyboard Shortcuts</h4>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td><kbd>&larr;</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td><kbd>&rarr;</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    </body>
+</html>

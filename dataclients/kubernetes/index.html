@@ -122,9 +122,9 @@
                 <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
         <li class="main active"><a href="#kubernetes">Kubernetes</a></li>
-        <li class="main "><a href="#skipper-features">Skipper Features</a></li>
-        <li class="main "><a href="#ingress-controller-deployment">Ingress Controller deployment</a></li>
-        <li class="main "><a href="#ingress-usage">Ingress Usage</a></li>
+            <li><a href="#kubernetes-ingress-controller-deployment">Kubernetes Ingress Controller deployment</a></li>
+            <li><a href="#kubernetes-ingress-usage">Kubernetes Ingress Usage</a></li>
+            <li><a href="#why-to-choose-skipper">Why to choose Skipper?</a></li>
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
@@ -135,8 +135,22 @@
 It will get it's route information from provisioned
 <a href="https://kubernetes.io/docs/concepts/services-networking/ingress">Ingress Objects</a>.
 Detailed information you find in our <a href="https://godoc.org/github.com/zalando/skipper/dataclients/kubernetes">godoc for dataclient kubernetes</a>.</p>
-<h1 id="skipper-features">Skipper Features</h1>
-<p>Skipper has the following main features:</p>
+<h2 id="kubernetes-ingress-controller-deployment">Kubernetes Ingress Controller deployment</h2>
+<p>How to <a href="../../kubernetes/ingress-controller/">install skipper ingress-controller</a> for cluster operators.</p>
+<h2 id="kubernetes-ingress-usage">Kubernetes Ingress Usage</h2>
+<p>Find out more <a href="../../kubernetes/ingress-usage/">how to use skipper ingress features</a> for deployers.</p>
+<h2 id="why-to-choose-skipper">Why to choose Skipper?</h2>
+<p>Kubernetes is a fast changing environment and traditional http routers
+are not made for frequently changing routing tables. Skipper is a http
+proxy made to apply updates very often. Skipper is used in
+production with more than 200.000 routing table entries.
+Skipper has Filters to change http data and Predicates to change the
+matching rules, both can combined and chained. You can set these in
+ingress.yaml files to build resiliency patterns like ratelimit or
+circuitbreaker. You can also use them to build more highlevel
+deployment patterns, for example feature toggles, shadow traffic or
+blue-green deployments.</p>
+<p>Skipper's main features:</p>
 <ul>
 <li>Filters - create, update, delete all kind of HTTP data</li>
 <li><a href="https://godoc.org/github.com/zalando/skipper/filters/builtin">collection of base http manipulations</a>: for example manipulating Path, Querystring, ResponseHeader, RequestHeader and redirect handling</li>
@@ -160,12 +174,8 @@ Detailed information you find in our <a href="https://godoc.org/github.com/zalan
 </li>
 <li><a href="https://godoc.org/github.com/zalando/skipper/metrics">metrics</a></li>
 <li>access logs</li>
-<li>Blue-Green deployments, with another Ingress annotation <code>zalando.org/backend-weights</code>, see Advanced Examples section</li>
-</ul>
-<h1 id="ingress-controller-deployment">Ingress Controller deployment</h1>
-<p>How to <a href="../../kubernetes/ingress-controller/">install skipper ingress-controller</a> for cluster operators.</p>
-<h1 id="ingress-usage">Ingress Usage</h1>
-<p>Find out more <a href="../../kubernetes/ingress-usage/">how to use skipper ingress features</a> for deployers.</p></div>
+<li>Blue-Green deployments, with another Ingress annotation <code>zalando.org/backend-weights</code></li>
+</ul></div>
         </div>
 
         <footer class="col-md-12">

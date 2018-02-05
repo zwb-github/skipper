@@ -123,8 +123,10 @@
     <ul class="nav bs-sidenav">
         <li class="main active"><a href="#skipper-ingress-usage">Skipper Ingress Usage</a></li>
             <li><a href="#skipper-ingress-annotations">Skipper Ingress Annotations</a></li>
-        <li class="main "><a href="#http-host-header-routing">HTTP Host header routing</a></li>
-        <li class="main "><a href="#basic-http-manipulations">Basic HTTP manipulations</a></li>
+        <li class="main "><a href="#basics">Basics</a></li>
+            <li><a href="#http-host-header-routing">HTTP Host header routing</a></li>
+            <li><a href="#filters-and-predicates">Filters and Predicates</a></li>
+        <li class="main "><a href="#filters-basic-http-manipulations">Filters - Basic HTTP manipulations</a></li>
             <li><a href="#add-a-request-header">Add a request Header</a></li>
             <li><a href="#add-a-response-header">Add a response Header</a></li>
             <li><a href="#set-the-path">Set the Path</a></li>
@@ -132,10 +134,9 @@
             <li><a href="#redirect">Redirect</a></li>
             <li><a href="#cookies">Cookies</a></li>
             <li><a href="#authorization">Authorization</a></li>
-            <li><a href="#diagnosis-throttling-latency">Diagnosis - Throttling - Latency</a></li>
-            <li><a href="#flowid-to-trace-request-flows">FlowID to trace request flows</a></li>
-        <li class="main "><a href="#blue-green-deployments">Blue-Green deployments</a></li>
-        <li class="main "><a href="#filters">Filters</a></li>
+            <li><a href="#diagnosis-throttling-bandwidth-latency">Diagnosis - Throttling Bandwidth - Latency</a></li>
+            <li><a href="#flow-id-to-trace-request-flows">Flow Id to trace request flows</a></li>
+        <li class="main "><a href="#filters-reliability-features">Filters - reliability features</a></li>
             <li><a href="#circuitbreaker">Circuitbreaker</a></li>
             <li><a href="#ratelimits">Ratelimits</a></li>
             <li><a href="#shadow-traffic">Shadow Traffic</a></li>
@@ -143,6 +144,7 @@
             <li><a href="#feature-toggle">Feature Toggle</a></li>
             <li><a href="#ip-whitelisting">IP Whitelisting</a></li>
             <li><a href="#ab-test">A/B test</a></li>
+        <li class="main "><a href="#blue-green-deployments">Blue-Green deployments</a></li>
         <li class="main "><a href="#chaining-filters-and-predicates">Chaining Filters and Predicates</a></li>
     </ul>
 </div></div>
@@ -184,7 +186,8 @@ features Skipper provides</p>
 </tr>
 </tbody>
 </table>
-<h1 id="http-host-header-routing">HTTP Host header routing</h1>
+<h1 id="basics">Basics</h1>
+<h2 id="http-host-header-routing">HTTP Host header routing</h2>
 <p>HTTP host header is defined within the rules <code>host</code> section and this
 route will match by http <code>Host: app-default.example.org</code> and route to
 endpoints selected by the Kubernetes service <code>app-svc</code> on port <code>80</code>.</p>
@@ -201,14 +204,40 @@ spec:
           serviceName: app-svc
           servicePort: 80
 </code></pre>
-<h1 id="basic-http-manipulations">Basic HTTP manipulations</h1>
-<p>HTTP manipulations are done by using skipper filters.
-A basic example how to use skipper filters in ingress:</p>
+<p>To have 2 routes with different <code>Host</code> headers serving the same
+backends, you have to specify 2 entries in the rules section, as
+kubernetes defined the ingress spec.</p>
+<pre><code>apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: app
+spec:
+  rules:
+  - host: app-default.example.org
+    http:
+      paths:
+      - backend:
+          serviceName: app-svc
+          servicePort: 80
+  - host: foo.example.org
+    http:
+      paths:
+      - backend:
+          serviceName: app-svc
+          servicePort: 80
+</code></pre>
+<h2 id="filters-and-predicates">Filters and Predicates</h2>
+<ul>
+<li><strong>Filters</strong> can manipulate http data, which is not possible in the ingress spec.</li>
+<li><strong>Predicates</strong> change the route matching, beyond normal ingress definitions</li>
+</ul>
+<p>This example shows how to add predicates and filters:</p>
 <pre><code>apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   annotations:
-    zalando.org/skipper-filter: consecutiveBreaker(15)
+    zalando.org/skipper-predicate: predicate1 &amp;&amp; predicate2 &amp;&amp; .. &amp;&amp; predicateN
+    zalando.org/skipper-filter: filter1 -&gt; filter2 -&gt; .. -&gt; filterN
   name: app
 spec:
   rules:
@@ -219,20 +248,26 @@ spec:
           serviceName: app-svc
           servicePort: 80
 </code></pre>
+<h1 id="filters-basic-http-manipulations">Filters - Basic HTTP manipulations</h1>
+<p>HTTP manipulations are done by using skipper filters. Changes can be
+done in the request path, meaning request to your backend or in the
+response path to the client, which made the request.</p>
+<p>The following examples can be used within <code>zalando.org/skipper-filter</code>
+annotation.</p>
 <h2 id="add-a-request-header">Add a request Header</h2>
-<p>Add a header in the request path to your backend.</p>
+<p>Add a HTTP header in the request path to your backend.</p>
 <pre><code>setRequestHeader("X-Foo", "bar")
 </code></pre>
 <h2 id="add-a-response-header">Add a response Header</h2>
-<p>Add a header in the response path of your clients.</p>
+<p>Add a HTTP header in the response path of your clients.</p>
 <pre><code>setResponseHeader("X-Foo", "bar")
 </code></pre>
 <h2 id="set-the-path">Set the Path</h2>
-<p>Change the path in the request path to your backend.</p>
+<p>Change the path in the request path to your backend to <code>/newPath/</code>.</p>
 <pre><code>setPath("/newPath/")
 </code></pre>
 <h2 id="set-the-querystring">Set the Querystring</h2>
-<p>Set the Querystring in the request path to your backend.</p>
+<p>Set the Querystring in the request path to your backend to <code>?text=godoc%20skipper</code>.</p>
 <pre><code>setQuery("text", "godoc skipper")
 </code></pre>
 <h2 id="redirect">Redirect</h2>
@@ -251,8 +286,7 @@ responseCookie("test-session", "abc", 31536000, "change-only")
 jsCookie("test-session-info", "abc-debug", 31536000, "change-only")
 </code></pre>
 <h2 id="authorization">Authorization</h2>
-<p>Our <a href="https://godoc.org/github.com/zalando/skipper/filters/auth">filter auth
-godoc</a>
+<p>Our <a href="https://godoc.org/github.com/zalando/skipper/filters/auth">filter auth godoc</a>
 shows how to use filters for authorization.</p>
 <h3 id="basic-auth">Basic Auth</h3>
 <pre><code>% htpasswd -nbm myName myPassword
@@ -260,7 +294,9 @@ shows how to use filters for authorization.</p>
 basicAuth("/path/to/htpasswd")
 basicAuth("/path/to/htpasswd", "My Website")
 </code></pre>
-<h2 id="diagnosis-throttling-latency">Diagnosis - Throttling - Latency</h2>
+<h3 id="bearer-token-oauthjwt">Bearer Token (OAuth/JWT)</h3>
+<p>TBD</p>
+<h2 id="diagnosis-throttling-bandwidth-latency">Diagnosis - Throttling Bandwidth - Latency</h2>
 <p>For diagnosis purpose there are filters that enable you to throttle
 the bandwidth or add latency. For the full list of filters see our
 <a href="https://godoc.org/github.com/zalando/skipper/filters/diag">diag filter godoc page</a>.</p>
@@ -268,48 +304,15 @@ the bandwidth or add latency. For the full list of filters see our
 backendBandwidth(30) // outgoing in kb/s
 backendLatency(120) // in ms
 </code></pre>
-<h2 id="flowid-to-trace-request-flows">FlowID to trace request flows</h2>
-<p>To trace request flows skipper can generate a unique Flow Id for
-every HTTP request that it receives.
-Skipper sets the X-Flow-Id header to a unique value. Read more about
-this in our <a href="https://godoc.org/github.com/zalando/skipper/filters/flowid">flowid filter godoc</a>.</p>
+<h2 id="flow-id-to-trace-request-flows">Flow Id to trace request flows</h2>
+<p>To trace request flows skipper can generate a unique Flow Id for every
+HTTP request that it receives. You can then find the trace of the
+request in all your access logs.  Skipper sets the X-Flow-Id header to
+a unique value. Read more about this in our
+<a href="https://godoc.org/github.com/zalando/skipper/filters/flowid">flowid filter godoc</a>.</p>
 <pre><code> flowId("reuse")
 </code></pre>
-<h1 id="blue-green-deployments">Blue-Green deployments</h1>
-<p>To do blue-green deployments you have to have control over traffic
-switching. Skipper gives you the opportunity to set weights to backend
-services in your ingress specification. <code>zalando.org/backend-weights</code>
-is a hash map, which key relates to the <code>serviceName</code> of the backend
-and the value is the weight of traffic you want to send to the
-particular backend. It works for more than 2 backends, but for
-simplicity this example shows 2 backends, which should be the default
-case for supporting blue-green deployments.</p>
-<p>In the following example <strong>my-app-1</strong> service will get <strong>80%</strong> of the traffic
-and <strong>my-app-2</strong> will get <strong>20%</strong> of the traffic:</p>
-<pre><code>apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  name: my-app
-  labels:
-    application: my-app
-  annotations:
-    zalando.org/backend-weights: |
-      {"my-app-1": 80, "my-app-2": 20}
-spec:
-  rules:
-  - host: my-app.example.org
-    http:
-      paths:
-      - backend:
-          serviceName: my-app-1
-          servicePort: http
-        path: /
-      - backend:
-          serviceName: my-app-2
-          servicePort: http
-        path: /
-</code></pre>
-<h1 id="filters">Filters</h1>
+<h1 id="filters-reliability-features">Filters - reliability features</h1>
 <p>Filters can modify http requests and responses. There are plenty of
 things you can do with them.</p>
 <h2 id="circuitbreaker">Circuitbreaker</h2>
@@ -593,6 +596,40 @@ spec:
       - backend:
           serviceName: b-app-svc
           servicePort: 80
+</code></pre>
+<h1 id="blue-green-deployments">Blue-Green deployments</h1>
+<p>To do blue-green deployments you have to have control over traffic
+switching. Skipper gives you the opportunity to set weights to backend
+services in your ingress specification. <code>zalando.org/backend-weights</code>
+is a hash map, which key relates to the <code>serviceName</code> of the backend
+and the value is the weight of traffic you want to send to the
+particular backend. It works for more than 2 backends, but for
+simplicity this example shows 2 backends, which should be the default
+case for supporting blue-green deployments.</p>
+<p>In the following example <strong>my-app-1</strong> service will get <strong>80%</strong> of the traffic
+and <strong>my-app-2</strong> will get <strong>20%</strong> of the traffic:</p>
+<pre><code>apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: my-app
+  labels:
+    application: my-app
+  annotations:
+    zalando.org/backend-weights: |
+      {"my-app-1": 80, "my-app-2": 20}
+spec:
+  rules:
+  - host: my-app.example.org
+    http:
+      paths:
+      - backend:
+          serviceName: my-app-1
+          servicePort: http
+        path: /
+      - backend:
+          serviceName: my-app-2
+          servicePort: http
+        path: /
 </code></pre>
 <h1 id="chaining-filters-and-predicates">Chaining Filters and Predicates</h1>
 <p>You can set multiple filters in a chain similar to the <a href="https://godoc.org/github.com/zalando/skipper/eskip">eskip format</a>.</p>

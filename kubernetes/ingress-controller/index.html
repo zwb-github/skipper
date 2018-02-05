@@ -124,7 +124,7 @@
         <li class="main active"><a href="#skipper-ingress-controller">Skipper Ingress Controller</a></li>
             <li><a href="#why-you-should-use-skipper-as-ingress-controller">Why you should use skipper as ingress controller?</a></li>
             <li><a href="#what-is-an-ingress-controller">What is an Ingress-Controller</a></li>
-            <li><a href="#what-is-required">What is required</a></li>
+            <li><a href="#requirements">Requirements</a></li>
             <li><a href="#3-minutes-skipper-in-kubernetes-introduction">3 Minutes Skipper in Kubernetes introduction</a></li>
     </ul>
 </div></div>
@@ -143,8 +143,8 @@ for rapidly changing it's routing tree.</p>
 <p>Cloud loadbalancers are fine to scale and to change, but does not
 provide many features. Skipper has advanced resiliency and deployment
 features, that you can use to enhance your environment. For example
-ratelimits, circuitbreakers, blue-green deployments, shadow traffic,
-....</p>
+ratelimits, circuitbreakers, blue-green deployments, shadow traffic
+and <a href="../ingress-usage/">more</a>.</p>
 <h2 id="what-is-an-ingress-controller">What is an Ingress-Controller</h2>
 <p>Ingress-controllers are serving http requests into a kubernetes
 cluster. Most of the time traffic will pass ingress got to a
@@ -163,7 +163,10 @@ cloud loadbalancer. You would point your DNS entries to the cloud
 loadbalancer, for example automated using
 <a href="https://github.com/kubernetes-incubator/external-dns">external-dns</a>.</p>
 <p>TODO: add pictures here</p>
-<h2 id="what-is-required">What is required</h2>
+<h2 id="requirements">Requirements</h2>
+<p>In general for one endpoint you need, a DNS A/AAAA record pointing to
+one or more loadbalancer IPs. Skipper is best used behind this
+loadbalancer to route and manipulate HTTP data.</p>
 <p>TODO</p>
 <h2 id="3-minutes-skipper-in-kubernetes-introduction">3 Minutes Skipper in Kubernetes introduction</h2>
 <p>You should have a base understanding of <a href="https://kubernetes.io">Kubernetes</a> and

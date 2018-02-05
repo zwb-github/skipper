@@ -122,9 +122,16 @@
                 <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
         <li class="main active"><a href="#operations">Operations</a></li>
-            <li><a href="#connection-options">Connection Options</a></li>
-            <li><a href="#monitoring">Monitoring</a></li>
-            <li><a href="#dataclient">Dataclient</a></li>
+        <li class="main "><a href="#connection-options">Connection Options</a></li>
+            <li><a href="#backend">Backend</a></li>
+            <li><a href="#client">Client</a></li>
+        <li class="main "><a href="#monitoring">Monitoring</a></li>
+            <li><a href="#prometheus">Prometheus</a></li>
+            <li><a href="#connection-metrics">Connection metrics</a></li>
+            <li><a href="#application-metrics">Application metrics</a></li>
+            <li><a href="#go-metrics">Go metrics</a></li>
+        <li class="main "><a href="#dataclient">Dataclient</a></li>
+        <li class="main "><a href="#routing-table-information">Routing table information</a></li>
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
@@ -135,13 +142,13 @@ which are relevant for production use.</p>
 <p>Skipper is proven to scale with number of routes beyond 200.000 routes
 per instance. Skipper is running with peaks to 45.000 http requests
 per second using multiple instances.</p>
-<h2 id="connection-options">Connection Options</h2>
+<h1 id="connection-options">Connection Options</h1>
 <p>Skipper's connection options are allowing you to set Go's <a href="https://golang.org/pkg/net/http/#Server">http.Server</a>
 Options on the client side and <a href="https://golang.org/pkg/net/http/#Transport">http.Transport</a> on the backend side.</p>
 <p>"It is recommended to read
 <a href="https://blog.cloudflare.com/the-complete-guide-to-golang-net-http-timeouts/">this blog post about net http timeouts</a>
 in order to better understand the impact of these settings.</p>
-<h3 id="backend">Backend</h3>
+<h2 id="backend">Backend</h2>
 <p>Backend is the side skipper opens a client connection to.</p>
 <p>Closing idle connections is required for DNS failover, because Go's
 <a href="https://golang.org/pkg/net/http/#Transport">http.Transport</a> caches
@@ -194,7 +201,7 @@ implementation of DialContext, which is the TCP connection pool used in the
 <pre><code>-enable-dualstack-backend
     enables DualStack for backend connections (default true)
 </code></pre>
-<h3 id="client">Client</h3>
+<h2 id="client">Client</h2>
 <p>Client is the side skipper gets incoming calls from.
 Here we can set timeouts in different parts of the http connection.</p>
 <p>This will set ReadTimeout in
@@ -227,20 +234,21 @@ size of the http header from your clients.</p>
 <pre><code>-max-header-bytes int
     set MaxHeaderBytes for http server connections (default 1048576)
 </code></pre>
-<h2 id="monitoring">Monitoring</h2>
+<h1 id="monitoring">Monitoring</h1>
 <p>Monitoring is one of the most important things you need to run in
 production and skipper has a <a href="https://godoc.org/github.com/zalando/skipper">godoc page</a>
 for the <a href="https://godoc.org/github.com/zalando/skipper/metrics">metrics package</a>,
 describing options and most keys you will find in the metrics handler
-endpoint. The default is listening on :9911/metrics.</p>
-<h3 id="prometheus">Prometheus</h3>
+endpoint. The default is listening on <code>:9911/metrics</code>. You can modify
+the listen port with the <code>-support-listener</code> flag.</p>
+<h2 id="prometheus">Prometheus</h2>
 <p>In case you want to get metrics in <a href="https://prometheus.io/">Prometheus</a> format exposed, use this
 option to enable it:</p>
 <pre><code>-enable-prometheus-metrics
 </code></pre>
 <p>It will return <a href="https://prometheus.io/">Prometheus</a> metrics on the
 common metrics endpoint :9911/metrics.</p>
-<h3 id="connection-metrics">Connection metrics</h3>
+<h2 id="connection-metrics">Connection metrics</h2>
 <p>This option will enable known loadbalancer connections metrics, like
 counters for active and new connections. This feature sets a metrics
 callback on <a href="https://golang.org/pkg/net/http/#Server">http.Server</a> and
@@ -268,7 +276,7 @@ uses a counter to collect
   /* stripped a lot of metrics here */
 }
 </code></pre>
-<h3 id="application-metrics">Application metrics</h3>
+<h2 id="application-metrics">Application metrics</h2>
 <p>Application metrics for your proxied applications you can enable with the option:</p>
 <pre><code>-serve-host-metrics
     enables reporting total serve time metrics for each host
@@ -333,7 +341,7 @@ utilized applications (less than 100 requests per second):</p>
 <pre><code>-metrics-exp-decay-sample
     use exponentially decaying sample in metrics
 </code></pre>
-<h3 id="go-metrics">Go metrics</h3>
+<h2 id="go-metrics">Go metrics</h2>
 <p>Metrics from the
 <a href="https://golang.org/pkg/runtime/#MemStats">go runtime memstats</a>
 are exposed from skipper to the metrics endpoint, default listener
@@ -439,10 +447,29 @@ are exposed from skipper to the metrics endpoint, default listener
   }
 </code></pre>
 <p>}</p>
-<h2 id="dataclient">Dataclient</h2>
-<p>Dataclients poll some kind of data source for routes. To change the timeout for calls that polls a dataclient, which could be the kubernetes API, use the following option:</p>
+<h1 id="dataclient">Dataclient</h1>
+<p>Dataclients poll some kind of data source for routes. To change the
+timeout for calls that polls a dataclient, which could be the
+kubernetes API, use the following option:</p>
 <pre><code>-source-poll-timeout int
     polling timeout of the routing data sources, in milliseconds (default 3000)
+</code></pre>
+<h1 id="routing-table-information">Routing table information</h1>
+<p>Skipper allows you to get some runtime insights. You can get the
+current routing table from skipper with in the
+<a href="https://godoc.org/github.com/zalando/skipper/eskip">eskip file format</a>:</p>
+<pre><code>% curl localhost:9911/routes
+*
+  -&gt; "http://localhost:12345/"
+</code></pre>
+<p>You also can get the number of routes <code>X-Count</code> and the UNIX timestamp
+of the last route table update <code>X-Timestamp</code>, using a HEAD request:</p>
+<pre><code>% curl -I localhost:9911/routes
+HTTP/1.1 200 OK
+Content-Type: text/plain
+X-Count: 1
+X-Timestamp: 1517777628
+Date: Sun, 04 Feb 2018 20:54:31 GMT
 </code></pre></div>
         </div>
 

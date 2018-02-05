@@ -317,8 +317,8 @@ spec:
 </code></pre>
 <p>The next question you may ask is: how to expose this to your customers?</p>
 <p>The answer depends on your setup and complexity requirements. In the
-simplest case you could add one A record in your DNS <em>.<mydomain.org>
-to your frontend loadbalancer IP that directs all traffic from </em>.<mydomain.org>
+simplest case you could add one A record in your DNS <code>*.&lt;mydomain.org&gt;</code>
+to your frontend loadbalancer IP that directs all traffic from <code>*.&lt;mydomain.org&gt;</code>
 to all Kubernetes worker nodes on TCP port 9999.</p>
 <p>A more complex setup we use in production and can be done with
 something that configures your frontend loadbalancer, for example

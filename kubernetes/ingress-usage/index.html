@@ -123,6 +123,7 @@
     <ul class="nav bs-sidenav">
         <li class="main active"><a href="#skipper-ingress-usage">Skipper Ingress Usage</a></li>
             <li><a href="#skipper-ingress-annotations">Skipper Ingress Annotations</a></li>
+            <li><a href="#supported-service-types">Supported Service types</a></li>
         <li class="main "><a href="#basics">Basics</a></li>
             <li><a href="#http-host-header-routing">HTTP Host header routing</a></li>
             <li><a href="#filters-and-predicates">Filters and Predicates</a></li>
@@ -186,6 +187,40 @@ features Skipper provides</p>
 </tr>
 </tbody>
 </table>
+<h2 id="supported-service-types">Supported Service types</h2>
+<p>Ingress backend definitions are services, which have different
+<a href="https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services---service-types">service types</a>.</p>
+<table>
+<thead>
+<tr>
+<th>Service type</th>
+<th>supported</th>
+<th>workaround</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ClusterIP</td>
+<td>yes</td>
+<td>---</td>
+</tr>
+<tr>
+<td>NodePort</td>
+<td>yes</td>
+<td>---</td>
+</tr>
+<tr>
+<td>ExternalName</td>
+<td>no, <a href="https://github.com/zalando/skipper/issues/549">related issue</a></td>
+<td><a href="../../dataclients/route-string/#proxy-to-a-given-url">use deployment with routestring</a></td>
+</tr>
+<tr>
+<td>LoadBalancer</td>
+<td>no</td>
+<td>it should not, because kubernetes cloud-controller-manager will maintain it</td>
+</tr>
+</tbody>
+</table>
 <h1 id="basics">Basics</h1>
 <h2 id="http-host-header-routing">HTTP Host header routing</h2>
 <p>HTTP host header is defined within the rules <code>host</code> section and this
@@ -206,7 +241,12 @@ spec:
 </code></pre>
 <p>To have 2 routes with different <code>Host</code> headers serving the same
 backends, you have to specify 2 entries in the rules section, as
-kubernetes defined the ingress spec.</p>
+kubernetes defined the ingress spec. This is often used in cases of
+migrations from one domain to another one or migrations to or from
+bare metal datacenters to cloud providers or inter cloud or intra
+cloud providers migrations. Examples are AWS account migration, AWS to
+GCP migration, GCP to bare metal migration or bare metal to Alibaba
+Cloud migration.</p>
 <pre><code>apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:

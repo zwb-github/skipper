@@ -125,6 +125,7 @@
             <li><a href="#serve-text">Serve text</a></li>
             <li><a href="#serve-html-with-css">Serve HTML with CSS</a></li>
             <li><a href="#serve-json">Serve JSON</a></li>
+            <li><a href="#proxy-to-a-given-url">Proxy to a given URL</a></li>
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
@@ -156,6 +157,11 @@ ratelimiting or just need to serve some json in your demo.</p>
 </code></pre>
 <p>Docker Example (Open your browser http://localhost:9090/):</p>
 <pre><code> $ docker run -p 9090:9090 -it registry.opensource.zalan.do/pathfinder/skipper:latest skipper -inline-routes '* -&gt; setResponseHeader("Content-Type", "application/json; charset=utf-8") -&gt; inlineContent("{\"foo\": 3}") -&gt; &lt;shunt&gt;'
+</code></pre>
+<h2 id="proxy-to-a-given-url">Proxy to a given URL</h2>
+<p>If you just have to build a workaround and you do not want to use
+socat to do a tcp proxy, but proxy http, you can do:</p>
+<pre><code>% skipper -inline-routes '* -&gt; "https://my-new-backend.example.org/"'
 </code></pre></div>
         </div>
 

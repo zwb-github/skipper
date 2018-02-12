@@ -122,11 +122,11 @@
                 <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
         <li class="main active"><a href="#skipper-ingress-controller">Skipper Ingress Controller</a></li>
-        <li class="main "><a href="#why-you-should-use-skipper-as-ingress-controller">Why you should use skipper as ingress controller?</a></li>
-        <li class="main "><a href="#what-is-an-ingress-controller">What is an Ingress-Controller</a></li>
+            <li><a href="#why-you-should-use-skipper-as-ingress-controller">Why you should use skipper as ingress controller?</a></li>
+            <li><a href="#what-is-an-ingress-controller">What is an Ingress-Controller</a></li>
             <li><a href="#aws-deployment">AWS deployment</a></li>
             <li><a href="#baremetal-deployment">Baremetal deployment</a></li>
-        <li class="main "><a href="#requirements">Requirements</a></li>
+            <li><a href="#requirements">Requirements</a></li>
         <li class="main "><a href="#install-skipper-as-ingress-controller">Install Skipper as ingress-controller</a></li>
     </ul>
 </div></div>
@@ -136,7 +136,7 @@
 <p>This documentation is meant for for cluster operators and describes
 how to install skipper as Ingress-Controller into your Kubernetes
 Cluster.</p>
-<h1 id="why-you-should-use-skipper-as-ingress-controller">Why you should use skipper as ingress controller?</h1>
+<h2 id="why-you-should-use-skipper-as-ingress-controller">Why you should use skipper as ingress controller?</h2>
 <p>Baremetal loadbalancer perform really well, but the configuration is
 not updated frequently and most of these installations are not meant
 to rapidly change. With introducing kubernetes this will change and
@@ -147,7 +147,7 @@ provide many features. Skipper has advanced resiliency and deployment
 features, that you can use to enhance your environment. For example
 ratelimits, circuitbreakers, blue-green deployments, shadow traffic
 and <a href="../ingress-usage/">more</a>.</p>
-<h1 id="what-is-an-ingress-controller">What is an Ingress-Controller</h1>
+<h2 id="what-is-an-ingress-controller">What is an Ingress-Controller</h2>
 <p>Ingress-controllers are serving http requests into a kubernetes
 cluster. Most of the time traffic will pass ingress got to a
 kubernetes service IP which will forward the packets to kubernetes PODs
@@ -181,7 +181,7 @@ if you for example use PowerDNS as provider and have a loadbalancer
 controller that modifies the status field in ingress to your
 loadbalancer virtual IP.</p>
 <p><img alt="ingress-traffic-flow" src="../../img/ingress-traffic-flow-baremetal.svg" /></p>
-<h1 id="requirements">Requirements</h1>
+<h2 id="requirements">Requirements</h2>
 <p>In general for one endpoint you need, a DNS A/AAAA record pointing to
 one or more loadbalancer IPs. Skipper is best used behind this
 layer 4 loadbalancer to route and manipulate HTTP data.</p>

@@ -150,47 +150,47 @@ reloading a production server:</p>
 you can name your route and use preconditions and create, change, delete
 HTTP headers as you like:</p>
 <pre><code>% cat complicated_example.eskip
-host-header-match:
+hostHeaderMatch:
          Host("^skipper.teapot.org$")
          -&gt; setRequestHeader("Authorization", "Basic YWRtaW46YWRtaW5zcGFzc3dvcmQK")
          -&gt; "https://target-to.auth-with.basic-auth.enterprise.com";
-baidu-path-match:
+baiduPathMatch:
         Path("/baidu")
         -&gt; setRequestHeader("Host", "www.baidu.com")
         -&gt; setPath("/s")
         -&gt; setQuery("wd", "godoc skipper")
         -&gt; "http://www.baidu.com";
-google-wildcard-match:
+googleWildcardMatch:
         *
         -&gt; setPath("/search")
         -&gt; setQuery("q", "godoc skipper")
         -&gt; "https://www.google.com";
-yandex-wildacard-if-cookie:
+yandexWildacardIfCookie:
         * &amp;&amp; Cookie("yandex", "true")
         -&gt; setPath("/search/")
         -&gt; setQuery("text", "godoc skipper")
         -&gt; tee("http://127.0.0.1:12345/")
         -&gt; "https://yandex.ru";
 </code></pre>
-<p>The former example shows 4 routes: host-header-match,
-baidu-path-match, google-wildcard-match and yandex-wildcard-if-cookie.</p>
+<p>The former example shows 4 routes: hostHeaderMatch,
+baiduPathMatch, googleWildcardMatch and yandexWildcardIfCookie.</p>
 <ul>
-<li>host-header-match:</li>
+<li>hostHeaderMatch:</li>
 <li>used if HTTP host header is exactly: "skipper.teapot.org",</li>
 <li>sets a Basic Authorization header and</li>
 <li>sends the modified request to https://target-to.auth-with.basic-auth.enterprise.com</li>
-<li>baidu-path-match:</li>
+<li>baiduPathMatch:</li>
 <li>used in case the request patch matches /baidu</li>
 <li>it will set the Host header to the proxy request</li>
 <li>it will set the path from /baidu to /s</li>
 <li>it will set the querystring to "ws=godoc skipper" and</li>
 <li>sends the modified request to http://baidu.com</li>
-<li>google-wildcard-match:</li>
+<li>googleWildcardMatch:</li>
 <li>used as default if no other route matches</li>
 <li>it will set the path to /search</li>
 <li>it will set the querystring to "q=godoc skipper" and</li>
 <li>sends the modified request to https://www.google.com</li>
-<li>yandex-wildcard-if-cookie:</li>
+<li>yandexWildcardIfCookie:</li>
 <li>used as default if a Cookie named "yandex" has the value "true"</li>
 <li>it will set the path to /search/</li>
 <li>it will set the querystring to "text=godoc skipper"</li>

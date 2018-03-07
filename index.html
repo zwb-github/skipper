@@ -128,7 +128,7 @@
                 <div class="col-md-9" role="main">
 
 <h1 id="architecture">Architecture</h1>
-<p>Skipper is written as library and is also a multi binary project with
+<p>Skipper is written as a library and is also a multi binary project with
 2 binaries, named <code>skipper</code> and <code>eskip</code>. <code>Skipper</code> is the HTTP proxy
 and <code>eskip</code> is a CLI application to verify, print, update or delete
 Skipper routes.</p>
@@ -141,7 +141,11 @@ always a current routing table which will be replaced on change.</p>
 <p>A route is one entry in the routing table. A route consists of one or
 more <code>predicate</code>, that are used to find a route for a given HTTP
 request. A route can also have one or more <code>filter</code>, that can modify
-the content of the request or response.</p>
+the content of the request or response.  A route always points to a
+backend, or it's a <code>&lt;shunt&gt;</code>, meaning that skipper serves the requests
+for the route, or a <code>&lt;loopback&gt;</code>, meaning that the request will be
+matched against the routing table again after filters have modified
+it.</p>
 <p><a href="http://opentracing.io/">Opentracing API</a> is supported via
 <a href="https://github.com/skipper-plugins/opentracing">skipper-plugins</a>. For
 example <a href="https://github.com/jaegertracing/jaeger">Jaeger</a> is supported.</p>
@@ -151,19 +155,25 @@ exported in <a href="https://prometheus.io">Prometheus</a> format.</p>
 <h2 id="route-processing">Route processing</h2>
 <p>Package <code>skipper</code> has a Go <code>http.Server</code> and does the <code>ListenAndServe</code>
 call with the <code>loggingHandler</code> wrapped <code>proxy</code>.  The <code>loggingHandler</code>
-is basically a middleware for the <code>proxy</code> and both implement the plain
-Go <a href="https://golang.org/pkg/net/http/#Handler">http.Handler interface</a>.</p>
+is basically a middleware for the <code>proxy</code> providing access logs and
+both implement the plain Go <a href="https://golang.org/pkg/net/http/#Handler">http.Handler interface</a>.</p>
 <p>For each incoming <code>http.Request</code> the <code>proxy</code> will create a request
-context and enhance it with an OpentracingAPI Span. It will check
-proxy global ratelimits first and after that lookup the route in the
-routing table. After that skipper will apply all request filters, that
-can modify the <code>http.Request</code>. It will then check the route local
-ratelimits, the circuitbreakers and do the backend call. If the
-backend call got a TCP or TLS connection error in a loadbalanced
-route, skipper will do a retry to another backend of that loadbalanced
-group automatically. Just before the response to the caller, skipper
-will process the response filters, that can change the
+context and enhance it with an <a href="http://opentracing.io/">Opentracing API</a> Span.
+It will check proxy global ratelimits first and after that lookup the
+route in the routing table. After that skipper will apply all request
+filters, that can modify the <code>http.Request</code>. It will then check the
+route local ratelimits, the circuitbreakers and do the backend
+call. If the backend call got a TCP or TLS connection error in a
+loadbalanced route, skipper will do a retry to another backend of that
+loadbalanced group automatically. Just before the response to the
+caller, skipper will process the response filters, that can change the
 <code>http.Response</code>.</p>
+<p>In two special cases, skipper doesn't forward the request to the
+backend. When the route is shunted (<code>&lt;shunt&gt;</code>), skipper serves the
+request alone, by using only the filters. When the route is a
+<code>&lt;loopback&gt;</code>, the request is passed to the routing table for finding
+another route, based on the changes that the filters made to the
+request.</p>
 <p><img alt="Skipper's request and response processing " src="./img/req-and-resp-processing.svg" /></p></div>
         </div>
 
@@ -246,5 +256,5 @@ will process the response filters, that can change the
 
 <!--
 MkDocs version : 0.17.2
-Build Date UTC : 2018-03-06 10:23:34
+Build Date UTC : 2018-03-07 13:48:48
 -->

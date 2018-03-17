@@ -95,6 +95,9 @@
                     <li >
                         <a href="../../operations/">Operations</a>
                     </li>
+                    <li >
+                        <a href="../../videos/">Videos</a>
+                    </li>
                 </ul>
 
             <ul class="nav navbar-nav navbar-right">
@@ -127,6 +130,7 @@
         <li class="main "><a href="#basics">Basics</a></li>
             <li><a href="#http-host-header-routing">HTTP Host header routing</a></li>
             <li><a href="#filters-and-predicates">Filters and Predicates</a></li>
+            <li><a href="#custom-routes">Custom Routes</a></li>
         <li class="main "><a href="#filters-basic-http-manipulations">Filters - Basic HTTP manipulations</a></li>
             <li><a href="#add-a-request-header">Add a request Header</a></li>
             <li><a href="#add-a-response-header">Add a response Header</a></li>
@@ -168,22 +172,27 @@ features Skipper provides</p>
 <tbody>
 <tr>
 <td>zalando.org/backend-weights</td>
-<td>{"my-app-1": 80, "my-app-2": 20}</td>
+<td><code>{"my-app-1": 80, "my-app-2": 20}</code></td>
 <td>blue-green deployments</td>
 </tr>
 <tr>
 <td>zalando.org/skipper-filter</td>
-<td>consecutiveBreaker(15)</td>
+<td><code>consecutiveBreaker(15)</code></td>
 <td>arbitrary filters</td>
 </tr>
 <tr>
 <td>zalando.org/skipper-predicate</td>
-<td>QueryParam("version", "^alpha$")</td>
+<td><code>QueryParam("version", "^alpha$")</code></td>
 <td>arbitrary predicates</td>
 </tr>
 <tr>
+<td>zalando.org/skipper-routes</td>
+<td><code>Method("OPTIONS") -&gt; stauts(200) -&gt; &lt;shunt&gt;</code></td>
+<td>extra custom routes</td>
+</tr>
+<tr>
 <td>zalando.org/ratelimit</td>
-<td>ratelimit(50, "1m")</td>
+<td><code>ratelimit(50, "1m")</code></td>
 <td>deprecated, use zalando.org/skipper-filter instead</td>
 </tr>
 </tbody>
@@ -289,6 +298,39 @@ spec:
           serviceName: app-svc
           servicePort: 80
 </code></pre>
+<h2 id="custom-routes">Custom Routes</h2>
+<p>Custom routes is a way of extending the default routes configured for an
+ingress resource.</p>
+<p>This example shows how to add a custom route for handling <code>OPTIONS</code> requests.</p>
+<pre><code class="yaml">apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    zalando.org/skipper-routes: |
+      Method(&quot;OPTIONS&quot;) -&gt;
+      setResponseHeader(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;) -&gt;
+      setResponseHeader(&quot;Access-Control-Allow-Methods&quot;, &quot;GET, OPTIONS&quot;) -&gt;
+      setResponseHeader(&quot;Access-Control-Allow-Headers&quot;, &quot;Authorization&quot;) -&gt;
+      status(200) -&gt; &lt;shunt&gt;
+  name: app
+spec:
+  rules:
+  - host: app-default.example.org
+    http:
+      paths:
+      - backend:
+          serviceName: app-svc
+          servicePort: 80
+</code></pre>
+
+<p>This will generate a custom route for the ingress which looks like this:</p>
+<pre><code>Host(/^app-default[.]example[.]org$/) &amp;&amp; Method(&quot;OPTIONS&quot;) -&gt;
+  setResponseHeader(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;) -&gt;
+  setResponseHeader(&quot;Access-Control-Allow-Methods&quot;, &quot;GET, OPTIONS&quot;) -&gt;
+  setResponseHeader(&quot;Access-Control-Allow-Headers&quot;, &quot;Authorization&quot;) -&gt;
+  status(200) -&gt; &lt;shunt&gt;
+</code></pre>
+
 <h1 id="filters-basic-http-manipulations">Filters - Basic HTTP manipulations</h1>
 <p>HTTP manipulations are done by using skipper filters. Changes can be
 done in the request path, meaning request to your backend or in the

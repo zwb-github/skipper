@@ -90,6 +90,9 @@
                         </ul>
                     </li>
                     <li >
+                        <a href="../../plugins/">Plugins</a>
+                    </li>
+                    <li >
                         <a href="../../scripts/">Scripts</a>
                     </li>
                     <li >
@@ -112,7 +115,7 @@
                         </a>
                     </li>
                     <li >
-                        <a rel="prev" href="../../scripts/">
+                        <a rel="prev" href="../../plugins/">
                             Next <i class="fa fa-arrow-right"></i>
                         </a>
                     </li>
@@ -134,6 +137,7 @@
         <li class="main "><a href="#filters-basic-http-manipulations">Filters - Basic HTTP manipulations</a></li>
             <li><a href="#add-a-request-header">Add a request Header</a></li>
             <li><a href="#add-a-response-header">Add a response Header</a></li>
+            <li><a href="#enable-gzip">Enable gzip</a></li>
             <li><a href="#set-the-path">Set the Path</a></li>
             <li><a href="#modify-path">Modify Path</a></li>
             <li><a href="#set-the-querystring">Set the Querystring</a></li>
@@ -142,6 +146,8 @@
             <li><a href="#authorization">Authorization</a></li>
             <li><a href="#diagnosis-throttling-bandwidth-latency">Diagnosis - Throttling Bandwidth - Latency</a></li>
             <li><a href="#flow-id-to-trace-request-flows">Flow Id to trace request flows</a></li>
+        <li class="main "><a href="#filters-return-fast">Filters - return fast</a></li>
+            <li><a href="#return-static-content">Return static content</a></li>
         <li class="main "><a href="#filters-reliability-features">Filters - reliability features</a></li>
             <li><a href="#circuitbreaker">Circuitbreaker</a></li>
             <li><a href="#ratelimits">Ratelimits</a></li>
@@ -187,7 +193,7 @@ features Skipper provides</p>
 </tr>
 <tr>
 <td>zalando.org/skipper-routes</td>
-<td><code>Method("OPTIONS") -&gt; stauts(200) -&gt; &lt;shunt&gt;</code></td>
+<td><code>Method("OPTIONS") -&gt; status(200) -&gt; &lt;shunt&gt;</code></td>
 <td>extra custom routes</td>
 </tr>
 <tr>
@@ -345,6 +351,12 @@ annotation.</p>
 <p>Add a HTTP header in the response path of your clients.</p>
 <pre><code>setResponseHeader("X-Foo", "bar")
 </code></pre>
+<h2 id="enable-gzip">Enable gzip</h2>
+<p>Compress responses with gzip.</p>
+<pre><code>compress() // compress all valid MIME types
+compress("text/html") // only compress HTML files
+compress(9, "text/html") // control the level of compression, 1 = fastest, 9 = best compression, 0 = no compression
+</code></pre>
 <h2 id="set-the-path">Set the Path</h2>
 <p>Change the path in the request path to your backend to <code>/newPath/</code>.</p>
 <pre><code>setPath("/newPath/")
@@ -399,6 +411,21 @@ a unique value. Read more about this in our
 <a href="https://godoc.org/github.com/zalando/skipper/filters/flowid">flowid filter godoc</a>.</p>
 <pre><code> flowId("reuse")
 </code></pre>
+<h1 id="filters-return-fast">Filters - return fast</h1>
+<p>Sometimes you just want to return a header, redirect or even static
+html content. You can return from skipper without doing a proxy call
+to a backend, if you end your filter chain with <code>&lt;shunt&gt;</code>.</p>
+<h2 id="return-static-content">Return static content</h2>
+<p>To set a response header <code>X: bar</code>, return
+<code>&lt;html&gt;&lt;body&gt;hello&lt;/body&gt;&lt;/html&gt;</code> in the HTTP response body and return
+HTTP status code 200 from ingress itself, you can use the following
+filter chain:</p>
+<pre><code>zalando.org/skipper-filter: |
+  setResponseHeader("X", "bar") -&gt; inlineContent("&lt;html&gt;&lt;body&gt;hello&lt;/body&gt;&lt;/html&gt;") -&gt; status(200) -&gt; &lt;shunt&gt;
+</code></pre>
+<p>Keep in mind you need a valid backend definition to backends which are
+available, otherwise Skipper would not populate the route for safety
+reasons.</p>
 <h1 id="filters-reliability-features">Filters - reliability features</h1>
 <p>Filters can modify http requests and responses. There are plenty of
 things you can do with them.</p>

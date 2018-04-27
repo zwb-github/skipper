@@ -48,6 +48,23 @@
                     <li >
                         <a href="../..">Architecture</a>
                     </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Basics <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            
+<li >
+    <a href="../../filters/">Filters</a>
+</li>
+                            
+<li >
+    <a href="../../scripts/">Scripts</a>
+</li>
+                            
+<li >
+    <a href="../../plugins/">Plugins</a>
+</li>
+                        </ul>
+                    </li>
                     <li >
                         <a href="../../deployments/">Deployments</a>
                     </li>
@@ -90,12 +107,6 @@
                         </ul>
                     </li>
                     <li >
-                        <a href="../../plugins/">Plugins</a>
-                    </li>
-                    <li >
-                        <a href="../../scripts/">Scripts</a>
-                    </li>
-                    <li >
                         <a href="../../operations/">Operations</a>
                     </li>
                     <li >
@@ -134,6 +145,7 @@
             <li><a href="#baremetal-deployment">Baremetal deployment</a></li>
             <li><a href="#requirements">Requirements</a></li>
         <li class="main "><a href="#install-skipper-as-ingress-controller">Install Skipper as ingress-controller</a></li>
+            <li><a href="#multiple-skipper-deployments">Multiple skipper deployments</a></li>
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
@@ -360,7 +372,34 @@ to all Kubernetes worker nodes on TCP port 9999.</p>
 something that configures your frontend loadbalancer, for example
 <a href="https://github.com/zalando-incubator/kube-ingress-aws-controller">kube-aws-ingress-controller</a>,
 and your DNS, <a href="https://github.com/kubernetes-incubator/external-dns">external-dns</a>
-automatically.</p></div>
+automatically.</p>
+<h2 id="multiple-skipper-deployments">Multiple skipper deployments</h2>
+<p>If you want to split for example <code>internal</code> and <code>public</code> traffic, it
+might be a good choice to split your ingress deployments. Skipper has
+the flag <code>--kubernetes-ingress-class=&lt;string&gt;</code> to only select ingress
+objects that have the annotation <code>kubernetes.io/ingress.class</code> set to
+<code>&lt;string&gt;</code>. Skipper will only create routes for ingress objects with
+it's annotation or ingress objects that do not have this annotation.</p>
+<p>The default ingress class is <code>skipper</code>, if not set. You have to create
+your ingress objects with the annotation
+<code>kubernetes.io/ingress.class: skipper</code> to make sure only skipper will
+serve the traffic.</p>
+<p>Example ingress:</p>
+<pre><code>apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: skipper
+  name: app
+spec:
+  rules:
+  - host: app-default.example.org
+    http:
+      paths:
+      - backend:
+          serviceName: app-svc
+          servicePort: 80
+</code></pre></div>
         </div>
 
         <footer class="col-md-12">

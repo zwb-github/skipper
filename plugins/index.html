@@ -48,6 +48,23 @@
                     <li >
                         <a href="..">Architecture</a>
                     </li>
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Basics <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            
+<li >
+    <a href="../filters/">Filters</a>
+</li>
+                            
+<li >
+    <a href="../scripts/">Scripts</a>
+</li>
+                            
+<li class="active">
+    <a href="./">Plugins</a>
+</li>
+                        </ul>
+                    </li>
                     <li >
                         <a href="../deployments/">Deployments</a>
                     </li>
@@ -89,12 +106,6 @@
 </li>
                         </ul>
                     </li>
-                    <li class="active">
-                        <a href="./">Plugins</a>
-                    </li>
-                    <li >
-                        <a href="../scripts/">Scripts</a>
-                    </li>
                     <li >
                         <a href="../operations/">Operations</a>
                     </li>
@@ -110,12 +121,12 @@
                     </a>
                 </li>
                     <li >
-                        <a rel="next" href="../kubernetes/ingress-usage/">
+                        <a rel="next" href="../scripts/">
                             <i class="fa fa-arrow-left"></i> Previous
                         </a>
                     </li>
                     <li >
-                        <a rel="prev" href="../scripts/">
+                        <a rel="prev" href="../deployments/">
                             Next <i class="fa fa-arrow-right"></i>
                         </a>
                     </li>
@@ -133,6 +144,7 @@
             <li><a href="#filter-plugins">Filter plugins</a></li>
             <li><a href="#predicate-plugins">Predicate plugins</a></li>
             <li><a href="#dataclient-plugins">DataClient plugins</a></li>
+            <li><a href="#multitype-plugins">MultiType plugins</a></li>
             <li><a href="#opentracing-plugins">OpenTracing plugins</a></li>
     </ul>
 </div></div>
@@ -171,22 +183,22 @@ argument, this must be explicitly loaded and the arguments passed, e.g. with
   will crash skipper immediately...</li>
 </ul>
 <h2 id="filter-plugins">Filter plugins</h2>
-<p>All plugins must have a function named "InitFilter" with the following signature</p>
+<p>All plugins must have a function named <code>InitFilter</code> with the following signature</p>
 <pre><code>func([]string) (filters.Spec, error)
 </code></pre>
 <p>The parameters passed are all arguments for the plugin, i.e. everything after the first
 word from skipper's <code>-filter-plugin</code> parameter. E.g. when the <code>-filter-plugin</code> 
 parameter is</p>
-<pre><code>"myfilter,datafile=/path/to/file,foo=bar"
+<pre><code>myfilter,datafile=/path/to/file,foo=bar
 </code></pre>
-<p>the "myfilter" plugin will receive</p>
+<p>the <code>myfilter</code> plugin will receive</p>
 <pre><code>[]string{"datafile=/path/to/file", "foo=bar"}
 </code></pre>
 <p>as arguments.</p>
 <p>The filter plugin implementation is responsible to parse the received arguments.</p>
 <p>Filter plugins can be found in the <a href="https://github.com/skipper-plugins/filters">filter repo</a></p>
 <h3 id="example-filter-plugin">Example filter plugin</h3>
-<p>An example "noop" plugin looks like</p>
+<p>An example <code>noop</code> plugin looks like</p>
 <pre><code class="go">package main
 
 import (
@@ -213,22 +225,22 @@ func (f noopFilter) Response(filters.FilterContext) {}
 </code></pre>
 
 <h2 id="predicate-plugins">Predicate plugins</h2>
-<p>All plugins must have a function named "InitPredicate" with the following signature</p>
+<p>All plugins must have a function named <code>InitPredicate</code> with the following signature</p>
 <pre><code>func([]string) (routing.PredicateSpec, error)
 </code></pre>
 <p>The parameters passed are all arguments for the plugin, i.e. everything after the first
 word from skipper's <code>-predicate-plugin</code> parameter. E.g. when the <code>-predicate-plugin</code> 
 parameter is</p>
-<pre><code>"mypred,datafile=/path/to/file,foo=bar"
+<pre><code>mypred,datafile=/path/to/file,foo=bar
 </code></pre>
-<p>the "mypred" plugin will receive</p>
+<p>the <code>mypred</code> plugin will receive</p>
 <pre><code>[]string{"datafile=/path/to/file", "foo=bar"}
 </code></pre>
 <p>as arguments.</p>
 <p>The predicate plugin implementation is responsible to parse the received arguments.</p>
 <p>Predicate plugins can be found in the <a href="https://github.com/skipper-plugins/predicates">predicate repo</a></p>
 <h3 id="example-predicate-plugin">Example predicate plugin</h3>
-<p>An example "MatchAll" plugin looks like</p>
+<p>An example <code>MatchAll</code> plugin looks like</p>
 <pre><code class="go">package main
 
 import (
@@ -262,7 +274,7 @@ client plugins is <code>-dataclient-plugin</code>. The module must have a <code>
 function with the signature</p>
 <pre><code>func([]string) (routing.DataClient, error)
 </code></pre>
-<p>A "noop" data client looks like</p>
+<p>A <code>noop</code> data client looks like</p>
 <pre><code class="go">package main
 
 import (
@@ -286,12 +298,164 @@ func (dc DataClient) LoadUpdate() ([]*eskip.Route, []string, error) {
 }
 </code></pre>
 
+<h2 id="multitype-plugins">MultiType plugins</h2>
+<p>Sometimes it is necessary to combine multiple plugin types into one module. This can
+be done with this kind of plugin. Note that these modules are not auto loaded, these
+need an explicit <code>-multi-plugin name,arg1,arg2</code> command line switch for skipper.</p>
+<p>The module must have a <code>InitPlugin</code> function with the signature</p>
+<pre><code>func([]string) ([]filters.Spec, []routing.PredicateSpec, []routing.DataClient, error)
+</code></pre>
+<p>Any of the returned types may be nil, so you can have e.g. a combined filter / data client
+plugin or share a filter and a predicate, e.g. like</p>
+<pre><code class="go">package main
+
+import (
+    &quot;fmt&quot;
+    &quot;net&quot;
+    &quot;net/http&quot;
+    &quot;strconv&quot;
+    &quot;strings&quot;
+
+    ot &quot;github.com/opentracing/opentracing-go&quot;
+    maxminddb &quot;github.com/oschwald/maxminddb-golang&quot;
+
+    &quot;github.com/zalando/skipper/filters&quot;
+    snet &quot;github.com/zalando/skipper/net&quot;
+    &quot;github.com/zalando/skipper/predicates&quot;
+    &quot;github.com/zalando/skipper/routing&quot;
+)
+
+type geoipSpec struct {
+    db   *maxminddb.Reader
+    name string
+}
+
+func InitPlugin(opts []string) ([]filters.Spec, []routing.PredicateSpec, []routing.DataClient, error) {
+    var db string
+    for _, o := range opts {
+        switch {
+        case strings.HasPrefix(o, &quot;db=&quot;):
+            db = o[3:]
+        }
+    }
+    if db == &quot;&quot; {
+        return nil, nil, nil, fmt.Errorf(&quot;missing db= parameter for geoip plugin&quot;)
+    }
+    reader, err := maxminddb.Open(db)
+    if err != nil {
+        return nil, nil, nil, fmt.Errorf(&quot;failed to open db %s: %s&quot;, db, err)
+    }
+
+    return []filters.Spec{&amp;geoipSpec{db: reader, name: &quot;geoip&quot;}},
+        []routing.PredicateSpec{&amp;geoipSpec{db: reader, name: &quot;GeoIP&quot;}},
+        nil,
+        nil
+}
+
+func (s *geoipSpec) Name() string {
+    return s.name
+}
+
+func (s *geoipSpec) CreateFilter(config []interface{}) (filters.Filter, error) {
+    var fromLast bool
+    header := &quot;X-GeoIP-Country&quot;
+    var err error
+    for _, c := range config {
+        if s, ok := c.(string); ok {
+            switch {
+            case strings.HasPrefix(s, &quot;from_last=&quot;):
+                fromLast, err = strconv.ParseBool(s[10:])
+                if err != nil {
+                    return nil, filters.ErrInvalidFilterParameters
+                }
+            case strings.HasPrefix(s, &quot;header=&quot;):
+                header = s[7:]
+            }
+        }
+    }
+    return &amp;geoip{db: s.db, fromLast: fromLast, header: header}, nil
+}
+
+func (s *geoipSpec) Create(config []interface{}) (routing.Predicate, error) {
+    var fromLast bool
+    var err error
+    countries := make(map[string]struct{})
+    for _, c := range config {
+        if s, ok := c.(string); ok {
+            switch {
+            case strings.HasPrefix(s, &quot;from_last=&quot;):
+                fromLast, err = strconv.ParseBool(s[10:])
+                if err != nil {
+                    return nil, predicates.ErrInvalidPredicateParameters
+                }
+            default:
+                countries[strings.ToUpper(s)] = struct{}{}
+            }
+        }
+    }
+    return &amp;geoip{db: s.db, fromLast: fromLast, countries: countries}, nil
+}
+
+type geoip struct {
+    db        *maxminddb.Reader
+    fromLast  bool
+    header    string
+    countries map[string]struct{}
+}
+
+type countryRecord struct {
+    Country struct {
+        ISOCode string `maxminddb:&quot;iso_code&quot;`
+    } `maxminddb:&quot;country&quot;`
+}
+
+func (g *geoip) lookup(r *http.Request) string {
+    var src net.IP
+    if g.fromLast {
+        src = snet.RemoteHostFromLast(r)
+    } else {
+        src = snet.RemoteHost(r)
+    }
+
+    record := countryRecord{}
+    err := g.db.Lookup(src, &amp;record)
+    if err != nil {
+        fmt.Printf(&quot;geoip(): failed to lookup %s: %s&quot;, src, err)
+    }
+    if record.Country.ISOCode == &quot;&quot; {
+        return &quot;UNKNOWN&quot;
+    }
+    return record.Country.ISOCode
+}
+
+func (g *geoip) Request(c filters.FilterContext) {
+    c.Request().Header.Set(g.header, g.lookup(c.Request()))
+}
+
+func (g *geoip) Response(c filters.FilterContext) {}
+
+func (g *geoip) Match(r *http.Request) bool {
+    span := ot.SpanFromContext(r.Context())
+    if span != nil {
+        span.LogKV(&quot;GeoIP&quot;, &quot;start&quot;)
+    }
+
+    code := g.lookup(r)
+    _, ok := g.countries[code]
+
+    if span != nil {
+        span.LogKV(&quot;GeoIP&quot;, code)
+    }
+    return ok
+}
+</code></pre>
+
 <h2 id="opentracing-plugins">OpenTracing plugins</h2>
-<p>The tracers, except for "noop", are built as Go Plugins. A tracing plugin can
+<p>The tracers, except for <code>noop</code>, are built as Go Plugins. A tracing plugin can
 be loaded with <code>-opentracing NAME</code> as parameter to skipper.</p>
 <p>Implementations of OpenTracing API can be found in the
 https://github.com/skipper-plugins/opentracing repository.</p>
-<p>All plugins must have a function named "InitTracer" with the following signature</p>
+<p>All plugins must have a function named <code>InitTracer</code> with the following signature</p>
 <pre><code>func([]string) (opentracing.Tracer, error)
 </code></pre>
 <p>The parameters passed are all arguments for the plugin, i.e. everything after the first

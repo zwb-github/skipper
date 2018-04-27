@@ -48,6 +48,23 @@
                     <li >
                         <a href="..">Architecture</a>
                     </li>
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Basics <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            
+<li >
+    <a href="../filters/">Filters</a>
+</li>
+                            
+<li class="active">
+    <a href="./">Scripts</a>
+</li>
+                            
+<li >
+    <a href="../plugins/">Plugins</a>
+</li>
+                        </ul>
+                    </li>
                     <li >
                         <a href="../deployments/">Deployments</a>
                     </li>
@@ -90,12 +107,6 @@
                         </ul>
                     </li>
                     <li >
-                        <a href="../plugins/">Plugins</a>
-                    </li>
-                    <li class="active">
-                        <a href="./">Scripts</a>
-                    </li>
-                    <li >
                         <a href="../operations/">Operations</a>
                     </li>
                     <li >
@@ -110,12 +121,12 @@
                     </a>
                 </li>
                     <li >
-                        <a rel="next" href="../plugins/">
+                        <a rel="next" href="../filters/">
                             <i class="fa fa-arrow-left"></i> Previous
                         </a>
                     </li>
                     <li >
-                        <a rel="prev" href="../operations/">
+                        <a rel="prev" href="../plugins/">
                             Next <i class="fa fa-arrow-right"></i>
                         </a>
                     </li>
@@ -155,10 +166,12 @@ current implementation supports <a href="https://www.lua.org/manual/5.1/">Lua 5.
 <h2 id="route-filters">Route filters</h2>
 <p>The lua scripts can be added to a route description with the lua() filter,
 the first parameter for the filter is the script. This can be either a file
-name (ending with <code>.lua</code>) or inline code, e.g. as
-<em> file <code>lua("/path/to/file.lua")</code> - if a file path is not absolute, the path
- is relative to skipper's working directory.
-</em> inline <code>lua("function request(c, p); print(c.request.url); end")</code></p>
+name (ending with <code>.lua</code>) or inline code, e.g. as</p>
+<ul>
+<li>file <code>lua("/path/to/file.lua")</code> - if a file path is not absolute, the path
+ is relative to skipper's working directory.</li>
+<li>inline <code>lua("function request(c, p); print(c.request.url); end")</code></li>
+</ul>
 <p>Any other additional parameters for the filter must be <code>key=value</code> strings.
 These will be passed as table to the called functions as second parameter.
 <strong>NOTE</strong>: Any parameter starting with "lua-" should not be used to pass
@@ -179,12 +192,14 @@ end
 <h2 id="available-lua-modules">Available lua modules</h2>
 <p>Besides the <a href="https://www.lua.org/manual/5.1/manual.html#5">standard modules</a> - except
 for <code>debug</code> - the following modules have been preloaded and can be used with e.g.
-<code>local http = require("http")</code>, see also the examples below
-<em> <code>http</code> <a href="https://github.com/cjoudrey/gluahttp">gluahttp</a> - TODO: configurable
- with something different than <code>&amp;http.Client{}</code>
-</em> <code>url</code>  <a href="https://github.com/cjoudrey/gluaurl">gluaurl</a>
-<em> <code>json</code> <a href="https://github.com/layeh/gopher-json">gopher-json</a>
-</em> <code>base64</code> <a href="https://github.com/zalando/skipper/tree/master/script/base64">lua base64</a></p>
+<code>local http = require("http")</code>, see also the examples below</p>
+<ul>
+<li><code>http</code> <a href="https://github.com/cjoudrey/gluahttp">gluahttp</a> - TODO: configurable
+ with something different than <code>&amp;http.Client{}</code></li>
+<li><code>url</code>  <a href="https://github.com/cjoudrey/gluaurl">gluaurl</a></li>
+<li><code>json</code> <a href="https://github.com/layeh/gopher-json">gopher-json</a></li>
+<li><code>base64</code> <a href="https://github.com/zalando/skipper/tree/master/script/base64">lua base64</a></li>
+</ul>
 <p>For differences between the standard modules and the gopher-lua implementation
 check the <a href="https://github.com/yuin/gopher-lua#differences-between-lua-and-gopherlua">gopher-lua documentation</a>.</p>
 <p>Any other module can be loaded in non-byte code form from the lua path (by default
@@ -227,10 +242,12 @@ ctx.request.header[&quot;Authorization&quot;] = nil -- delete authorization head
 </ul>
 <h2 id="serving-requests-from-lua">Serving requests from lua</h2>
 <p>Requests can be served with <code>ctx.serve(table)</code>, you must return after this
-call. Possible keys for the table:
-  * <code>status_code</code> (number) - required (but currently not enforced)
-  * <code>header</code> (table)
-  * <code>body</code> (string)</p>
+call. Possible keys for the table:</p>
+<ul>
+<li><code>status_code</code> (number) - required (but currently not enforced)</li>
+<li><code>header</code> (table)</li>
+<li><code>body</code> (string)</li>
+</ul>
 <p>See also <a href="#redirect">redirect</a> and <a href="#internal-server-error">internal server error</a>
 examples below</p>
 <h2 id="statebag">StateBag</h2>

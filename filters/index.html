@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>Filters - Skipper</title>
+        <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../css/font-awesome-4.5.0.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="../css/highlight.css">
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+        <script src="../js/jquery-1.10.2.min.js"></script>
+        <script src="../js/bootstrap-3.0.3.min.js"></script>
+        <script src="../js/highlight.pack.js"></script> 
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="..">Skipper</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+                <!-- Main navigation -->
+                <ul class="nav navbar-nav">
+                    <li >
+                        <a href="..">Architecture</a>
+                    </li>
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Basics <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            
+<li class="active">
+    <a href="./">Filters</a>
+</li>
+                            
+<li >
+    <a href="../scripts/">Scripts</a>
+</li>
+                            
+<li >
+    <a href="../plugins/">Plugins</a>
+</li>
+                        </ul>
+                    </li>
+                    <li >
+                        <a href="../deployments/">Deployments</a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Data Clients <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            
+<li >
+    <a href="../dataclients/eskip-file/">Eskip</a>
+</li>
+                            
+<li >
+    <a href="../dataclients/etcd/">Etcd</a>
+</li>
+                            
+<li >
+    <a href="../dataclients/inkeeper-api/">Inkeeper API</a>
+</li>
+                            
+<li >
+    <a href="../dataclients/kubernetes/">Kubernetes</a>
+</li>
+                            
+<li >
+    <a href="../dataclients/route-string/">Route String</a>
+</li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Kubernetes <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            
+<li >
+    <a href="../kubernetes/ingress-controller/">Ingress Controller Deployment</a>
+</li>
+                            
+<li >
+    <a href="../kubernetes/ingress-usage/">Ingress Usage</a>
+</li>
+                        </ul>
+                    </li>
+                    <li >
+                        <a href="../operations/">Operations</a>
+                    </li>
+                    <li >
+                        <a href="../videos/">Videos</a>
+                    </li>
+                </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                        <i class="fa fa-search"></i> Search
+                    </a>
+                </li>
+                    <li >
+                        <a rel="next" href="..">
+                            <i class="fa fa-arrow-left"></i> Previous
+                        </a>
+                    </li>
+                    <li >
+                        <a rel="prev" href="../scripts/">
+                            Next <i class="fa fa-arrow-right"></i>
+                        </a>
+                    </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+        <div class="container">
+                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+        <li class="main active"><a href="#skipper-filters">Skipper Filters</a></li>
+            <li><a href="#setrequestheader">setRequestHeader</a></li>
+            <li><a href="#setresponseheader">setResponseHeader</a></li>
+            <li><a href="#appendrequestheader">appendRequestHeader</a></li>
+            <li><a href="#appendresponseheader">appendResponseHeader</a></li>
+            <li><a href="#droprequestheader">dropRequestHeader</a></li>
+            <li><a href="#dropresponseheader">dropResponseHeader</a></li>
+            <li><a href="#modpath">modPath</a></li>
+            <li><a href="#setpath">setPath</a></li>
+            <li><a href="#redirectto">redirectTo</a></li>
+            <li><a href="#redirecttolower">redirectToLower</a></li>
+            <li><a href="#static">static</a></li>
+            <li><a href="#stripquery">stripQuery</a></li>
+            <li><a href="#preservehost">preserveHost</a></li>
+            <li><a href="#status">status</a></li>
+            <li><a href="#compress">compress</a></li>
+            <li><a href="#setquery">setQuery</a></li>
+            <li><a href="#dropquery">dropQuery</a></li>
+            <li><a href="#inlinecontent">inlineContent</a></li>
+            <li><a href="#flowid">flowId</a></li>
+            <li><a href="#randomcontent">randomContent</a></li>
+            <li><a href="#latency">latency</a></li>
+            <li><a href="#bandwidth">bandwidth</a></li>
+            <li><a href="#chunks">chunks</a></li>
+            <li><a href="#backendlatency">backendLatency</a></li>
+            <li><a href="#backendbandwidth">backendBandwidth</a></li>
+            <li><a href="#backendchunks">backendChunks</a></li>
+            <li><a href="#tee">tee</a></li>
+            <li><a href="#teenf">teenf</a></li>
+            <li><a href="#basicauth">basicAuth</a></li>
+            <li><a href="#requestcookie">requestCookie</a></li>
+            <li><a href="#responsecookie">responseCookie</a></li>
+            <li><a href="#jscookie">jsCookie</a></li>
+            <li><a href="#consecutivebreaker">consecutiveBreaker</a></li>
+            <li><a href="#ratebreaker">rateBreaker</a></li>
+            <li><a href="#disablebreaker">disableBreaker</a></li>
+            <li><a href="#localratelimit">localRatelimit</a></li>
+            <li><a href="#ratelimit">ratelimit</a></li>
+            <li><a href="#lua">lua</a></li>
+            <li><a href="#corsorigin">corsOrigin</a></li>
+    </ul>
+</div></div>
+                <div class="col-md-9" role="main">
+
+<h1 id="skipper-filters">Skipper Filters</h1>
+<p>The parameters can be strings, regex or float64 / int</p>
+<ul>
+<li><code>string</code> is a string surrounded by double quotes (<code>"</code>)</li>
+<li><code>regex</code> is a regular expression, surrounded by <code>/</code>, e.g. <code>/^www\.example\.org(:\d+)?$/</code></li>
+<li><code>int</code> / <code>float64</code> are usual (decimal) numbers like <code>401</code> or <code>1.23456</code></li>
+<li><code>time</code> is a string in double quotes, parseable by <a href="https://godoc.org/time#ParseDuration">time.Duration</a>)</li>
+</ul>
+<h2 id="setrequestheader">setRequestHeader</h2>
+<p>Set headers for requests.</p>
+<p>Parameters:
+<em> header name (string)
+</em> header value (string)</p>
+<p>Example:</p>
+<pre><code>foo: * -&gt; setRequestHeader(&quot;X-Passed-Skipper&quot;, &quot;true&quot;) -&gt; &quot;https://backend.example.org&quot;;
+</code></pre>
+
+<h2 id="setresponseheader">setResponseHeader</h2>
+<p>Same as <a href="#setrequestheader">setRequestHeader</a>, only for responses</p>
+<h2 id="appendrequestheader">appendRequestHeader</h2>
+<p>Same as <a href="#setrequestheader">setRequestHeader</a>, does not remove a possibly existing value, but adds a new header value</p>
+<h2 id="appendresponseheader">appendResponseHeader</h2>
+<p>Same as <a href="#appendrequestheader">appendRequestHeader</a>, only for responses</p>
+<h2 id="droprequestheader">dropRequestHeader</h2>
+<p>Removes a header from the request</p>
+<p>Parameters:
+* header name (string)</p>
+<p>Example:</p>
+<pre><code>foo: * -&gt; dropRequestHeader(&quot;User-Agent&quot;) -&gt; &quot;https://backend.example.org&quot;;
+</code></pre>
+
+<h2 id="dropresponseheader">dropResponseHeader</h2>
+<p>Same as <a href="#droprequestheader">dropRequestHeader</a> but for responses from the backend</p>
+<h2 id="modpath">modPath</h2>
+<p>Replace all matched regex expressions in the path.</p>
+<p>Parameters:
+<em> the expression to match (regex)
+</em> the replacement (string)</p>
+<h2 id="setpath">setPath</h2>
+<p>Replace the path of the original request to the replacement.</p>
+<p>Parameters:
+* the replacement (string)</p>
+<h2 id="redirectto">redirectTo</h2>
+<p>Creates an HTTP redirect response.</p>
+<p>Parameters:</p>
+<ul>
+<li>redirect status code (int)</li>
+<li>location (string)</li>
+</ul>
+<p>Example:</p>
+<pre><code>redir: PathRegex(/^\/foo\/bar/) -&gt; redirectTo(302, &quot;/foo/newBar&quot;) -&gt; &lt;shunt&gt;;
+</code></pre>
+
+<h2 id="redirecttolower">redirectToLower</h2>
+<p>Same as <a href="#redirectTo">redirectTo</a>, but replaces all strings to lower case.</p>
+<h2 id="static">static</h2>
+<p>Serves static content from the filesystem.</p>
+<p>Parameters:</p>
+<ul>
+<li>Request path to strip (string)</li>
+<li>Target base path in the filesystem (string)</li>
+</ul>
+<p>Example:</p>
+<p>This serves files from <code>/srv/www/dehydrated</code> when requested via <code>/.well-known/acme-challenge/</code>,
+e.g. the request <code>GET /.well-known/acme-challenge/foo</code> will serve the file <code>/srv/www/dehydrated/foo</code>.</p>
+<pre><code>acme: Host(/./) &amp;&amp; Method(&quot;GET&quot;) &amp;&amp; Path(&quot;/.well-known/acme-challenge/*&quot;)
+    -&gt; static(&quot;/.well-known/acme-challenge/&quot;, &quot;/srv/www/dehydrated&quot;) -&gt; &lt;shunt&gt;;
+</code></pre>
+
+<p>Notes:</p>
+<ul>
+<li>redirects to the directory when a file <code>index.html</code> exists and it is requested, i.e. <code>GET /foo/index.html</code> redirects to <code>/foo/</code> which serves then the <code>/foo/index.html</code></li>
+<li>serves the content of the <code>index.html</code> when a directory is requested</li>
+<li>does a simple directory listing of files / directories when no <code>index.html</code> is present</li>
+</ul>
+<h2 id="stripquery">stripQuery</h2>
+<h2 id="preservehost">preserveHost</h2>
+<p>Sets the incoming <code>Host:</code> header also on the outgoing backend connection</p>
+<p>Parameters: none</p>
+<p>Example:</p>
+<pre><code>route1: * -&gt; preserveHost() -&gt; &quot;http://backend.example.org&quot;;
+</code></pre>
+
+<h2 id="status">status</h2>
+<p>Sets the response status code to the given value, with no regards to the backend response.</p>
+<p>Parameters:</p>
+<ul>
+<li>status code (int)</li>
+</ul>
+<p>Example:</p>
+<pre><code>route1: Host(/^all401\.example\.org$/) -&gt; status(401) -&gt; &lt;shunt&gt;;
+</code></pre>
+
+<h2 id="compress">compress</h2>
+<p>The filter, when executed on the response path, checks if the response entity can
+be compressed. To decide, it checks the Content-Encoding, the Cache-Control and
+the Content-Type headers. It doesn't compress the content if the Content-Encoding
+is set to other than identity, or the Cache-Control applies the no-transform
+pragma, or the Content-Type is set to an unsupported value.</p>
+<p>The default supported content types are: <code>text/plain</code>, <code>text/html</code>, <code>application/json</code>,
+<code>application/javascript</code>, <code>application/x-javascript</code>, <code>text/javascript</code>, <code>text/css</code>,
+<code>image/svg+xml</code>, <code>application/octet-stream</code>.</p>
+<p>The default set of MIME types can be reset or extended by passing in the desired
+types as filter arguments. When extending the defaults, the first argument needs to
+be <code>"..."</code>. E.g. to compress tiff in addition to the defaults:</p>
+<pre><code>* -&gt; compress(&quot;...&quot;, &quot;image/tiff&quot;) -&gt; &quot;https://www.example.org&quot;
+</code></pre>
+
+<p>To reset the supported types, e.g. to compress only HTML, the "..." argument needs
+to be omitted:</p>
+<pre><code>* -&gt; compress(&quot;text/html&quot;) -&gt; &quot;https://www.example.org&quot;
+</code></pre>
+
+<p>It is possible to control the compression level, by setting it as the first filter
+argument, in front of the MIME types. The default compression level is best-speed.
+The possible values are integers between 0 and 9 (inclusive), where 0 means
+no-compression, 1 means best-speed and 9 means best-compression. Example:</p>
+<pre><code>* -&gt; compress(9, &quot;image/tiff&quot;) -&gt; &quot;https://www.example.org&quot;
+</code></pre>
+
+<p>The filter also checks the incoming request, if it accepts the supported encodings,
+explicitly stated in the Accept-Encoding header. The filter currently supports <code>gzip</code>
+and <code>deflate</code>. It does not assume that the client accepts any encoding if the
+Accept-Encoding header is not set. It ignores * in the Accept-Encoding header.</p>
+<p>When compressing the response, it updates the response header. It deletes the
+<code>Content-Length</code> value triggering the proxy to always return the response with chunked
+transfer encoding, sets the Content-Encoding to the selected encoding and sets the
+<code>Vary: Accept-Encoding</code> header, if missing.</p>
+<p>The compression happens in a streaming way, using only a small internal buffer.</p>
+<h2 id="setquery">setQuery</h2>
+<p>Set the query string <code>?k=v</code> in the request to the backend to a given value.</p>
+<p>Parameters:</p>
+<ul>
+<li>key (string)</li>
+<li>value (string)</li>
+</ul>
+<p>Example:</p>
+<pre><code>setQuery(&quot;k&quot;, &quot;v&quot;)
+</code></pre>
+
+<h2 id="dropquery">dropQuery</h2>
+<p>Delete the query string <code>?k=v</code> in the request to the backend for a
+given key.</p>
+<p>Parameters:</p>
+<ul>
+<li>key (string)</li>
+</ul>
+<p>Example:</p>
+<pre><code>dropQuery(&quot;k&quot;)
+</code></pre>
+
+<h2 id="inlinecontent">inlineContent</h2>
+<p>Returns arbitrary content in the HTTP body.</p>
+<p>Parameters:</p>
+<ul>
+<li>arbitrary (string)</li>
+</ul>
+<p>Example:</p>
+<pre><code>* -&gt; inlineContent(&quot;&lt;h1&gt;Hello&lt;/h1&gt;&quot;) -&gt; &lt;shunt&gt;
+</code></pre>
+
+<h2 id="flowid">flowId</h2>
+<p>Sets an X-Flow-Id header, if it's not already in the request.
+This allows you to have a trace in your logs, that traces from
+the incoming request on the edge to all backend services.</p>
+<p>Paramters:</p>
+<ul>
+<li>no parameter: resets always the X-Flow-Id header to a new value</li>
+<li>"reuse": only create X-Flow-Id header if not set in the request</li>
+</ul>
+<p>Example:</p>
+<pre><code>* -&gt; flowId() -&gt; &quot;https://some-backend.example.org&quot;;
+* -&gt; flowId(&quot;reuse&quot;) -&gt; &quot;https://some-backend.example.org&quot;;
+</code></pre>
+
+<h2 id="randomcontent">randomContent</h2>
+<p>Generate response with random text of specified length.</p>
+<p>Parameters:</p>
+<ul>
+<li>length of data (int)</li>
+</ul>
+<p>Example:</p>
+<pre><code>* -&gt; randomContent(42) -&gt; &lt;shunt&gt;;
+</code></pre>
+
+<h2 id="latency">latency</h2>
+<p>Enable adding artificial latency</p>
+<p>Parameters:</p>
+<ul>
+<li>latency in milliseconds (int)</li>
+</ul>
+<p>Example:</p>
+<pre><code>* -&gt; latency(120) -&gt; &quot;https://www.example.org&quot;;
+</code></pre>
+
+<h2 id="bandwidth">bandwidth</h2>
+<p>Enable bandwidth throttling.</p>
+<p>Parameters:</p>
+<ul>
+<li>bandwidth in kb/s (int)</li>
+</ul>
+<p>Example:</p>
+<pre><code>* -&gt; bandwidth(30) -&gt; &quot;https://www.example.org&quot;;
+</code></pre>
+
+<h2 id="chunks">chunks</h2>
+<p>Enables adding chunking responses with custom chunk size with
+artificial delays in between response chunks. To disable delays, set
+the second parameter to "0".</p>
+<p>Parameters:</p>
+<ul>
+<li>byte length (int)</li>
+<li>time duration (time.Duration)</li>
+</ul>
+<p>Example:</p>
+<pre><code>* -&gt; chunks(1024, &quot;120ms&quot;) -&gt; &quot;https://www.example.org&quot;;
+* -&gt; chunks(1024, &quot;0&quot;) -&gt; &quot;https://www.example.org&quot;;
+</code></pre>
+
+<h2 id="backendlatency">backendLatency</h2>
+<p>Same as <a href="#latency">latency filter</a>, but on the request path and not on
+the response path.</p>
+<h2 id="backendbandwidth">backendBandwidth</h2>
+<p>Same as <a href="#bandwidth">bandwidth filter</a>, but on the request path and not on
+the response path.</p>
+<h2 id="backendchunks">backendChunks</h2>
+<p>Same as <a href="#chunks">chunks filter</a>, but on the request path and not on
+the response path.</p>
+<h2 id="tee">tee</h2>
+<p>Provides a unix-like <code>tee</code> feature for routing.</p>
+<p>Using this filter, the request will be sent to a "shadow" backend in addition
+to the main backend of the route.</p>
+<p>Example:</p>
+<pre><code>* -&gt; tee(&quot;https://audit-logging.example.org&quot;) -&gt; &quot;https://foo.example.org&quot;;
+</code></pre>
+
+<p>This will send an identical request for foo.example.org to
+audit-logging.example.org. Another use case could be using it for benchmarking
+a new backend with some real traffic. This we call "shadow traffic".</p>
+<p>The above route will forward the request to <code>https://foo.example.org</code> as it
+normally would do, but in addition to that, it will send an identical request to
+<code>https://audit-logging.example.org</code>. The request sent to
+<code>https://audit-logging.example.org</code> will receive the same method and headers,
+and a copy of the body stream. The <code>tee</code> response is ignored for this shadow backend.</p>
+<p>It is possible to change the path of the tee request, in a similar way to the
+<a href="#modpath">modPath</a> filter:</p>
+<pre><code>Path(&quot;/api/v1&quot;) -&gt; tee(&quot;https://api.example.org&quot;, &quot;^/v1&quot;, &quot;/v2&quot; ) -&gt; &quot;http://api.example.org&quot;;
+</code></pre>
+
+<p>In the above example, one can test how a new version of an API would behave on
+incoming requests.</p>
+<h2 id="teenf">teenf</h2>
+<p>The same as <a href="#tee">tee filter</a>, but does not follow redirects from the backend.</p>
+<h2 id="basicauth">basicAuth</h2>
+<p>Enable Basic Authentication</p>
+<p>The filter accepts two parameters, the first mandatory one is the path to the
+htpasswd file usually used with Apache or nginx. The second one is the optional
+realm name that will be displayed in the browser. MD5, SHA1 and BCrypt are supported
+for Basic authentication password storage, see also
+<a href="https://github.com/abbot/go-http-auth">the http-auth module page</a>.</p>
+<p>Examples:</p>
+<pre><code>basicAuth(&quot;/path/to/htpasswd&quot;)
+basicAuth(&quot;/path/to/htpasswd&quot;, &quot;My Website&quot;)
+</code></pre>
+
+<h2 id="requestcookie">requestCookie</h2>
+<p>Append a cookie to the request header.</p>
+<p>Parameters:</p>
+<ul>
+<li>cookie name (string)</li>
+<li>cookie value (string)</li>
+</ul>
+<p>Example:</p>
+<pre><code>requestCookie(&quot;test-session&quot;, &quot;abc&quot;)
+</code></pre>
+
+<h2 id="responsecookie">responseCookie</h2>
+<p>Appends cookies to responses in the "Set-Cookie" header. The response cookie
+accepts an optional argument to control the max-age property of the cookie,
+of type <code>int</code>, in seconds. The response cookie accepts an optional fourth
+argument, "change-only", to control if the cookie should be set on every
+response, or only if the request does not contain a cookie with the provided
+name and value.</p>
+<p>Example:</p>
+<pre><code>responseCookie(&quot;test-session&quot;, &quot;abc&quot;)
+responseCookie(&quot;test-session&quot;, &quot;abc&quot;, 31536000),
+responseCookie(&quot;test-session&quot;, &quot;abc&quot;, 31536000, &quot;change-only&quot;)
+</code></pre>
+
+<h2 id="jscookie">jsCookie</h2>
+<p>The JS cookie behaves exactly as the response cookie, but it does not set the
+<code>HttpOnly</code> directive, so these cookies will be accessible from JS code running
+in web browsers.</p>
+<p>Example:</p>
+<pre><code>jsCookie(&quot;test-session-info&quot;, &quot;abc-debug&quot;, 31536000, &quot;change-only&quot;)
+</code></pre>
+
+<h2 id="consecutivebreaker">consecutiveBreaker</h2>
+<p>This breaker opens when the proxy could not connect to a backend or received
+a &gt;=500 status code at least N times in a row. When open, the proxy returns
+503 - Service Unavailable response during the breaker timeout. After this timeout,
+the breaker goes into half-open state, in which it expects that M number of
+requests succeed. The requests in the half-open state are accepted concurrently.
+If any of the requests during the half-open state fails, the breaker goes back to
+open state. If all succeed, it goes to closed state again.</p>
+<p>Parameters:</p>
+<ul>
+<li>number of consecutive failures to open (int)</li>
+<li>timeout (time string, parseable by <a href="https://godoc.org/time#ParseDuration">time.Duration</a>) - optional</li>
+<li>half-open requests (int) - optional</li>
+<li>idle-ttl (time string, parseable by <a href="https://godoc.org/time#ParseDuration">time.Duration</a>) - optional</li>
+</ul>
+<p>See also the <a href="https://godoc.org/github.com/zalando/skipper/circuit">circuit breaker docs</a>.</p>
+<h2 id="ratebreaker">rateBreaker</h2>
+<p>The "rate breaker" works similar to the <a href="#consecutivebreaker">consecutiveBreaker</a>, but
+instead of considering N consecutive failures for going open, it maintains a sliding
+window of the last M events, both successes and failures, and opens only when the number
+of failures reaches N within the window. This way the sliding window is not time based
+and allows the same breaker characteristics for low and high rate traffic.</p>
+<p>Parameters:</p>
+<ul>
+<li>number of consecutive failures to open (int)</li>
+<li>sliding window (time string, parseable by <a href="https://godoc.org/time#ParseDuration">time.Duration</a>)</li>
+<li>half-open requests (int) - optional</li>
+<li>idle-ttl (time string, parseable by <a href="https://godoc.org/time#ParseDuration">time.Duration</a>) - optional</li>
+</ul>
+<p>See also the <a href="https://godoc.org/github.com/zalando/skipper/circuit">circuit breaker docs</a>.</p>
+<h2 id="disablebreaker">disableBreaker</h2>
+<p>Change (or set) the breaker configurations for an individual route and disable for another, in eskip:</p>
+<pre><code>updates: Method(&quot;POST&quot;) &amp;&amp; Host(&quot;foo.example.org&quot;)
+  -&gt; consecutiveBreaker(9)
+  -&gt; &quot;https://foo.backend.net&quot;;
+
+backendHealthcheck: Path(&quot;/healthcheck&quot;)
+  -&gt; disableBreaker()
+  -&gt; &quot;https://foo.backend.net&quot;;
+</code></pre>
+
+<p>See also the <a href="https://godoc.org/github.com/zalando/skipper/circuit">circuit breaker docs</a>.</p>
+<h2 id="localratelimit">localRatelimit</h2>
+<p>Per skipper instance calculated ratelimit, that allows number of
+requests by client. The definition of the same client is based on data
+of the http header and can be changed with an optional third
+parameter. If the third parameter is set skipper will use the
+Authorization header to put the request in the same client bucket,
+else  the X-Forwarded-For Header will be used.</p>
+<p>Parameters:</p>
+<ul>
+<li>number of allowed requests per time period (int)</li>
+<li>time period for requests being counted (time.Duration)</li>
+<li>optional parameter can be set to: "auth" (string)</li>
+</ul>
+<pre><code>localRatelimit(3, &quot;1m&quot;)
+localRatelimit(3, &quot;1m&quot;, &quot;auth&quot;)
+</code></pre>
+
+<p>See also the <a href="https://godoc.org/github.com/zalando/skipper/ratelimit">ratelimit docs</a>.</p>
+<h2 id="ratelimit">ratelimit</h2>
+<p>Per skipper instance calculated ratelimit, that allows number of
+requests to a backend.</p>
+<p>Parameters:</p>
+<ul>
+<li>number of allowed requests per time period (int)</li>
+<li>time period for requests being counted (time.Duration)</li>
+</ul>
+<pre><code>ratelimit(20, &quot;1m&quot;)
+ratelimit(300, &quot;1h&quot;)
+</code></pre>
+
+<p>See also the <a href="https://godoc.org/github.com/zalando/skipper/ratelimit">ratelimit docs</a>.</p>
+<h2 id="lua">lua</h2>
+<p>See <a href="../scripts/">the scripts page</a></p>
+<h2 id="corsorigin">corsOrigin</h2>
+<p>The filter accepts an optional variadic list of acceptable origin
+parameters. If the input argument list is empty, the header will
+always be set to <code>*</code> which means any origin is acceptable. Otherwise
+the header is only set if the request contains an Origin header and
+its value matches one of the elements in the input list. The header is
+only set on the response.</p>
+<p>Parameters:</p>
+<ul>
+<li>url (variadic string)</li>
+</ul>
+<p>Examples:</p>
+<pre><code>corsOrigin()
+corsOrigin(&quot;https://www.example.org&quot;)
+corsOrigin(&quot;https://www.example.org&quot;, &quot;http://localhost:9001&quot;)
+</code></pre></div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>var base_url = '..';</script>
+        <script src="../js/base.js"></script>
+        <script src="../search/require.js"></script>
+        <script src="../search/search.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form role="form">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="Keyboard Shortcuts Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Keyboard Shortcuts</h4>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td><kbd>&larr;</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td><kbd>&rarr;</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    </body>
+</html>

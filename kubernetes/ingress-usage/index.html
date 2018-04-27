@@ -48,6 +48,23 @@
                     <li >
                         <a href="../..">Architecture</a>
                     </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Basics <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            
+<li >
+    <a href="../../filters/">Filters</a>
+</li>
+                            
+<li >
+    <a href="../../scripts/">Scripts</a>
+</li>
+                            
+<li >
+    <a href="../../plugins/">Plugins</a>
+</li>
+                        </ul>
+                    </li>
                     <li >
                         <a href="../../deployments/">Deployments</a>
                     </li>
@@ -90,12 +107,6 @@
                         </ul>
                     </li>
                     <li >
-                        <a href="../../plugins/">Plugins</a>
-                    </li>
-                    <li >
-                        <a href="../../scripts/">Scripts</a>
-                    </li>
-                    <li >
                         <a href="../../operations/">Operations</a>
                     </li>
                     <li >
@@ -115,7 +126,7 @@
                         </a>
                     </li>
                     <li >
-                        <a rel="prev" href="../../plugins/">
+                        <a rel="prev" href="../../operations/">
                             Next <i class="fa fa-arrow-right"></i>
                         </a>
                     </li>
@@ -416,16 +427,15 @@ a unique value. Read more about this in our
 html content. You can return from skipper without doing a proxy call
 to a backend, if you end your filter chain with <code>&lt;shunt&gt;</code>.</p>
 <h2 id="return-static-content">Return static content</h2>
-<p>To set a response header <code>X: bar</code>, return
-<code>&lt;html&gt;&lt;body&gt;hello&lt;/body&gt;&lt;/html&gt;</code> in the HTTP response body and return
-HTTP status code 200 from ingress itself, you can use the following
-filter chain:</p>
+<p>The following example sets a response header <code>X: bar</code>, a response body
+<code>&lt;html&gt;&lt;body&gt;hello&lt;/body&gt;&lt;/html&gt;</code> and a
+HTTP status code 200:</p>
 <pre><code>zalando.org/skipper-filter: |
   setResponseHeader("X", "bar") -&gt; inlineContent("&lt;html&gt;&lt;body&gt;hello&lt;/body&gt;&lt;/html&gt;") -&gt; status(200) -&gt; &lt;shunt&gt;
 </code></pre>
 <p>Keep in mind you need a valid backend definition to backends which are
-available, otherwise Skipper would not populate the route for safety
-reasons.</p>
+available, otherwise Skipper would not accept the entire route
+definition from the ingress object for safety reasons.</p>
 <h1 id="filters-reliability-features">Filters - reliability features</h1>
 <p>Filters can modify http requests and responses. There are plenty of
 things you can do with them.</p>

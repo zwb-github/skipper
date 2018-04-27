@@ -48,6 +48,23 @@
                     <li >
                         <a href="../..">Architecture</a>
                     </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Basics <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            
+<li >
+    <a href="../../filters/">Filters</a>
+</li>
+                            
+<li >
+    <a href="../../scripts/">Scripts</a>
+</li>
+                            
+<li >
+    <a href="../../plugins/">Plugins</a>
+</li>
+                        </ul>
+                    </li>
                     <li >
                         <a href="../../deployments/">Deployments</a>
                     </li>
@@ -88,12 +105,6 @@
     <a href="../../kubernetes/ingress-usage/">Ingress Usage</a>
 </li>
                         </ul>
-                    </li>
-                    <li >
-                        <a href="../../plugins/">Plugins</a>
-                    </li>
-                    <li >
-                        <a href="../../scripts/">Scripts</a>
                     </li>
                     <li >
                         <a href="../../operations/">Operations</a>
@@ -181,27 +192,35 @@ yandexWildacardIfCookie:
 <p>The former example shows 4 routes: hostHeaderMatch,
 baiduPathMatch, googleWildcardMatch and yandexWildcardIfCookie.</p>
 <ul>
-<li>hostHeaderMatch:</li>
+<li>hostHeaderMatch:<ul>
 <li>used if HTTP host header is exactly: "skipper.teapot.org",</li>
 <li>sets a Basic Authorization header and</li>
 <li>sends the modified request to https://target-to.auth-with.basic-auth.enterprise.com</li>
-<li>baiduPathMatch:</li>
+</ul>
+</li>
+<li>baiduPathMatch:<ul>
 <li>used in case the request patch matches /baidu</li>
 <li>it will set the Host header to the proxy request</li>
 <li>it will set the path from /baidu to /s</li>
 <li>it will set the querystring to "ws=godoc skipper" and</li>
 <li>sends the modified request to http://baidu.com</li>
-<li>googleWildcardMatch:</li>
+</ul>
+</li>
+<li>googleWildcardMatch:<ul>
 <li>used as default if no other route matches</li>
 <li>it will set the path to /search</li>
 <li>it will set the querystring to "q=godoc skipper" and</li>
 <li>sends the modified request to https://www.google.com</li>
-<li>yandexWildcardIfCookie:</li>
+</ul>
+</li>
+<li>yandexWildcardIfCookie:<ul>
 <li>used as default if a Cookie named "yandex" has the value "true"</li>
 <li>it will set the path to /search/</li>
 <li>it will set the querystring to "text=godoc skipper"</li>
 <li>it will send a copy of the modified request to http://127.0.0.1:12345/ (similar to unix <code>tee</code>) and drop the response and</li>
 <li>sends the modified request to https://yandex.ru</li>
+</ul>
+</li>
 </ul>
 <p>More examples you find in <a href="https://godoc.org/github.com/zalando/skipper/eskip">eskip file format</a>
 description, in <a href="https://godoc.org/github.com/zalando/skipper/filters">filters</a>

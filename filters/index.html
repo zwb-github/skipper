@@ -57,6 +57,10 @@
 </li>
                             
 <li >
+    <a href="../predicates/">Predicates</a>
+</li>
+                            
+<li >
     <a href="../scripts/">Scripts</a>
 </li>
                             
@@ -126,7 +130,7 @@
                         </a>
                     </li>
                     <li >
-                        <a rel="prev" href="../scripts/">
+                        <a rel="prev" href="../predicates/">
                             Next <i class="fa fa-arrow-right"></i>
                         </a>
                     </li>
@@ -190,6 +194,12 @@
 <li><code>int</code> / <code>float64</code> are usual (decimal) numbers like <code>401</code> or <code>1.23456</code></li>
 <li><code>time</code> is a string in double quotes, parseable by <a href="https://godoc.org/time#ParseDuration">time.Duration</a>)</li>
 </ul>
+<p>Filters are a generic tool and can change HTTP header and body in the request and response path.
+Filter can be chained using the arrow operator <code>-&gt;</code>.</p>
+<p>Example route with a match all, 2 filters and a backend:</p>
+<pre><code>all: * -&gt; filter1 -&gt; filter2 -&gt; &quot;http://127.0.0.1:1234/&quot;;
+</code></pre>
+
 <h2 id="setrequestheader">setRequestHeader</h2>
 <p>Set headers for requests.</p>
 <p>Parameters:

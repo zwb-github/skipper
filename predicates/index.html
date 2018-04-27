@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>Predicates - Skipper</title>
+        <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../css/font-awesome-4.5.0.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="../css/highlight.css">
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+        <script src="../js/jquery-1.10.2.min.js"></script>
+        <script src="../js/bootstrap-3.0.3.min.js"></script>
+        <script src="../js/highlight.pack.js"></script> 
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="..">Skipper</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+                <!-- Main navigation -->
+                <ul class="nav navbar-nav">
+                    <li >
+                        <a href="..">Architecture</a>
+                    </li>
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Basics <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            
+<li >
+    <a href="../filters/">Filters</a>
+</li>
+                            
+<li class="active">
+    <a href="./">Predicates</a>
+</li>
+                            
+<li >
+    <a href="../scripts/">Scripts</a>
+</li>
+                            
+<li >
+    <a href="../plugins/">Plugins</a>
+</li>
+                        </ul>
+                    </li>
+                    <li >
+                        <a href="../deployments/">Deployments</a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Data Clients <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            
+<li >
+    <a href="../dataclients/eskip-file/">Eskip</a>
+</li>
+                            
+<li >
+    <a href="../dataclients/etcd/">Etcd</a>
+</li>
+                            
+<li >
+    <a href="../dataclients/inkeeper-api/">Inkeeper API</a>
+</li>
+                            
+<li >
+    <a href="../dataclients/kubernetes/">Kubernetes</a>
+</li>
+                            
+<li >
+    <a href="../dataclients/route-string/">Route String</a>
+</li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Kubernetes <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            
+<li >
+    <a href="../kubernetes/ingress-controller/">Ingress Controller Deployment</a>
+</li>
+                            
+<li >
+    <a href="../kubernetes/ingress-usage/">Ingress Usage</a>
+</li>
+                        </ul>
+                    </li>
+                    <li >
+                        <a href="../operations/">Operations</a>
+                    </li>
+                    <li >
+                        <a href="../videos/">Videos</a>
+                    </li>
+                </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                        <i class="fa fa-search"></i> Search
+                    </a>
+                </li>
+                    <li >
+                        <a rel="next" href="../filters/">
+                            <i class="fa fa-arrow-left"></i> Previous
+                        </a>
+                    </li>
+                    <li >
+                        <a rel="prev" href="../scripts/">
+                            Next <i class="fa fa-arrow-right"></i>
+                        </a>
+                    </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+        <div class="container">
+                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+        <li class="main active"><a href="#skipper-predicates">Skipper Predicates</a></li>
+            <li><a href="#path">Path</a></li>
+            <li><a href="#pathsubtree">PathSubtree</a></li>
+            <li><a href="#pathregexp">PathRegexp</a></li>
+            <li><a href="#host">Host</a></li>
+            <li><a href="#method">Method</a></li>
+            <li><a href="#header">Header</a></li>
+            <li><a href="#headerregexp">HeaderRegexp</a></li>
+            <li><a href="#cookie">Cookie</a></li>
+            <li><a href="#interval">Interval</a></li>
+            <li><a href="#queryparam">QueryParam</a></li>
+            <li><a href="#source">Source</a></li>
+            <li><a href="#traffic">Traffic</a></li>
+    </ul>
+</div></div>
+                <div class="col-md-9" role="main">
+
+<h1 id="skipper-predicates">Skipper Predicates</h1>
+<p>The parameters can be strings, regex or float64 / int</p>
+<ul>
+<li><code>string</code> is a string surrounded by double quotes (<code>"</code>)</li>
+<li><code>regex</code> is a <a href="https://github.com/google/re2/wiki/Syntax">re2 regular expression</a>, surrounded by <code>/</code>, e.g. <code>/^www\.example\.org(:\d+)?$/</code></li>
+<li><code>int</code> / <code>float64</code> are usual (decimal) numbers like <code>401</code> or <code>1.23456</code></li>
+<li><code>time</code> is a string in double quotes, parseable by <a href="https://godoc.org/time#ParseDuration">time.Duration</a>)</li>
+</ul>
+<p>Predicates are a generic tool and can change the route matching behavior.
+Predicates can be chained using the double ampersand operator <code>&amp;&amp;</code>.</p>
+<p>Example route with a Host, Method and Path match predicates and a backend:</p>
+<pre><code>all: Host(&quot;^my-host-header\.example\.org$&quot;) &amp;&amp; Method(&quot;GET&quot;) &amp;&amp; Path(&quot;/hello&quot;) -&gt; &quot;http://127.0.0.1:1234/&quot;;
+</code></pre>
+
+<h2 id="path">Path</h2>
+<p>The route definitions may contain a single path condition, optionally
+with wildcards, used for looking up routes in the lookup tree.</p>
+<p>Parameters:</p>
+<ul>
+<li>Path (string) can contain a wildcard <code>*</code> or a named <code>:wildcard</code></li>
+</ul>
+<p>Examples:</p>
+<pre><code>Path(&quot;/foo/bar&quot;)
+Path(&quot;/foo/:bar&quot;)
+Path(&quot;/foo*&quot;)
+Path(&quot;/foo/*&quot;)
+Path(&quot;/foo/**&quot;)
+</code></pre>
+
+<h2 id="pathsubtree">PathSubtree</h2>
+<p>Similar to Path, but used to match full subtrees including the path of
+the definition.</p>
+<p>PathSubtree("/foo") predicate is equivalent to having routes with
+Path("/foo"), Path("/foo/") and Path("/foo/**") predicates.</p>
+<p>Parameters:</p>
+<ul>
+<li>PathSubtree (string)</li>
+</ul>
+<p>Examples:</p>
+<pre><code>PathSubtree(&quot;/foo/bar&quot;)
+PathSubtree(&quot;/&quot;)
+PathSubtree(&quot;/foo*&quot;)
+</code></pre>
+
+<h2 id="pathregexp">PathRegexp</h2>
+<p>Regular expressions to match the path. It uses Go's standard library
+regexp package to match, which is based on
+<a href="https://github.com/google/re2/wiki/Syntax">re2 regular expression syntax</a>.</p>
+<p>Parameters:</p>
+<ul>
+<li>PathRegexp (regex)</li>
+</ul>
+<p>Examples:</p>
+<pre><code>PathRegexp(&quot;/^foo\/bar/&quot;)
+PathRegexp(&quot;/foo\/bar$/&quot;)
+PathRegexp(&quot;/foo\/bar/&quot;)
+PathRegexp(&quot;/^foo\/(bar|qux)/&quot;)
+</code></pre>
+
+<h2 id="host">Host</h2>
+<p>Regular expressions that the host header in the request must match.</p>
+<p>Parameters:</p>
+<ul>
+<li>Host (regex)</li>
+</ul>
+<p>Examples:</p>
+<pre><code>Host(&quot;/^my-host-header\.example\.org$/&quot;)
+Host(&quot;/header\.example\.org$/&quot;)
+</code></pre>
+
+<h2 id="method">Method</h2>
+<p>The HTTP method that the request must match. HTTP methods are one of
+GET, HEAD, POST, PUT, DELETE, OPTIONS, CONNECT.</p>
+<p>Parameters:</p>
+<ul>
+<li>Method (string)</li>
+</ul>
+<p>Examples:</p>
+<pre><code>Method(&quot;GET&quot;)
+Method(&quot;OPTIONS&quot;)
+</code></pre>
+
+<h2 id="header">Header</h2>
+<p>A header key and exact value that must be present in the request. Note
+that Header("Key", "Value") is equivalent to HeaderRegexp("Key", "^Value$").</p>
+<p>Parameters:</p>
+<ul>
+<li>Header (string, string)</li>
+</ul>
+<p>Examples:</p>
+<pre><code>Header(&quot;X-Forwarded-For&quot;, &quot;192.168.0.2&quot;)
+Header(&quot;Server&quot;, &quot;skipper&quot;)
+</code></pre>
+
+<h2 id="headerregexp">HeaderRegexp</h2>
+<p>A header key and a regular expression, where the key must be present
+in the request and one of the associated values must match the
+expression.</p>
+<p>Parameters:</p>
+<ul>
+<li>HeaderRegexp (string, regex)</li>
+</ul>
+<p>Examples:</p>
+<pre><code>HeaderRegexp(&quot;X-Forwarded-For&quot;, &quot;/^192\.168\.0\.[0-2]?[0-9]?[0-9] /&quot;)
+HeaderRegexp(&quot;Server&quot;, &quot;/skipper/&quot;)
+</code></pre>
+
+<h2 id="cookie">Cookie</h2>
+<p>Matches if the specified cookie is set in the request.</p>
+<p>Parameters:</p>
+<ul>
+<li>Cookie (string, regex) name and value match</li>
+</ul>
+<p>Examples:</p>
+<pre><code>Cookie(&quot;alpha&quot;, /^enabled$/)
+</code></pre>
+
+<h2 id="interval">Interval</h2>
+<p>An interval implements custom predicates to match routes only during some period of time.</p>
+<p>There are three predicates: Between, Before and After. All
+predicates can be created using the date represented as a string in
+RFC3339 format (see https://golang.org/pkg/time/#pkg-constants), int64
+or float64 number. float64 number will be converted into int64 number.</p>
+<h3 id="after">After</h3>
+<p>Matches if the request is after the specified time</p>
+<p>Parameters:</p>
+<ul>
+<li>After (string) date string</li>
+<li>After (int) unixtime</li>
+</ul>
+<p>Examples:</p>
+<pre><code>After(&quot;2016-01-01T12:00:00+02:00&quot;)
+After(1451642400)
+</code></pre>
+
+<h3 id="before">Before</h3>
+<p>Matches if the request is before the specified time</p>
+<p>Parameters:</p>
+<ul>
+<li>Before (string) date string</li>
+<li>Before (int) unixtime</li>
+</ul>
+<p>Examples:</p>
+<pre><code>Before(&quot;2016-01-01T12:00:00+02:00&quot;)
+Before(1451642400)
+</code></pre>
+
+<h3 id="between">Between</h3>
+<p>Matches if the request is between the specified timeframe</p>
+<p>Parameters:</p>
+<ul>
+<li>Between (string, string) date string, from - till</li>
+<li>Between (int, int) unixtime, from - till</li>
+</ul>
+<p>Examples:</p>
+<pre><code>Between(&quot;2016-01-01T12:00:00+02:00&quot;, &quot;2016-02-01T12:00:00+02:00&quot;)
+Between(1451642400, 1454320800)
+</code></pre>
+
+<h2 id="queryparam">QueryParam</h2>
+<p>Match request based on the Query Params in URL</p>
+<p>Parameters:</p>
+<ul>
+<li>QueryParam (string) name</li>
+<li>QueryParam (string, regex) name and value match</li>
+</ul>
+<p>Examples:</p>
+<pre><code>// matches http://example.org?bb=a&amp;query=withvalue
+QueryParam(&quot;query&quot;)
+
+// Even a query param without a value
+// matches http://example.org?bb=a&amp;query=
+QueryParam(&quot;query&quot;)
+
+// matches with regexp
+// matches http://example.org?bb=a&amp;query=example
+QueryParam(&quot;query&quot;, &quot;^example$&quot;)
+
+// matches with regexp and multiple values of query param
+// matches http://example.org?bb=a&amp;query=testing&amp;query=example
+QueryParam(&quot;query&quot;, &quot;^example$&quot;)
+</code></pre>
+
+<h2 id="source">Source</h2>
+<p>Source implements a custom predicate to match routes based on
+the source IP or X-Forwarded-For header of a request.</p>
+<p>Parameters:</p>
+<ul>
+<li>Source (string, ..) varargs with IPs or CIDR</li>
+</ul>
+<p>Examples:</p>
+<pre><code>// only match requests from 1.2.3.4
+Source(&quot;1.2.3.4&quot;)
+
+// only match requests from 1.2.3.0 - 1.2.3.255
+Source(&quot;1.2.3.0/24&quot;)
+
+// only match requests from 1.2.3.4 and the 2.2.2.0/24 network
+Source(&quot;1.2.3.4&quot;, &quot;2.2.2.0/24&quot;)
+</code></pre>
+
+<h3 id="sourcefromlast">SourceFromLast</h3>
+<p>The same as <a href="#Source">Source</a>, but use the last part of the
+X-Forwarded-For header to match the network. This seems to be only
+used in the popular loadbalancers from AWS, ELB and ALB, because they
+put the client-IP as last part of the X-Forwarded-For headers.</p>
+<p>Parameters:</p>
+<ul>
+<li>SourceFromLast (string, ..) varargs with IPs or CIDR</li>
+</ul>
+<p>Examples:</p>
+<pre><code>SourceFromLast(&quot;1.2.3.4&quot;, &quot;2.2.2.0/24&quot;)
+</code></pre>
+
+<h2 id="traffic">Traffic</h2>
+<p>Traffic implements a predicate to control the matching probability for
+a given route by setting its weight.</p>
+<p>The probability for matching a route is defined by the mandatory first
+parameter, that must be a decimal number between 0.0 and 1.0 (both
+exclusive).</p>
+<p>The optional second argument is used to specify the cookie name for
+the traffic group, in case you want to use stickiness. Stickiness
+allows all subsequent requests from the same client to match the same
+route. Stickiness of traffic is supported by the optional third
+parameter, indicating whether the request being matched belongs to the
+traffic group of the current route. If yes, the predicate matches
+ignoring the chance argument.</p>
+<p>Parameters:</p>
+<ul>
+<li>Traffic (decimal) valid values [0.0, 1.0]</li>
+<li>Traffic (decimal, string, string) session stickyness</li>
+</ul>
+<p>Examples:</p>
+<p>non-sticky:</p>
+<pre><code>// hit by 10% percent chance
+v2:
+    Traffic(.1) -&gt;
+    &quot;https://api-test-green&quot;;
+
+// hit by remaining chance
+v1:
+    &quot;https://api-test-blue&quot;;
+</code></pre>
+
+<p>stickyness:</p>
+<pre><code>// hit by 5% percent chance
+cartTest:
+    Traffic(.05, &quot;cart-test&quot;, &quot;test&quot;) &amp;&amp; Path(&quot;/cart&quot;) -&gt;
+    responseCookie(&quot;cart-test&quot;, &quot;test&quot;) -&gt;
+    &quot;https://cart-test&quot;;
+
+// hit by remaining chance
+cart:
+    Path(&quot;/cart&quot;) -&gt;
+    responseCookie(&quot;cart-test&quot;, &quot;default&quot;) -&gt;
+    &quot;https://cart&quot;;
+
+// hit by 15% percent chance
+catalogTestA:
+    Traffic(.15, &quot;catalog-test&quot;, &quot;A&quot;) -&gt;
+    responseCookie(&quot;catalog-test&quot;, &quot;A&quot;) -&gt;
+    &quot;https://catalog-test-a&quot;;
+
+// hit by 30% percent chance
+catalogTestB:
+    Traffic(.3, &quot;catalog-test&quot;, &quot;B&quot;) -&gt;
+    responseCookie(&quot;catalog-test&quot;, &quot;B&quot;) -&gt;
+    &quot;https://catalog-test-b&quot;;
+
+// hit by remaining chance
+catalog:
+    * -&gt;
+    responseCookie(&quot;catalog-test&quot;, &quot;default&quot;) -&gt;
+    &quot;https://catalog&quot;;
+</code></pre></div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>var base_url = '..';</script>
+        <script src="../js/base.js"></script>
+        <script src="../search/require.js"></script>
+        <script src="../search/search.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form role="form">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="Keyboard Shortcuts Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Keyboard Shortcuts</h4>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td><kbd>&larr;</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td><kbd>&rarr;</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    </body>
+</html>

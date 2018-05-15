@@ -144,12 +144,14 @@
     <ul class="nav bs-sidenav">
         <li class="main active"><a href="#skipper-ingress-controller">Skipper Ingress Controller</a></li>
             <li><a href="#why-you-should-use-skipper-as-ingress-controller">Why you should use skipper as ingress controller?</a></li>
-            <li><a href="#what-is-an-ingress-controller">What is an Ingress-Controller</a></li>
+            <li><a href="#what-is-an-ingress-controller">What is an Ingress-Controller?</a></li>
+            <li><a href="#why-skipper-uses-endpoints-and-not-services">Why skipper uses endpoints and not services?</a></li>
             <li><a href="#aws-deployment">AWS deployment</a></li>
             <li><a href="#baremetal-deployment">Baremetal deployment</a></li>
             <li><a href="#requirements">Requirements</a></li>
         <li class="main "><a href="#install-skipper-as-ingress-controller">Install Skipper as ingress-controller</a></li>
             <li><a href="#multiple-skipper-deployments">Multiple skipper deployments</a></li>
+            <li><a href="#install-skipper-with-enabled-rbac">Install Skipper with enabled RBAC</a></li>
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
@@ -169,7 +171,7 @@ provide many features. Skipper has advanced resiliency and deployment
 features, that you can use to enhance your environment. For example
 ratelimits, circuitbreakers, blue-green deployments, shadow traffic
 and <a href="../ingress-usage/">more</a>.</p>
-<h2 id="what-is-an-ingress-controller">What is an Ingress-Controller</h2>
+<h2 id="what-is-an-ingress-controller">What is an Ingress-Controller?</h2>
 <p>Ingress-controllers are serving http requests into a kubernetes
 cluster. Most of the time traffic will pass ingress got to a
 kubernetes service IP which will forward the packets to kubernetes PODs
@@ -184,11 +186,28 @@ to some stable IP addresses that act as a loadbalancer.</p>
 <p>You would point your DNS entries to the
 loadbalancer in front of skipper, for example automated using
 <a href="https://github.com/kubernetes-incubator/external-dns">external-dns</a>.</p>
+<h2 id="why-skipper-uses-endpoints-and-not-services">Why skipper uses endpoints and not services?</h2>
+<p>Skipper does not use <a href="http://kubernetes.io/docs/user-guide/services">Kubernetes
+Services</a> to route
+traffic to the pods. Instead it uses the Endpoints API to bypass
+kube-proxy created iptables to remove overhead like conntrack entries
+for iptables DNAT. Skipper can also reuse connections to PODs, such
+that you have no overhead in establishing connections all the time. To
+prevent errors on node failures, skipper also does automatically
+retries to another endpoint in case it gets a connection refused or
+TLS handshake error to the endpoint.  Other reasons are future support
+of features like session affinity, different loadbalancer
+algorithms or distributed loadbalancing also known as service mesh.</p>
 <h2 id="aws-deployment">AWS deployment</h2>
 <p>In AWS, this could be an ALB with DNS pointing to the ALB. The ALB can
 then point to an ingress-controller running on an EC2 node and uses
 Kubernetes <code>hostnetwork</code> port specification in the POD spec.</p>
-<p><img alt="ingress-traffic-flow" src="../../img/ingress-traffic-flow-aws.svg" /></p>
+<p>A logical overview of the traffic flow in AWS is shown in this picture:</p>
+<p><img alt="logical ingress-traffic-flow" src="../../img/ingress-traffic-flow-aws.svg" /></p>
+<p>We described that skipper bypasses Kubernetes Service and use directly
+endpoints for <a href="https://opensource.zalando.com/skipper/kubernetes/ingress-controller/#why-skipper-uses-endpoints-and-not-services">good reasons</a>,
+therefore the real traffic flow is shown in the next picture.
+<img alt="technical ingress-traffic-flow" src="../../img/ingress-traffic-flow-aws-technical.svg" /></p>
 <h2 id="baremetal-deployment">Baremetal deployment</h2>
 <p>In datacenter, baremetal environments, you probably have a hardware
 loadbalancer or some haproxy or nginx setup, that serves most of your
@@ -236,7 +255,7 @@ metadata:
   namespace: kube-system
   labels:
     application: skipper-ingress
-    version: v0.9.115
+    version: v0.10.5
     component: ingress
 spec:
   selector:
@@ -249,7 +268,7 @@ spec:
       name: skipper-ingress
       labels:
         application: skipper-ingress
-        version: v0.9.115
+        version: v0.10.5
         component: ingress
       annotations:
         scheduler.alpha.kubernetes.io/critical-pod: ''
@@ -267,7 +286,7 @@ spec:
       hostNetwork: true
       containers:
       - name: skipper-ingress
-        image: registry.opensource.zalan.do/pathfinder/skipper:v0.9.115
+        image: registry.opensource.zalan.do/pathfinder/skipper:v0.10.5
         ports:
         - name: ingress-port
           containerPort: 9999
@@ -282,10 +301,10 @@ spec:
           - "-enable-ratelimits"
           - "-experimental-upgrade"
           - "-metrics-exp-decay-sample"
+          - "-lb-healthcheck-interval=3s"
+          - "-metrics-flavour=codahale,prometheus"
+          - "-enable-connection-metrics"
         resources:
-          limits:
-            cpu: 200m
-            memory: 200Mi
           requests:
             cpu: 25m
             memory: 25Mi
@@ -296,6 +315,9 @@ spec:
           initialDelaySeconds: 5
           timeoutSeconds: 5
 </code></pre>
+<p>Please check, that you are using the <a href="https://github.com/zalando/skipper/releases/latest">latest
+release</a>, we do
+not maintain the <strong>latest</strong> tag.</p>
 <p>We now deploy a simple demo application serving html:</p>
 <pre><code>% cat demo-deployment.yaml
 apiVersion: apps/v1beta1
@@ -311,7 +333,7 @@ spec:
     spec:
       containers:
       - name: skipper-demo
-        image: registry.opensource.zalan.do/pathfinder/skipper:v0.9.117
+        image: registry.opensource.zalan.do/pathfinder/skipper:v0.10.5
         args:
           - "skipper"
           - "-inline-routes"
@@ -324,7 +346,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: sszuecs-demo
+  name: skipper-demo
   labels:
     application: skipper-demo
 spec:
@@ -335,7 +357,7 @@ spec:
       targetPort: 9090
       name: external
   selector:
-    application: sszuecs-demo
+    application: skipper-demo
 </code></pre>
 <p>To deploy both, you have to run:</p>
 <pre><code>% kubectl create -f demo-deployment.yaml
@@ -403,7 +425,113 @@ spec:
       - backend:
           serviceName: app-svc
           servicePort: 80
-</code></pre></div>
+</code></pre>
+<h2 id="install-skipper-with-enabled-rbac">Install Skipper with enabled RBAC</h2>
+<p>If Role-Based Access Control ("RBAC") is enabled you have to create some additional
+resources to enable Skipper to query the Kubernetes API.</p>
+<p>This guide describes all necessary resources to get Skipper up and running in a
+Kubernetes cluster with RBAC enabled but it's highly recommended to read the
+<a href="https://kubernetes.io/docs/admin/authorization/rbac/">RBAC docs</a> to get a better
+understanding which permissions are delegated to Skipper within your Kubernetes cluster.</p>
+<p>First create a new <code>ServiceAccount</code> which will be assigned to the Skipper pods:</p>
+<pre><code>apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: skipper-ingress
+  namespace: kube-system
+</code></pre>
+<p>the required permissions are defined within a <code>ClusterRole</code> resource.</p>
+<p><em>Note: It's important to use a <code>ClusterRole</code> instead of normal <code>Role</code> because otherwise Skipper could only access resources in the namespace the <code>Role</code> was created!</em></p>
+<p>ClusterRole:</p>
+<pre><code>apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRole
+metadata:
+  name: skipper-ingress
+rules:
+- apiGroups: ["extensions"]
+  resources: ["ingresses", ]
+  verbs: ["get", "list"]
+- apiGroups: [""]
+  resources: ["namespaces", "services", "endpoints"]
+  verbs: ["get"]
+</code></pre>
+<p>This <code>ClusterRole</code> defines access to <code>get</code> and <code>list</code> all created ingresses, namespaces, services and endpoints.</p>
+<p>To assign the defined <code>ClusterRole</code> to the previously created <code>ServiceAccount</code>
+a <code>ClusterRoleBinding</code> has to be created:</p>
+<p>ClusterRoleBinding:</p>
+<pre><code>apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: skipper-ingress
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: skipper-ingress
+subjects:
+- kind: ServiceAccount
+  name: skipper-ingress
+  namespace: kube-system
+</code></pre>
+<p>Last but not least the <code>ServiceAccount</code> has to be assigned to the Skipper daemonset.</p>
+<p>daemonset:</p>
+<pre><code>apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: skipper-ingress
+  namespace: kube-system
+  labels:
+    component: ingress
+spec:
+  selector:
+    matchLabels:
+      component: ingress
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      name: skipper-ingress
+      labels:
+        component: ingress
+        application: skipper
+    spec:
+      hostNetwork: true
+      serviceAccountName: skipper-ingress
+      containers:
+      - name: skipper-ingress
+        image: registry.opensource.zalan.do/pathfinder/skipper:v0.10.5
+        ports:
+        - name: ingress-port
+          containerPort: 9999
+          hostPort: 9999
+        - name: metrics-port
+          containerPort: 9911
+        args:
+          - "skipper"
+          - "-kubernetes"
+          - "-kubernetes-in-cluster"
+          - "-address=:9999"
+          - "-proxy-preserve-host"
+          - "-serve-host-metrics"
+          - "-enable-ratelimits"
+          - "-experimental-upgrade"
+          - "-metrics-exp-decay-sample"
+          - "-lb-healthcheck-interval=3s"
+          - "-metrics-flavour=codahale,prometheus"
+          - "-enable-connection-metrics"
+        resources:
+          requests:
+            cpu: 200m
+            memory: 200Mi
+        readinessProbe:
+          httpGet:
+            path: /kube-system/healthz
+            port: 9999
+          initialDelaySeconds: 5
+          timeoutSeconds: 5
+</code></pre>
+<p>Please check, that you are using the <a href="https://github.com/zalando/skipper/releases/latest">latest
+release</a>, we do
+not maintain the <strong>latest</strong> tag.</p></div>
         </div>
 
         <footer class="col-md-12">

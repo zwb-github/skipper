@@ -108,6 +108,10 @@
 <li >
     <a href="../ingress-usage/">Ingress Usage</a>
 </li>
+                            
+<li >
+    <a href="../ingress-backends/">Ingress Backends</a>
+</li>
                         </ul>
                     </li>
                     <li >
@@ -152,6 +156,7 @@
         <li class="main "><a href="#install-skipper-as-ingress-controller">Install Skipper as ingress-controller</a></li>
             <li><a href="#multiple-skipper-deployments">Multiple skipper deployments</a></li>
             <li><a href="#install-skipper-with-enabled-rbac">Install Skipper with enabled RBAC</a></li>
+            <li><a href="#helm-based-deployment">Helm-based deployment</a></li>
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
@@ -174,7 +179,7 @@ and <a href="../ingress-usage/">more</a>.</p>
 <h2 id="what-is-an-ingress-controller">What is an Ingress-Controller?</h2>
 <p>Ingress-controllers are serving http requests into a kubernetes
 cluster. Most of the time traffic will pass ingress got to a
-kubernetes service IP which will forward the packets to kubernetes PODs
+kubernetes service IP which will forward the packets to kubernetes Pods
 selected by the kubernetes service.
 For having a successful ingress, you need to have a DNS name pointing
 to some stable IP addresses that act as a loadbalancer.</p>
@@ -191,7 +196,7 @@ loadbalancer in front of skipper, for example automated using
 Services</a> to route
 traffic to the pods. Instead it uses the Endpoints API to bypass
 kube-proxy created iptables to remove overhead like conntrack entries
-for iptables DNAT. Skipper can also reuse connections to PODs, such
+for iptables DNAT. Skipper can also reuse connections to Pods, such
 that you have no overhead in establishing connections all the time. To
 prevent errors on node failures, skipper also does automatically
 retries to another endpoint in case it gets a connection refused or
@@ -201,7 +206,7 @@ algorithms or distributed loadbalancing also known as service mesh.</p>
 <h2 id="aws-deployment">AWS deployment</h2>
 <p>In AWS, this could be an ALB with DNS pointing to the ALB. The ALB can
 then point to an ingress-controller running on an EC2 node and uses
-Kubernetes <code>hostnetwork</code> port specification in the POD spec.</p>
+Kubernetes <code>hostnetwork</code> port specification in the Pod spec.</p>
 <p>A logical overview of the traffic flow in AWS is shown in this picture:</p>
 <p><img alt="logical ingress-traffic-flow" src="../../img/ingress-traffic-flow-aws.svg" /></p>
 <p>We described that skipper bypasses Kubernetes Service and use directly
@@ -231,7 +236,7 @@ layer 4 loadbalancer to route and manipulate HTTP data.</p>
 <li>layer 4 loadbalancer has <code>1.2.3.4:80</code> as socket for a virtual server pointing to all skipper ingress</li>
 <li><code>*.ingress.example.com</code> points to 1.2.3.4</li>
 <li>ingress object with host entry for <code>myapp.ingress.example.com</code> targets a service type ClusterIP</li>
-<li>service type ClusterIP has a selector that targets your PODs of your myapp deployment</li>
+<li>service type ClusterIP has a selector that targets your Pods of your myapp deployment</li>
 </ul>
 <p>TLS example:</p>
 <ul>
@@ -531,7 +536,42 @@ spec:
 </code></pre>
 <p>Please check, that you are using the <a href="https://github.com/zalando/skipper/releases/latest">latest
 release</a>, we do
-not maintain the <strong>latest</strong> tag.</p></div>
+not maintain the <strong>latest</strong> tag.</p>
+<h2 id="helm-based-deployment">Helm-based deployment</h2>
+<p><a href="https://helm.sh/">Helm</a> calls itself the package manager for Kubernetes and therefore take cares of the deployment of whole applications including resources like services, configurations and so on.</p>
+<p>Skipper is also available as community contributed Helm chart in the public <a href="https://quay.io/repository/">quay.io</a> registry.
+The latest packaged release can be found <a href="https://quay.io/application/baez/skipper">here</a>.
+The source code is available at <a href="https://github.com/baez90/skipper-helm">GitHub</a>.</p>
+<p>The chart includes resource definitions for the following use cases:</p>
+<ul>
+<li>RBAC</li>
+<li>CoreOS <a href="https://github.com/coreos/prometheus-operator">Prometheus-Operator</a></li>
+</ul>
+<p>As this chart is not maintained by the Skipper developers and is still under development only the basic deployment workflow is covered here.
+Check the GitHub repository for all details.</p>
+<p>To be able to deploy the chart you will need the following components:</p>
+<ul>
+<li><code>helm</code> CLI (Install guide <a href="https://github.com/kubernetes/helm">here</a>)</li>
+<li>Helm registry plugin (available <a href="https://github.com/app-registry/appr-helm-plugin">here</a>)</li>
+</ul>
+<p>If your environment is setup correctly you should be able to run <code>helm version --client</code> and <code>helm registry version quay.io</code> and get some information about your tooling without any error.</p>
+<p>It is possible to deploy the chart without any further configuration like this:</p>
+<pre><code>helm registry upgrade quay.io/baez/skipper -- \
+    --install \
+    --wait \
+    "&lt;your release name e.g. skipper&gt;"
+</code></pre>
+<p>The <code>--wait</code> switch can be omitted as it only takes care that Helm is waiting until the chart is completely deployed (meaning all resources are created).</p>
+<p>To update the deployment to a newer version the same command can be used.</p>
+<p>If you have RBAC enabled in your Kubernetes instance you don't have to create all the previously described resources on your own but you can let Helm create them by simply adding one more switch:</p>
+<pre><code>helm registry upgrade quay.io/baez/skipper -- \
+    --install \
+    --wait \
+    --set rbac.create=true \
+    "&lt;your release name e.g. skipper&gt;"
+</code></pre>
+<p>There are some more options available for customization of the chart.
+Check the repository if you need more configuration possibilities.</p></div>
         </div>
 
         <footer class="col-md-12">

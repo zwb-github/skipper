@@ -8,7 +8,7 @@
         
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>Kubernetes - Skipper</title>
+        <title>Ingress Backends - Skipper</title>
         <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
         <link href="../../css/font-awesome-4.5.0.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
@@ -72,45 +72,45 @@
                     <li >
                         <a href="../../deployments/">Deployments</a>
                     </li>
-                    <li class="dropdown active">
+                    <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Data Clients <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             
 <li >
-    <a href="../eskip-file/">Eskip</a>
+    <a href="../../dataclients/eskip-file/">Eskip</a>
 </li>
                             
 <li >
-    <a href="../etcd/">Etcd</a>
+    <a href="../../dataclients/etcd/">Etcd</a>
 </li>
                             
 <li >
-    <a href="../inkeeper-api/">Inkeeper API</a>
-</li>
-                            
-<li class="active">
-    <a href="./">Kubernetes</a>
+    <a href="../../dataclients/inkeeper-api/">Inkeeper API</a>
 </li>
                             
 <li >
-    <a href="../route-string/">Route String</a>
+    <a href="../../dataclients/kubernetes/">Kubernetes</a>
+</li>
+                            
+<li >
+    <a href="../../dataclients/route-string/">Route String</a>
 </li>
                         </ul>
                     </li>
-                    <li class="dropdown">
+                    <li class="dropdown active">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Kubernetes <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             
 <li >
-    <a href="../../kubernetes/ingress-controller/">Ingress Controller Deployment</a>
+    <a href="../ingress-controller/">Ingress Controller Deployment</a>
 </li>
                             
 <li >
-    <a href="../../kubernetes/ingress-usage/">Ingress Usage</a>
+    <a href="../ingress-usage/">Ingress Usage</a>
 </li>
                             
-<li >
-    <a href="../../kubernetes/ingress-backends/">Ingress Backends</a>
+<li class="active">
+    <a href="./">Ingress Backends</a>
 </li>
                         </ul>
                     </li>
@@ -129,12 +129,12 @@
                     </a>
                 </li>
                     <li >
-                        <a rel="next" href="../inkeeper-api/">
+                        <a rel="next" href="../ingress-usage/">
                             <i class="fa fa-arrow-left"></i> Previous
                         </a>
                     </li>
                     <li >
-                        <a rel="prev" href="../route-string/">
+                        <a rel="prev" href="../../operations/">
                             Next <i class="fa fa-arrow-right"></i>
                         </a>
                     </li>
@@ -146,62 +146,71 @@
         <div class="container">
                 <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
-        <li class="main active"><a href="#kubernetes">Kubernetes</a></li>
-            <li><a href="#kubernetes-ingress-controller-deployment">Kubernetes Ingress Controller deployment</a></li>
-            <li><a href="#kubernetes-ingress-usage">Kubernetes Ingress Usage</a></li>
-            <li><a href="#why-to-choose-skipper">Why to choose Skipper?</a></li>
+        <li class="main active"><a href="#kubernetes-backend-deployments">Kubernetes Backend Deployments</a></li>
+            <li><a href="#kubernetes-race-condition-problem">Kubernetes Race Condition problem</a></li>
+            <li><a href="#teardown-strategies">Teardown strategies</a></li>
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
 
-<h1 id="kubernetes">Kubernetes</h1>
-<p>Skipper's Kubernetes dataclient can be used, if you want to run skipper as
-<a href="https://kubernetes.io/docs/concepts/services-networking/ingress/#ingress-controllers">kubernetes-ingress-controller</a>.
-It will get it's route information from provisioned
-<a href="https://kubernetes.io/docs/concepts/services-networking/ingress">Ingress Objects</a>.
-Detailed information you find in our <a href="https://godoc.org/github.com/zalando/skipper/dataclients/kubernetes">godoc for dataclient kubernetes</a>.</p>
-<h2 id="kubernetes-ingress-controller-deployment">Kubernetes Ingress Controller deployment</h2>
-<p>How to <a href="../../kubernetes/ingress-controller/">install skipper ingress-controller</a> for cluster operators.</p>
-<h2 id="kubernetes-ingress-usage">Kubernetes Ingress Usage</h2>
-<p>Find out more <a href="../../kubernetes/ingress-usage/">how to use skipper ingress features</a> for deployers.</p>
-<h2 id="why-to-choose-skipper">Why to choose Skipper?</h2>
-<p>Kubernetes is a fast changing environment and traditional http routers
-are not made for frequently changing routing tables. Skipper is a http
-proxy made to apply updates very often. Skipper is used in
-production with more than 200.000 routing table entries.
-Skipper has Filters to change http data and Predicates to change the
-matching rules, both can combined and chained. You can set these in
-ingress.yaml files to build resiliency patterns like ratelimit or
-circuitbreaker. You can also use them to build more highlevel
-deployment patterns, for example feature toggles, shadow traffic or
-blue-green deployments.</p>
-<p>Skipper's main features:</p>
-<ul>
-<li>Filters - create, update, delete all kind of HTTP data</li>
-<li><a href="https://godoc.org/github.com/zalando/skipper/filters/builtin">collection of base http manipulations</a>: for example manipulating Path, Querystring, ResponseHeader, RequestHeader and redirect handling</li>
-<li><a href="https://godoc.org/github.com/zalando/skipper/filters/cookie">cookie handling</a></li>
-<li><a href="https://godoc.org/github.com/zalando/skipper/filters/circuit">circuitbreakers</a>: consecutiveBreaker or rateBreaker</li>
-<li><a href="https://godoc.org/github.com/zalando/skipper/filters/ratelimit">ratelimit</a>: based on client or backend data</li>
-<li>Shadow traffic: <a href="https://godoc.org/github.com/zalando/skipper/filters/tee">tee()</a></li>
-<li>Predicates - advanced matching capability</li>
-<li>URL Path match: <code>Path("/foo")</code></li>
-<li>Host header match: <code>Host("^www.example.org$")</code></li>
-<li><a href="https://godoc.org/github.com/zalando/skipper/predicates/query">Querystring</a>: <code>QueryParam("featureX")</code></li>
-<li><a href="https://godoc.org/github.com/zalando/skipper/predicates/cookie">Cookie based</a>: <code>Cookie("alpha", /^enabled$/)</code></li>
-<li><a href="https://godoc.org/github.com/zalando/skipper/predicates/source">source whitelist</a>: <code>Source("1.2.3.4/24")</code></li>
-<li><a href="https://godoc.org/github.com/zalando/skipper/predicates/interval">time based interval</a></li>
-<li><a href="https://godoc.org/github.com/zalando/skipper/predicates/traffic">traffic by percentage</a> supports also sticky sessions</li>
-<li>Kubernetes integration</li>
-<li>All Filters and Predicates can be used with 2 annotations<ul>
-<li>Predicates: <code>zalando.org/skipper-predicate</code></li>
-<li>Filters: <code>zalando.org/skipper-filter</code></li>
-</ul>
-</li>
-<li>Custom routes can be defined with the annotation <code>zalando.org/skipper-routes</code></li>
-<li><a href="https://godoc.org/github.com/zalando/skipper/metrics">metrics</a></li>
-<li>access logs</li>
-<li>Blue-Green deployments, with another Ingress annotation <code>zalando.org/backend-weights</code></li>
-</ul></div>
+<h1 id="kubernetes-backend-deployments">Kubernetes Backend Deployments</h1>
+<h2 id="kubernetes-race-condition-problem">Kubernetes Race Condition problem</h2>
+<p>As described in <a href="https://github.com/zalando/skipper/issues/652">#652</a>,
+there is a problem that exists in kubernetes, while terminating Pods.
+Terminating Pods could be graceful, but the nature of distributed
+environments will show failures, because not all components in the
+distributed system changed already their state. When a Pod terminates,
+the controller-manager has to update the <code>endpoints</code> of the kubernetes
+<code>service</code>.  Additionally skipper has to get this endpoints
+list. Skipper polls the kube-apiserver every <code>-source-poll-timeout=&lt;ms&gt;</code>,
+which defaults to 3000.
+Reducing this interval or implementing watch will only reduce the
+timeframe, but not fix the underlying race condition.</p>
+<p>Mitigation strategies can be different and the next section document
+strategies for application developers to mitigate the problem.</p>
+<h2 id="teardown-strategies">Teardown strategies</h2>
+<p>An application that is target of an ingress can circumvent HTTP code
+504s Gateway Timeouts with these strategies:</p>
+<ol>
+<li>use <a href="#pod-lifecycle-hooks">Pod lifecycle hooks</a></li>
+<li>use a SIGTERM handler to switch <code>readinessProbe</code> to unhealthy and
+teardown your application later, probably just waiting until SIGKILL
+will terminate your process.</li>
+</ol>
+<h3 id="pod-lifecycle-hooks">Pod Lifecycle Hooks</h3>
+<p><a href="https://kubernetes.io/docs/tasks/configure-pod-container/attach-handler-lifecycle-event/#define-poststart-and-prestop-handlers">Kubernetes Pod Lifecycle
+Hooks</a>
+in the Pod spec can have a <code>preStop</code> command which executes for
+example a binary. The following will execute the binary <code>sleep</code> with
+argument <code>20</code> to wait 20 seconds before terminating the containers
+within the Pod:</p>
+<pre><code class="yaml">lifecycle:
+  preStop:
+    exec:
+      command: [&quot;sleep&quot;,&quot;20&quot;]
+</code></pre>
+
+<p>20 seconds should be enough to fade your Pod out of the endpoints list
+and skipper's routing table.</p>
+<h3 id="sigterm-handling-in-containers">SIGTERM handling in Containers</h3>
+<p>An application can implement a SIGTERM handler, that changes the
+<code>readinessProbe</code> target to unhealthy for the application
+instance. This will make sure it will be deleted from the endpoints
+list and from skipper's routing table. Similar to <a href="#pod-lifecycle-hooks">Pod Lifecycle
+Hooks</a> you could sleep 20 seconds and after that
+terminate your application or you just wait until SIGKILL will cleanup
+the instance after 60s.</p>
+<pre><code class="go">var sigs chan os.Signal
+sigs = make(chan os.Signal, 1)
+signal.Notify(sigs, syscall.SIGTERM)
+for {
+    select {
+        &lt;-sigs:
+           healthCheck = unhealthy
+    }
+    doWork()
+}
+</code></pre></div>
         </div>
 
         <footer class="col-md-12">

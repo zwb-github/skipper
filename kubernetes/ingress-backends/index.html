@@ -174,8 +174,7 @@ strategies for application developers to mitigate the problem.</p>
 <ol>
 <li>use <a href="#pod-lifecycle-hooks">Pod lifecycle hooks</a></li>
 <li>use a SIGTERM handler to switch <code>readinessProbe</code> to unhealthy and
-teardown your application later, probably just waiting until SIGKILL
-will terminate your process.</li>
+exit later, or just wait for SIGKILL terminating the process.</li>
 </ol>
 <h3 id="pod-lifecycle-hooks">Pod Lifecycle Hooks</h3>
 <p><a href="https://kubernetes.io/docs/tasks/configure-pod-container/attach-handler-lifecycle-event/#define-poststart-and-prestop-handlers">Kubernetes Pod Lifecycle
@@ -200,15 +199,18 @@ list and from skipper's routing table. Similar to <a href="#pod-lifecycle-hooks"
 Hooks</a> you could sleep 20 seconds and after that
 terminate your application or you just wait until SIGKILL will cleanup
 the instance after 60s.</p>
-<pre><code class="go">var sigs chan os.Signal
-sigs = make(chan os.Signal, 1)
-signal.Notify(sigs, syscall.SIGTERM)
-for {
-    select {
-        &lt;-sigs:
-           healthCheck = unhealthy
+<pre><code class="go">go func() {
+    var sigs chan os.Signal
+    sigs = make(chan os.Signal, 1)
+    signal.Notify(sigs, syscall.SIGTERM)
+    for {
+        select {
+            case &lt;-sigs:
+               healthCheck = unhealthy
+               time.Sleep(20*time.Second)
+               os.Exit(0)
+        }
     }
-    doWork()
 }
 </code></pre></div>
         </div>

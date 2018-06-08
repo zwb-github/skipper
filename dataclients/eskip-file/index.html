@@ -158,14 +158,14 @@ shows your route definitions in a clear way:</p>
 <pre><code>% cat example.eskip
 hello: Path("/hello") -&gt; "https://www.example.org"'
 </code></pre>
-<p>The <a href="https://github.com/zalando/skipper">skipper project</a> has two
+<p>The <a href="https://github.com/zalando/skipper">Skipper project</a> has two
 binaries, one is <code>skipper</code>, the other is <code>eskip</code>.
 <a href="https://godoc.org/github.com/zalando/skipper/cmd/eskip">Eskip</a>
 can be used to validate the syntax of your routes file before
 reloading a production server:</p>
 <pre><code>% eskip check example.eskip
 </code></pre>
-<p>To run skipper serving routes from an <code>eskip</code> file you have to use
+<p>To run Skipper serving routes from an <code>eskip</code> file you have to use
 <code>-routes-file &lt;file&gt;</code> parameter:</p>
 <pre><code>% skipper -routes-file example.eskip
 </code></pre>

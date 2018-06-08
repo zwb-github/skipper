@@ -151,6 +151,7 @@
             <li><a href="#supported-service-types">Supported Service types</a></li>
         <li class="main "><a href="#basics">Basics</a></li>
             <li><a href="#http-host-header-routing">HTTP Host header routing</a></li>
+            <li><a href="#ingress-path-handling">Ingress path handling</a></li>
             <li><a href="#filters-and-predicates">Filters and Predicates</a></li>
             <li><a href="#custom-routes">Custom Routes</a></li>
         <li class="main "><a href="#filters-basic-http-manipulations">Filters - Basic HTTP manipulations</a></li>
@@ -252,7 +253,7 @@ features Skipper provides</p>
 <tr>
 <td>LoadBalancer</td>
 <td>no</td>
-<td>it should not, because kubernetes cloud-controller-manager will maintain it</td>
+<td>it should not, because Kubernetes cloud-controller-manager will maintain it</td>
 </tr>
 </tbody>
 </table>
@@ -276,7 +277,7 @@ spec:
 </code></pre>
 <p>To have 2 routes with different <code>Host</code> headers serving the same
 backends, you have to specify 2 entries in the rules section, as
-kubernetes defined the ingress spec. This is often used in cases of
+Kubernetes defined the ingress spec. This is often used in cases of
 migrations from one domain to another one or migrations to or from
 bare metal datacenters to cloud providers or inter cloud or intra
 cloud providers migrations. Examples are AWS account migration, AWS to
@@ -301,6 +302,36 @@ spec:
           serviceName: app-svc
           servicePort: 80
 </code></pre>
+<h2 id="ingress-path-handling">Ingress path handling</h2>
+<p>Ingress paths can be interpreted in four different modes:</p>
+<ol>
+<li>based on the kubernetes ingress specification</li>
+<li>as plain regular expression</li>
+<li>as a path prefix</li>
+</ol>
+<p>The default is the kubernetes ingress mode. It can be changed by a startup option
+to any of the other modes, and the individual ingress rules can also override the
+default behavior with the zalando.org/skipper-ingress-path-mode annotation.</p>
+<p>E.g.:</p>
+<pre><code>zalando.org/skipper-ingress-path-mode: path-prefix
+</code></pre>
+<h3 id="kubernetes-ingress-specification-base-path">Kubernetes ingress specification base path</h3>
+<p>By default, the ingress path is interpreted as a regular expression with a
+mandatory leading "/", and is automatically prepended by a "^" control character,
+enforcing that the path has to be at the start of the incoming request path.</p>
+<h3 id="plain-regular-expression">Plain regular expression</h3>
+<p>When the path mode is set to "path-regexp", the ingress path is interpreted similar
+to the default kubernetes ingress specification way, but is not prepended by the "^"
+control character.</p>
+<h3 id="path-prefix">Path prefix</h3>
+<p>When the path mode is set to "path-prefix", the ingress path is not a regular
+expression. As an example, "/foo/bar" will match "/foo/bar" or "/foo/bar/baz", but
+won't match "/foo/barooz".</p>
+<p>When PathPrefix is used, the path matching becomes deterministic when
+a request could match more than one ingress routes otherwise.</p>
+<p>In PathPrefix mode, when a Path or PathSubtree predicate is set in an
+annotation, the predicate in the annotation takes precedence over the normal ingress
+path.</p>
 <h2 id="filters-and-predicates">Filters and Predicates</h2>
 <ul>
 <li><strong>Filters</strong> can manipulate http data, which is not possible in the ingress spec.</li>
@@ -510,7 +541,7 @@ you know how much calls per duration your backend is able to handle.</li>
 </ol>
 <p>Ratelimits are enforced per route.</p>
 <p>More details you will find in <a href="https://godoc.org/github.com/zalando/skipper/filters/ratelimit">ratelimit package</a>
-and <a href="https://godoc.org/github.com/zalando/skipper/dataclients/kubernetes">kubernetes dataclient</a> documentation.</p>
+and <a href="https://godoc.org/github.com/zalando/skipper/dataclients/kubernetes">Kubernetes dataclient</a> documentation.</p>
 <h3 id="client-ratelimits">Client Ratelimits</h3>
 <p>The example shows 20 calls per hour per client, based on
 X-Forwarded-For header or IP incase there is no X-Forwarded-For header

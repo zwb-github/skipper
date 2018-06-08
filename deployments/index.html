@@ -174,16 +174,16 @@ component responsible to route traffic into your
 As deployer you can define an ingress object and an ingress controller
 will make sure incoming traffic gets routed to her backend service as
 defined. Skipper supports this scenario with the
-<a href="../dataclients/kubernetes/">kubernetes dataclient</a> and is used in
+<a href="../dataclients/kubernetes/">Kubernetes dataclient</a> and is used in
 production since end of 2016.</p>
 <p>Skipper as ingress controller does not need to have any file
-configuration or anything external which configures skipper. Skipper
+configuration or anything external which configures Skipper. Skipper
 automatically finds Ingress objects and configures routes
 automatically, without reloading. The only requirement is to target
 all traffic you want to serve with Kubernetes to a loadbalancer pool
-of skippers. This is a clear advantage over other ingress controllers
+of Skippers. This is a clear advantage over other ingress controllers
 like nginx, haproxy or envoy.</p>
-<p>Read more about <a href="../dataclients/kubernetes/">Skipper's kubernetes dataclient</a>.</p>
+<p>Read more about <a href="../dataclients/kubernetes/">Skipper's Kubernetes dataclient</a>.</p>
 <h2 id="inkeeper-routes-api">Inkeeper Routes API</h2>
 <p><a href="https://github.com/zalando/skipper">Skipper</a> can read from an
 <a href="https://github.com/zalando/innkeeper">Inkeeper API</a>, if you like to

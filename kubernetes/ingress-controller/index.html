@@ -155,6 +155,7 @@
             <li><a href="#requirements">Requirements</a></li>
         <li class="main "><a href="#install-skipper-as-ingress-controller">Install Skipper as ingress-controller</a></li>
             <li><a href="#multiple-skipper-deployments">Multiple skipper deployments</a></li>
+            <li><a href="#scoping-skipper-deployments-to-a-single-namespace">Scoping Skipper Deployments to a Single Namespace</a></li>
             <li><a href="#install-skipper-with-enabled-rbac">Install Skipper with enabled RBAC</a></li>
             <li><a href="#helm-based-deployment">Helm-based deployment</a></li>
     </ul>
@@ -431,6 +432,14 @@ spec:
           serviceName: app-svc
           servicePort: 80
 </code></pre>
+<h2 id="scoping-skipper-deployments-to-a-single-namespace">Scoping Skipper Deployments to a Single Namespace</h2>
+<p>In some instances you might want skipper to only watch for ingress objects
+created in a single namespace. This can be achieved by using
+<code>kubernetes-namespace=&lt;string&gt;</code> where <code>&lt;string&gt;</code> is the Kubernetes namespace.
+Specifying this option forces Skipper to look at the namespace ingresses
+endpoint rather than the cluster-wide ingresses endpoint.</p>
+<p>By default this value is an empty string (<code>""</code>) and will scope the skipper
+instance to be cluster-wide, watching all <code>Ingress</code> objects across all namespaces.</p>
 <h2 id="install-skipper-with-enabled-rbac">Install Skipper with enabled RBAC</h2>
 <p>If Role-Based Access Control ("RBAC") is enabled you have to create some additional
 resources to enable Skipper to query the Kubernetes API.</p>

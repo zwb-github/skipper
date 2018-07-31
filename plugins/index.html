@@ -166,6 +166,9 @@ be present in the main skipper repository.</p>
 <pre><code>// The plugin support is currently incomplete, only supports Linux,
 // and has known bugs. Please report any issues.
 </code></pre>
+<p>Note the known problem of using plugins together with vendoring, best
+described here:</p>
+<p>https://github.com/golang/go/issues/20481</p>
 <h2 id="plugin-directories">Plugin directories</h2>
 <p>Plugins are loaded from sub directories of the plugin directories. By default
 the plugin directory is set to <code>./plugins</code> (i.e. relative to skipper's working

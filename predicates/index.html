@@ -155,6 +155,7 @@
             <li><a href="#header">Header</a></li>
             <li><a href="#headerregexp">HeaderRegexp</a></li>
             <li><a href="#cookie">Cookie</a></li>
+            <li><a href="#auth">Auth</a></li>
             <li><a href="#interval">Interval</a></li>
             <li><a href="#queryparam">QueryParam</a></li>
             <li><a href="#source">Source</a></li>
@@ -278,6 +279,34 @@ HeaderRegexp(&quot;Accept&quot;, &quot;application/(json|xml)&quot;)
 </ul>
 <p>Examples:</p>
 <pre><code>Cookie(&quot;alpha&quot;, /^enabled$/)
+</code></pre>
+
+<h2 id="auth">Auth</h2>
+<p>Authorization header based match.</p>
+<h3 id="jwtpayloadanykv">JWTPayloadAnyKV</h3>
+<p>Match the route if at least one of the base64 decoded JWT content
+matches the key value configuration.</p>
+<p>Parameters:</p>
+<ul>
+<li>Key-Value pairs (...string), odd index is the key of the JWT
+  content and even index is the value of the JWT content</li>
+</ul>
+<p>Examples:</p>
+<pre><code>JWTPayloadAnyKV(&quot;iss&quot;, &quot;https://accounts.google.com&quot;)
+JWTPayloadAnyKV(&quot;iss&quot;, &quot;https://accounts.google.com&quot;, &quot;email&quot;, &quot;skipper-router@googlegroups.com&quot;)
+</code></pre>
+
+<h3 id="jwtpayloadallkv">JWTPayloadAllKV</h3>
+<p>Match the route if all of the base64 decoded JWT content
+matches the key value configuration.</p>
+<p>Parameters:</p>
+<ul>
+<li>Key-Value pairs (...string), odd index is the key of the JWT
+  content and even index is the value of the JWT content</li>
+</ul>
+<p>Examples:</p>
+<pre><code>JWTPayloadAllKV(&quot;iss&quot;, &quot;https://accounts.google.com&quot;)
+JWTPayloadAllKV(&quot;iss&quot;, &quot;https://accounts.google.com&quot;, &quot;email&quot;, &quot;skipper-router@googlegroups.com&quot;)
 </code></pre>
 
 <h2 id="interval">Interval</h2>

@@ -150,6 +150,7 @@
         <li class="main "><a href="#connection-options">Connection Options</a></li>
             <li><a href="#backend">Backend</a></li>
             <li><a href="#client">Client</a></li>
+            <li><a href="#oauth2-tokeninfo">OAuth2 Tokeninfo</a></li>
         <li class="main "><a href="#monitoring">Monitoring</a></li>
             <li><a href="#prometheus">Prometheus</a></li>
             <li><a href="#connection-metrics">Connection metrics</a></li>
@@ -259,6 +260,11 @@ size of the http header from your clients.</p>
 <pre><code>-max-header-bytes int
     set MaxHeaderBytes for http server connections (default 1048576)
 </code></pre>
+<h2 id="oauth2-tokeninfo">OAuth2 Tokeninfo</h2>
+<p>OAuth2 filters integrate with external services and have their own
+connection handling. Outgoing calls to these services have a
+default timeout of 2s, which can be changed by the flag
+<code>-oauth2-tokeninfo-timeout=&lt;OAuthTokeninfoTimeout&gt;</code>.</p>
 <h1 id="monitoring">Monitoring</h1>
 <p>Monitoring is one of the most important things you need to run in
 production and skipper has a <a href="https://godoc.org/github.com/zalando/skipper">godoc page</a>
@@ -495,6 +501,13 @@ Content-Type: text/plain
 X-Count: 1
 X-Timestamp: 1517777628
 Date: Sun, 04 Feb 2018 20:54:31 GMT
+</code></pre>
+<p>The number of routes given is limited (1024 routes by default).
+In order to control this limits, there are two parameters: <code>limit</code> and
+<code>offset</code>. The <code>limit</code> defines the number of routes to get and
+<code>offset</code> where to start the list. Thanks to this, it's possible
+to get the results paginated or getting all of them at the same time.</p>
+<pre><code>% curl localhost:9911/routes?offset=200&amp;limit=100
 </code></pre></div>
         </div>
 

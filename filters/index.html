@@ -180,6 +180,10 @@
             <li><a href="#oauthtokeninfoallscope">oauthTokeninfoAllScope</a></li>
             <li><a href="#oauthtokeninfoanykv">oauthTokeninfoAnyKV</a></li>
             <li><a href="#oauthtokeninfoallkv">oauthTokeninfoAllKV</a></li>
+            <li><a href="#oauthtokenintrospectionanyclaims">oauthTokenintrospectionAnyClaims</a></li>
+            <li><a href="#oauthtokenintrospectionallclaims">oauthTokenintrospectionAllClaims</a></li>
+            <li><a href="#oauthtokenintrospectionanykv">oauthTokenintrospectionAnyKV</a></li>
+            <li><a href="#oauthtokenintrospectionallkv">oauthTokenintrospectionAllKV</a></li>
             <li><a href="#requestcookie">requestCookie</a></li>
             <li><a href="#responsecookie">responseCookie</a></li>
             <li><a href="#jscookie">jsCookie</a></li>
@@ -468,10 +472,11 @@ basicAuth(&quot;/path/to/htpasswd&quot;, &quot;My Website&quot;)
 <h2 id="oauthtokeninfoanyscope">oauthTokeninfoAnyScope</h2>
 <p>If skipper is started with <code>-oauth2-tokeninfo-url</code> flag, you can use
 this filter.</p>
-<p>The filter accepts variable arguments of strings, which are used to
-validate the incoming token. If any of the configured scopes from the
-filter is found inside the tokeninfo result for the incoming token, it will allow
-the request to pass.</p>
+<p>The filter accepts variable number of string arguments, which are used to
+validate the incoming token from the <code>Authorization: Bearer &lt;token&gt;</code>
+header. If any of the configured scopes from the filter is found
+inside the tokeninfo result for the incoming token, it will allow the
+request to pass.</p>
 <p>Examples:</p>
 <pre><code>oauthTokeninfoAnyScope(&quot;s1&quot;, &quot;s2&quot;, &quot;s3&quot;)
 </code></pre>
@@ -479,10 +484,11 @@ the request to pass.</p>
 <h2 id="oauthtokeninfoallscope">oauthTokeninfoAllScope</h2>
 <p>If skipper is started with <code>-oauth2-tokeninfo-url</code> flag, you can use
 this filter.</p>
-<p>The filter accepts variable arguments of strings, which are used to
-validate the incoming token. If all of the configured scopes from the
-filter are found inside the tokeninfo result for the incoming token,
-it will allow the request to pass.</p>
+<p>The filter accepts variable number of string arguments, which are used to
+validate the incoming token from the <code>Authorization: Bearer &lt;token&gt;</code>
+header. If all of the configured scopes from the filter are found
+inside the tokeninfo result for the incoming token, it will allow the
+request to pass.</p>
 <p>Examples:</p>
 <pre><code>oauthTokeninfoAllScope(&quot;s1&quot;, &quot;s2&quot;, &quot;s3&quot;)
 </code></pre>
@@ -491,10 +497,10 @@ it will allow the request to pass.</p>
 <p>If skipper is started with <code>-oauth2-tokeninfo-url</code> flag, you can use
 this filter.</p>
 <p>The filter accepts an even number of variable arguments of type
-string, which are used to validate the incoming token. If any of the
-configured key value pairs from the filter is found inside the
-tokeninfo result for the incoming token, it will allow the request to
-pass.</p>
+string, which are used to validate the incoming token from the
+<code>Authorization: Bearer &lt;token&gt;</code> header. If any of the configured key
+value pairs from the filter is found inside the tokeninfo result for
+the incoming token, it will allow the request to pass.</p>
 <p>Examples:</p>
 <pre><code>oauthTokeninfoAnyKV(&quot;k1&quot;, &quot;v1&quot;, &quot;k2&quot;, &quot;v2&quot;)
 </code></pre>
@@ -503,12 +509,70 @@ pass.</p>
 <p>If skipper is started with <code>-oauth2-tokeninfo-url</code> flag, you can use
 this filter.</p>
 <p>The filter accepts an even number of variable arguments of type
-string, which are used to validate the incoming token. If all of the
-configured key value pairs from the filter are found inside the
-tokeninfo result for the incoming token, it will allow the request to
-pass.</p>
+string, which are used to validate the incoming token from the
+<code>Authorization: Bearer &lt;token&gt;</code> header. If all of the configured key
+value pairs from the filter are found inside the tokeninfo result for
+the incoming token, it will allow the request to pass.</p>
 <p>Examples:</p>
 <pre><code>oauthTokeninfoAllKV(&quot;k1&quot;, &quot;v1&quot;, &quot;k2&quot;, &quot;v2&quot;)
+</code></pre>
+
+<h2 id="oauthtokenintrospectionanyclaims">oauthTokenintrospectionAnyClaims</h2>
+<p>The filter accepts variable number of string arguments, which are used
+to validate the incoming token from the <code>Authorization: Bearer
+&lt;token&gt;</code> header. The first argument to the filter is the issuer URL,
+for example <code>https://accounts.google.com</code>, that will be used as
+described in <a href="https://tools.ietf.org/html/draft-ietf-oauth-discovery-06#section-5">RFC Draft</a>
+to find the configuration and for example supported claims.</p>
+<p>If one of the configured and supported claims from the filter are
+found inside the tokenintrospection (RFC7662) result for the incoming
+token, it will allow the request to pass.</p>
+<p>Examples:</p>
+<pre><code>oauthTokenintrospectionAnyClaims(&quot;c1&quot;, &quot;c2&quot;, &quot;c3&quot;)
+</code></pre>
+
+<h2 id="oauthtokenintrospectionallclaims">oauthTokenintrospectionAllClaims</h2>
+<p>The filter accepts variable number of string arguments, which are used
+to validate the incoming token from the <code>Authorization: Bearer
+&lt;token&gt;</code> header. The first argument to the filter is the issuer URL,
+for example <code>https://accounts.google.com</code>, that will be used as
+described in <a href="https://tools.ietf.org/html/draft-ietf-oauth-discovery-06#section-5">RFC Draft</a>
+to find the configuration and for example supported claims.</p>
+<p>If all of the configured and supported claims from the filter are
+found inside the tokenintrospection (RFC7662) result for the incoming
+token, it will allow the request to pass.</p>
+<p>Examples:</p>
+<pre><code>oauthTokenintrospectionAllClaims(&quot;c1&quot;, &quot;c2&quot;, &quot;c3&quot;)
+</code></pre>
+
+<h2 id="oauthtokenintrospectionanykv">oauthTokenintrospectionAnyKV</h2>
+<p>The filter accepts an even number of variable arguments of type
+string, which are used to validate the incoming token from the
+<code>Authorization: Bearer &lt;token&gt;</code> header.  The first argument to the
+filter is the issuer URL, for example <code>https://accounts.google.com</code>,
+that will be used as described in
+<a href="https://tools.ietf.org/html/draft-ietf-oauth-discovery-06#section-5">RFC Draft</a>
+to find the configuration and for example supported claims.</p>
+<p>If one of the configured key value pairs from the filter are found
+inside the tokenintrospection (RFC7662) result for the incoming token,
+it will allow the request to pass.</p>
+<p>Examples:</p>
+<pre><code>oauthTokenintrospectionAnyKV(&quot;k1&quot;, &quot;v1&quot;, &quot;k2&quot;, &quot;v2&quot;)
+</code></pre>
+
+<h2 id="oauthtokenintrospectionallkv">oauthTokenintrospectionAllKV</h2>
+<p>The filter accepts an even number of variable arguments of type
+string, which are used to validate the incoming token from the
+<code>Authorization: Bearer &lt;token&gt;</code> header.  The first argument to the
+filter is the issuer URL, for example <code>https://accounts.google.com</code>,
+that will be used as described in
+<a href="https://tools.ietf.org/html/draft-ietf-oauth-discovery-06#section-5">RFC Draft</a>
+to find the configuration and for example supported claims.</p>
+<p>If all of the configured key value pairs from the filter are found
+inside the tokenintrospection (RFC7662) result for the incoming token,
+it will allow the request to pass.</p>
+<p>Examples:</p>
+<pre><code>oauthTokenintrospectionAllKV(&quot;k1&quot;, &quot;v1&quot;, &quot;k2&quot;, &quot;v2&quot;)
 </code></pre>
 
 <h2 id="requestcookie">requestCookie</h2>

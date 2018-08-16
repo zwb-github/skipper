@@ -151,6 +151,7 @@
             <li><a href="#backend">Backend</a></li>
             <li><a href="#client">Client</a></li>
             <li><a href="#oauth2-tokeninfo">OAuth2 Tokeninfo</a></li>
+            <li><a href="#oauth2-tokenintrospection-rfc7662">OAuth2 Tokenintrospection RFC7662</a></li>
         <li class="main "><a href="#monitoring">Monitoring</a></li>
             <li><a href="#prometheus">Prometheus</a></li>
             <li><a href="#connection-metrics">Connection metrics</a></li>
@@ -265,6 +266,11 @@ size of the http header from your clients.</p>
 connection handling. Outgoing calls to these services have a
 default timeout of 2s, which can be changed by the flag
 <code>-oauth2-tokeninfo-timeout=&lt;OAuthTokeninfoTimeout&gt;</code>.</p>
+<h2 id="oauth2-tokenintrospection-rfc7662">OAuth2 Tokenintrospection RFC7662</h2>
+<p>OAuth2 filters integrate with external services and have their own
+connection handling. Outgoing calls to these services have a
+default timeout of 2s, which can be changed by the flag
+<code>-oauth2-tokenintrospect-timeout=&lt;OAuthTokenintrospectionTimeout&gt;</code>.</p>
 <h1 id="monitoring">Monitoring</h1>
 <p>Monitoring is one of the most important things you need to run in
 production and skipper has a <a href="https://godoc.org/github.com/zalando/skipper">godoc page</a>

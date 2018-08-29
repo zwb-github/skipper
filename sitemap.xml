@@ -1,120 +1,88 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-
-    
     <url>
-     <loc>/</loc>
-     <lastmod>2018-08-16</lastmod>
+     <loc>None</loc>
+     <lastmod>2018-08-29</lastmod>
      <changefreq>daily</changefreq>
     </url>
-    
-
-    
-        
     <url>
-     <loc>/filters/</loc>
-     <lastmod>2018-08-16</lastmod>
+     <loc>None</loc>
+     <lastmod>2018-08-29</lastmod>
      <changefreq>daily</changefreq>
     </url>
-        
     <url>
-     <loc>/predicates/</loc>
-     <lastmod>2018-08-16</lastmod>
+     <loc>None</loc>
+     <lastmod>2018-08-29</lastmod>
      <changefreq>daily</changefreq>
     </url>
-        
     <url>
-     <loc>/scripts/</loc>
-     <lastmod>2018-08-16</lastmod>
+     <loc>None</loc>
+     <lastmod>2018-08-29</lastmod>
      <changefreq>daily</changefreq>
     </url>
-        
     <url>
-     <loc>/plugins/</loc>
-     <lastmod>2018-08-16</lastmod>
+     <loc>None</loc>
+     <lastmod>2018-08-29</lastmod>
      <changefreq>daily</changefreq>
     </url>
-        
-    
-
-    
     <url>
-     <loc>/deployments/</loc>
-     <lastmod>2018-08-16</lastmod>
+     <loc>None</loc>
+     <lastmod>2018-08-29</lastmod>
      <changefreq>daily</changefreq>
     </url>
-    
-
-    
-        
     <url>
-     <loc>/dataclients/eskip-file/</loc>
-     <lastmod>2018-08-16</lastmod>
+     <loc>None</loc>
+     <lastmod>2018-08-29</lastmod>
      <changefreq>daily</changefreq>
     </url>
-        
     <url>
-     <loc>/dataclients/etcd/</loc>
-     <lastmod>2018-08-16</lastmod>
+     <loc>None</loc>
+     <lastmod>2018-08-29</lastmod>
      <changefreq>daily</changefreq>
     </url>
-        
     <url>
-     <loc>/dataclients/innkeeper-api/</loc>
-     <lastmod>2018-08-16</lastmod>
+     <loc>None</loc>
+     <lastmod>2018-08-29</lastmod>
      <changefreq>daily</changefreq>
     </url>
-        
     <url>
-     <loc>/dataclients/kubernetes/</loc>
-     <lastmod>2018-08-16</lastmod>
+     <loc>None</loc>
+     <lastmod>2018-08-29</lastmod>
      <changefreq>daily</changefreq>
     </url>
-        
     <url>
-     <loc>/dataclients/route-string/</loc>
-     <lastmod>2018-08-16</lastmod>
+     <loc>None</loc>
+     <lastmod>2018-08-29</lastmod>
      <changefreq>daily</changefreq>
     </url>
-        
-    
-
-    
-        
     <url>
-     <loc>/kubernetes/ingress-controller/</loc>
-     <lastmod>2018-08-16</lastmod>
+     <loc>None</loc>
+     <lastmod>2018-08-29</lastmod>
      <changefreq>daily</changefreq>
     </url>
-        
     <url>
-     <loc>/kubernetes/ingress-usage/</loc>
-     <lastmod>2018-08-16</lastmod>
+     <loc>None</loc>
+     <lastmod>2018-08-29</lastmod>
      <changefreq>daily</changefreq>
     </url>
-        
     <url>
-     <loc>/kubernetes/ingress-backends/</loc>
-     <lastmod>2018-08-16</lastmod>
+     <loc>None</loc>
+     <lastmod>2018-08-29</lastmod>
      <changefreq>daily</changefreq>
     </url>
-        
-    
-
-    
     <url>
-     <loc>/operations/</loc>
-     <lastmod>2018-08-16</lastmod>
+     <loc>None</loc>
+     <lastmod>2018-08-29</lastmod>
      <changefreq>daily</changefreq>
     </url>
-    
-
-    
     <url>
-     <loc>/videos/</loc>
-     <lastmod>2018-08-16</lastmod>
+     <loc>None</loc>
+     <lastmod>2018-08-29</lastmod>
      <changefreq>daily</changefreq>
     </url>
-    
-
+    <url>
+     <loc>None</loc>
+     <lastmod>2018-08-29</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
 </urlset>

@@ -8,7 +8,7 @@
         
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>Etcd - Skipper</title>
+        <title>Video - How to build - Skipper</title>
         <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
         <link href="../../css/font-awesome.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
@@ -47,55 +47,79 @@
                         <!-- Main navigation -->
                         <ul class="nav navbar-nav">
                             <li >
-                                <a href="../..">Architecture</a>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Basics <b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    
-<li >
-    <a href="../../filters/">Filters</a>
-</li>
-                                    
-<li >
-    <a href="../../predicates/">Predicates</a>
-</li>
-                                    
-<li >
-    <a href="../../scripts/">Scripts</a>
-</li>
-                                    
-<li >
-    <a href="../../plugins/">Plugins</a>
-</li>
-                                </ul>
-                            </li>
-                            <li >
-                                <a href="../../deployments/">Deployments</a>
+                                <a href="../..">Introduction</a>
                             </li>
                             <li class="dropdown active">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Data Clients <b class="caret"></b></a>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     
 <li >
-    <a href="../eskip-file/">Eskip</a>
+    <a href="../../reference/filters/">Filters</a>
+</li>
+                                    
+<li >
+    <a href="../../reference/predicates/">Predicates</a>
+</li>
+                                    
+<li >
+    <a href="../../reference/scripts/">Scripts</a>
+</li>
+                                    
+<li >
+    <a href="../../reference/plugins/">Plugins</a>
+</li>
+                                    
+<li >
+    <a href="../../reference/architecture/">Architecture</a>
+</li>
+                                    
+<li >
+    <a href="../../reference/development/">Development</a>
 </li>
                                     
 <li class="active">
-    <a href="./">Etcd</a>
+    <a href="./">Video - How to build</a>
 </li>
                                     
+  <li class="dropdown-submenu">
+    <a href="#">Data Clients</a>
+    <ul class="dropdown-menu">
+            
 <li >
-    <a href="../innkeeper-api/">Innkeeper API</a>
+    <a href="../../data-clients/eskip-file/">Eskip File</a>
 </li>
+            
+<li >
+    <a href="../../data-clients/etcd/">Etcd</a>
+</li>
+            
+<li >
+    <a href="../../data-clients/kubernetes/">Kubernetes</a>
+</li>
+            
+<li >
+    <a href="../../data-clients/innkeeper/">Innkeeper API</a>
+</li>
+            
+<li >
+    <a href="../../data-clients/route-string/">Route String</a>
+</li>
+    </ul>
+  </li>
                                     
+  <li class="dropdown-submenu">
+    <a href="#">Operation</a>
+    <ul class="dropdown-menu">
+            
 <li >
-    <a href="../kubernetes/">Kubernetes</a>
+    <a href="../../operation/deployment/">Deployment</a>
 </li>
-                                    
+            
 <li >
-    <a href="../route-string/">Route String</a>
+    <a href="../../operation/operation/">Operation</a>
 </li>
+    </ul>
+  </li>
                                 </ul>
                             </li>
                             <li class="dropdown">
@@ -115,15 +139,6 @@
 </li>
                                 </ul>
                             </li>
-                            <li >
-                                <a href="../../operations/">Operations</a>
-                            </li>
-                            <li >
-                                <a href="../../development/">Development</a>
-                            </li>
-                            <li >
-                                <a href="../../videos/">Videos</a>
-                            </li>
                         </ul>
 
                     <ul class="nav navbar-nav navbar-right">
@@ -133,12 +148,12 @@
                             </a>
                         </li>
                             <li >
-                                <a rel="next" href="../eskip-file/">
+                                <a rel="next" href="../../reference/development/">
                                     <i class="fa fa-arrow-left"></i> Previous
                                 </a>
                             </li>
                             <li >
-                                <a rel="prev" href="../innkeeper-api/">
+                                <a rel="prev" href="../../data-clients/eskip-file/">
                                     Next <i class="fa fa-arrow-right"></i>
                                 </a>
                             </li>
@@ -150,13 +165,24 @@
         <div class="container">
                 <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
-        <li class="main active"><a href="#etcd">ETCD</a></li>
+        <li class="main active"><a href="#how-to-build-skipper">How to build Skipper</a></li>
+            <li><a href="#how-to-build-skipper-without-plugins">How to build Skipper without plugins</a></li>
+            <li><a href="#how-to-build-skipper-with-plugins">How to build Skipper with plugins</a></li>
+        <li class="main "><a href="#how-to-run-skipper">How to run Skipper</a></li>
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
 
-<h1 id="etcd">ETCD</h1>
-<p>TODO</p></div>
+<h2 id="how-to-build-skipper">How to build Skipper</h2>
+<p>We expect you to have <a href="https://golang.org/dl">Go</a> and <a href="https://github.com/Masterminds/glide">glide</a> installed.</p>
+<h3 id="how-to-build-skipper-without-plugins">How to build Skipper without plugins</h3>
+<script src="https://asciinema.org/a/5eenqvXBDqjQAB2ZcV6mQ7OGj.js" id="asciicast-5eenqvXBDqjQAB2ZcV6mQ7OGj" data-rows="30" async></script>
+
+<h3 id="how-to-build-skipper-with-plugins">How to build Skipper with plugins</h3>
+<p><strong>TODO</strong></p>
+<h2 id="how-to-run-skipper">How to run Skipper</h2>
+<p>We expect you to have already built Skipper.</p>
+<p><strong>TODO</strong></p></div>
         </div>
 
         <footer class="col-md-12">

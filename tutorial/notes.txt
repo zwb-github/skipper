@@ -1,0 +1,31 @@
+prerequisits:
+- Go: https://golang.org/doc/install
+- skipper: assume GOPATH, and $GOPATH/bin in the $PATH, go get github.com/zalando/skipper/... , the tutorial
+  assumes to have the skipper binary in the PATH
+- docker: https://docs.docker.com/install/
+- httpbin: docker run -d -p 8080:80 kennethreitz/httpbin, cleanup as an excercise
+
+# The first route
+
+nothing, 404
+a route to example.org, inline, show the route in the log, make a request to /html and show the access logs
+move the route to an eskip file, repeat the above request to verify
+explain the eskip file
+
+# A path predicate and a simple filter
+
+a route to httpbin, inline, show the route in the log, make a request to /headers and show the access logs
+select it with the path
+move to curl
+
+Path("/debug") -> setRequestPath("/headers") -> "http://loclahost:8080"
+
+# A simple filter
+
+we want /debug/headers
+change the path
+
+# etcd
+
+multiple skippers using eventually consistent routing configuration
+show eskip uploading the file

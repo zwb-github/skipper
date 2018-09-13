@@ -47,55 +47,79 @@
                         <!-- Main navigation -->
                         <ul class="nav navbar-nav">
                             <li class="active">
-                                <a href=".">Architecture</a>
+                                <a href=".">Introduction</a>
                             </li>
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Basics <b class="caret"></b></a>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     
 <li >
-    <a href="filters/">Filters</a>
+    <a href="reference/filters/">Filters</a>
 </li>
                                     
 <li >
-    <a href="predicates/">Predicates</a>
+    <a href="reference/predicates/">Predicates</a>
 </li>
                                     
 <li >
-    <a href="scripts/">Scripts</a>
+    <a href="reference/scripts/">Scripts</a>
 </li>
                                     
 <li >
-    <a href="plugins/">Plugins</a>
-</li>
-                                </ul>
-                            </li>
-                            <li >
-                                <a href="deployments/">Deployments</a>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Data Clients <b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    
-<li >
-    <a href="dataclients/eskip-file/">Eskip</a>
+    <a href="reference/plugins/">Plugins</a>
 </li>
                                     
 <li >
-    <a href="dataclients/etcd/">Etcd</a>
+    <a href="reference/architecture/">Architecture</a>
 </li>
                                     
 <li >
-    <a href="dataclients/innkeeper-api/">Innkeeper API</a>
+    <a href="reference/development/">Development</a>
 </li>
                                     
 <li >
-    <a href="dataclients/kubernetes/">Kubernetes</a>
+    <a href="tutorials/video-howto-build/">Video - How to build</a>
 </li>
                                     
+  <li class="dropdown-submenu">
+    <a href="#">Data Clients</a>
+    <ul class="dropdown-menu">
+            
 <li >
-    <a href="dataclients/route-string/">Route String</a>
+    <a href="data-clients/eskip-file/">Eskip File</a>
 </li>
+            
+<li >
+    <a href="data-clients/etcd/">Etcd</a>
+</li>
+            
+<li >
+    <a href="data-clients/kubernetes/">Kubernetes</a>
+</li>
+            
+<li >
+    <a href="data-clients/innkeeper/">Innkeeper API</a>
+</li>
+            
+<li >
+    <a href="data-clients/route-string/">Route String</a>
+</li>
+    </ul>
+  </li>
+                                    
+  <li class="dropdown-submenu">
+    <a href="#">Operation</a>
+    <ul class="dropdown-menu">
+            
+<li >
+    <a href="operation/deployment/">Deployment</a>
+</li>
+            
+<li >
+    <a href="operation/operation/">Operation</a>
+</li>
+    </ul>
+  </li>
                                 </ul>
                             </li>
                             <li class="dropdown">
@@ -115,15 +139,6 @@
 </li>
                                 </ul>
                             </li>
-                            <li >
-                                <a href="operations/">Operations</a>
-                            </li>
-                            <li >
-                                <a href="development/">Development</a>
-                            </li>
-                            <li >
-                                <a href="videos/">Videos</a>
-                            </li>
                         </ul>
 
                     <ul class="nav navbar-nav navbar-right">
@@ -138,7 +153,7 @@
                                 </a>
                             </li>
                             <li >
-                                <a rel="prev" href="filters/">
+                                <a rel="prev" href="reference/filters/">
                                     Next <i class="fa fa-arrow-right"></i>
                                 </a>
                             </li>
@@ -150,133 +165,24 @@
         <div class="container">
                 <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
-        <li class="main active"><a href="#architecture">Architecture</a></li>
-            <li><a href="#route-processing">Route processing</a></li>
+        <li class="main active"><a href="#introduction">Introduction</a></li>
+            <li><a href="#http-proxy">HTTP Proxy</a></li>
+            <li><a href="#kubernetes-ingress">Kubernetes Ingress</a></li>
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
 
-<h1 id="architecture">Architecture</h1>
-<p>Skipper is written as a library and is also a multi binary project with
-2 binaries, named <code>skipper</code> and <code>eskip</code>. <code>Skipper</code> is the HTTP proxy
-and <code>eskip</code> is a CLI application to verify, print, update or delete
-Skipper routes.</p>
-<p>Skipper's internal architecture is split into different packages. The
-<code>skipper</code> package has connections to multiple <code>dataclient</code>, that pull
-information from different sources, for example static routes from an
-eskip file or dynamic routes from Kubernetes ingress objects.</p>
-<p>The <code>proxy</code> package gets the routes populated by skipper and has
-always a current routing table which will be replaced on change.</p>
-<p>A route is one entry in the routing table. A route consists of one or
-more <code>predicate</code>, that are used to find a route for a given HTTP
-request. A route can also have one or more <code>filter</code>, that can modify
-the content of the request or response.  A route always points to a
-backend, or it's a <code>&lt;shunt&gt;</code>, meaning that skipper serves the requests
-for the route, or a <code>&lt;loopback&gt;</code>, meaning that the request will be
-matched against the routing table again after filters have modified
-it.</p>
-<p><a href="http://opentracing.io/">Opentracing API</a> is supported via
-<a href="https://github.com/skipper-plugins/opentracing">skipper-plugins</a>. For
-example <a href="https://github.com/jaegertracing/jaeger">Jaeger</a> is supported.</p>
-<p>Skipper has a rich set of metrics that are exposed as json, but can be
-exported in <a href="https://prometheus.io">Prometheus</a> format.</p>
-<p><img alt="Skipper's architecture " src="img/architecture.svg" /></p>
-<h2 id="route-processing">Route processing</h2>
-<p>Package <code>skipper</code> has a Go <code>http.Server</code> and does the <code>ListenAndServe</code>
-call with the <code>loggingHandler</code> wrapped <code>proxy</code>.  The <code>loggingHandler</code>
-is basically a middleware for the <code>proxy</code> providing access logs and
-both implement the plain Go <a href="https://golang.org/pkg/net/http/#Handler">http.Handler interface</a>.</p>
-<p>For each incoming <code>http.Request</code> the <code>proxy</code> will create a request
-context and enhance it with an <a href="http://opentracing.io/">Opentracing API</a> Span.
-It will check proxy global ratelimits first and after that lookup the
-route in the routing table. After that skipper will apply all request
-filters, that can modify the <code>http.Request</code>. It will then check the
-route local ratelimits, the circuitbreakers and do the backend
-call. If the backend call got a TCP or TLS connection error in a
-loadbalanced route, skipper will do a retry to another backend of that
-loadbalanced group automatically. Just before the response to the
-caller, skipper will process the response filters, that can change the
-<code>http.Response</code>.</p>
-<p>In two special cases, skipper doesn't forward the request to the
-backend. When the route is shunted (<code>&lt;shunt&gt;</code>), skipper serves the
-request alone, by using only the filters. When the route is a
-<code>&lt;loopback&gt;</code>, the request is passed to the routing table for finding
-another route, based on the changes that the filters made to the
-request.</p>
-<p><img alt="Skipper's request and response processing " src="img/req-and-resp-processing.svg" /></p>
-<h4 id="routing-mechanism">Routing mechanism</h4>
-<p>The routing executes the following steps in the typical case:</p>
-<ol>
-<li>
-<p>Select the best fitting route by matching the request against the
-   predicates. When no route found, respond with 404 (unless the default
-   status code is configured to a different value).</p>
-</li>
-<li>
-<p>Execute the filters defined in the route in normal order on the
-   request. The filters may or may not alter the request.</p>
-</li>
-<li>
-<p>Forward the request to the backend defined by the route and receive
-   a response.</p>
-</li>
-<li>
-<p>Execute the filters defined in the route in reverse order on the
-   response. The filters may or may not alter the response.</p>
-</li>
-<li>
-<p>Respond to the incoming request with the resulting response.</p>
-</li>
-</ol>
-<h4 id="route-matching">Route matching</h4>
-<p>Skipper can handle a relatively large number of routes with acceptable
-performance, while being able to use any attribute of the incoming HTTP
-requests to distinguish between them. In order to be able to do so, the
-path matching predicates (<code>Path()</code> and <code>PathSubtree()</code> but not <code>PathRegexp()</code>)
-have a special role during route matching, which is a tradeoff by
-design, and needs to be kept in mind to understand in some cases why a
-certain route was matched for a request instead of another.</p>
-<p>The route matching logic can be summed up as follows:</p>
-<ol>
-<li>
-<p>Lookup in the path tree based on the <code>Path()</code> and the <code>PathSubtree()</code>
-   predicates, using the path component of the incoming request's URI. Then
-   the remaining predicates of the found route(s) are evaluated.</p>
-<ul>
-<li>
-<p>the path lookup is a radix tree with O(log(n)) time complexity</p>
-</li>
-<li>
-<p>in case of intersecting paths, the more specific path is matched in
- the tree</p>
-</li>
-<li>
-<p><code>PathRegexp()</code> is not used in the tree, but it is evaluated only after
- <code>Path()</code> or <code>PathSubtree()</code>, just like e.g. <code>Method()</code> or <code>Host()</code>.</p>
-</li>
-</ul>
-</li>
-<li>
-<p><em>If</em> step #1 matches multiple routes, which means there are multiple
-   routes in the same position of the path tree, and all other predicates
-   match the request, too, then the route with the most defined predicates
-   is matched.</p>
-<ul>
-<li>
-<p>this is an O(n) lookup, but only on the same leaf</p>
-</li>
-<li>
-<p>the root of the tree is considered a single leaf, so if not using the
-  <code>Path()</code> or <code>PathSubtree()</code> predicates, the entire lookup will become O(n)
-  over all the routes.</p>
-</li>
-</ul>
-</li>
-<li>
-<p><em>If</em> #2 results in multiple matching routes, then one route will be
-   selected. It is unspecified which one.</p>
-</li>
-</ol></div>
+<h1 id="introduction">Introduction</h1>
+<p>This is the documentation page of <a href="https://github.com/zalando/skipper">Skipper</a>. Skipper is an HTTP router and reverse proxy for service composition. It's designed to handle &gt;100k HTTP route definitions with detailed lookup conditions, and flexible augmentation of the request flow with filters. It can be used out of the box or extended with custom lookup, filter logic and configuration sources.</p>
+<h2 id="http-proxy">HTTP Proxy</h2>
+<p>Skipper identifies routes based on the requests' properties, such as path, method, host and headers using the
+<a href="reference/predicates/">predicates</a>. It allows the modification of the requests and responses with
+<a href="reference/filters/">filters</a> that are independently configured for each route. <a href="reference/architecture/">See more here about how it
+works.</a></p>
+<h2 id="kubernetes-ingress">Kubernetes Ingress</h2>
+<p>Skipper can be used to run as a Kubernetes Ingress controller. Details with examples of Skipper's capabilities
+and an overview you will can be found in the <a href="kubernetes/ingress-controller/">ingress-controller deployment
+docs</a>.</p></div>
         </div>
 
         <footer class="col-md-12">
@@ -358,6 +264,6 @@ certain route was matched for a request instead of another.</p>
 </html>
 
 <!--
-MkDocs version : 1.0.1
-Build Date UTC : 2018-08-29 16:10:50
+MkDocs version : 1.0.4
+Build Date UTC : 2018-09-13 07:58:38
 -->

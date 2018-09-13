@@ -8,7 +8,7 @@
         
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>Eskip - Skipper</title>
+        <title>Kubernetes - Skipper</title>
         <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
         <link href="../../css/font-awesome.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
@@ -47,55 +47,79 @@
                         <!-- Main navigation -->
                         <ul class="nav navbar-nav">
                             <li >
-                                <a href="../..">Architecture</a>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Basics <b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    
-<li >
-    <a href="../../filters/">Filters</a>
-</li>
-                                    
-<li >
-    <a href="../../predicates/">Predicates</a>
-</li>
-                                    
-<li >
-    <a href="../../scripts/">Scripts</a>
-</li>
-                                    
-<li >
-    <a href="../../plugins/">Plugins</a>
-</li>
-                                </ul>
-                            </li>
-                            <li >
-                                <a href="../../deployments/">Deployments</a>
+                                <a href="../..">Introduction</a>
                             </li>
                             <li class="dropdown active">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Data Clients <b class="caret"></b></a>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     
-<li class="active">
-    <a href="./">Eskip</a>
+<li >
+    <a href="../../reference/filters/">Filters</a>
 </li>
                                     
+<li >
+    <a href="../../reference/predicates/">Predicates</a>
+</li>
+                                    
+<li >
+    <a href="../../reference/scripts/">Scripts</a>
+</li>
+                                    
+<li >
+    <a href="../../reference/plugins/">Plugins</a>
+</li>
+                                    
+<li >
+    <a href="../../reference/architecture/">Architecture</a>
+</li>
+                                    
+<li >
+    <a href="../../reference/development/">Development</a>
+</li>
+                                    
+<li >
+    <a href="../../tutorials/video-howto-build/">Video - How to build</a>
+</li>
+                                    
+  <li class="dropdown-submenu">
+    <a href="#">Data Clients</a>
+    <ul class="dropdown-menu">
+            
+<li >
+    <a href="../eskip-file/">Eskip File</a>
+</li>
+            
 <li >
     <a href="../etcd/">Etcd</a>
 </li>
-                                    
-<li >
-    <a href="../innkeeper-api/">Innkeeper API</a>
+            
+<li class="active">
+    <a href="./">Kubernetes</a>
 </li>
-                                    
+            
 <li >
-    <a href="../kubernetes/">Kubernetes</a>
+    <a href="../innkeeper/">Innkeeper API</a>
 </li>
-                                    
+            
 <li >
     <a href="../route-string/">Route String</a>
 </li>
+    </ul>
+  </li>
+                                    
+  <li class="dropdown-submenu">
+    <a href="#">Operation</a>
+    <ul class="dropdown-menu">
+            
+<li >
+    <a href="../../operation/deployment/">Deployment</a>
+</li>
+            
+<li >
+    <a href="../../operation/operation/">Operation</a>
+</li>
+    </ul>
+  </li>
                                 </ul>
                             </li>
                             <li class="dropdown">
@@ -115,15 +139,6 @@
 </li>
                                 </ul>
                             </li>
-                            <li >
-                                <a href="../../operations/">Operations</a>
-                            </li>
-                            <li >
-                                <a href="../../development/">Development</a>
-                            </li>
-                            <li >
-                                <a href="../../videos/">Videos</a>
-                            </li>
                         </ul>
 
                     <ul class="nav navbar-nav navbar-right">
@@ -133,12 +148,12 @@
                             </a>
                         </li>
                             <li >
-                                <a rel="next" href="../../deployments/">
+                                <a rel="next" href="../etcd/">
                                     <i class="fa fa-arrow-left"></i> Previous
                                 </a>
                             </li>
                             <li >
-                                <a rel="prev" href="../etcd/">
+                                <a rel="prev" href="../innkeeper/">
                                     Next <i class="fa fa-arrow-right"></i>
                                 </a>
                             </li>
@@ -150,101 +165,62 @@
         <div class="container">
                 <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
-        <li class="main active"><a href="#eskip-file">Eskip File</a></li>
+        <li class="main active"><a href="#kubernetes">Kubernetes</a></li>
+            <li><a href="#kubernetes-ingress-controller-deployment">Kubernetes Ingress Controller deployment</a></li>
+            <li><a href="#kubernetes-ingress-usage">Kubernetes Ingress Usage</a></li>
+            <li><a href="#why-to-choose-skipper">Why to choose Skipper?</a></li>
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
 
-<h1 id="eskip-file">Eskip File</h1>
-<p>Eskip file dataclient can be used to serve static defined routes, read
-from an eskip file. The <a href="https://godoc.org/github.com/zalando/skipper/eskip">file format eskip</a>
-shows your route definitions in a clear way:</p>
-<pre><code>% cat example.eskip
-hello: Path("/hello") -&gt; "https://www.example.org"'
-</code></pre>
-<p>The <a href="https://github.com/zalando/skipper">Skipper project</a> has two
-binaries, one is <code>skipper</code>, the other is <code>eskip</code>.
-<a href="https://godoc.org/github.com/zalando/skipper/cmd/eskip">Eskip</a>
-can be used to validate the syntax of your routes file before
-reloading a production server:</p>
-<pre><code>% eskip check example.eskip
-</code></pre>
-<p>To run Skipper serving routes from an <code>eskip</code> file you have to use
-<code>-routes-file &lt;file&gt;</code> parameter:</p>
-<pre><code>% skipper -routes-file example.eskip
-</code></pre>
-<p>A more complicated example with different routes, matches,
-<a href="https://godoc.org/github.com/zalando/skipper/predicates">predicates</a> and
-<a href="https://godoc.org/github.com/zalando/skipper/filters">filters</a> shows that
-you can name your route and use preconditions and create, change, delete
-HTTP headers as you like:</p>
-<pre><code>% cat complicated_example.eskip
-hostHeaderMatch:
-         Host("^skipper.teapot.org$")
-         -&gt; setRequestHeader("Authorization", "Basic YWRtaW46YWRtaW5zcGFzc3dvcmQK")
-         -&gt; "https://target-to.auth-with.basic-auth.enterprise.com";
-baiduPathMatch:
-        Path("/baidu")
-        -&gt; setRequestHeader("Host", "www.baidu.com")
-        -&gt; setPath("/s")
-        -&gt; setQuery("wd", "godoc skipper")
-        -&gt; "http://www.baidu.com";
-googleWildcardMatch:
-        *
-        -&gt; setPath("/search")
-        -&gt; setQuery("q", "godoc skipper")
-        -&gt; "https://www.google.com";
-yandexWildacardIfCookie:
-        * &amp;&amp; Cookie("yandex", "true")
-        -&gt; setPath("/search/")
-        -&gt; setQuery("text", "godoc skipper")
-        -&gt; tee("http://127.0.0.1:12345/")
-        -&gt; "https://yandex.ru";
-</code></pre>
-<p>The former example shows 4 routes: hostHeaderMatch,
-baiduPathMatch, googleWildcardMatch and yandexWildcardIfCookie.</p>
+<h1 id="kubernetes">Kubernetes</h1>
+<p>Skipper's Kubernetes dataclient can be used, if you want to run Skipper as
+<a href="https://kubernetes.io/docs/concepts/services-networking/ingress/#ingress-controllers">kubernetes-ingress-controller</a>.
+It will get it's route information from provisioned
+<a href="https://kubernetes.io/docs/concepts/services-networking/ingress">Ingress Objects</a>.
+Detailed information you find in our <a href="https://godoc.org/github.com/zalando/skipper/dataclients/kubernetes">godoc for dataclient kubernetes</a>.</p>
+<h2 id="kubernetes-ingress-controller-deployment">Kubernetes Ingress Controller deployment</h2>
+<p>How to <a href="../../kubernetes/ingress-controller/">install Skipper ingress-controller</a> for cluster operators.</p>
+<h2 id="kubernetes-ingress-usage">Kubernetes Ingress Usage</h2>
+<p>Find out more <a href="../../kubernetes/ingress-usage/">how to use Skipper ingress features</a> for deployers.</p>
+<h2 id="why-to-choose-skipper">Why to choose Skipper?</h2>
+<p>Kubernetes is a fast changing environment and traditional http routers
+are not made for frequently changing routing tables. Skipper is a http
+proxy made to apply updates very often. Skipper is used in
+production with more than 200.000 routing table entries.
+Skipper has Filters to change http data and Predicates to change the
+matching rules, both can combined and chained. You can set these in
+ingress.yaml files to build resiliency patterns like ratelimit or
+circuitbreaker. You can also use them to build more highlevel
+deployment patterns, for example feature toggles, shadow traffic or
+blue-green deployments.</p>
+<p>Skipper's main features:</p>
 <ul>
-<li>hostHeaderMatch:<ul>
-<li>used if HTTP host header is exactly: "skipper.teapot.org",</li>
-<li>sets a Basic Authorization header and</li>
-<li>sends the modified request to https://target-to.auth-with.basic-auth.enterprise.com</li>
+<li>Filters - create, update, delete all kind of HTTP data</li>
+<li><a href="https://godoc.org/github.com/zalando/skipper/filters/builtin">collection of base http manipulations</a>: for example manipulating Path, Querystring, ResponseHeader, RequestHeader and redirect handling</li>
+<li><a href="https://godoc.org/github.com/zalando/skipper/filters/cookie">cookie handling</a></li>
+<li><a href="https://godoc.org/github.com/zalando/skipper/filters/circuit">circuitbreakers</a>: consecutiveBreaker or rateBreaker</li>
+<li><a href="https://godoc.org/github.com/zalando/skipper/filters/ratelimit">ratelimit</a>: based on client or backend data</li>
+<li>Shadow traffic: <a href="https://godoc.org/github.com/zalando/skipper/filters/tee">tee()</a></li>
+<li>Predicates - advanced matching capability</li>
+<li>URL Path match: <code>Path("/foo")</code></li>
+<li>Host header match: <code>Host("^www.example.org$")</code></li>
+<li><a href="https://godoc.org/github.com/zalando/skipper/predicates/query">Querystring</a>: <code>QueryParam("featureX")</code></li>
+<li><a href="https://godoc.org/github.com/zalando/skipper/predicates/cookie">Cookie based</a>: <code>Cookie("alpha", /^enabled$/)</code></li>
+<li><a href="https://godoc.org/github.com/zalando/skipper/predicates/source">source whitelist</a>: <code>Source("1.2.3.4/24")</code></li>
+<li><a href="https://godoc.org/github.com/zalando/skipper/predicates/interval">time based interval</a></li>
+<li><a href="https://godoc.org/github.com/zalando/skipper/predicates/traffic">traffic by percentage</a> supports also sticky sessions</li>
+<li>Kubernetes integration</li>
+<li>All Filters and Predicates can be used with 2 annotations<ul>
+<li>Predicates: <code>zalando.org/skipper-predicate</code></li>
+<li>Filters: <code>zalando.org/skipper-filter</code></li>
 </ul>
 </li>
-<li>baiduPathMatch:<ul>
-<li>used in case the request patch matches /baidu</li>
-<li>it will set the Host header to the proxy request</li>
-<li>it will set the path from /baidu to /s</li>
-<li>it will set the querystring to "ws=godoc skipper" and</li>
-<li>sends the modified request to http://baidu.com</li>
-</ul>
-</li>
-<li>googleWildcardMatch:<ul>
-<li>used as default if no other route matches</li>
-<li>it will set the path to /search</li>
-<li>it will set the querystring to "q=godoc skipper" and</li>
-<li>sends the modified request to https://www.google.com</li>
-</ul>
-</li>
-<li>yandexWildcardIfCookie:<ul>
-<li>used as default if a Cookie named "yandex" has the value "true"</li>
-<li>it will set the path to /search/</li>
-<li>it will set the querystring to "text=godoc skipper"</li>
-<li>it will send a copy of the modified request to http://127.0.0.1:12345/ (similar to unix <code>tee</code>) and drop the response and</li>
-<li>sends the modified request to https://yandex.ru</li>
-</ul>
-</li>
-</ul>
-<p>More examples you find in <a href="https://godoc.org/github.com/zalando/skipper/eskip">eskip file format</a>
-description, in <a href="https://godoc.org/github.com/zalando/skipper/filters">filters</a>
-and in <a href="https://godoc.org/github.com/zalando/skipper/predicates">predicates</a>.</p>
-<p>Eskip file format is also used if you print your current routes in skipper,
-for example (metrics listener required):</p>
-<pre><code>% curl localhost:9911/routes
-*
-  -&gt; setResponseHeader("Content-Type", "application/json; charset=utf-8")
-  -&gt; inlineContent("{\"foo\": 3}")
-  -&gt; &lt;shunt&gt;
-</code></pre></div>
+<li>Custom routes can be defined with the annotation <code>zalando.org/skipper-routes</code></li>
+<li><a href="https://godoc.org/github.com/zalando/skipper/metrics">metrics</a></li>
+<li>access logs</li>
+<li>Blue-Green deployments, with another Ingress annotation <code>zalando.org/backend-weights</code></li>
+</ul></div>
         </div>
 
         <footer class="col-md-12">

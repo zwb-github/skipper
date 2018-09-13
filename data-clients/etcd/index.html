@@ -7,11 +7,11 @@
         
         
         
-        <link rel="shortcut icon" href="../img/favicon.ico">
-        <title>Deployments - Skipper</title>
-        <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
-        <link href="../css/font-awesome.min.css" rel="stylesheet">
-        <link href="../css/base.css" rel="stylesheet">
+        <link rel="shortcut icon" href="../../img/favicon.ico">
+        <title>Etcd - Skipper</title>
+        <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
@@ -19,8 +19,8 @@
             <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
 
-        <script src="../js/jquery-1.10.2.min.js" defer></script>
-        <script src="../js/bootstrap-3.0.3.min.js" defer></script>
+        <script src="../../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../../js/bootstrap-3.0.3.min.js" defer></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
         <script>hljs.initHighlightingOnLoad();</script> 
     </head>
@@ -39,7 +39,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="..">Skipper</a>
+                    <a class="navbar-brand" href="../..">Skipper</a>
                 </div>
 
                 <!-- Expanded navigation -->
@@ -47,55 +47,79 @@
                         <!-- Main navigation -->
                         <ul class="nav navbar-nav">
                             <li >
-                                <a href="..">Architecture</a>
+                                <a href="../..">Introduction</a>
                             </li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Basics <b class="caret"></b></a>
+                            <li class="dropdown active">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     
 <li >
-    <a href="../filters/">Filters</a>
+    <a href="../../reference/filters/">Filters</a>
 </li>
                                     
 <li >
-    <a href="../predicates/">Predicates</a>
+    <a href="../../reference/predicates/">Predicates</a>
 </li>
                                     
 <li >
-    <a href="../scripts/">Scripts</a>
+    <a href="../../reference/scripts/">Scripts</a>
 </li>
                                     
 <li >
-    <a href="../plugins/">Plugins</a>
-</li>
-                                </ul>
-                            </li>
-                            <li class="active">
-                                <a href="./">Deployments</a>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Data Clients <b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    
-<li >
-    <a href="../dataclients/eskip-file/">Eskip</a>
+    <a href="../../reference/plugins/">Plugins</a>
 </li>
                                     
 <li >
-    <a href="../dataclients/etcd/">Etcd</a>
+    <a href="../../reference/architecture/">Architecture</a>
 </li>
                                     
 <li >
-    <a href="../dataclients/innkeeper-api/">Innkeeper API</a>
+    <a href="../../reference/development/">Development</a>
 </li>
                                     
 <li >
-    <a href="../dataclients/kubernetes/">Kubernetes</a>
+    <a href="../../tutorials/video-howto-build/">Video - How to build</a>
 </li>
                                     
+  <li class="dropdown-submenu">
+    <a href="#">Data Clients</a>
+    <ul class="dropdown-menu">
+            
 <li >
-    <a href="../dataclients/route-string/">Route String</a>
+    <a href="../eskip-file/">Eskip File</a>
 </li>
+            
+<li class="active">
+    <a href="./">Etcd</a>
+</li>
+            
+<li >
+    <a href="../kubernetes/">Kubernetes</a>
+</li>
+            
+<li >
+    <a href="../innkeeper/">Innkeeper API</a>
+</li>
+            
+<li >
+    <a href="../route-string/">Route String</a>
+</li>
+    </ul>
+  </li>
+                                    
+  <li class="dropdown-submenu">
+    <a href="#">Operation</a>
+    <ul class="dropdown-menu">
+            
+<li >
+    <a href="../../operation/deployment/">Deployment</a>
+</li>
+            
+<li >
+    <a href="../../operation/operation/">Operation</a>
+</li>
+    </ul>
+  </li>
                                 </ul>
                             </li>
                             <li class="dropdown">
@@ -103,26 +127,17 @@
                                 <ul class="dropdown-menu">
                                     
 <li >
-    <a href="../kubernetes/ingress-controller/">Ingress Controller Deployment</a>
+    <a href="../../kubernetes/ingress-controller/">Ingress Controller Deployment</a>
 </li>
                                     
 <li >
-    <a href="../kubernetes/ingress-usage/">Ingress Usage</a>
+    <a href="../../kubernetes/ingress-usage/">Ingress Usage</a>
 </li>
                                     
 <li >
-    <a href="../kubernetes/ingress-backends/">Ingress Backends</a>
+    <a href="../../kubernetes/ingress-backends/">Ingress Backends</a>
 </li>
                                 </ul>
-                            </li>
-                            <li >
-                                <a href="../operations/">Operations</a>
-                            </li>
-                            <li >
-                                <a href="../development/">Development</a>
-                            </li>
-                            <li >
-                                <a href="../videos/">Videos</a>
                             </li>
                         </ul>
 
@@ -133,12 +148,12 @@
                             </a>
                         </li>
                             <li >
-                                <a rel="next" href="../plugins/">
+                                <a rel="next" href="../eskip-file/">
                                     <i class="fa fa-arrow-left"></i> Previous
                                 </a>
                             </li>
                             <li >
-                                <a rel="prev" href="../dataclients/eskip-file/">
+                                <a rel="prev" href="../kubernetes/">
                                     Next <i class="fa fa-arrow-right"></i>
                                 </a>
                             </li>
@@ -150,58 +165,13 @@
         <div class="container">
                 <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
-        <li class="main active"><a href="#deployments-and-data-clients">Deployments and Data-Clients</a></li>
-            <li><a href="#edge-http-routing">Edge HTTP Routing</a></li>
-            <li><a href="#kubernetes-ingress">Kubernetes Ingress</a></li>
-            <li><a href="#innkeeper-routes-api">Innkeeper Routes API</a></li>
-            <li><a href="#demos-talks">Demos / Talks</a></li>
-            <li><a href="#simple-routes-file">Simple Routes File</a></li>
+        <li class="main active"><a href="#etcd">ETCD</a></li>
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
 
-<h1 id="deployments-and-data-clients">Deployments and Data-Clients</h1>
-<h2 id="edge-http-routing">Edge HTTP Routing</h2>
-<p>Edge HTTP routing is the first hit to your production HTTP
-loadbalancer. Skipper can serve this well and reliably in production since 2016.</p>
-<p>On the edge you want to dispatch incoming HTTP requests to your
-backends, which could be a microservice architecture.</p>
-<p>In this deployment mode you might have 100k HTTP routes, which are
-used in production and modified by many parties.</p>
-<p>To support this scenario we have the <a href="../dataclients/etcd/">etcd dataclient</a>.</p>
-<p><a href="https://github.com/coreos/etcd">Etcd</a> is a distributed database.</p>
-<p>TODO: why we use ETCD for this purpose</p>
-<h2 id="kubernetes-ingress">Kubernetes Ingress</h2>
-<p><a href="http://kubernetes.io/docs/user-guide/ingress/">Kubernetes Ingress</a> is the
-component responsible to route traffic into your
-<a href="http://kubernetes.io/">Kubernetes</a> cluster.
-As deployer you can define an ingress object and an ingress controller
-will make sure incoming traffic gets routed to her backend service as
-defined. Skipper supports this scenario with the
-<a href="../dataclients/kubernetes/">Kubernetes dataclient</a> and is used in
-production since end of 2016.</p>
-<p>Skipper as ingress controller does not need to have any file
-configuration or anything external which configures Skipper. Skipper
-automatically finds Ingress objects and configures routes
-automatically, without reloading. The only requirement is to target
-all traffic you want to serve with Kubernetes to a loadbalancer pool
-of Skippers. This is a clear advantage over other ingress controllers
-like nginx, haproxy or envoy.</p>
-<p>Read more about <a href="../dataclients/kubernetes/">Skipper's Kubernetes dataclient</a>.</p>
-<h2 id="innkeeper-routes-api">Innkeeper Routes API</h2>
-<p><a href="https://github.com/zalando/skipper">Skipper</a> can read from an
-<a href="https://github.com/zalando/innkeeper">Innkeeper API</a>, if you like to
-create routes via an API.
-Our <a href="../dataclients/innkeeper-api/">Innkeeper API dataclient</a> can be used
-as well. It was used in production in the past. (TODO: do we use it somewhere?)</p>
-<h2 id="demos-talks">Demos / Talks</h2>
-<p>In demos you may want to show arbitrary hello world applications.
-You can easily describe html or json output on the command line with
-the <a href="../dataclients/route-string/">route-string dataclient</a>.</p>
-<h2 id="simple-routes-file">Simple Routes File</h2>
-<p>The most static deployment that is known from apache, nginx or haproxy
-is write your routes into a file and start your http server.
-This is what the <a href="../dataclients/eskip-file/">Eskip file dataclient</a> is about.</p></div>
+<h1 id="etcd">ETCD</h1>
+<p>TODO</p></div>
         </div>
 
         <footer class="col-md-12">
@@ -209,11 +179,11 @@ This is what the <a href="../dataclients/eskip-file/">Eskip file dataclient</a> 
             <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
         </footer>
         <script>
-            var base_url = "..",
+            var base_url = "../..",
                 shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
         </script>
-        <script src="../js/base.js" defer></script>
-        <script src="../search/main.js" defer></script>
+        <script src="../../js/base.js" defer></script>
+        <script src="../../search/main.js" defer></script>
 
         <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
     <div class="modal-dialog">

@@ -171,6 +171,7 @@
             <li><a href="#add-godoc">Add godoc</a></li>
             <li><a href="#filter-implementation">Filter implementation</a></li>
             <li><a href="#writing-tests">Writing tests</a></li>
+            <li><a href="#using-a-debugger">Using a debugger</a></li>
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
@@ -567,7 +568,48 @@ index 0000000..d43c4ea
 +       })
 +   }
 +}
-</code></pre></div>
+</code></pre>
+
+<h3 id="using-a-debugger">Using a debugger</h3>
+<p>Skipper supports plugins and to offer this support it uses the <a href="https://golang.org/pkg/plugin/"><code>plugin</code></a>
+library. Due to a bug in the Go compiler as reported <a href="https://github.com/golang/go/issues/23733">here</a> a
+debugger cannot be used. This issue will be fixed in Go 1.12 but until then the only workaround is to remove
+references to the <code>plugin</code> library. The following patch can be used for debugging.</p>
+<pre><code>diff --git a/plugins.go b/plugins.go
+index 837b6cf..aa69f09 100644
+--- a/plugins.go
++++ b/plugins.go
+@@ -1,5 +1,6 @@
+ package skipper
+
++/*
+ import (
+    &quot;fmt&quot;
+    &quot;io/ioutil&quot;
+@@ -13,8 +14,13 @@ import (
+    &quot;github.com/zalando/skipper/filters&quot;
+    &quot;github.com/zalando/skipper/routing&quot;
+ )
++*/
+
+ func (o *Options) findAndLoadPlugins() error {
++   return nil
++}
++
++/*
+    found := make(map[string]string)
+    done := make(map[string][]string)
+
+@@ -366,3 +372,4 @@ func readPluginConfig(plugin string) (conf []string, err error) {
+    }
+    return conf, nil
+ }
++*/
+
+</code></pre>
+
+<p>The patch can be applied with the <code>git apply $PATCH_FILE</code> command. Please do not commit the
+modified <code>plugins.go</code> along with your changes.</p></div>
         </div>
 
         <footer class="col-md-12">

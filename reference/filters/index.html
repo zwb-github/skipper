@@ -204,6 +204,7 @@
             <li><a href="#oauthtokenintrospectionallclaims">oauthTokenintrospectionAllClaims</a></li>
             <li><a href="#oauthtokenintrospectionanykv">oauthTokenintrospectionAnyKV</a></li>
             <li><a href="#oauthtokenintrospectionallkv">oauthTokenintrospectionAllKV</a></li>
+            <li><a href="#forwardtoken">forwardToken</a></li>
             <li><a href="#requestcookie">requestCookie</a></li>
             <li><a href="#responsecookie">responseCookie</a></li>
             <li><a href="#jscookie">jsCookie</a></li>
@@ -216,7 +217,9 @@
             <li><a href="#corsorigin">corsOrigin</a></li>
             <li><a href="#headertoquery">headerToQuery</a></li>
             <li><a href="#querytoheader">queryToHeader</a></li>
-            <li><a href="#accesslogdisabled">accessLogDisabled</a></li>
+            <li><a href="#accesslogdisabled">~~accessLogDisabled~~</a></li>
+            <li><a href="#disableaccesslog">disableAccessLog</a></li>
+            <li><a href="#enableaccesslog">enableAccessLog</a></li>
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
@@ -613,6 +616,16 @@ it will allow the request to pass.</p>
 <pre><code>oauthTokenintrospectionAllKV(&quot;k1&quot;, &quot;v1&quot;, &quot;k2&quot;, &quot;v2&quot;)
 </code></pre>
 
+<h2 id="forwardtoken">forwardToken</h2>
+<p>The filter accepts a single string as an argument. The argument is the header 
+name where the result of token info or token introspection is added when the
+request is passed to the backend.</p>
+<p>If this filter is used when there is no token introspection or token info data
+then it does not have any effect.</p>
+<p>Examples:</p>
+<pre><code>forwardToken(&quot;X-Tokeninfo-Forward&quot;)
+</code></pre>
+
 <h2 id="requestcookie">requestCookie</h2>
 <p>Append a cookie to the request header.</p>
 <p>Parameters:</p>
@@ -770,11 +783,26 @@ and will not override the value if the header exists already.</p>
 <p>The second filter will set <code>Authorization</code> header to the
 <code>access_token</code> query param with a prefix value <code>Bearer</code> and will
 not override the value if the header exists already.</p>
-<h2 id="accesslogdisabled">accessLogDisabled</h2>
+<h2 id="accesslogdisabled">~~accessLogDisabled~~</h2>
+<p><strong>Deprecated:</strong> use <a href="#disableaccesslog">disableAccessLog</a> or <a href="#enableaccesslog">enableAccessLog</a></p>
 <p>The <code>accessLogDisabled</code> filter overrides global Skipper <code>AccessLogDisabled</code> setting for a specific route, which allows to either turn-off
 the access log for specific route while access log, in general, is enabled or vice versa.</p>
 <p>Example:</p>
 <pre><code>accessLogDisabled(&quot;false&quot;)
+</code></pre>
+
+<h2 id="disableaccesslog">disableAccessLog</h2>
+<p>Filter overrides global Skipper <code>AccessLogDisabled</code> setting and allows to turn-off the access log for specific route
+while access log, in general, is enabled.</p>
+<p>Example:</p>
+<pre><code>disableAccessLog()
+</code></pre>
+
+<h2 id="enableaccesslog">enableAccessLog</h2>
+<p>Filter overrides global Skipper <code>AccessLogDisabled</code> setting and allows to turn-on the access log for specific route
+while access log, in general, is disabled.</p>
+<p>Example:</p>
+<pre><code>enableAccessLog()
 </code></pre></div>
         </div>
 

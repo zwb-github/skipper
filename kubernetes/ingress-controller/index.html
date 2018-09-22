@@ -261,7 +261,8 @@ layer 4 loadbalancer to route and manipulate HTTP data.</p>
 <ul>
 <li>same as before, but you would terminate TLS on your layer 4 loadbalancer</li>
 <li>layer 4 loadbalancer has <code>1.2.3.4:443</code> as socket for a virtual server</li>
-<li>you can use an automated redirect for all port 80 requests to https with <code>-kubernetes-https-redirect</code></li>
+<li>you can use an automated redirect for all port 80 requests to https with <code>-kubernetes-https-redirect</code>
+and change the default redirect code with <code>-kubernetes-https-redirect-code</code></li>
 </ul>
 <h1 id="install-skipper-as-ingress-controller">Install Skipper as ingress-controller</h1>
 <p>You should have a base understanding of <a href="https://kubernetes.io">Kubernetes</a> and

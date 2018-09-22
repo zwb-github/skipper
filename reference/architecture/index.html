@@ -195,7 +195,7 @@ it.</p>
 example <a href="https://github.com/jaegertracing/jaeger">Jaeger</a> is supported.</p>
 <p>Skipper has a rich set of metrics that are exposed as json, but can be
 exported in <a href="https://prometheus.io">Prometheus</a> format.</p>
-<p><img alt="Skipper's architecture " src="/img/architecture.svg" /></p>
+<p><img alt="Skipper's architecture " src="/skipper/img/architecture.svg" /></p>
 <h2 id="route-processing">Route processing</h2>
 <p>Package <code>skipper</code> has a Go <code>http.Server</code> and does the <code>ListenAndServe</code>
 call with the <code>loggingHandler</code> wrapped <code>proxy</code>.  The <code>loggingHandler</code>
@@ -218,7 +218,7 @@ request alone, by using only the filters. When the route is a
 <code>&lt;loopback&gt;</code>, the request is passed to the routing table for finding
 another route, based on the changes that the filters made to the
 request.</p>
-<p><img alt="Skipper's request and response processing " src="/img/req-and-resp-processing.svg" /></p>
+<p><img alt="Skipper's request and response processing " src="/skipper/img/req-and-resp-processing.svg" /></p>
 <h4 id="routing-mechanism">Routing mechanism</h4>
 <p>The routing executes the following steps in the typical case:</p>
 <ol>

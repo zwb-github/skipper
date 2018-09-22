@@ -195,6 +195,7 @@
             <li><a href="#ab-test">A/B test</a></li>
         <li class="main "><a href="#blue-green-deployments">Blue-Green deployments</a></li>
         <li class="main "><a href="#chaining-filters-and-predicates">Chaining Filters and Predicates</a></li>
+        <li class="main "><a href="#controlling-https-redirect">Controlling HTTPS redirect</a></li>
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
@@ -237,6 +238,16 @@ features Skipper provides</p>
 <td>zalando.org/ratelimit</td>
 <td><code>ratelimit(50, "1m")</code></td>
 <td>deprecated, use zalando.org/skipper-filter instead</td>
+</tr>
+<tr>
+<td>zalando.org/skipper-ingress-redirect</td>
+<td><code>true</code></td>
+<td>change the default HTTPS redirect behavior for specific ingresses (true/false)</td>
+</tr>
+<tr>
+<td>zalando.org/skipper-ingress-redirect-code</td>
+<td><code>301</code></td>
+<td>change the default HTTPS redirect code for specific ingresses</td>
 </tr>
 </tbody>
 </table>
@@ -863,6 +874,36 @@ metadata:
 spec:
   rules:
   - host: app-default.example.org
+    http:
+      paths:
+      - backend:
+          serviceName: app-svc
+          servicePort: 80
+</code></pre>
+<h1 id="controlling-https-redirect">Controlling HTTPS redirect</h1>
+<p>Skipper Ingress can provide HTTP-&gt;HTTPS redirection. Enabling it and setting the status code used by default can
+be done with the command line options: -kubernetes-https-redirect and -kubernetes-https-redirect-code. By using
+annotations, this behavior can be overridden from the individual ingress specs for the scope of routes generated
+based on these ingresses specs.</p>
+<p>Annotations:</p>
+<ul>
+<li>zalando.org/skipper-ingress-redirect: the possible values are true or false. When the global HTTPS redirect is
+  disabled, the value true enables it for the current ingress. When the global redirect is enabled, the value
+  false disables it for the current ingress.</li>
+<li>zalando.org/skipper-ingress-redirect-code: the possible values are integers 300 &lt;= x &lt; 400. Sets the redirect
+  status code for the current ingress.</li>
+</ul>
+<p>Example:</p>
+<pre><code>apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    zalando.org/skipper-ingress-redirect: true
+    zalando.org/skipper-ingress-redirect-code: 301
+  name: app
+spec:
+  rules:
+  - host: mobile-api.example.org
     http:
       paths:
       - backend:

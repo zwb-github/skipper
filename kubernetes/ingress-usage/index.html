@@ -606,6 +606,8 @@ for DDOS or login attacks.</li>
 services due too much traffic. This can be used in an emergency
 situation to make sure you calm down ingress traffic or in general if
 you know how much calls per duration your backend is able to handle.</li>
+<li>Cluster ratelimits can be enforced either on client or on service
+side as described above.</li>
 </ol>
 <p>Ratelimits are enforced per route.</p>
 <p>More details you will find in <a href="https://godoc.org/github.com/zalando/skipper/filters/ratelimit">ratelimit package</a>
@@ -656,6 +658,45 @@ kind: Ingress
 metadata:
   annotations:
     zalando.org/skipper-filter: ratelimit(50, "1m")
+  name: app
+spec:
+  rules:
+  - host: app-default.example.org
+    http:
+      paths:
+      - backend:
+          serviceName: app-svc
+          servicePort: 80
+</code></pre>
+<h3 id="cluster-ratelimits">Cluster Ratelimits</h3>
+<p>Cluster ratelimits are eventual consistent and require the flag
+<code>-enable-swarm</code> to be set.</p>
+<h4 id="service">Service</h4>
+<p>The example shows 50 calls per minute are allowed to pass this ingress
+rule to the backend.</p>
+<pre><code>apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    zalando.org/skipper-filter: clusterRatelimit(50, "1m")
+  name: app
+spec:
+  rules:
+  - host: app-default.example.org
+    http:
+      paths:
+      - backend:
+          serviceName: app-svc
+          servicePort: 80
+</code></pre>
+<h4 id="client">Client</h4>
+<p>The example shows 10 calls per hour are allowed per client,
+X-Forwarded-For header, to pass this ingress rule to the backend.</p>
+<pre><code>apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    zalando.org/skipper-filter: clusterRatelimit(10, "1h", "xfwd")
   name: app
 spec:
   rules:

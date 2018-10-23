@@ -178,6 +178,10 @@
             <li><a href="#go-metrics">Go metrics</a></li>
         <li class="main "><a href="#dataclient">Dataclient</a></li>
         <li class="main "><a href="#routing-table-information">Routing table information</a></li>
+        <li class="main "><a href="#memory-consumption">Memory consumption</a></li>
+            <li><a href="#metrics">Metrics</a></li>
+            <li><a href="#filters">Filters</a></li>
+            <li><a href="#slow-backends">Slow Backends</a></li>
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
@@ -185,8 +189,8 @@
 <h1 id="operations">Operations</h1>
 <p>This is the work in progress operations guide for showing information,
 which are relevant for production use.</p>
-<p>Skipper is proven to scale with number of routes beyond 200.000 routes
-per instance. Skipper is running with peaks to 45.000 http requests
+<p>Skipper is proven to scale with number of routes beyond 300.000 routes
+per instance. Skipper is running with peaks to 65.000 http requests
 per second using multiple instances.</p>
 <h1 id="connection-options">Connection Options</h1>
 <p>Skipper's connection options are allowing you to set Go's <a href="https://golang.org/pkg/net/http/#Server">http.Server</a>
@@ -304,6 +308,21 @@ option to enable it:</p>
 </code></pre>
 <p>It will return <a href="https://prometheus.io/">Prometheus</a> metrics on the
 common metrics endpoint :9911/metrics.</p>
+<p>To monitor skipper we recommend the following queries:</p>
+<ul>
+<li>P99 backend latency: <code>histogram_quantile(0.99, sum(rate(skipper_serve_host_duration_seconds_bucket{}[1m])) by (le))</code></li>
+<li>HTTP 2xx rate: <code>histogram_quantile(0.99, sum(rate(skipper_serve_host_duration_seconds_bucket{code =~ "2.*"}[1m])) by (le) )</code></li>
+<li>HTTP 4xx rate: <code>histogram_quantile(0.99, sum(rate(skipper_serve_host_duration_seconds_bucket{code =~ "4.*"}[1m])) by (le) )</code></li>
+<li>HTTP 5xx rate: <code>histogram_quantile(0.99, sum(rate(skipper_serve_host_duration_seconds_bucket{code =~ "52.*"}[1m])) by (le) )</code></li>
+<li>Max goroutines (depends on label selector): <code>max(go_goroutines{application="skipper-ingress"})</code></li>
+<li>Max threads (depends on label selector): <code>max(go_threads{application="skipper-ingress"})</code></li>
+<li>max heap memory in use in MB (depends on label selector): <code>max(go_memstats_heap_inuse_bytes{application="skipper-ingress"}) / 1024 / 1000</code></li>
+<li>Max number of heap objects (depends on label selector): <code>max(go_memstats_heap_objects{application="skipper-ingress"})</code></li>
+<li>Max of P75 Go GC runtime in ms (depends on label selector): <code>max(go_gc_duration_seconds{application="skipper-ingress",quantile="0.75"}) * 1000 * 1000</code></li>
+<li>P99 request filter duration (depends on label selector): <code>histogram_quantile(0.99, sum(rate(skipper_filter_request_duration_seconds_bucket{application="skipper-ingress"}[1m])) by (le) )</code></li>
+<li>P99 response filter duration (depends on label selector): <code>histogram_quantile(0.99, sum(rate(skipper_filter_response_duration_seconds_bucket{application="skipper-ingress"}[1m])) by (le) )</code></li>
+<li>If you use Kubernetes limits or Linux cgroup CFS quotas (depends on label selector): <code>sum(rate(container_cpu_cfs_throttled_periods_total{container_name="skipper-ingress"}[1m]))</code></li>
+</ul>
 <h2 id="connection-metrics">Connection metrics</h2>
 <p>This option will enable known loadbalancer connections metrics, like
 counters for active and new connections. This feature sets a metrics
@@ -533,7 +552,44 @@ In order to control this limits, there are two parameters: <code>limit</code> an
 <code>offset</code> where to start the list. Thanks to this, it's possible
 to get the results paginated or getting all of them at the same time.</p>
 <pre><code>% curl localhost:9911/routes?offset=200&amp;limit=100
-</code></pre></div>
+</code></pre>
+<h1 id="memory-consumption">Memory consumption</h1>
+<p>While Skipper is generally not memory bound, some features may require
+some attention and planning regarding the memory consumption.</p>
+<p>Potentially high memory consumers:</p>
+<ul>
+<li>Metrics</li>
+<li>Filters</li>
+<li>Slow Backends and chatty clients</li>
+</ul>
+<p>Make sure you monitor backend latency, request and error rates.
+Additionally use Go metrics for the number of goroutines and threads, GC pause
+times should be less than 1ms in general, route lookup time, request
+and response filter times and heap memory.</p>
+<h2 id="metrics">Metrics</h2>
+<p>Memory consumption of metrics are dependent on enabled command line
+flags. Make sure to monitor Go metrics.</p>
+<p>If you use <code>-metrics-flavour=codahale,prometheus</code> you enable both
+storage backends.</p>
+<p>If you use the Prometheus histogram buckets <code>-histogram-metric-buckets</code>.</p>
+<p>If you enable route based <code>-route-backend-metrics</code>
+<code>-route-response-metrics</code> <code>-serve-route-metrics</code>, error codes
+<code>-route-response-metrics</code> and host <code>-serve-host-metrics</code> based metrics
+it can count up. Please check the support listener endpoint (default
+9911) to understand the usage:</p>
+<pre><code>% curl localhost:9911/metrics
+</code></pre>
+<h2 id="filters">Filters</h2>
+<p>Ratelimit filters <code>clientRatelimit</code> and <code>clusterClientRatelimit</code>, both consume
+roughly 15MB per filter for 100.000 individual clients and 10 maximum
+hits. Make sure you monitor Go metrics.</p>
+<h2 id="slow-backends">Slow Backends</h2>
+<p>Skipper has to keep track of all active connections and http
+Requests. Slow Backends can pile up in number of connections, that
+will consume each a little memory per request. If you have high
+traffic per instance and a backend times out it can start to increase
+your memory consumption. Make sure you monitor backend latency,
+request and error rates.</p></div>
         </div>
 
         <footer class="col-md-12">

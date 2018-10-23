@@ -211,8 +211,11 @@
             <li><a href="#consecutivebreaker">consecutiveBreaker</a></li>
             <li><a href="#ratebreaker">rateBreaker</a></li>
             <li><a href="#disablebreaker">disableBreaker</a></li>
-            <li><a href="#localratelimit">localRatelimit</a></li>
+            <li><a href="#localratelimit">~~localRatelimit~~</a></li>
+            <li><a href="#clientratelimit">clientRatelimit</a></li>
             <li><a href="#ratelimit">ratelimit</a></li>
+            <li><a href="#clusterclientratelimit">clusterClientRatelimit</a></li>
+            <li><a href="#clusterratelimit">clusterRatelimit</a></li>
             <li><a href="#lua">lua</a></li>
             <li><a href="#corsorigin">corsOrigin</a></li>
             <li><a href="#headertoquery">headerToQuery</a></li>
@@ -220,6 +223,7 @@
             <li><a href="#accesslogdisabled">~~accessLogDisabled~~</a></li>
             <li><a href="#disableaccesslog">disableAccessLog</a></li>
             <li><a href="#enableaccesslog">enableAccessLog</a></li>
+            <li><a href="#auditlog">auditLog</a></li>
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
@@ -240,9 +244,11 @@ Filter can be chained using the arrow operator <code>-&gt;</code>.</p>
 
 <h2 id="setrequestheader">setRequestHeader</h2>
 <p>Set headers for requests.</p>
-<p>Parameters:
-<em> header name (string)
-</em> header value (string)</p>
+<p>Parameters:</p>
+<ul>
+<li>header name (string)</li>
+<li>header value (string)</li>
+</ul>
 <p>Example:</p>
 <pre><code>foo: * -&gt; setRequestHeader(&quot;X-Passed-Skipper&quot;, &quot;true&quot;) -&gt; &quot;https://backend.example.org&quot;;
 </code></pre>
@@ -255,8 +261,10 @@ Filter can be chained using the arrow operator <code>-&gt;</code>.</p>
 <p>Same as <a href="#appendrequestheader">appendRequestHeader</a>, only for responses</p>
 <h2 id="droprequestheader">dropRequestHeader</h2>
 <p>Removes a header from the request</p>
-<p>Parameters:
-* header name (string)</p>
+<p>Parameters:</p>
+<ul>
+<li>header name (string)</li>
+</ul>
 <p>Example:</p>
 <pre><code>foo: * -&gt; dropRequestHeader(&quot;User-Agent&quot;) -&gt; &quot;https://backend.example.org&quot;;
 </code></pre>
@@ -265,13 +273,17 @@ Filter can be chained using the arrow operator <code>-&gt;</code>.</p>
 <p>Same as <a href="#droprequestheader">dropRequestHeader</a> but for responses from the backend</p>
 <h2 id="modpath">modPath</h2>
 <p>Replace all matched regex expressions in the path.</p>
-<p>Parameters:
-<em> the expression to match (regex)
-</em> the replacement (string)</p>
+<p>Parameters:</p>
+<ul>
+<li>the expression to match (regex)</li>
+<li>the replacement (string)</li>
+</ul>
 <h2 id="setpath">setPath</h2>
 <p>Replace the path of the original request to the replacement.</p>
-<p>Parameters:
-* the replacement (string)</p>
+<p>Parameters:</p>
+<ul>
+<li>the replacement (string)</li>
+</ul>
 <h2 id="redirectto">redirectTo</h2>
 <p>Creates an HTTP redirect response.</p>
 <p>Parameters:</p>
@@ -309,9 +321,11 @@ e.g. the request <code>GET /.well-known/acme-challenge/foo</code> will serve the
 <h2 id="preservehost">preserveHost</h2>
 <p>Sets the incoming <code>Host:</code> header on the outgoing backend connection.</p>
 <p>It can be used to override the <code>proxyPreserveHost</code> behavior for individual routes.</p>
-<p>Parameters: "true" or "false"
-<em> "true" - use the Host header from the incoming request
-</em> "false" - use the host from the backend address</p>
+<p>Parameters: "true" or "false"</p>
+<ul>
+<li>"true" - use the Host header from the incoming request</li>
+<li>"false" - use the host from the backend address</li>
+</ul>
 <p>Example:</p>
 <pre><code>route1: * -&gt; preserveHost(&quot;true&quot;) -&gt; &quot;http://backend.example.org&quot;;
 </code></pre>
@@ -617,7 +631,7 @@ it will allow the request to pass.</p>
 </code></pre>
 
 <h2 id="forwardtoken">forwardToken</h2>
-<p>The filter accepts a single string as an argument. The argument is the header 
+<p>The filter accepts a single string as an argument. The argument is the header
 name where the result of token info or token introspection is added when the
 request is passed to the backend.</p>
 <p>If this filter is used when there is no token introspection or token info data
@@ -700,27 +714,33 @@ backendHealthcheck: Path(&quot;/healthcheck&quot;)
 </code></pre>
 
 <p>See also the <a href="https://godoc.org/github.com/zalando/skipper/circuit">circuit breaker docs</a>.</p>
-<h2 id="localratelimit">localRatelimit</h2>
+<h2 id="localratelimit">~~localRatelimit~~</h2>
+<p><strong>DEPRECATED</strong> use <a href="#clientRatelimit">clientRatelimit</a> with the same
+  settings instead.</p>
+<h2 id="clientratelimit">clientRatelimit</h2>
 <p>Per skipper instance calculated ratelimit, that allows number of
 requests by client. The definition of the same client is based on data
 of the http header and can be changed with an optional third
 parameter. If the third parameter is set skipper will use the
 Authorization header to put the request in the same client bucket,
-else  the X-Forwarded-For Header will be used.</p>
+else the X-Forwarded-For Header will be used. You need to run skipper
+with command line flag <code>-enable-ratelimits</code>. Skipper will consume
+roughly 15 MB per filter for 100.000 clients.</p>
 <p>Parameters:</p>
 <ul>
 <li>number of allowed requests per time period (int)</li>
 <li>time period for requests being counted (time.Duration)</li>
 <li>optional parameter can be set to: "auth" (string)</li>
 </ul>
-<pre><code>localRatelimit(3, &quot;1m&quot;)
-localRatelimit(3, &quot;1m&quot;, &quot;auth&quot;)
+<pre><code>clientRatelimit(3, &quot;1m&quot;)
+clientRatelimit(3, &quot;1m&quot;, &quot;auth&quot;)
 </code></pre>
 
 <p>See also the <a href="https://godoc.org/github.com/zalando/skipper/ratelimit">ratelimit docs</a>.</p>
 <h2 id="ratelimit">ratelimit</h2>
 <p>Per skipper instance calculated ratelimit, that allows number of
-requests to a backend.</p>
+requests to a backend. You need to run skipper
+with command line flag <code>-enable-ratelimits</code>.</p>
 <p>Parameters:</p>
 <ul>
 <li>number of allowed requests per time period (int)</li>
@@ -728,6 +748,41 @@ requests to a backend.</p>
 </ul>
 <pre><code>ratelimit(20, &quot;1m&quot;)
 ratelimit(300, &quot;1h&quot;)
+</code></pre>
+
+<p>See also the <a href="https://godoc.org/github.com/zalando/skipper/ratelimit">ratelimit docs</a>.</p>
+<h2 id="clusterclientratelimit">clusterClientRatelimit</h2>
+<p>This ratelimit is calculated across all skipper peers and allows the
+given number of requests by client. The definition of the same client
+is based on data of the http header and can be changed with an
+optional third parameter. If the third parameter is set skipper will
+use the Authorization header to put the request in the same client
+bucket, else the X-Forwarded-For Header will be used.  You need to run
+skipper with command line flags <code>-enable-swarm</code> and
+<code>-enable-ratelimits</code>. Skipper will consume roughly 15 MB per filter
+for 100.000 clients and 1000 skipper peers.</p>
+<p>Parameters:</p>
+<ul>
+<li>number of allowed requests per time period (int)</li>
+<li>time period for requests being counted (time.Duration)</li>
+<li>optional parameter can be set to: "auth" (string)</li>
+</ul>
+<pre><code>clusterClientRatelimit(10, &quot;1h&quot;)
+clusterClientRatelimit(10, &quot;1h&quot;, &quot;auth&quot;)
+</code></pre>
+
+<p>See also the <a href="https://godoc.org/github.com/zalando/skipper/ratelimit">ratelimit docs</a>.</p>
+<h2 id="clusterratelimit">clusterRatelimit</h2>
+<p>This ratelimit is calculated across all skipper peers and allows the
+given number of requests to a backend. You need to have run skipper
+with command line flags <code>-enable-swarm</code> and <code>-enable-ratelimits</code>.</p>
+<p>Parameters:</p>
+<ul>
+<li>number of allowed requests per time period (int)</li>
+<li>time period for requests being counted (time.Duration)</li>
+</ul>
+<pre><code>clusterRatelimit(20, &quot;1m&quot;)
+clusterRatelimit(300, &quot;1h&quot;)
 </code></pre>
 
 <p>See also the <a href="https://godoc.org/github.com/zalando/skipper/ratelimit">ratelimit docs</a>.</p>
@@ -803,6 +858,14 @@ while access log, in general, is enabled.</p>
 while access log, in general, is disabled.</p>
 <p>Example:</p>
 <pre><code>enableAccessLog()
+</code></pre>
+
+<h2 id="auditlog">auditLog</h2>
+<p>Filter <code>auditLog()</code> logs the request and N bytes of the body into the
+log file. N defaults to 1024 and can be overidden with
+<code>-max-audit-body=&lt;int&gt;</code>. <code>N=0</code> omits logging the body.</p>
+<p>Example:</p>
+<pre><code>auditLog()
 </code></pre></div>
         </div>
 

@@ -139,6 +139,31 @@
 </li>
                                 </ul>
                             </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tutorials <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    
+<li >
+    <a href="../../tutorials/basics/">Basis</a>
+</li>
+                                    
+<li >
+    <a href="../../tutorials/common-use-cases/">Common Use Cases</a>
+</li>
+                                    
+<li >
+    <a href="../../tutorials/development/">Development</a>
+</li>
+                                    
+<li >
+    <a href="../../tutorials/auth/">Authentication and Autorization</a>
+</li>
+                                    
+<li >
+    <a href="../../tutorials/ratelimit/">Ratelimits</a>
+</li>
+                                </ul>
+                            </li>
                         </ul>
 
                     <ul class="nav navbar-nav navbar-right">
@@ -224,6 +249,7 @@
             <li><a href="#disableaccesslog">disableAccessLog</a></li>
             <li><a href="#enableaccesslog">enableAccessLog</a></li>
             <li><a href="#auditlog">auditLog</a></li>
+            <li><a href="#apiusagemonitoring">apiUsageMonitoring</a></li>
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
@@ -866,6 +892,102 @@ log file. N defaults to 1024 and can be overidden with
 <code>-max-audit-body=&lt;int&gt;</code>. <code>N=0</code> omits logging the body.</p>
 <p>Example:</p>
 <pre><code>auditLog()
+</code></pre>
+
+<h2 id="apiusagemonitoring">apiUsageMonitoring</h2>
+<p>The <code>apiUsageMonitoring</code> filter adds API related metrics to the Skipper monitoring. It is by default not activated. Activate
+it by providing the <code>-enable-api-usage-monitoring</code> flag at Skipper startup. In its deactivated state, it is still
+registered as a valid filter (allowing route configurations to specify it), but will perform no operation. That allows,
+per instance, production environments to use it and testing environments not to while keeping the same route configuration
+for all environments.</p>
+<p>NOTE: Make sure to activate the metrics flavour proper to your environment using the <code>metrics-flavour</code>
+flag in order to get those metrics.</p>
+<p>Example:</p>
+<pre><code class="bash">skipper -enable-api-usage-monitoring -metrics-flavour prometheus
+</code></pre>
+
+<p>The structure of the metrics is:</p>
+<pre><code>apiUsageMonitoring.custom.&lt;Application ID&gt;.&lt;API ID&gt;.&lt;HTTP Verb&gt;.&lt;Path Template&gt;.&lt;Metric Name&gt;
+</code></pre>
+<p>The available metrics are:</p>
+<ul>
+<li>HTTP exchanges counting:<ul>
+<li><strong>http_count</strong>: the number of HTTP exchanges</li>
+<li><strong>http5xx_count</strong>: number of HTTP exchanges resulting in a server error (HTTP status in the 500s)</li>
+<li><strong>http4xx_count</strong>: number of HTTP exchanges resulting in a client error (HTTP status in the 400s)</li>
+<li><strong>http3xx_count</strong>: number of HTTP exchanges resulting in a redirect (HTTP status in the 300s)</li>
+<li><strong>http2xx_count</strong>: number of HTTP exchanges resulting in success (HTTP status in the 200s)</li>
+</ul>
+</li>
+<li>Timing:<ul>
+<li><strong>latency</strong>: time between the first observable moment (a call to the filter's <code>Request</code>) until the last (a call to the filter's <code>Response</code>) </li>
+</ul>
+</li>
+</ul>
+<p>Endpoints can be monitored using the <code>apiUsageMonitoring</code> filter in the route. It accepts JSON objects (as strings)
+of the following format.</p>
+<pre><code class="yaml">api-usage-monitoring-configuration:
+  type: object
+  required:
+    - application_id
+    - api_id
+    - path_templates
+  properties:
+    application_id:
+      type: string
+      description: ID of the application
+      example: order-service
+    api_id:
+      type: string
+      description: ID of the API
+      example: orders-api
+    path_templates:
+      description: Endpoints to be monitored.
+      type: array
+      items:
+        type: string
+        description: &gt;
+          Path template in /articles/{article-id} (OpenAPI 3) or in /articles/:article-id format.
+          NOTE: They will be normalized to the :this format for metrics naming.
+        example: /orders/{order-id}
+</code></pre>
+
+<p>Configuration Example:</p>
+<pre><code>apiUsageMonitoring(`
+    {
+        &quot;application_id&quot;: &quot;my-app&quot;,
+        &quot;api_id&quot;: &quot;orders-api&quot;,
+        &quot;path_templates&quot;: [
+            &quot;foo/orders&quot;,
+            &quot;foo/orders/:order-id&quot;,
+            &quot;foo/orders/:order-id/order_item/{order-item-id}&quot;
+        ]
+    }`,`{
+        &quot;application_id&quot;: &quot;my-app&quot;,
+        &quot;api_id&quot;: &quot;customers-api&quot;,
+        &quot;path_templates&quot;: [
+            &quot;/foo/customers/&quot;,
+            &quot;/foo/customers/{customer-id}/&quot;
+        ]
+    }
+`)
+</code></pre>
+
+<p>NOTE: Non configured paths will be tracked with <code>&lt;unknown&gt;</code> application ID, API ID
+and path template.</p>
+<pre><code>apiUsageMonitoring.custom.&lt;unknown&gt;.&lt;unknown&gt;.GET.&lt;unknown&gt;.http_count
+</code></pre>
+<p>Based on the previous configuration, here is an example of a counter metric.</p>
+<pre><code>apiUsageMonitoring.custom.my-app.orders-api.GET.foo/orders/:order-id.http_count
+</code></pre>
+<p>Here is the <em>Prometheus</em> query to obtain it.</p>
+<pre><code>sum(rate(skipper_custom_total{key="apiUsageMonitoring.custom.my-app.orders-api.GET.foo/orders/:order-id.http_count"}[60s])) by (key)
+</code></pre>
+<p>Here is an example of a histogram metric.</p>
+<pre><code>apiUsageMonitoring.custom.my_app.orders-api.POST.foo/orders.latency
+</code></pre>
+<p>Here is the <em>Prometheus</em> query to obtain it.</p>
+<pre><code>histogram_quantile(0.5, sum(rate(skipper_custom_duration_seconds_bucket{key="apiUsageMonitoring.custom.my-app.orders-api.POST.foo/orders.latency"}[60s])) by (le, key))
 </code></pre></div>
         </div>
 

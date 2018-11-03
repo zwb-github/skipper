@@ -139,6 +139,31 @@
 </li>
                                 </ul>
                             </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tutorials <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    
+<li >
+    <a href="tutorials/basics/">Basis</a>
+</li>
+                                    
+<li >
+    <a href="tutorials/common-use-cases/">Common Use Cases</a>
+</li>
+                                    
+<li >
+    <a href="tutorials/development/">Development</a>
+</li>
+                                    
+<li >
+    <a href="tutorials/auth/">Authentication and Autorization</a>
+</li>
+                                    
+<li >
+    <a href="tutorials/ratelimit/">Ratelimits</a>
+</li>
+                                </ul>
+                            </li>
                         </ul>
 
                     <ul class="nav navbar-nav navbar-right">
@@ -173,12 +198,19 @@
                 <div class="col-md-9" role="main">
 
 <h1 id="introduction">Introduction</h1>
-<p>This is the documentation page of <a href="https://github.com/zalando/skipper">Skipper</a>. Skipper is an HTTP router and reverse proxy for service composition. It's designed to handle &gt;100k HTTP route definitions with detailed lookup conditions, and flexible augmentation of the request flow with filters. It can be used out of the box or extended with custom lookup, filter logic and configuration sources.</p>
+<p>This is the documentation page of
+<a href="https://github.com/zalando/skipper">Skipper</a>. Skipper is an HTTP
+router and reverse proxy for service composition. It's designed to
+handle large amounts of dynamically configured HTTP route definitions
+(&gt;800000 routes) with detailed lookup conditions, and flexible
+augmentation of the request flow with filters. It can be used out of
+the box or extended with custom lookup, filter logic and configuration
+sources.</p>
 <h2 id="http-proxy">HTTP Proxy</h2>
 <p>Skipper identifies routes based on the requests' properties, such as path, method, host and headers using the
 <a href="reference/predicates/">predicates</a>. It allows the modification of the requests and responses with
-<a href="reference/filters/">filters</a> that are independently configured for each route. <a href="reference/architecture/">See more here about how it
-works.</a></p>
+<a href="reference/filters/">filters</a> that are independently configured for
+each route. <a href="tutorials/basics/">Learn here more about how it works.</a></p>
 <h2 id="kubernetes-ingress">Kubernetes Ingress</h2>
 <p>Skipper can be used to run as a Kubernetes Ingress controller. Details with examples of Skipper's capabilities
 and an overview you will can be found in the <a href="kubernetes/ingress-controller/">ingress-controller deployment
@@ -264,6 +296,6 @@ docs</a>.</p></div>
 </html>
 
 <!--
-MkDocs version : 1.0.4
-Build Date UTC : 2018-10-24 19:25:10
+MkDocs version : 1.0.1
+Build Date UTC : 2018-11-03 10:33:18
 -->

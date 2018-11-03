@@ -8,7 +8,7 @@
         
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>Architecture - Skipper</title>
+        <title>Basis - Skipper</title>
         <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
         <link href="../../css/font-awesome.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
@@ -49,36 +49,36 @@
                             <li >
                                 <a href="../..">Introduction</a>
                             </li>
-                            <li class="dropdown active">
+                            <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     
 <li >
-    <a href="../filters/">Filters</a>
+    <a href="../../reference/filters/">Filters</a>
 </li>
                                     
 <li >
-    <a href="../predicates/">Predicates</a>
+    <a href="../../reference/predicates/">Predicates</a>
 </li>
                                     
 <li >
-    <a href="../scripts/">Scripts</a>
+    <a href="../../reference/scripts/">Scripts</a>
 </li>
                                     
 <li >
-    <a href="../plugins/">Plugins</a>
-</li>
-                                    
-<li class="active">
-    <a href="./">Architecture</a>
+    <a href="../../reference/plugins/">Plugins</a>
 </li>
                                     
 <li >
-    <a href="../development/">Development</a>
+    <a href="../../reference/architecture/">Architecture</a>
 </li>
                                     
 <li >
-    <a href="../../tutorials/video-howto-build/">Video - How to build</a>
+    <a href="../../reference/development/">Development</a>
+</li>
+                                    
+<li >
+    <a href="../video-howto-build/">Video - How to build</a>
 </li>
                                     
   <li class="dropdown-submenu">
@@ -139,28 +139,28 @@
 </li>
                                 </ul>
                             </li>
-                            <li class="dropdown">
+                            <li class="dropdown active">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tutorials <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     
-<li >
-    <a href="../../tutorials/basics/">Basis</a>
+<li class="active">
+    <a href="./">Basis</a>
 </li>
                                     
 <li >
-    <a href="../../tutorials/common-use-cases/">Common Use Cases</a>
+    <a href="../common-use-cases/">Common Use Cases</a>
 </li>
                                     
 <li >
-    <a href="../../tutorials/development/">Development</a>
+    <a href="../development/">Development</a>
 </li>
                                     
 <li >
-    <a href="../../tutorials/auth/">Authentication and Autorization</a>
+    <a href="../auth/">Authentication and Autorization</a>
 </li>
                                     
 <li >
-    <a href="../../tutorials/ratelimit/">Ratelimits</a>
+    <a href="../ratelimit/">Ratelimits</a>
 </li>
                                 </ul>
                             </li>
@@ -173,12 +173,12 @@
                             </a>
                         </li>
                             <li >
-                                <a rel="next" href="../plugins/">
+                                <a rel="next" href="../../kubernetes/ingress-backends/">
                                     <i class="fa fa-arrow-left"></i> Previous
                                 </a>
                             </li>
                             <li >
-                                <a rel="prev" href="../development/">
+                                <a rel="prev" href="../common-use-cases/">
                                     Next <i class="fa fa-arrow-right"></i>
                                 </a>
                             </li>
@@ -191,19 +191,36 @@
                 <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
         <li class="main active"><a href="#architecture">Architecture</a></li>
-            <li><a href="#route-processing">Route processing</a></li>
+        <li class="main "><a href="#concepts">Concepts</a></li>
+            <li><a href="#route-definition">Route definition</a></li>
+            <li><a href="#predicate">Predicate</a></li>
+            <li><a href="#filter">Filter</a></li>
+            <li><a href="#backend">Backend</a></li>
+            <li><a href="#dataclient">Dataclient</a></li>
+        <li class="main "><a href="#route-processing">Route processing</a></li>
+            <li><a href="#routing-mechanism">Routing mechanism</a></li>
+            <li><a href="#route-matching">Route matching</a></li>
+        <li class="main "><a href="#building-skipper">Building skipper</a></li>
+            <li><a href="#local-build">Local build</a></li>
+            <li><a href="#ci-build">CI build</a></li>
+        <li class="main "><a href="#testing-routes">Testing routes</a></li>
+        <li class="main "><a href="#current-routing-table">Current routing table</a></li>
+            <li><a href="#route-ids">Route IDs</a></li>
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
 
-<h1 id="architecture">Architecture</h1>
+<h2 id="architecture">Architecture</h2>
+<p>The core business of skipper is routing based on HTTP. It performs and
+scales well, for example it handles more than 800000 routes in
+production with 60000 requests per second.</p>
 <p>Skipper is written as a library and is also a multi binary project with
 2 binaries, named <code>skipper</code> and <code>eskip</code>. <code>Skipper</code> is the HTTP proxy
 and <code>eskip</code> is a CLI application to verify, print, update or delete
 Skipper routes.</p>
 <p>Skipper's internal architecture is split into different packages. The
 <code>skipper</code> package has connections to multiple <code>dataclient</code>, that pull
-information from different sources, for example static routes from an
+information from different sources, for example local routes from an
 eskip file or dynamic routes from Kubernetes ingress objects.</p>
 <p>The <code>proxy</code> package gets the routes populated by skipper and has
 always a current routing table which will be replaced on change.</p>
@@ -216,11 +233,89 @@ for the route, or a <code>&lt;loopback&gt;</code>, meaning that the request will
 matched against the routing table again after filters have modified
 it.</p>
 <p><a href="http://opentracing.io/">Opentracing API</a> is supported via
-<a href="https://github.com/skipper-plugins/opentracing">skipper-plugins</a>. For
+<code>tracers</code> and you can find all of them in <code>./tracing/tracers/</code>. For
 example <a href="https://github.com/jaegertracing/jaeger">Jaeger</a> is supported.</p>
-<p>Skipper has a rich set of metrics that are exposed as json, but can be
-exported in <a href="https://prometheus.io">Prometheus</a> format.</p>
+<p>Skipper has a rich set of metrics that are exposed as json, but can
+also be exported in <a href="https://prometheus.io">Prometheus</a> format.</p>
 <p><img alt="Skipper's architecture " src="/skipper/img/architecture.svg" /></p>
+<h2 id="concepts">Concepts</h2>
+<h3 id="route-definition">Route definition</h3>
+<p>A route consists of an ID, predicates, filters and a backend and is
+most often written in <a href="https://godoc.org/github.com/zalando/skipper/eskip">eskip syntax</a>.</p>
+<p>Syntax:</p>
+<pre><code>ID:
+        Predicate1() &amp;&amp; .. &amp;&amp; PredicateN()
+        -&gt; filter1()
+        ...
+        -&gt; filterN()
+        -&gt; BACKEND
+</code></pre>
+
+<p>An example routing configuration:</p>
+<pre><code>baidu:
+        Path(&quot;/baidu&quot;)
+        -&gt; setRequestHeader(&quot;Host&quot;, &quot;www.baidu.com&quot;)
+        -&gt; setPath(&quot;/s&quot;)
+        -&gt; setQuery(&quot;wd&quot;, &quot;godoc skipper&quot;)
+        -&gt; &quot;http://www.baidu.com&quot;;
+google:
+        *
+        -&gt; setPath(&quot;/search&quot;)
+        -&gt; setQuery(&quot;q&quot;, &quot;godoc skipper&quot;)
+        -&gt; &quot;https://www.google.com&quot;;
+yandex:
+        * &amp;&amp; Cookie(&quot;yandex&quot;, &quot;true&quot;)
+        -&gt; setPath(&quot;/search/&quot;)
+        -&gt; setQuery(&quot;text&quot;, &quot;godoc skipper&quot;)
+        -&gt; tee(&quot;http://127.0.0.1:12345/&quot;)
+        -&gt; &quot;https://yandex.ru&quot;;
+</code></pre>
+
+<h3 id="predicate">Predicate</h3>
+<p>A Predicate adds a matching rule to a route.
+For example the Cookie predicate, <code>Cookie("yandex", "true")</code>, matched
+if there is a cookie in the request with name "yandex" and the value
+is "true", else the route processing will go on and try to find
+another matching route for the given request. Multiple predicates can
+be combined by <code>&amp;&amp;</code> which means a logical <strong>AND</strong>. If you need a
+logical <strong>OR</strong>, you have to create another route.</p>
+<p>Special Predicates:</p>
+<ul>
+<li><code>*</code> catch all is always true</li>
+<li><code>Path()</code> reduces the number of routes in O(log n) time to scan afterwards a subset in linear time</li>
+<li><code>PathSubtree()</code> reduces the number of routes O(log n) time to scan afterwards a subset in linear time</li>
+</ul>
+<h3 id="filter">Filter</h3>
+<p>A filter changes a HTTP request or response or both. Multiple filters
+can be concatenated by <code>-&gt;</code>.</p>
+<p>Some special filters are:</p>
+<ul>
+<li><code>inlineContent()</code> sets the HTTP response body, should be used with status() filter and  <shunt> backend</li>
+<li><code>static()</code> serves static files and should be used with <shunt> backend</li>
+<li><code>status()</code> sets HTTP status code to a given value, should be used with <shunt> backend</li>
+<li><code>tee()</code> clones request to given target</li>
+</ul>
+<h3 id="backend">Backend</h3>
+<p>The last entry of a route is the backend definition, that will be
+called with the result request after filter processing. Normally this
+is an URL string.</p>
+<p>Special backends:</p>
+<ul>
+<li><code>&lt;loopback&gt;</code> restart route processing with the possibly changed request</li>
+<li><code>&lt;shunt&gt;</code> stops processing, used for fast returns</li>
+</ul>
+<h3 id="dataclient">Dataclient</h3>
+<p>Dataclients are used to pull route information from a data source. The
+data will be used to create routes according to the dataclient. As a
+special case, for example kubernetes dataclient automatically adds
+HTTP-&gt;HTTPS redirects if skipper is started with <code>-kubernetes-https-redirect</code>.</p>
+<p>Dataclients:</p>
+<ul>
+<li><a href="/skipper/data-clients/eskip-file">eskip-file</a></li>
+<li><a href="/skipper/data-clients/route-string">route string</a></li>
+<li><a href="/skipper/data-clients/kubernetes">kubernetes</a></li>
+<li><a href="/skipper/data-clients/etcd">etcd</a></li>
+</ul>
 <h2 id="route-processing">Route processing</h2>
 <p>Package <code>skipper</code> has a Go <code>http.Server</code> and does the <code>ListenAndServe</code>
 call with the <code>loggingHandler</code> wrapped <code>proxy</code>.  The <code>loggingHandler</code>
@@ -242,9 +337,10 @@ backend. When the route is shunted (<code>&lt;shunt&gt;</code>), skipper serves 
 request alone, by using only the filters. When the route is a
 <code>&lt;loopback&gt;</code>, the request is passed to the routing table for finding
 another route, based on the changes that the filters made to the
-request.</p>
+request. In case it will always find a <code>&lt;loopback&gt;</code> route it will stop
+after maximum number of loopbacks is reached and logs an error.</p>
 <p><img alt="Skipper's request and response processing " src="/skipper/img/req-and-resp-processing.svg" /></p>
-<h4 id="routing-mechanism">Routing mechanism</h4>
+<h3 id="routing-mechanism">Routing mechanism</h3>
 <p>The routing executes the following steps in the typical case:</p>
 <ol>
 <li>
@@ -268,7 +364,7 @@ request.</p>
 <p>Respond to the incoming request with the resulting response.</p>
 </li>
 </ol>
-<h4 id="route-matching">Route matching</h4>
+<h3 id="route-matching">Route matching</h3>
 <p>Skipper can handle a relatively large number of routes with acceptable
 performance, while being able to use any attribute of the incoming HTTP
 requests to distinguish between them. In order to be able to do so, the
@@ -316,7 +412,112 @@ certain route was matched for a request instead of another.</p>
 <p><em>If</em> #2 results in multiple matching routes, then one route will be
    selected. It is unspecified which one.</p>
 </li>
-</ol></div>
+</ol>
+<h2 id="building-skipper">Building skipper</h2>
+<p>We use Go modules to build skipper, therefore you need <a href="https://golang.org/dl">Go</a> version <code>&gt;= 1.11</code>.</p>
+<h3 id="local-build">Local build</h3>
+<p>To get a local build of skipper for your CPU architecture, you can run
+<code>make skipper</code>. To cross compile to non Linux platforms you can use:</p>
+<ul>
+<li><code>make build.osx</code> for Mac OS X (amd64)</li>
+<li><code>make build.windows</code> for Windows (amd64)</li>
+</ul>
+<p>The local build will write into <code>./bin/</code> directory.</p>
+<h3 id="ci-build">CI build</h3>
+<p>The current used CI flow to build the official docker container, you
+can see in <a href="https://github.com/zalando/skipper/blob/master/delivery.yaml">delivery.yaml</a>.
+Official release versions you will find at
+<code>registry.opensource.zalan.do/pathfinder/skipper:${RELEASE_VERSION}</code>,
+where <code>${RELEASE_VERSION}</code> is the git tag got by <code>$(git describe --tags --always --dirty)</code>.</p>
+<p>Test versions are released at
+<code>registry.opensource.zalan.do/pathfinder/skipper-test:${CDP_BUILD_VERSION}</code>
+for every pull request, limited to only repository members, because of
+compliance and security reasons.</p>
+<h2 id="testing-routes">Testing routes</h2>
+<p>To test routes you can use a local build of skipper and pass arguments
+<code>-inline-routes=&lt;route string&gt;</code> or for more complex ones
+use a local <code>eskip</code> file on disk and use <code>-routes-file=&lt;filepath&gt;</code>.</p>
+<p>Example:</p>
+<pre><code>./bin/skipper -address :9999 -inline-routes 'r: * -&gt; setQuery(&quot;lang&quot;, &quot;pt&quot;) -&gt; &quot;http://127.0.0.1:8080/&quot;'
+</code></pre>
+
+<p>Now you have a proxy running that will set a query to your request URL
+and call <code>http://127.0.0.1:8080/?lang=pt</code></p>
+<p>The simplest way of testing a proxy is using a local backend and a
+local browser.</p>
+<p>Local backend example:</p>
+<pre><code>./bin/skipper -address :8080 -inline-routes 'r: * -&gt; inlineContent(&quot;Hello world!&quot;) -&gt; status(200) -&gt; &lt;shunt&gt;'
+</code></pre>
+
+<p>If you want to do the request and see the response in detail, you can
+use <code>curl</code> as a browser, which should be installed on most Linux and
+Mac OS X computers.</p>
+<p>Example client call to our defined proxy:</p>
+<pre><code>% curl localhost:8080 -v
+* Rebuilt URL to: localhost:8080/
+*   Trying ::1...
+* Connected to localhost (::1) port 8080 (#0)
+&gt; GET / HTTP/1.1
+&gt; Host: localhost:8080
+&gt; User-Agent: curl/7.49.0
+&gt; Accept: */*
+&gt;
+&lt; HTTP/1.1 200 OK
+&lt; Content-Length: 12
+&lt; Content-Type: text/plain; charset=utf-8
+&lt; Server: Skipper
+&lt; Date: Thu, 01 Nov 2018 15:54:13 GMT
+&lt;
+* Connection #0 to host localhost left intact
+Hello world!
+</code></pre>
+
+<h2 id="current-routing-table">Current routing table</h2>
+<p>To investigate the current routing table skipper has loaded into its
+memory, you can use the <code>-support-listener</code>, which defaults to port
+9911 and you have to do a GET request to the <code>/routes</code> endpoint.</p>
+<p>Example:</p>
+<pre><code>% curl localhost:9911/routes
+r: *
+  -&gt; setQuery(&quot;lang&quot;, &quot;pt&quot;)
+  -&gt; &quot;http://127.0.0.1:8000&quot;;
+</code></pre>
+
+<p>If you do not see your route, then you have most probably a syntax
+error in your route definition, such that the route was not loaded
+into memory.</p>
+<p>To print the number of routes, <code>X-Count</code> header, and the last update
+timestamp, <code>X-Timestamp</code> header, you can use a HEAD request to the
+support listener <code>/routes</code> endpoint:</p>
+<pre><code class="bash">% curl -I localhost:9911/routes
+HTTP/1.1 200 OK
+Content-Type: text/plain
+X-Count: 1
+X-Timestamp: 1541086036
+Date: Fri, 02 Nov 2018 00:30:43 GMT
+</code></pre>
+
+<p>For skipper operators the number of routes can be interesting for
+statistics and the timestamp to detect skipper instances that have not
+updated its routing table.</p>
+<p>If there is more than 1024 routes used, then the paging the results is
+possible with the <code>offset</code> and <code>limit</code> query parameters:</p>
+<pre><code>curl locahost:9911/routes?offset=2048&amp;limit=512
+</code></pre>
+
+<h3 id="route-ids">Route IDs</h3>
+<p>In the following example <strong>rid</strong> is the route ID:</p>
+<pre><code>% curl localhost:9911/routes
+rid: *
+  -&gt; setQuery(&quot;lang&quot;, &quot;pt&quot;)
+  -&gt; &quot;http://127.0.0.1:8000&quot;;
+</code></pre>
+
+<p>If the route ID has a prefix <code>kube_</code>, then it is a route created by
+the Kubernetes dataclient. We do not disallow that you create manually
+routes with <code>kube_</code> prefix, but most of the time you should not use it
+in other routes to differentiate the routes created by other
+dataclients, in case you use multiple at the same time.</p></div>
         </div>
 
         <footer class="col-md-12">

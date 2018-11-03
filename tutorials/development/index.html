@@ -8,7 +8,7 @@
         
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>Etcd - Skipper</title>
+        <title>Development - Skipper</title>
         <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
         <link href="../../css/font-awesome.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
@@ -49,7 +49,7 @@
                             <li >
                                 <a href="../..">Introduction</a>
                             </li>
-                            <li class="dropdown active">
+                            <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     
@@ -78,7 +78,7 @@
 </li>
                                     
 <li >
-    <a href="../../tutorials/video-howto-build/">Video - How to build</a>
+    <a href="../video-howto-build/">Video - How to build</a>
 </li>
                                     
   <li class="dropdown-submenu">
@@ -86,23 +86,23 @@
     <ul class="dropdown-menu">
             
 <li >
-    <a href="../eskip-file/">Eskip File</a>
-</li>
-            
-<li class="active">
-    <a href="./">Etcd</a>
+    <a href="../../data-clients/eskip-file/">Eskip File</a>
 </li>
             
 <li >
-    <a href="../kubernetes/">Kubernetes</a>
+    <a href="../../data-clients/etcd/">Etcd</a>
 </li>
             
 <li >
-    <a href="../innkeeper/">Innkeeper API</a>
+    <a href="../../data-clients/kubernetes/">Kubernetes</a>
 </li>
             
 <li >
-    <a href="../route-string/">Route String</a>
+    <a href="../../data-clients/innkeeper/">Innkeeper API</a>
+</li>
+            
+<li >
+    <a href="../../data-clients/route-string/">Route String</a>
 </li>
     </ul>
   </li>
@@ -139,28 +139,28 @@
 </li>
                                 </ul>
                             </li>
-                            <li class="dropdown">
+                            <li class="dropdown active">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tutorials <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     
 <li >
-    <a href="../../tutorials/basics/">Basis</a>
+    <a href="../basics/">Basis</a>
 </li>
                                     
 <li >
-    <a href="../../tutorials/common-use-cases/">Common Use Cases</a>
+    <a href="../common-use-cases/">Common Use Cases</a>
+</li>
+                                    
+<li class="active">
+    <a href="./">Development</a>
 </li>
                                     
 <li >
-    <a href="../../tutorials/development/">Development</a>
+    <a href="../auth/">Authentication and Autorization</a>
 </li>
                                     
 <li >
-    <a href="../../tutorials/auth/">Authentication and Autorization</a>
-</li>
-                                    
-<li >
-    <a href="../../tutorials/ratelimit/">Ratelimits</a>
+    <a href="../ratelimit/">Ratelimits</a>
 </li>
                                 </ul>
                             </li>
@@ -173,12 +173,12 @@
                             </a>
                         </li>
                             <li >
-                                <a rel="next" href="../eskip-file/">
+                                <a rel="next" href="../common-use-cases/">
                                     <i class="fa fa-arrow-left"></i> Previous
                                 </a>
                             </li>
                             <li >
-                                <a rel="prev" href="../kubernetes/">
+                                <a rel="prev" href="../auth/">
                                     Next <i class="fa fa-arrow-right"></i>
                                 </a>
                             </li>
@@ -190,13 +190,141 @@
         <div class="container">
                 <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
-        <li class="main active"><a href="#etcd">ETCD</a></li>
+        <li class="main active"><a href="#docs">Docs</a></li>
+            <li><a href="#user-documentation">User documentation</a></li>
+        <li class="main "><a href="#filters">Filters</a></li>
+        <li class="main "><a href="#predicates">Predicates</a></li>
+        <li class="main "><a href="#dataclients">Dataclients</a></li>
+        <li class="main "><a href="#opentracing">Opentracing</a></li>
+        <li class="main "><a href="#core">Core</a></li>
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
 
-<h1 id="etcd">ETCD</h1>
-<p>TODO</p></div>
+<h2 id="docs">Docs</h2>
+<p>We have user documentation and developer documentation separated.
+In <code>docs/</code> you find the user documentation in <a href="TODO">mkdocs</a> format and
+rendered at <a href="https://opensource.zalando.com/skipper">https://opensource.zalando.com/skipper</a>.
+Developer documentation for skipper as library users
+<a href="https://blog.golang.org/godoc-documenting-go-code">godoc format</a> is used and rendered at <a href="https://godoc.org/github.com/zalando/skipper">https://godoc.org/github.com/zalando/skipper</a>.</p>
+<h3 id="user-documentation">User documentation</h3>
+<h4 id="local-preview">local Preview</h4>
+<p>To see rendered documentation locally you need to replace <code>/skipper</code>
+path with <code>/</code> to see them correctly. This you can easily do with
+skipper in front of <code>mkdocs serve</code>. The following skipper inline route
+will do this for you, assuming that you build skipper with <code>make skipper</code>:</p>
+<pre><code>./bin/skipper -inline-routes 'r: * -&gt; modPath(&quot;/skipper&quot;, &quot;&quot;) -&gt; &quot;http://127.0.0.1:8000&quot;'
+</code></pre>
+
+<p>Now you should be able to see the documentation at <a href="http://127.0.0.1:9090">http://127.0.0.1:9090</a>.</p>
+<h2 id="filters">Filters</h2>
+<p>Filters allow to change arbitrary HTTP data in the Request or
+Response. If you need to read and write the http.Body, please make
+sure you discuss the use case before creating a pull request.</p>
+<p>A filter consists of at least two types a <code>filters.Spec</code> and a <code>filters.Filter</code>.
+Spec consists of everything that is needed and known before a user
+will instantiate a filter.</p>
+<p>A spec will be created in the bootstrap procedure of a skipper
+process. A spec has to satisfy the <code>filters.Spec</code> interface <code>Name() string</code> and
+<code>CreateFilter([]interface{}) (filters.Filter, error)</code>.</p>
+<p>The actual filter implementation has to satisfy the <code>filter.Filter</code>
+interface <code>Request(filters.FilterContext)</code> and <code>Response(filters.FilterContext)</code>.
+If you need to clean up for example a goroutine you can do it in
+<code>Close()</code>, which will be called on filter shutdown.</p>
+<p>The simplest filter possible is, if <code>filters.Spec</code> and
+<code>filters.Filter</code> are the same type:</p>
+<pre><code>type myFilter struct{}
+
+func NewMyFilter() filters.Spec {
+    return &amp;myFilter{}
+}
+
+func (spec *myFilter) Name() string { return &quot;myFilter&quot; }
+
+func (spec *myFilter) CreateFilter(config []interface{}) (filters.Filter, error) {
+     return NewMyFilter(), nil
+}
+
+func (f *myFilter) Request(ctx filters.FilterContext) {
+     // change data in ctx.Request() for example
+}
+
+func (f *myFilter) Response(ctx filters.FilterContext) {
+     // change data in ctx.Response() for example
+}
+</code></pre>
+
+<p>Find a detailed example at <a href="/skipper/reference/development#how-to-develop-a-filter">how to develop a filter</a>.</p>
+<h2 id="predicates">Predicates</h2>
+<p>Predicates allow to match a condition, that can be based on arbitrary
+HTTP data in the Request. There are also predicates, that use a chance
+<code>Traffic()</code> or the current local time, for example <code>After()</code>, to match
+a request and do not use the HTTP data at all.</p>
+<p>A predicate consists of at least two types <code>routing.Predicate</code>
+and <code>routing.PredicateSpec</code>, which are both interfaces.</p>
+<p>A spec will be created in the bootstrap procedure of a skipper
+process. A spec has to satisfy the <code>routing.PredicateSpec</code> interface
+<code>Name() string</code> and <code>Create([]interface{}) (routing.Predicate, error)</code>.</p>
+<p>The actual predicate implementation has to satisfy the
+<code>routing.Predicate</code> interface <code>Match(*http.Request) bool</code> and returns
+true if the predicate matches the request. If false is returned, the
+routing table will be searched for another route that might match the
+given request.</p>
+<p>The simplest possible predicate implementation is, if <code>routing.PredicateSpec</code> and
+<code>routing.Predicate</code> are the same type:</p>
+<pre><code>type myPredicate struct{}
+
+func NewMyPredicate() routing.PredicateSpec {
+    return &amp;myPredicate{}
+}
+
+func (spec *myPredicate) Name() string { return &quot;myPredicate&quot; }
+
+func (spec *myPredicate) Create(config []interface{}) (routing.Predicate, error) {
+     return NewMyPredicate(), nil
+}
+
+func (f *myPredicate) Match(r *http.Request) bool {
+     // match data in *http.Request for example
+     return true
+}
+</code></pre>
+
+<p>Predicates are quite similar to implement as Filters, so for a more
+complete example, find an example <a href="/skipper/reference/development#how-to-develop-a-filter">how to develop a filter</a>.</p>
+<h2 id="dataclients">Dataclients</h2>
+<p>Dataclients are the way how to integrate new route
+sources. Dataclients pull information from a source and create routes
+for skipper's routing table.</p>
+<p>You have to implement <code>routing.DataClient</code>, which is an interface that defines
+function signatures <code>LoadAll() ([]*eskip.Route, error)</code> and
+<code>LoadUpdate() ([]*eskip.Route, []string, error)</code>.</p>
+<p>The <code>LoadUpdate()</code> method can be implemented either in a way that
+returns immediately, or blocks until there is a change. The routing
+package will regularly call the <code>LoadUpdate()</code> method with a small
+delay between the calls.</p>
+<p>A complete example is the <a href="https://github.com/zalando/skipper/blob/master/dataclients/routestring/string.go">routestring implementation</a>, which fits in
+less than 50 lines of code.</p>
+<h2 id="opentracing">Opentracing</h2>
+<p>Your custom Opentracing implementations need to satisfy the <code>opentracing.Tracer</code> interface from
+https://github.com/opentracing/opentracing-go and need to be loaded as
+a plugin, which might change in the future.
+Please check the <a href="https://github.com/zalando/skipper/blob/master/tracing">tracing package</a>
+and ask for further guidance in our <a href="https://github.com/zalando/skipper#community">community channels</a>.</p>
+<h2 id="core">Core</h2>
+<p>Non trivial changes, proposals and enhancements to the core of skipper
+should be discussed first in a Github issue, such that we can think
+about how this fits best in the project and how to achieve the most
+useful result. Feel also free to reach out to our <a href="https://github.com/zalando/skipper#community">community
+channels</a> and discuss
+there your idea.</p>
+<p>Every change in core has to have tests included and should be a non
+breaking change. We planned since a longer time a breaking change, but
+we should coordinate to make it as good as possible for all skipper as
+library users. Most often a breaking change can be postponed to the
+future and a feature independently added and the old feature might be
+deprecated to delete it later. Use of deprecated features should be shown
+in logs with a <code>log.Warning</code>.</p></div>
         </div>
 
         <footer class="col-md-12">

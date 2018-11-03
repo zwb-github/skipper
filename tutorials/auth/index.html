@@ -8,7 +8,7 @@
         
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>Etcd - Skipper</title>
+        <title>Authentication and Autorization - Skipper</title>
         <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
         <link href="../../css/font-awesome.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
@@ -49,7 +49,7 @@
                             <li >
                                 <a href="../..">Introduction</a>
                             </li>
-                            <li class="dropdown active">
+                            <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     
@@ -78,7 +78,7 @@
 </li>
                                     
 <li >
-    <a href="../../tutorials/video-howto-build/">Video - How to build</a>
+    <a href="../video-howto-build/">Video - How to build</a>
 </li>
                                     
   <li class="dropdown-submenu">
@@ -86,23 +86,23 @@
     <ul class="dropdown-menu">
             
 <li >
-    <a href="../eskip-file/">Eskip File</a>
-</li>
-            
-<li class="active">
-    <a href="./">Etcd</a>
+    <a href="../../data-clients/eskip-file/">Eskip File</a>
 </li>
             
 <li >
-    <a href="../kubernetes/">Kubernetes</a>
+    <a href="../../data-clients/etcd/">Etcd</a>
 </li>
             
 <li >
-    <a href="../innkeeper/">Innkeeper API</a>
+    <a href="../../data-clients/kubernetes/">Kubernetes</a>
 </li>
             
 <li >
-    <a href="../route-string/">Route String</a>
+    <a href="../../data-clients/innkeeper/">Innkeeper API</a>
+</li>
+            
+<li >
+    <a href="../../data-clients/route-string/">Route String</a>
 </li>
     </ul>
   </li>
@@ -139,28 +139,28 @@
 </li>
                                 </ul>
                             </li>
-                            <li class="dropdown">
+                            <li class="dropdown active">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tutorials <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     
 <li >
-    <a href="../../tutorials/basics/">Basis</a>
+    <a href="../basics/">Basis</a>
 </li>
                                     
 <li >
-    <a href="../../tutorials/common-use-cases/">Common Use Cases</a>
+    <a href="../common-use-cases/">Common Use Cases</a>
 </li>
                                     
 <li >
-    <a href="../../tutorials/development/">Development</a>
+    <a href="../development/">Development</a>
+</li>
+                                    
+<li class="active">
+    <a href="./">Authentication and Autorization</a>
 </li>
                                     
 <li >
-    <a href="../../tutorials/auth/">Authentication and Autorization</a>
-</li>
-                                    
-<li >
-    <a href="../../tutorials/ratelimit/">Ratelimits</a>
+    <a href="../ratelimit/">Ratelimits</a>
 </li>
                                 </ul>
                             </li>
@@ -173,12 +173,12 @@
                             </a>
                         </li>
                             <li >
-                                <a rel="next" href="../eskip-file/">
+                                <a rel="next" href="../development/">
                                     <i class="fa fa-arrow-left"></i> Previous
                                 </a>
                             </li>
                             <li >
-                                <a rel="prev" href="../kubernetes/">
+                                <a rel="prev" href="../ratelimit/">
                                     Next <i class="fa fa-arrow-right"></i>
                                 </a>
                             </li>
@@ -190,13 +190,125 @@
         <div class="container">
                 <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
-        <li class="main active"><a href="#etcd">ETCD</a></li>
+        <li class="main active"><a href="#basic-auth">Basic auth</a></li>
+        <li class="main "><a href="#token-service-to-service">Token service-to-service</a></li>
+            <li><a href="#tokeninfo">Tokeninfo</a></li>
+            <li><a href="#tokenintrospection-rfc7662">Tokenintrospection RFC7662</a></li>
+        <li class="main "><a href="#openid-connect">OpenID Connect</a></li>
+            <li><a href="#ui-authcode-flow">UI authcode flow</a></li>
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
 
-<h1 id="etcd">ETCD</h1>
-<p>TODO</p></div>
+<h2 id="basic-auth">Basic auth</h2>
+<p>Basic Auth is defined in <a href="https://tools.ietf.org/html/rfc7617">RFC7617</a>.</p>
+<p>Install htpasswd command line tool, we assume Debian based
+system. Please refer the documentation of your Operating System or
+package management vendor how to install <code>htpasswd</code>:</p>
+<pre><code>% apt-get install apache2-utils
+</code></pre>
+
+<p>Create a htpasswd file <code>foo.passwd</code> and use <code>catpain</code> with password <code>apassword</code>:</p>
+<pre><code>% htpasswd -bcB foo.passwd captain apassword
+</code></pre>
+
+<p>Start skipper with a <code>basicAuth</code> filter referencing the just created
+htpasswd file:</p>
+<pre><code>% ./bin/skipper -address :8080 -inline-routes 'r: * -&gt; basicAuth(&quot;foo.passwd&quot;) -&gt; status(200) -&gt; &lt;shunt&gt;'
+</code></pre>
+
+<p>A client request without login credentials or wrong credentials:</p>
+<pre><code>% curl localhost:8080/ -v
+*   Trying ::1...
+* Connected to localhost (::1) port 8080 (#0)
+&gt; GET / HTTP/1.1
+&gt; Host: localhost:8080
+&gt; User-Agent: curl/7.49.0
+&gt; Accept: */*
+&gt;
+&lt; HTTP/1.1 401 Unauthorized
+&lt; Server: Skipper
+&lt; Www-Authenticate: Basic realm=&quot;Basic Realm&quot;
+&lt; Date: Thu, 01 Nov 2018 21:27:18 GMT
+&lt; Content-Length: 0
+&lt;
+* Connection #0 to host localhost left intact
+
+</code></pre>
+
+<p>A client request with the correct credentials:</p>
+<pre><code>% curl captain:apassword@localhost:8080/ -v
+*   Trying ::1...
+* Connected to localhost (::1) port 8080 (#0)
+* Server auth using Basic with user 'captain'
+&gt; GET / HTTP/1.1
+&gt; Host: localhost:8080
+&gt; Authorization: Basic Y2FwdGFpbjphcGFzc3dvcmQ=
+&gt; User-Agent: curl/7.49.0
+&gt; Accept: */*
+&gt;
+&lt; HTTP/1.1 200 OK
+&lt; Server: Skipper
+&lt; Date: Thu, 01 Nov 2018 21:29:21 GMT
+&lt; Content-Length: 0
+&lt;
+* Connection #0 to host localhost left intact
+</code></pre>
+
+<h2 id="token-service-to-service">Token service-to-service</h2>
+<p>Service to service authentication and authorization is often done by
+using the HTTP Authorization header with the content prefix "Bearer ",
+for example "Authorization: Bearer mytoken".</p>
+<p>Supported token formats</p>
+<ul>
+<li><a href="https://tools.ietf.org/html/rfc6750">OAuth2 access tokens</a></li>
+<li><a href="https://tools.ietf.org/html/rfc7519">JWT</a></li>
+</ul>
+<h3 id="tokeninfo">Tokeninfo</h3>
+<p>Tokeninfo is a common, but not specified protocol, only supporting
+Bearer tokens in the Authorization header.</p>
+<p>In most cases you would have to have your own OAuth2 token
+infrastructure, that can return JWT or OAuth2 access tokens to authenticated parties
+and validate tokens with their custom tokeninfo endpoint. In case of
+JWT the access token is signed and can be validated without a central
+tokeninfo endpoint.</p>
+<p>Example route:</p>
+<pre><code>all: Path(&quot;/&quot;)
+     -&gt; oauthTokeninfoAnyScope(&quot;read-X&quot;, &quot;readwrite-X&quot;)
+     -&gt; &quot;http://localhost:9090/&quot;
+</code></pre>
+
+<p>The access token should be passed from the client as Bearer token in
+the Authorization header. Skipper will send this token unchanged as
+Bearer token in the Authorization header to the Tokeninfo endpoint.
+The request flow with a Tokeninfo setup is shown in the following
+picture:</p>
+<p><img alt="Skipper with Tokeninfo" src="/skipper/img/svc-to-svc-tokeninfo.svg" /></p>
+<h3 id="tokenintrospection-rfc7662">Tokenintrospection RFC7662</h3>
+<p>Tokenintrospection service to service authentication and authorization
+is specified by <a href="https://tools.ietf.org/html/rfc7662">RFC7662</a>.
+Skipper uses <a href="https://tools.ietf.org/html/draft-ietf-oauth-discovery-06">RFC Draft for discovering token infrastructure
+configuration</a>,
+to find the <code>introspection_endpoint</code>.</p>
+<p>Example route:</p>
+<pre><code>all: *
+        -&gt; oauthTokenintrospectionAnyKV(&quot;https://identity.example.com/managed-id&quot;, &quot;jdoe&quot;)
+        -&gt; &quot;http://localhost:9090/&quot;;
+</code></pre>
+
+<p>The access token should be passed from the client as Bearer token in
+the Authorization header. Skipper will send this token as
+defined in <a href="https://tools.ietf.org/html/rfc7662#section-2.1">RFC7662</a>
+in a POST request "application/x-www-form-urlencoded" as value for key
+<code>token</code> to the Tokenintrospection endpoint.
+The request flow with Tokenintrospection setup is shown in the
+following picture:</p>
+<p><img alt="Skipper with Tokenintrospection" src="/skipper/img/svc-to-svc-tokenintrospection.svg" /></p>
+<h2 id="openid-connect">OpenID Connect</h2>
+<h3 id="ui-authcode-flow">UI authcode flow</h3>
+<p>The pull request implements the authcode flow, which can be used for
+UI authentication and authorization.</p>
+<p><a href="https://github.com/zalando/skipper/pull/743">https://github.com/zalando/skipper/pull/743</a></p></div>
         </div>
 
         <footer class="col-md-12">

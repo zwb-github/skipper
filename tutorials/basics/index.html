@@ -1150,7 +1150,7 @@ logical <strong>OR</strong>, you have to create another route.</p>
 <h4 id="predicate-and-routing-table">Predicate and routing table<a class="headerlink" href="#predicate-and-routing-table" title="Permanent link">&para;</a></h4>
 <p>A routing table consists of a number of routes.  A route has a list of
 predicates and filters.  Predicates match an incoming request to a
-specific, best matching, Route.  Each route has a set of filters.</p>
+specific, best matching, route.  Each route has a set of filters.</p>
 <p><img alt="picture of a Predicate" src="../../img/skipper-predicate.svg" /></p>
 <h3 id="filter">Filter<a class="headerlink" href="#filter" title="Permanent link">&para;</a></h3>
 <p>A filter changes a HTTP request or response or both. Multiple filters
@@ -1163,7 +1163,7 @@ can be concatenated by <code>-&gt;</code>.</p>
 <li><code>tee()</code> clones request to given target</li>
 </ul>
 <h4 id="filter-in-context-of-an-http-request">Filter in context of an HTTP request<a class="headerlink" href="#filter-in-context-of-an-http-request" title="Permanent link">&para;</a></h4>
-<p>The picture shows the transformation for request and response</p>
+<p>The picture shows the transformation of the requests and responses</p>
 <p><img alt="picture of a Filter" src="../../img/skipper-filter.svg" /></p>
 <h3 id="backend">Backend<a class="headerlink" href="#backend" title="Permanent link">&para;</a></h3>
 <p>The last entry of a route is the backend definition, that will be

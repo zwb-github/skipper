@@ -2228,9 +2228,8 @@ flag in order to get those metrics.</p>
 <div class="codehilite"><pre><span></span>skipper -enable-api-usage-monitoring -metrics-flavour prometheus
 </pre></div></p>
 <p>The structure of the metrics is:</p>
-<div class="codehilite"><pre><span></span>apiUsageMonitoring.custom.&amp;lt;Application ID&amp;gt;.&amp;lt;API ID&amp;gt;.&amp;lt;HTTP Verb&amp;gt;.&amp;lt;Path Template&amp;gt;.&amp;lt;Metric Name&amp;gt;
+<div class="codehilite"><pre><span></span>apiUsageMonitoring.custom.&lt;Application ID&gt;.&lt;API ID&gt;.&lt;HTTP Verb&gt;.&lt;Path Template&gt;.&lt;Metric Name&gt;
 </pre></div>
-
 
 <p>The available metrics are:</p>
 <ul>
@@ -2298,9 +2297,8 @@ of the following format.</p>
 
 <p>NOTE: Non configured paths will be tracked with <code>&lt;unknown&gt;</code> application ID, API ID
 and path template.</p>
-<div class="codehilite"><pre><span></span>apiUsageMonitoring.custom.&amp;lt;unknown&amp;gt;.&amp;lt;unknown&amp;gt;.GET.&amp;lt;unknown&amp;gt;.http_count
+<div class="codehilite"><pre><span></span>apiUsageMonitoring.custom.&lt;unknown&gt;.&lt;unknown&gt;.GET.&lt;unknown&gt;.http_count
 </pre></div>
-
 
 <p>Based on the previous configuration, here is an example of a counter metric.</p>
 <div class="codehilite"><pre><span></span>apiUsageMonitoring.custom.my-app.orders-api.GET.foo/orders/:order-id.http_count

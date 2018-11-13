@@ -861,16 +861,16 @@
 <p>Install htpasswd command line tool, we assume Debian based
 system. Please refer the documentation of your Operating System or
 package management vendor how to install <code>htpasswd</code>:</p>
-<div class="codehilite"><pre><span></span><span class="c">% apt-get install apache2-utils</span>
+<div class="codehilite"><pre><span></span>apt-get install apache2-utils
 </pre></div>
 
 <p>Create a htpasswd file <code>foo.passwd</code> and use <code>captain</code> with password <code>apassword</code>:</p>
-<div class="codehilite"><pre><span></span><span class="c">% htpasswd -bcB foo.passwd captain apassword</span>
+<div class="codehilite"><pre><span></span>htpasswd -bcB foo.passwd captain apassword
 </pre></div>
 
 <p>Start skipper with a <code>basicAuth</code> filter referencing the just created
 htpasswd file:</p>
-<div class="codehilite"><pre><span></span><span class="c">% ./bin/skipper -address :8080 -inline-routes &#39;r: * -&gt; basicAuth(&quot;foo.passwd&quot;) -&gt; status(200) -&gt; &lt;shunt&gt;&#39;</span>
+<div class="codehilite"><pre><span></span>./bin/skipper -address :8080 -inline-routes &#39;r: * -&gt; basicAuth(&quot;foo.passwd&quot;) -&gt; status(200) -&gt; &lt;shunt&gt;&#39;
 </pre></div>
 
 <p>A client request without login credentials or wrong credentials:</p>

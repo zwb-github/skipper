@@ -1,247 +1,842 @@
+
+
+
+
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        
-        
-        
-        <link rel="shortcut icon" href="../../img/favicon.ico">
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../../favicon.ico">
+      <meta name="generator" content="mkdocs-1.0.1, mkdocs-material-3.0.6">
+    
+    
+      
         <title>Scripts - Skipper</title>
-        <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
-        <link href="../../css/font-awesome.min.css" rel="stylesheet">
-        <link href="../../css/base.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
-        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!--[if lt IE 9]>
-            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-        <![endif]-->
-
-        <script src="../../js/jquery-1.10.2.min.js" defer></script>
-        <script src="../../js/bootstrap-3.0.3.min.js" defer></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-        <script>hljs.initHighlightingOnLoad();</script> 
-    </head>
-
-    <body>
-
-        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
-            <div class="container">
-
-                <!-- Collapsed navigation -->
-                <div class="navbar-header">
-                    <!-- Expander button -->
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="../..">Skipper</a>
-                </div>
-
-                <!-- Expanded navigation -->
-                <div class="navbar-collapse collapse">
-                        <!-- Main navigation -->
-                        <ul class="nav navbar-nav">
-                            <li >
-                                <a href="../..">Introduction</a>
-                            </li>
-                            <li class="dropdown active">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference <b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    
-<li >
-    <a href="../filters/">Filters</a>
-</li>
-                                    
-<li >
-    <a href="../predicates/">Predicates</a>
-</li>
-                                    
-<li class="active">
-    <a href="./">Scripts</a>
-</li>
-                                    
-<li >
-    <a href="../plugins/">Plugins</a>
-</li>
-                                    
-<li >
-    <a href="../architecture/">Architecture</a>
-</li>
-                                    
-<li >
-    <a href="../development/">Development</a>
-</li>
-                                    
-<li >
-    <a href="../../tutorials/video-howto-build/">Video - How to build</a>
-</li>
-                                    
-  <li class="dropdown-submenu">
-    <a href="#">Data Clients</a>
-    <ul class="dropdown-menu">
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/application.451f80e5.css">
+      
+        <link rel="stylesheet" href="../../assets/stylesheets/application-palette.22915126.css">
+      
+      
+        
+        
+        <meta name="theme-color" content="">
+      
+    
+    
+      <script src="../../assets/javascripts/modernizr.1aa3b519.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../assets/fonts/material-icons.css">
+    
+    
+  </head>
+  
+    
+    
+    <body dir="ltr" data-md-color-primary="white" data-md-color-accent="">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448"
+    viewBox="0 0 416 448" id="__github">
+  <path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19-18.125
+        8.5-18.125-8.5-10.75-19-3.125-20.5 3.125-20.5 10.75-19 18.125-8.5
+        18.125 8.5 10.75 19 3.125 20.5zM320 304q0 10-3.125 20.5t-10.75
+        19-18.125 8.5-18.125-8.5-10.75-19-3.125-20.5 3.125-20.5 10.75-19
+        18.125-8.5 18.125 8.5 10.75 19 3.125 20.5zM360
+        304q0-30-17.25-51t-46.75-21q-10.25 0-48.75 5.25-17.75 2.75-39.25
+        2.75t-39.25-2.75q-38-5.25-48.75-5.25-29.5 0-46.75 21t-17.25 51q0 22 8
+        38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0
+        37.25-1.75t35-7.375 30.5-15 20.25-25.75 8-38.375zM416 260q0 51.75-15.25
+        82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5-41.75
+        1.125q-19.5 0-35.5-0.75t-36.875-3.125-38.125-7.5-34.25-12.875-30.25-20.25-21.5-28.75q-15.5-30.75-15.5-82.75
+        0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25
+        30.875q36.75-8.75 77.25-8.75 37 0 70 8 26.25-20.5
+        46.75-30.25t47.25-9.75q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34
+        99.5z" />
+</svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#lua-filter-scripts" tabindex="1" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="../.." title="Skipper" class="md-header-nav__button md-logo">
+          
+            <img src="../../favicon.ico" width="24" height="24">
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
             
-<li >
-    <a href="../../data-clients/eskip-file/">Eskip File</a>
-</li>
+              <span class="md-header-nav__topic">
+                Skipper
+              </span>
+              <span class="md-header-nav__topic">
+                Scripts
+              </span>
             
-<li >
-    <a href="../../data-clients/etcd/">Etcd</a>
-</li>
-            
-<li >
-    <a href="../../data-clients/kubernetes/">Kubernetes</a>
-</li>
-            
-<li >
-    <a href="../../data-clients/innkeeper/">Innkeeper API</a>
-</li>
-            
-<li >
-    <a href="../../data-clients/route-string/">Route String</a>
-</li>
-    </ul>
-  </li>
-                                    
-  <li class="dropdown-submenu">
-    <a href="#">Operation</a>
-    <ul class="dropdown-menu">
-            
-<li >
-    <a href="../../operation/deployment/">Deployment</a>
-</li>
-            
-<li >
-    <a href="../../operation/operation/">Operation</a>
-</li>
-    </ul>
-  </li>
-                                </ul>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Kubernetes <b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    
-<li >
-    <a href="../../kubernetes/ingress-controller/">Ingress Controller Deployment</a>
-</li>
-                                    
-<li >
-    <a href="../../kubernetes/ingress-usage/">Ingress Usage</a>
-</li>
-                                    
-<li >
-    <a href="../../kubernetes/ingress-backends/">Ingress Backends</a>
-</li>
-                                </ul>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tutorials <b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    
-<li >
-    <a href="../../tutorials/basics/">Basis</a>
-</li>
-                                    
-<li >
-    <a href="../../tutorials/common-use-cases/">Common Use Cases</a>
-</li>
-                                    
-<li >
-    <a href="../../tutorials/development/">Development</a>
-</li>
-                                    
-<li >
-    <a href="../../tutorials/auth/">Authentication and Autorization</a>
-</li>
-                                    
-<li >
-    <a href="../../tutorials/ratelimit/">Ratelimits</a>
-</li>
-                                </ul>
-                            </li>
-                        </ul>
-
-                    <ul class="nav navbar-nav navbar-right">
-                        <li>
-                            <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
-                                <i class="fa fa-search"></i> Search
-                            </a>
-                        </li>
-                            <li >
-                                <a rel="next" href="../predicates/">
-                                    <i class="fa fa-arrow-left"></i> Previous
-                                </a>
-                            </li>
-                            <li >
-                                <a rel="prev" href="../plugins/">
-                                    Next <i class="fa fa-arrow-right"></i>
-                                </a>
-                            </li>
-                    </ul>
-                </div>
-            </div>
+          
         </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          
+            <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+            
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+          
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
 
-        <div class="container">
-                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
-    <ul class="nav bs-sidenav">
-        <li class="main active"><a href="#lua-filter-scripts">Lua filter scripts</a></li>
-            <li><a href="#route-filters">Route filters</a></li>
-            <li><a href="#script-requirements">Script requirements</a></li>
-            <li><a href="#available-lua-modules">Available lua modules</a></li>
-            <li><a href="#lua-states">Lua states</a></li>
-        <li class="main "><a href="#request">Request</a></li>
-            <li><a href="#headers">Headers</a></li>
-            <li><a href="#other-request-fields">Other request fields</a></li>
-            <li><a href="#serving-requests-from-lua">Serving requests from lua</a></li>
-            <li><a href="#statebag">StateBag</a></li>
-        <li class="main "><a href="#examples">Examples</a></li>
-            <li><a href="#oauth2-token-as-basic-auth-password">OAuth2 token as basic auth password</a></li>
-            <li><a href="#validate-token">validate token</a></li>
-            <li><a href="#strip-query">strip query</a></li>
-            <li><a href="#redirect">redirect</a></li>
-            <li><a href="#internal-server-error">internal server error</a></li>
-        <li class="main "><a href="#benchmark">Benchmark</a></li>
-            <li><a href="#redirectto-vs-lua-redirect">redirectTo vs lua redirect</a></li>
+
+  
+
+
+  <a href="https://github.com/zalando/skipper/" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#__github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      GitHub
+    </div>
+  </a>
+
+          </div>
+        </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+        
+
+  
+
+<nav class="md-tabs md-tabs--active" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  <li class="md-tabs__item">
+    
+      <a href="../.." title="Introduction" class="md-tabs__link">
+        Introduction
+      </a>
+    
+  </li>
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../filters/" title="Reference" class="md-tabs__link md-tabs__link--active">
+          Reference
+        </a>
+      
+    </li>
+  
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../../kubernetes/ingress-controller/" title="Kubernetes" class="md-tabs__link">
+          Kubernetes
+        </a>
+      
+    </li>
+  
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../../tutorials/basics/" title="Tutorials" class="md-tabs__link">
+          Tutorials
+        </a>
+      
+    </li>
+  
+
+      
     </ul>
-</div></div>
-                <div class="col-md-9" role="main">
+  </div>
+</nav>
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="../.." title="Skipper" class="md-nav__button md-logo">
+      
+        <img src="../../favicon.ico" width="48" height="48">
+      
+    </a>
+    Skipper
+  </label>
+  
+    <div class="md-nav__source">
+      
 
-<h1 id="lua-filter-scripts">Lua filter scripts</h1>
+
+  
+
+
+  <a href="https://github.com/zalando/skipper/" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#__github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      GitHub
+    </div>
+  </a>
+
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../.." title="Introduction" class="md-nav__link">
+      Introduction
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2" checked>
+    
+    <label class="md-nav__link" for="nav-2">
+      Reference
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        Reference
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../filters/" title="Filters" class="md-nav__link">
+      Filters
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../predicates/" title="Predicates" class="md-nav__link">
+      Predicates
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Scripts
+      </label>
+    
+    <a href="./" title="Scripts" class="md-nav__link md-nav__link--active">
+      Scripts
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#route-filters" title="Route filters" class="md-nav__link">
+    Route filters
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#script-requirements" title="Script requirements" class="md-nav__link">
+    Script requirements
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#available-lua-modules" title="Available lua modules" class="md-nav__link">
+    Available lua modules
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lua-states" title="Lua states" class="md-nav__link">
+    Lua states
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../plugins/" title="Plugins" class="md-nav__link">
+      Plugins
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../architecture/" title="Architecture" class="md-nav__link">
+      Architecture
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../development/" title="Development" class="md-nav__link">
+      Development
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../tutorials/video-howto-build/" title="Video - How to build" class="md-nav__link">
+      Video - How to build
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2-8" type="checkbox" id="nav-2-8">
+    
+    <label class="md-nav__link" for="nav-2-8">
+      Data Clients
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-2-8">
+        Data Clients
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../data-clients/eskip-file/" title="Eskip File" class="md-nav__link">
+      Eskip File
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../data-clients/etcd/" title="Etcd" class="md-nav__link">
+      Etcd
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../data-clients/kubernetes/" title="Kubernetes" class="md-nav__link">
+      Kubernetes
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../data-clients/route-string/" title="Route String" class="md-nav__link">
+      Route String
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2-9" type="checkbox" id="nav-2-9">
+    
+    <label class="md-nav__link" for="nav-2-9">
+      Operation
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-2-9">
+        Operation
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../operation/deployment/" title="Deployment" class="md-nav__link">
+      Deployment
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../operation/operation/" title="Operation" class="md-nav__link">
+      Operation
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+    
+    <label class="md-nav__link" for="nav-3">
+      Kubernetes
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        Kubernetes
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../kubernetes/ingress-controller/" title="Ingress Controller Deployment" class="md-nav__link">
+      Ingress Controller Deployment
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../kubernetes/ingress-usage/" title="Ingress Usage" class="md-nav__link">
+      Ingress Usage
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../kubernetes/ingress-backends/" title="Ingress Backends" class="md-nav__link">
+      Ingress Backends
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      Tutorials
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        Tutorials
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../tutorials/basics/" title="Basics" class="md-nav__link">
+      Basics
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../tutorials/common-use-cases/" title="Common Use Cases" class="md-nav__link">
+      Common Use Cases
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../tutorials/development/" title="Development" class="md-nav__link">
+      Development
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../tutorials/auth/" title="Authentication and Autorization" class="md-nav__link">
+      Authentication and Autorization
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../tutorials/ratelimit/" title="Ratelimits" class="md-nav__link">
+      Ratelimits
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#route-filters" title="Route filters" class="md-nav__link">
+    Route filters
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#script-requirements" title="Script requirements" class="md-nav__link">
+    Script requirements
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#available-lua-modules" title="Available lua modules" class="md-nav__link">
+    Available lua modules
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lua-states" title="Lua states" class="md-nav__link">
+    Lua states
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/zalando/skipper/edit/master/docs/reference/scripts.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                
+                
+                <h1 id="lua-filter-scripts">Lua filter scripts<a class="headerlink" href="#lua-filter-scripts" title="Permanent link">&para;</a></h1>
 <p><a href="https://www.lua.org/">LUA</a> scripts can be used as filters in skipper. The
 current implementation supports <a href="https://www.lua.org/manual/5.1/">Lua 5.1</a>.</p>
-<h2 id="route-filters">Route filters</h2>
+<h2 id="route-filters">Route filters<a class="headerlink" href="#route-filters" title="Permanent link">&para;</a></h2>
 <p>The lua scripts can be added to a route description with the lua() filter,
 the first parameter for the filter is the script. This can be either a file
 name (ending with <code>.lua</code>) or inline code, e.g. as</p>
 <ul>
 <li>file <code>lua("/path/to/file.lua")</code> - if a file path is not absolute, the path
- is relative to skipper's working directory.</li>
+ is relative to skipper&rsquo;s working directory.</li>
 <li>inline <code>lua("function request(c, p); print(c.request.url); end")</code></li>
 </ul>
 <p>Any other additional parameters for the filter must be <code>key=value</code> strings.
 These will be passed as table to the called functions as second parameter.
-<strong>NOTE</strong>: Any parameter starting with "lua-" should not be used to pass
+<strong>NOTE</strong>: Any parameter starting with &ldquo;lua-&rdquo; should not be used to pass
 values for the script - those will be used for configuring the filter.</p>
-<h2 id="script-requirements">Script requirements</h2>
+<h2 id="script-requirements">Script requirements<a class="headerlink" href="#script-requirements" title="Permanent link">&para;</a></h2>
 <p>A filter script needs at least one global function: <code>request</code> or <code>response</code>.
 If present, they are called with a skipper filter context and the params passed
-in the route as table like</p>
-<pre><code class="lua">-- route looks like
---
--- any: * -&gt; lua(&quot;./test.lua&quot;, &quot;myparam=foo&quot;, &quot;other=bar&quot;) -&gt; &lt;shunt&gt;
---
-function request(ctx, params)
-    print(ctx.request.method .. &quot; &quot; .. ctx.request.url .. &quot; -&gt; &quot; .. params.myparam)
-end
-</code></pre>
-
-<h2 id="available-lua-modules">Available lua modules</h2>
+in the route as table like
+<div class="codehilite"><pre><span></span><span class="c1">-- route looks like</span>
+<span class="c1">--</span>
+<span class="c1">-- any: * -&gt; lua(&quot;./test.lua&quot;, &quot;myparam=foo&quot;, &quot;other=bar&quot;) -&gt; &lt;shunt&gt;</span>
+<span class="c1">--</span>
+<span class="kr">function</span> <span class="nf">request</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">ctx</span><span class="p">.</span><span class="n">request</span><span class="p">.</span><span class="n">method</span> <span class="o">..</span> <span class="s2">&quot; &quot;</span> <span class="o">..</span> <span class="n">ctx</span><span class="p">.</span><span class="n">request</span><span class="p">.</span><span class="n">url</span> <span class="o">..</span> <span class="s2">&quot; -&gt; &quot;</span> <span class="o">..</span> <span class="n">params</span><span class="p">.</span><span class="n">myparam</span><span class="p">)</span>
+<span class="kr">end</span>
+</pre></div></p>
+<h2 id="available-lua-modules">Available lua modules<a class="headerlink" href="#available-lua-modules" title="Permanent link">&para;</a></h2>
 <p>Besides the <a href="https://www.lua.org/manual/5.1/manual.html#5">standard modules</a> - except
 for <code>debug</code> - the following modules have been preloaded and can be used with e.g.
 <code>local http = require("http")</code>, see also the examples below</p>
@@ -257,42 +852,41 @@ check the <a href="https://github.com/yuin/gopher-lua#differences-between-lua-an
 <p>Any other module can be loaded in non-byte code form from the lua path (by default
 for <code>require("mod")</code> this is <code>./mod.lua</code>, <code>/usr/local/share/lua/5.1/mod.lua</code> and
 <code>/usr/local/share/lua/5.1/mod/init.lua</code>).</p>
-<h2 id="lua-states">Lua states</h2>
+<h2 id="lua-states">Lua states<a class="headerlink" href="#lua-states" title="Permanent link">&para;</a></h2>
 <p>There is no guarantee that the <code>request()</code> and <code>response()</code> functions of a
 lua script run in the same lua state during one request. Setting a variable
 in the request and accessing it in the response will most likely fail and lead
 to hard debuggable errors. Use the <code>ctx.state_bag</code> to propagate values from
 <code>request</code> to <code>response</code> - and any other filter in the chain.</p>
-<h1 id="request">Request</h1>
+<h1 id="request">Request<a class="headerlink" href="#request" title="Permanent link">&para;</a></h1>
 <p>The <code>request()</code> function is run for an incoming request.</p>
-<h2 id="headers">Headers</h2>
-<p>Request headers can be accessed by accessing the <code>ctx.request.header</code> map like</p>
-<pre><code class="lua">ua = ctx.request.header[&quot;user-agent&quot;]
-</code></pre>
-
+<h2 id="headers">Headers<a class="headerlink" href="#headers" title="Permanent link">&para;</a></h2>
+<p>Request headers can be accessed by accessing the <code>ctx.request.header</code> map like
+<div class="codehilite"><pre><span></span><span class="n">ua</span> <span class="o">=</span> <span class="n">ctx</span><span class="p">.</span><span class="n">request</span><span class="p">.</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;user-agent&quot;</span><span class="p">]</span>
+</pre></div></p>
 <p>Header names are normalized by the <code>net/http</code> go module
 <a href="https://godoc.org/net/http#CanonicalHeaderKey">like usual</a>. Setting a
 header is done by assigning to the headers map. Setting a header to <code>nil</code> or
 an empty string deletes the header - setting to <code>nil</code> is preferred.</p>
-<pre><code class="lua">ctx.request.header[&quot;user-agent&quot;] = &quot;skipper.lua/0.0.1&quot;
-ctx.request.header[&quot;Authorization&quot;] = nil -- delete authorization header
-</code></pre>
+<div class="codehilite"><pre><span></span><span class="n">ctx</span><span class="p">.</span><span class="n">request</span><span class="p">.</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;user-agent&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;skipper.lua/0.0.1&quot;</span>
+<span class="n">ctx</span><span class="p">.</span><span class="n">request</span><span class="p">.</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;Authorization&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">nil</span> <span class="c1">-- delete authorization header</span>
+</pre></div>
 
 <p>Response headers work the same way by accessing / assigning to
 <code>ctx.response.header</code> - this is of course only valid in the <code>response()</code> phase.</p>
-<h2 id="other-request-fields">Other request fields</h2>
+<h2 id="other-request-fields">Other request fields<a class="headerlink" href="#other-request-fields" title="Permanent link">&para;</a></h2>
 <ul>
 <li><code>backend_url</code> - (read only) returns the backend url specified in the route
-  or an empty value in case it's a shunt or loopback</li>
+  or an empty value in case it&rsquo;s a shunt or loopback</li>
 <li><code>outgoing_host</code> - (read/write) the host that will be set for the outgoing
-  proxy request as the 'Host' header.</li>
+  proxy request as the &lsquo;Host&rsquo; header.</li>
 <li><code>remote_addr</code> - (read only) the remote host, usually IP:port</li>
 <li><code>content_length</code> - (read only) content length</li>
-<li><code>proto</code> - (read only) something like "HTTP/1.1"</li>
-<li><code>method</code> - (read only) request method, e.g. "GET" or "POST"</li>
+<li><code>proto</code> - (read only) something like &ldquo;HTTP/1.1&rdquo;</li>
+<li><code>method</code> - (read only) request method, e.g. &ldquo;GET&rdquo; or &ldquo;POST&rdquo;</li>
 <li><code>url</code> - (read/write) request URL as string</li>
 </ul>
-<h2 id="serving-requests-from-lua">Serving requests from lua</h2>
+<h2 id="serving-requests-from-lua">Serving requests from lua<a class="headerlink" href="#serving-requests-from-lua" title="Permanent link">&para;</a></h2>
 <p>Requests can be served with <code>ctx.serve(table)</code>, you must return after this
 call. Possible keys for the table:</p>
 <ul>
@@ -302,196 +896,196 @@ call. Possible keys for the table:</p>
 </ul>
 <p>See also <a href="#redirect">redirect</a> and <a href="#internal-server-error">internal server error</a>
 examples below</p>
-<h2 id="statebag">StateBag</h2>
+<h2 id="statebag">StateBag<a class="headerlink" href="#statebag" title="Permanent link">&para;</a></h2>
 <p>The state bag can be used to pass values from one filter to another in the same
-chain. It is shared by all filters in one request.</p>
-<pre><code class="lua">function request(ctx, params)
-    -- the value of &quot;mykey&quot; will be available to all filters in the chain now:
-    ctx.state_bag[&quot;mykey&quot;] = &quot;foo&quot;
-end
+chain. It is shared by all filters in one request.
+<div class="codehilite"><pre><span></span><span class="kr">function</span> <span class="nf">request</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+    <span class="c1">-- the value of &quot;mykey&quot; will be available to all filters in the chain now:</span>
+    <span class="n">ctx</span><span class="p">.</span><span class="n">state_bag</span><span class="p">[</span><span class="s2">&quot;mykey&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;foo&quot;</span>
+<span class="kr">end</span>
 
-function response(ctx, params)
-    print(ctx.state_bag[&quot;mykey&quot;])
-end
-</code></pre>
-
-<h1 id="examples">Examples</h1>
+<span class="kr">function</span> <span class="nf">response</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">ctx</span><span class="p">.</span><span class="n">state_bag</span><span class="p">[</span><span class="s2">&quot;mykey&quot;</span><span class="p">])</span>
+<span class="kr">end</span>
+</pre></div></p>
+<h1 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h1>
 <p>Note: the examples serve as examples. If there is a go based plugin available,
 use that instead. The overhead of calling lua is 4-5 times slower than pure go.</p>
-<h2 id="oauth2-token-as-basic-auth-password">OAuth2 token as basic auth password</h2>
-<pre><code class="lua">local base64 = require(&quot;base64&quot;)
+<h2 id="oauth2-token-as-basic-auth-password">OAuth2 token as basic auth password<a class="headerlink" href="#oauth2-token-as-basic-auth-password" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><span class="kd">local</span> <span class="n">base64</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="s2">&quot;base64&quot;</span><span class="p">)</span>
 
-function request(ctx, params)
-    token = string.gsub(ctx.request.header[&quot;Authorization&quot;], &quot;^%s*[Bb]earer%s+&quot;, &quot;&quot;, 1)
-    user = ctx.request.header[&quot;x-username&quot;]
-    if user == &quot;&quot; then
-        user = params.username
-    end
-    ctx.request.header[&quot;Authorization&quot;] = &quot;Basic &quot; .. base64.encode(user .. &quot;:&quot;  .. token)
-    -- print(ctx.request.header[&quot;Authorization&quot;])
-end
-</code></pre>
+<span class="kr">function</span> <span class="nf">request</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+    <span class="n">token</span> <span class="o">=</span> <span class="nb">string.gsub</span><span class="p">(</span><span class="n">ctx</span><span class="p">.</span><span class="n">request</span><span class="p">.</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;Authorization&quot;</span><span class="p">],</span> <span class="s2">&quot;^%s*[Bb]earer%s+&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">ctx</span><span class="p">.</span><span class="n">request</span><span class="p">.</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;x-username&quot;</span><span class="p">]</span>
+    <span class="kr">if</span> <span class="n">user</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span> <span class="kr">then</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="n">params</span><span class="p">.</span><span class="n">username</span>
+    <span class="kr">end</span>
+    <span class="n">ctx</span><span class="p">.</span><span class="n">request</span><span class="p">.</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;Authorization&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Basic &quot;</span> <span class="o">..</span> <span class="n">base64</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="n">user</span> <span class="o">..</span> <span class="s2">&quot;:&quot;</span>  <span class="o">..</span> <span class="n">token</span><span class="p">)</span>
+    <span class="c1">-- print(ctx.request.header[&quot;Authorization&quot;])</span>
+<span class="kr">end</span>
+</pre></div>
 
-<h2 id="validate-token">validate token</h2>
-<pre><code class="lua">local http = require(&quot;http&quot;)
-function request(ctx, params)
-    token = string.gsub(ctx.request.header[&quot;Authorization&quot;], &quot;^%s*[Bb]earer%s+&quot;, &quot;&quot;, 1)
-    if token == &quot;&quot; then
-        ctx.serve({status_code=401, body=&quot;Missing Token&quot;})
-        return
-    end
+<h2 id="validate-token">validate token<a class="headerlink" href="#validate-token" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><span class="kd">local</span> <span class="n">http</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="s2">&quot;http&quot;</span><span class="p">)</span>
+<span class="kr">function</span> <span class="nf">request</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+    <span class="n">token</span> <span class="o">=</span> <span class="nb">string.gsub</span><span class="p">(</span><span class="n">ctx</span><span class="p">.</span><span class="n">request</span><span class="p">.</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;Authorization&quot;</span><span class="p">],</span> <span class="s2">&quot;^%s*[Bb]earer%s+&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="kr">if</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span> <span class="kr">then</span>
+        <span class="n">ctx</span><span class="p">.</span><span class="n">serve</span><span class="p">({</span><span class="n">status_code</span><span class="o">=</span><span class="mi">401</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="s2">&quot;Missing Token&quot;</span><span class="p">})</span>
+        <span class="kr">return</span>
+    <span class="kr">end</span>
 
-    res, err = http.get(&quot;https://auth.example.com/oauth2/tokeninfo?access_token=&quot;..token)
-    if err ~= nil then
-        print(&quot;Failed to get tokeninfo: &quot; .. err)
-        ctx.serve({status_code=401, body=&quot;Failed to validate token: &quot;..err})
-        return
-    end
-    if res.status_code ~= 200 then
-        ctx.serve({status_code=401, body=&quot;Invalid token&quot;})
-        return
-    end
-end
-</code></pre>
+    <span class="n">res</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">http</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;https://auth.example.com/oauth2/tokeninfo?access_token=&quot;</span><span class="o">..</span><span class="n">token</span><span class="p">)</span>
+    <span class="kr">if</span> <span class="n">err</span> <span class="o">~=</span> <span class="kc">nil</span> <span class="kr">then</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Failed to get tokeninfo: &quot;</span> <span class="o">..</span> <span class="n">err</span><span class="p">)</span>
+        <span class="n">ctx</span><span class="p">.</span><span class="n">serve</span><span class="p">({</span><span class="n">status_code</span><span class="o">=</span><span class="mi">401</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="s2">&quot;Failed to validate token: &quot;</span><span class="o">..</span><span class="n">err</span><span class="p">})</span>
+        <span class="kr">return</span>
+    <span class="kr">end</span>
+    <span class="kr">if</span> <span class="n">res</span><span class="p">.</span><span class="n">status_code</span> <span class="o">~=</span> <span class="mi">200</span> <span class="kr">then</span>
+        <span class="n">ctx</span><span class="p">.</span><span class="n">serve</span><span class="p">({</span><span class="n">status_code</span><span class="o">=</span><span class="mi">401</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="s2">&quot;Invalid token&quot;</span><span class="p">})</span>
+        <span class="kr">return</span>
+    <span class="kr">end</span>
+<span class="kr">end</span>
+</pre></div>
 
-<h2 id="strip-query">strip query</h2>
-<pre><code class="lua">function request(ctx, params)
-    ctx.request.url = string.gsub(ctx.request.url, &quot;%?.*$&quot;, &quot;&quot;)
-    -- print(&quot;URL=&quot;..ctx.request.url)
-end
-</code></pre>
+<h2 id="strip-query">strip query<a class="headerlink" href="#strip-query" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><span class="kr">function</span> <span class="nf">request</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+    <span class="n">ctx</span><span class="p">.</span><span class="n">request</span><span class="p">.</span><span class="n">url</span> <span class="o">=</span> <span class="nb">string.gsub</span><span class="p">(</span><span class="n">ctx</span><span class="p">.</span><span class="n">request</span><span class="p">.</span><span class="n">url</span><span class="p">,</span> <span class="s2">&quot;%?.*$&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="c1">-- print(&quot;URL=&quot;..ctx.request.url)</span>
+<span class="kr">end</span>
+</pre></div>
 
-<h2 id="redirect">redirect</h2>
-<pre><code class="lua">function request(ctx, params)
-    ctx.serve({
-        status_code=302,
-        header={
-            location=&quot;http://www.example.org/&quot;,
-        },
-    })
-end
-</code></pre>
+<h2 id="redirect">redirect<a class="headerlink" href="#redirect" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><span class="kr">function</span> <span class="nf">request</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+    <span class="n">ctx</span><span class="p">.</span><span class="n">serve</span><span class="p">({</span>
+        <span class="n">status_code</span><span class="o">=</span><span class="mi">302</span><span class="p">,</span>
+        <span class="n">header</span><span class="o">=</span><span class="p">{</span>
+            <span class="n">location</span><span class="o">=</span><span class="s2">&quot;http://www.example.org/&quot;</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">})</span>
+<span class="kr">end</span>
+</pre></div>
 
-<h2 id="internal-server-error">internal server error</h2>
-<pre><code class="lua">function request(ctx, params)
-    -- let 10% of all requests fail with 500
-    if math.random() &lt; 0.1 then
-        ctx.serve({
-            status_code=500,
-            body=&quot;Internal Server Error.\n&quot;,
-        })
-    end
-end
-</code></pre>
+<h2 id="internal-server-error">internal server error<a class="headerlink" href="#internal-server-error" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><span class="kr">function</span> <span class="nf">request</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+    <span class="c1">-- let 10% of all requests fail with 500</span>
+    <span class="kr">if</span> <span class="nb">math.random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mf">0.1</span> <span class="kr">then</span>
+        <span class="n">ctx</span><span class="p">.</span><span class="n">serve</span><span class="p">({</span>
+            <span class="n">status_code</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+            <span class="n">body</span><span class="o">=</span><span class="s2">&quot;Internal Server Error.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="p">})</span>
+    <span class="kr">end</span>
+<span class="kr">end</span>
+</pre></div>
 
-<h1 id="benchmark">Benchmark</h1>
-<h2 id="redirectto-vs-lua-redirect">redirectTo vs lua redirect</h2>
+<h1 id="benchmark">Benchmark<a class="headerlink" href="#benchmark" title="Permanent link">&para;</a></h1>
+<h2 id="redirectto-vs-lua-redirect">redirectTo vs lua redirect<a class="headerlink" href="#redirectto-vs-lua-redirect" title="Permanent link">&para;</a></h2>
 <p>See skptesting/benchmark-lua.sh</p>
-<p>Route for "skipper" is <code>* -&gt; redirectTo("http://localhost:9980") -&gt; &lt;shunt&gt;</code>,
-route for "lua" is <code>* -&gt; lua("function request(c,p); c.serve({status_code=302, header={location='http://localhost:9980'}});end") -&gt; &lt;shunt&gt;</code></p>
-<pre><code>[benchmarking skipper]
-Running 12s test @ http://127.0.0.1:9990/lorem.html
-  2 threads and 128 connections
-  Thread Stats   Avg      Stdev     Max   +/- Stdev
-    Latency     6.75ms   14.22ms 260.28ms   92.19%
-    Req/Sec    23.87k     2.93k   32.22k    70.42%
-  572695 requests in 12.06s, 100.49MB read
-  Non-2xx or 3xx responses: 572695
-Requests/sec:  47474.31
-Transfer/sec:      8.33MB
-[benchmarking skipper done]
+<p>Route for &ldquo;skipper&rdquo; is <code>* -&gt; redirectTo("http://localhost:9980") -&gt; &lt;shunt&gt;</code>,
+route for &ldquo;lua&rdquo; is <code>* -&gt; lua("function request(c,p); c.serve({status_code=302, header={location='http://localhost:9980'}});end") -&gt; &lt;shunt&gt;</code></p>
+<p><div class="codehilite"><pre><span></span><span class="k">[benchmarking skipper]</span>
+<span class="na">Running 12s test @ http://127.0.0.1:9990/lorem.html</span>
+  <span class="na">2 threads and 128 connections</span>
+  <span class="na">Thread Stats   Avg      Stdev     Max   +/- Stdev</span>
+    <span class="na">Latency     6.75ms   14.22ms 260.28ms   92.19%</span>
+    <span class="na">Req/Sec    23.87k     2.93k   32.22k    70.42%</span>
+  <span class="na">572695 requests in 12.06s, 100.49MB read</span>
+  <span class="na">Non-2xx or 3xx responses: 572695</span>
+<span class="na">Requests/sec:  47474.31</span>
+<span class="na">Transfer/sec:      8.33MB</span>
+<span class="k">[benchmarking skipper done]</span>
 
-[benchmarking lua]
-Running 12s test @ http://127.0.0.1:9991/lorem.html
-  2 threads and 128 connections
-  Thread Stats   Avg      Stdev     Max   +/- Stdev
-    Latency    38.31ms   53.48ms 580.80ms   83.69%
-    Req/Sec     5.44k     1.03k    8.23k    71.25%
-  130123 requests in 12.01s, 20.97MB read
-Requests/sec:  10831.94
-Transfer/sec:      1.75MB
-[benchmarking lua done]
-</code></pre>
-
-<p>The benchmark was run with the default pool size of <code>script.InitialPoolSize = 3; script.MaxPoolSize = 10</code>.
+<span class="k">[benchmarking lua]</span>
+<span class="na">Running 12s test @ http://127.0.0.1:9991/lorem.html</span>
+  <span class="na">2 threads and 128 connections</span>
+  <span class="na">Thread Stats   Avg      Stdev     Max   +/- Stdev</span>
+    <span class="na">Latency    38.31ms   53.48ms 580.80ms   83.69%</span>
+    <span class="na">Req/Sec     5.44k     1.03k    8.23k    71.25%</span>
+  <span class="na">130123 requests in 12.01s, 20.97MB read</span>
+<span class="na">Requests/sec:  10831.94</span>
+<span class="na">Transfer/sec:      1.75MB</span>
+<span class="k">[benchmarking lua done]</span>
+</pre></div>
+The benchmark was run with the default pool size of <code>script.InitialPoolSize = 3; script.MaxPoolSize = 10</code>.
 With <code>script.InitialPoolSize = 128; script.MaxPoolSize = 128</code> (tweaked for this benchmark) you get about 12k req/s in lua.</p>
-<p>Similar results are achieved when testing <code>stripQuery()</code> vs the lua version from above.</p></div>
-        </div>
+<p>Similar results are achieved when testing <code>stripQuery()</code> vs the lua version from above.</p>
+                
+                  
+                
+              
+              
+                
 
-        <footer class="col-md-12">
-            <hr>
-            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
-        </footer>
-        <script>
-            var base_url = "../..",
-                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
-        </script>
-        <script src="../../js/base.js" defer></script>
-        <script src="../../search/main.js" defer></script>
 
-        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                <h4 class="modal-title" id="exampleModalLabel">Search</h4>
-            </div>
-            <div class="modal-body">
-                <p>
-                    From here you can search these documents. Enter
-                    your search terms below.
-                </p>
-                <form role="form">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
-                    </div>
-                </form>
-                <div id="mkdocs-search-results"></div>
-            </div>
-            <div class="modal-footer">
-            </div>
+              
+            </article>
+          </div>
         </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../predicates/" title="Predicates" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Predicates
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../plugins/" title="Plugins" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Plugins
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
     </div>
-</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="Keyboard Shortcuts Modal" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                <h4 class="modal-title" id="exampleModalLabel">Keyboard Shortcuts</h4>
-            </div>
-            <div class="modal-body">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th style="width: 20%;">Keys</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td class="help shortcut"><kbd>?</kbd></td>
-                    <td>Open this help</td>
-                  </tr>
-                  <tr>
-                    <td class="next shortcut"><kbd>n</kbd></td>
-                    <td>Next page</td>
-                  </tr>
-                  <tr>
-                    <td class="prev shortcut"><kbd>p</kbd></td>
-                    <td>Previous page</td>
-                  </tr>
-                  <tr>
-                    <td class="search shortcut"><kbd>s</kbd></td>
-                    <td>Search</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div class="modal-footer">
-            </div>
-        </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        powered by
+        <a href="https://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+      </div>
+      
+        
+      
     </div>
-</div>
-
-    </body>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/application.5e60981f.js"></script>
+      
+      <script>app.initialize({version:"1.0.1",url:{base:"../.."}})</script>
+      
+    
+    
+      
+    
+  </body>
 </html>

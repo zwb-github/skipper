@@ -1,235 +1,790 @@
+
+
+
+
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        
-        
-        
-        <link rel="shortcut icon" href="../../img/favicon.ico">
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../../favicon.ico">
+      <meta name="generator" content="mkdocs-1.0.1, mkdocs-material-3.0.6">
+    
+    
+      
         <title>Ingress Usage - Skipper</title>
-        <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
-        <link href="../../css/font-awesome.min.css" rel="stylesheet">
-        <link href="../../css/base.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
-        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!--[if lt IE 9]>
-            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-        <![endif]-->
-
-        <script src="../../js/jquery-1.10.2.min.js" defer></script>
-        <script src="../../js/bootstrap-3.0.3.min.js" defer></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-        <script>hljs.initHighlightingOnLoad();</script> 
-    </head>
-
-    <body>
-
-        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
-            <div class="container">
-
-                <!-- Collapsed navigation -->
-                <div class="navbar-header">
-                    <!-- Expander button -->
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="../..">Skipper</a>
-                </div>
-
-                <!-- Expanded navigation -->
-                <div class="navbar-collapse collapse">
-                        <!-- Main navigation -->
-                        <ul class="nav navbar-nav">
-                            <li >
-                                <a href="../..">Introduction</a>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference <b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    
-<li >
-    <a href="../../reference/filters/">Filters</a>
-</li>
-                                    
-<li >
-    <a href="../../reference/predicates/">Predicates</a>
-</li>
-                                    
-<li >
-    <a href="../../reference/scripts/">Scripts</a>
-</li>
-                                    
-<li >
-    <a href="../../reference/plugins/">Plugins</a>
-</li>
-                                    
-<li >
-    <a href="../../reference/architecture/">Architecture</a>
-</li>
-                                    
-<li >
-    <a href="../../reference/development/">Development</a>
-</li>
-                                    
-<li >
-    <a href="../../tutorials/video-howto-build/">Video - How to build</a>
-</li>
-                                    
-  <li class="dropdown-submenu">
-    <a href="#">Data Clients</a>
-    <ul class="dropdown-menu">
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/application.451f80e5.css">
+      
+        <link rel="stylesheet" href="../../assets/stylesheets/application-palette.22915126.css">
+      
+      
+        
+        
+        <meta name="theme-color" content="">
+      
+    
+    
+      <script src="../../assets/javascripts/modernizr.1aa3b519.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../assets/fonts/material-icons.css">
+    
+    
+  </head>
+  
+    
+    
+    <body dir="ltr" data-md-color-primary="white" data-md-color-accent="">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448"
+    viewBox="0 0 416 448" id="__github">
+  <path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19-18.125
+        8.5-18.125-8.5-10.75-19-3.125-20.5 3.125-20.5 10.75-19 18.125-8.5
+        18.125 8.5 10.75 19 3.125 20.5zM320 304q0 10-3.125 20.5t-10.75
+        19-18.125 8.5-18.125-8.5-10.75-19-3.125-20.5 3.125-20.5 10.75-19
+        18.125-8.5 18.125 8.5 10.75 19 3.125 20.5zM360
+        304q0-30-17.25-51t-46.75-21q-10.25 0-48.75 5.25-17.75 2.75-39.25
+        2.75t-39.25-2.75q-38-5.25-48.75-5.25-29.5 0-46.75 21t-17.25 51q0 22 8
+        38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0
+        37.25-1.75t35-7.375 30.5-15 20.25-25.75 8-38.375zM416 260q0 51.75-15.25
+        82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5-41.75
+        1.125q-19.5 0-35.5-0.75t-36.875-3.125-38.125-7.5-34.25-12.875-30.25-20.25-21.5-28.75q-15.5-30.75-15.5-82.75
+        0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25
+        30.875q36.75-8.75 77.25-8.75 37 0 70 8 26.25-20.5
+        46.75-30.25t47.25-9.75q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34
+        99.5z" />
+</svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#skipper-ingress-usage" tabindex="1" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="../.." title="Skipper" class="md-header-nav__button md-logo">
+          
+            <img src="../../favicon.ico" width="24" height="24">
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
             
-<li >
-    <a href="../../data-clients/eskip-file/">Eskip File</a>
-</li>
+              <span class="md-header-nav__topic">
+                Skipper
+              </span>
+              <span class="md-header-nav__topic">
+                Ingress Usage
+              </span>
             
-<li >
-    <a href="../../data-clients/etcd/">Etcd</a>
-</li>
-            
-<li >
-    <a href="../../data-clients/kubernetes/">Kubernetes</a>
-</li>
-            
-<li >
-    <a href="../../data-clients/innkeeper/">Innkeeper API</a>
-</li>
-            
-<li >
-    <a href="../../data-clients/route-string/">Route String</a>
-</li>
-    </ul>
-  </li>
-                                    
-  <li class="dropdown-submenu">
-    <a href="#">Operation</a>
-    <ul class="dropdown-menu">
-            
-<li >
-    <a href="../../operation/deployment/">Deployment</a>
-</li>
-            
-<li >
-    <a href="../../operation/operation/">Operation</a>
-</li>
-    </ul>
-  </li>
-                                </ul>
-                            </li>
-                            <li class="dropdown active">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Kubernetes <b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    
-<li >
-    <a href="../ingress-controller/">Ingress Controller Deployment</a>
-</li>
-                                    
-<li class="active">
-    <a href="./">Ingress Usage</a>
-</li>
-                                    
-<li >
-    <a href="../ingress-backends/">Ingress Backends</a>
-</li>
-                                </ul>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tutorials <b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    
-<li >
-    <a href="../../tutorials/basics/">Basis</a>
-</li>
-                                    
-<li >
-    <a href="../../tutorials/common-use-cases/">Common Use Cases</a>
-</li>
-                                    
-<li >
-    <a href="../../tutorials/development/">Development</a>
-</li>
-                                    
-<li >
-    <a href="../../tutorials/auth/">Authentication and Autorization</a>
-</li>
-                                    
-<li >
-    <a href="../../tutorials/ratelimit/">Ratelimits</a>
-</li>
-                                </ul>
-                            </li>
-                        </ul>
-
-                    <ul class="nav navbar-nav navbar-right">
-                        <li>
-                            <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
-                                <i class="fa fa-search"></i> Search
-                            </a>
-                        </li>
-                            <li >
-                                <a rel="next" href="../ingress-controller/">
-                                    <i class="fa fa-arrow-left"></i> Previous
-                                </a>
-                            </li>
-                            <li >
-                                <a rel="prev" href="../ingress-backends/">
-                                    Next <i class="fa fa-arrow-right"></i>
-                                </a>
-                            </li>
-                    </ul>
-                </div>
-            </div>
+          
         </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          
+            <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+            
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+          
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
 
-        <div class="container">
-                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
-    <ul class="nav bs-sidenav">
-        <li class="main active"><a href="#skipper-ingress-usage">Skipper Ingress Usage</a></li>
-            <li><a href="#skipper-ingress-annotations">Skipper Ingress Annotations</a></li>
-            <li><a href="#supported-service-types">Supported Service types</a></li>
-        <li class="main "><a href="#basics">Basics</a></li>
-            <li><a href="#http-host-header-routing">HTTP Host header routing</a></li>
-            <li><a href="#ingress-path-handling">Ingress path handling</a></li>
-            <li><a href="#filters-and-predicates">Filters and Predicates</a></li>
-            <li><a href="#custom-routes">Custom Routes</a></li>
-        <li class="main "><a href="#filters-basic-http-manipulations">Filters - Basic HTTP manipulations</a></li>
-            <li><a href="#add-a-request-header">Add a request Header</a></li>
-            <li><a href="#add-a-response-header">Add a response Header</a></li>
-            <li><a href="#enable-gzip">Enable gzip</a></li>
-            <li><a href="#set-the-path">Set the Path</a></li>
-            <li><a href="#modify-path">Modify Path</a></li>
-            <li><a href="#set-the-querystring">Set the Querystring</a></li>
-            <li><a href="#redirect">Redirect</a></li>
-            <li><a href="#cookies">Cookies</a></li>
-            <li><a href="#authorization">Authorization</a></li>
-            <li><a href="#diagnosis-throttling-bandwidth-latency">Diagnosis - Throttling Bandwidth - Latency</a></li>
-            <li><a href="#flow-id-to-trace-request-flows">Flow Id to trace request flows</a></li>
-        <li class="main "><a href="#filters-reliability-features">Filters - reliability features</a></li>
-            <li><a href="#circuitbreaker">Circuitbreaker</a></li>
-            <li><a href="#ratelimits">Ratelimits</a></li>
-            <li><a href="#shadow-traffic">Shadow Traffic</a></li>
-        <li class="main "><a href="#predicates">Predicates</a></li>
-            <li><a href="#feature-toggle">Feature Toggle</a></li>
-            <li><a href="#ip-whitelisting">IP Whitelisting</a></li>
-            <li><a href="#ab-test">A/B test</a></li>
-        <li class="main "><a href="#blue-green-deployments">Blue-Green deployments</a></li>
-        <li class="main "><a href="#chaining-filters-and-predicates">Chaining Filters and Predicates</a></li>
-        <li class="main "><a href="#controlling-https-redirect">Controlling HTTPS redirect</a></li>
+
+  
+
+
+  <a href="https://github.com/zalando/skipper/" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#__github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      GitHub
+    </div>
+  </a>
+
+          </div>
+        </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+        
+
+  
+
+<nav class="md-tabs md-tabs--active" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  <li class="md-tabs__item">
+    
+      <a href="../.." title="Introduction" class="md-tabs__link">
+        Introduction
+      </a>
+    
+  </li>
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../../reference/filters/" title="Reference" class="md-tabs__link">
+          Reference
+        </a>
+      
+    </li>
+  
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../ingress-controller/" title="Kubernetes" class="md-tabs__link md-tabs__link--active">
+          Kubernetes
+        </a>
+      
+    </li>
+  
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../../tutorials/basics/" title="Tutorials" class="md-tabs__link">
+          Tutorials
+        </a>
+      
+    </li>
+  
+
+      
     </ul>
-</div></div>
-                <div class="col-md-9" role="main">
+  </div>
+</nav>
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="../.." title="Skipper" class="md-nav__button md-logo">
+      
+        <img src="../../favicon.ico" width="48" height="48">
+      
+    </a>
+    Skipper
+  </label>
+  
+    <div class="md-nav__source">
+      
 
-<h1 id="skipper-ingress-usage">Skipper Ingress Usage</h1>
+
+  
+
+
+  <a href="https://github.com/zalando/skipper/" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#__github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      GitHub
+    </div>
+  </a>
+
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../.." title="Introduction" class="md-nav__link">
+      Introduction
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+    
+    <label class="md-nav__link" for="nav-2">
+      Reference
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        Reference
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../reference/filters/" title="Filters" class="md-nav__link">
+      Filters
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../reference/predicates/" title="Predicates" class="md-nav__link">
+      Predicates
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../reference/scripts/" title="Scripts" class="md-nav__link">
+      Scripts
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../reference/plugins/" title="Plugins" class="md-nav__link">
+      Plugins
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../reference/architecture/" title="Architecture" class="md-nav__link">
+      Architecture
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../reference/development/" title="Development" class="md-nav__link">
+      Development
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../tutorials/video-howto-build/" title="Video - How to build" class="md-nav__link">
+      Video - How to build
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2-8" type="checkbox" id="nav-2-8">
+    
+    <label class="md-nav__link" for="nav-2-8">
+      Data Clients
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-2-8">
+        Data Clients
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../data-clients/eskip-file/" title="Eskip File" class="md-nav__link">
+      Eskip File
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../data-clients/etcd/" title="Etcd" class="md-nav__link">
+      Etcd
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../data-clients/kubernetes/" title="Kubernetes" class="md-nav__link">
+      Kubernetes
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../data-clients/route-string/" title="Route String" class="md-nav__link">
+      Route String
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2-9" type="checkbox" id="nav-2-9">
+    
+    <label class="md-nav__link" for="nav-2-9">
+      Operation
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-2-9">
+        Operation
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../operation/deployment/" title="Deployment" class="md-nav__link">
+      Deployment
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../operation/operation/" title="Operation" class="md-nav__link">
+      Operation
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" checked>
+    
+    <label class="md-nav__link" for="nav-3">
+      Kubernetes
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        Kubernetes
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../ingress-controller/" title="Ingress Controller Deployment" class="md-nav__link">
+      Ingress Controller Deployment
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Ingress Usage
+      </label>
+    
+    <a href="./" title="Ingress Usage" class="md-nav__link md-nav__link--active">
+      Ingress Usage
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#skipper-ingress-annotations" title="Skipper Ingress Annotations" class="md-nav__link">
+    Skipper Ingress Annotations
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#supported-service-types" title="Supported Service types" class="md-nav__link">
+    Supported Service types
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../ingress-backends/" title="Ingress Backends" class="md-nav__link">
+      Ingress Backends
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      Tutorials
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        Tutorials
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../tutorials/basics/" title="Basics" class="md-nav__link">
+      Basics
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../tutorials/common-use-cases/" title="Common Use Cases" class="md-nav__link">
+      Common Use Cases
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../tutorials/development/" title="Development" class="md-nav__link">
+      Development
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../tutorials/auth/" title="Authentication and Autorization" class="md-nav__link">
+      Authentication and Autorization
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../tutorials/ratelimit/" title="Ratelimits" class="md-nav__link">
+      Ratelimits
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#skipper-ingress-annotations" title="Skipper Ingress Annotations" class="md-nav__link">
+    Skipper Ingress Annotations
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#supported-service-types" title="Supported Service types" class="md-nav__link">
+    Supported Service types
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/zalando/skipper/edit/master/docs/kubernetes/ingress-usage.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                
+                
+                <h1 id="skipper-ingress-usage">Skipper Ingress Usage<a class="headerlink" href="#skipper-ingress-usage" title="Permanent link">&para;</a></h1>
 <p>This documentation is meant for people deploying to Kubernetes
 Clusters and describes to use Ingress and low level and high level
 features Skipper provides</p>
-<h2 id="skipper-ingress-annotations">Skipper Ingress Annotations</h2>
+<h2 id="skipper-ingress-annotations">Skipper Ingress Annotations<a class="headerlink" href="#skipper-ingress-annotations" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
@@ -276,7 +831,7 @@ features Skipper provides</p>
 </tr>
 </tbody>
 </table>
-<h2 id="supported-service-types">Supported Service types</h2>
+<h2 id="supported-service-types">Supported Service types<a class="headerlink" href="#supported-service-types" title="Permanent link">&para;</a></h2>
 <p>Ingress backend definitions are services, which have different
 <a href="https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services---service-types">service types</a>.</p>
 <table>
@@ -291,12 +846,12 @@ features Skipper provides</p>
 <tr>
 <td>ClusterIP</td>
 <td>yes</td>
-<td>---</td>
+<td>&mdash;</td>
 </tr>
 <tr>
 <td>NodePort</td>
 <td>yes</td>
-<td>---</td>
+<td>&mdash;</td>
 </tr>
 <tr>
 <td>ExternalName</td>
@@ -310,24 +865,26 @@ features Skipper provides</p>
 </tr>
 </tbody>
 </table>
-<h1 id="basics">Basics</h1>
-<h2 id="http-host-header-routing">HTTP Host header routing</h2>
+<h1 id="basics">Basics<a class="headerlink" href="#basics" title="Permanent link">&para;</a></h1>
+<h2 id="http-host-header-routing">HTTP Host header routing<a class="headerlink" href="#http-host-header-routing" title="Permanent link">&para;</a></h2>
 <p>HTTP host header is defined within the rules <code>host</code> section and this
 route will match by http <code>Host: app-default.example.org</code> and route to
 endpoints selected by the Kubernetes service <code>app-svc</code> on port <code>80</code>.</p>
-<pre><code>apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  name: app
-spec:
-  rules:
-  - host: app-default.example.org
-    http:
-      paths:
-      - backend:
-          serviceName: app-svc
-          servicePort: 80
-</code></pre>
+<div class="codehilite"><pre><span></span><span class="n">apiVersion</span><span class="o">:</span> <span class="n">extensions</span><span class="o">/</span><span class="n">v1beta1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Ingress</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">app</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">rules</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">host</span><span class="o">:</span> <span class="n">app</span><span class="o">-</span><span class="k">default</span><span class="o">.</span><span class="na">example</span><span class="o">.</span><span class="na">org</span>
+    <span class="n">http</span><span class="o">:</span>
+      <span class="n">paths</span><span class="o">:</span>
+      <span class="o">-</span> <span class="n">backend</span><span class="o">:</span>
+          <span class="n">serviceName</span><span class="o">:</span> <span class="n">app</span><span class="o">-</span><span class="n">svc</span>
+          <span class="n">servicePort</span><span class="o">:</span> <span class="mi">80</span>
+</pre></div>
+
+
 <p>To have 2 routes with different <code>Host</code> headers serving the same
 backends, you have to specify 2 entries in the rules section, as
 Kubernetes defined the ingress spec. This is often used in cases of
@@ -336,26 +893,28 @@ bare metal datacenters to cloud providers or inter cloud or intra
 cloud providers migrations. Examples are AWS account migration, AWS to
 GCP migration, GCP to bare metal migration or bare metal to Alibaba
 Cloud migration.</p>
-<pre><code>apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  name: app
-spec:
-  rules:
-  - host: app-default.example.org
-    http:
-      paths:
-      - backend:
-          serviceName: app-svc
-          servicePort: 80
-  - host: foo.example.org
-    http:
-      paths:
-      - backend:
-          serviceName: app-svc
-          servicePort: 80
-</code></pre>
-<h2 id="ingress-path-handling">Ingress path handling</h2>
+<div class="codehilite"><pre><span></span><span class="n">apiVersion</span><span class="o">:</span> <span class="n">extensions</span><span class="o">/</span><span class="n">v1beta1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Ingress</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">app</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">rules</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">host</span><span class="o">:</span> <span class="n">app</span><span class="o">-</span><span class="k">default</span><span class="o">.</span><span class="na">example</span><span class="o">.</span><span class="na">org</span>
+    <span class="n">http</span><span class="o">:</span>
+      <span class="n">paths</span><span class="o">:</span>
+      <span class="o">-</span> <span class="n">backend</span><span class="o">:</span>
+          <span class="n">serviceName</span><span class="o">:</span> <span class="n">app</span><span class="o">-</span><span class="n">svc</span>
+          <span class="n">servicePort</span><span class="o">:</span> <span class="mi">80</span>
+  <span class="o">-</span> <span class="n">host</span><span class="o">:</span> <span class="n">foo</span><span class="o">.</span><span class="na">example</span><span class="o">.</span><span class="na">org</span>
+    <span class="n">http</span><span class="o">:</span>
+      <span class="n">paths</span><span class="o">:</span>
+      <span class="o">-</span> <span class="n">backend</span><span class="o">:</span>
+          <span class="n">serviceName</span><span class="o">:</span> <span class="n">app</span><span class="o">-</span><span class="n">svc</span>
+          <span class="n">servicePort</span><span class="o">:</span> <span class="mi">80</span>
+</pre></div>
+
+
+<h2 id="ingress-path-handling">Ingress path handling<a class="headerlink" href="#ingress-path-handling" title="Permanent link">&para;</a></h2>
 <p>Ingress paths can be interpreted in four different modes:</p>
 <ol>
 <li>based on the kubernetes ingress specification</li>
@@ -366,48 +925,52 @@ spec:
 to any of the other modes, and the individual ingress rules can also override the
 default behavior with the zalando.org/skipper-ingress-path-mode annotation.</p>
 <p>E.g.:</p>
-<pre><code>zalando.org/skipper-ingress-path-mode: path-prefix
-</code></pre>
-<h3 id="kubernetes-ingress-specification-base-path">Kubernetes ingress specification base path</h3>
+<div class="codehilite"><pre><span></span>zalando.org/skipper-ingress-path-mode: path-prefix
+</pre></div>
+
+
+<h3 id="kubernetes-ingress-specification-base-path">Kubernetes ingress specification base path<a class="headerlink" href="#kubernetes-ingress-specification-base-path" title="Permanent link">&para;</a></h3>
 <p>By default, the ingress path is interpreted as a regular expression with a
-mandatory leading "/", and is automatically prepended by a "^" control character,
+mandatory leading &ldquo;/&rdquo;, and is automatically prepended by a &ldquo;^&rdquo; control character,
 enforcing that the path has to be at the start of the incoming request path.</p>
-<h3 id="plain-regular-expression">Plain regular expression</h3>
-<p>When the path mode is set to "path-regexp", the ingress path is interpreted similar
-to the default kubernetes ingress specification way, but is not prepended by the "^"
+<h3 id="plain-regular-expression">Plain regular expression<a class="headerlink" href="#plain-regular-expression" title="Permanent link">&para;</a></h3>
+<p>When the path mode is set to &ldquo;path-regexp&rdquo;, the ingress path is interpreted similar
+to the default kubernetes ingress specification way, but is not prepended by the &ldquo;^&rdquo;
 control character.</p>
-<h3 id="path-prefix">Path prefix</h3>
-<p>When the path mode is set to "path-prefix", the ingress path is not a regular
-expression. As an example, "/foo/bar" will match "/foo/bar" or "/foo/bar/baz", but
-won't match "/foo/barooz".</p>
+<h3 id="path-prefix">Path prefix<a class="headerlink" href="#path-prefix" title="Permanent link">&para;</a></h3>
+<p>When the path mode is set to &ldquo;path-prefix&rdquo;, the ingress path is not a regular
+expression. As an example, &ldquo;/foo/bar&rdquo; will match &ldquo;/foo/bar&rdquo; or &ldquo;/foo/bar/baz&rdquo;, but
+won&rsquo;t match &ldquo;/foo/barooz&rdquo;.</p>
 <p>When PathPrefix is used, the path matching becomes deterministic when
 a request could match more than one ingress routes otherwise.</p>
 <p>In PathPrefix mode, when a Path or PathSubtree predicate is set in an
 annotation, the predicate in the annotation takes precedence over the normal ingress
 path.</p>
-<h2 id="filters-and-predicates">Filters and Predicates</h2>
+<h2 id="filters-and-predicates">Filters and Predicates<a class="headerlink" href="#filters-and-predicates" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong>Filters</strong> can manipulate http data, which is not possible in the ingress spec.</li>
 <li><strong>Predicates</strong> change the route matching, beyond normal ingress definitions</li>
 </ul>
 <p>This example shows how to add predicates and filters:</p>
-<pre><code>apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  annotations:
-    zalando.org/skipper-predicate: predicate1 &amp;&amp; predicate2 &amp;&amp; .. &amp;&amp; predicateN
-    zalando.org/skipper-filter: filter1 -&gt; filter2 -&gt; .. -&gt; filterN
-  name: app
-spec:
-  rules:
-  - host: app-default.example.org
-    http:
-      paths:
-      - backend:
-          serviceName: app-svc
-          servicePort: 80
-</code></pre>
-<h2 id="custom-routes">Custom Routes</h2>
+<div class="codehilite"><pre><span></span><span class="n">apiVersion</span><span class="o">:</span> <span class="n">extensions</span><span class="o">/</span><span class="n">v1beta1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Ingress</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">annotations</span><span class="o">:</span>
+    <span class="n">zalando</span><span class="o">.</span><span class="na">org</span><span class="o">/</span><span class="n">skipper</span><span class="o">-</span><span class="n">predicate</span><span class="o">:</span> <span class="n">predicate1</span> <span class="o">&amp;</span><span class="n">amp</span><span class="o">;&amp;</span><span class="n">amp</span><span class="o">;</span> <span class="n">predicate2</span> <span class="o">&amp;</span><span class="n">amp</span><span class="o">;&amp;</span><span class="n">amp</span><span class="o">;</span> <span class="o">..</span> <span class="o">&amp;</span><span class="n">amp</span><span class="o">;&amp;</span><span class="n">amp</span><span class="o">;</span> <span class="n">predicateN</span>
+    <span class="n">zalando</span><span class="o">.</span><span class="na">org</span><span class="o">/</span><span class="n">skipper</span><span class="o">-</span><span class="n">filter</span><span class="o">:</span> <span class="n">filter1</span> <span class="o">-&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="n">filter2</span> <span class="o">-&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="o">..</span> <span class="o">-&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="n">filterN</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">app</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">rules</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">host</span><span class="o">:</span> <span class="n">app</span><span class="o">-</span><span class="k">default</span><span class="o">.</span><span class="na">example</span><span class="o">.</span><span class="na">org</span>
+    <span class="n">http</span><span class="o">:</span>
+      <span class="n">paths</span><span class="o">:</span>
+      <span class="o">-</span> <span class="n">backend</span><span class="o">:</span>
+          <span class="n">serviceName</span><span class="o">:</span> <span class="n">app</span><span class="o">-</span><span class="n">svc</span>
+          <span class="n">servicePort</span><span class="o">:</span> <span class="mi">80</span>
+</pre></div>
+
+
+<h2 id="custom-routes">Custom Routes<a class="headerlink" href="#custom-routes" title="Permanent link">&para;</a></h2>
 <p>Custom routes is a way of extending the default routes configured for
 an ingress resource.</p>
 <p>Sometimes you just want to return a header, redirect or even static
@@ -416,7 +979,7 @@ to a backend, if you end your filter chain with <code>&lt;shunt&gt;</code>. The 
 <code>&lt;shunt&gt;</code> recommends the use in combination with <code>status()</code> filter, to
 not respond with the default http code, which defaults to 404.  To
 match your custom route with higher priority than your ingress you
-also have to add another predicate, for example the <a href="/predicates/#method">Method("GET")
+also have to add another predicate, for example the <a href="/predicates/#method">Method(&ldquo;GET&rdquo;)
 predicate</a> to match the route with higher
 priority.</p>
 <p>Custom routes specified in ingress will always add the <code>Host()</code>
@@ -429,113 +992,137 @@ ingress, then it will be based on the skipper command line parameter
 <li><a href="https://opensource.zalando.com/skipper/predicates/#pathsubtree">PathSubtree()</a></li>
 <li><a href="https://opensource.zalando.com/skipper/predicates/#pathregexp">PathRegexp()</a></li>
 </ul>
-<h3 id="return-static-content">Return static content</h3>
+<h3 id="return-static-content">Return static content<a class="headerlink" href="#return-static-content" title="Permanent link">&para;</a></h3>
 <p>The following example sets a response header <code>X: bar</code>, a response body
 <code>&lt;html&gt;&lt;body&gt;hello&lt;/body&gt;&lt;/html&gt;</code> and respond from the ingress
 directly with a HTTP status code 200:</p>
-<pre><code>zalando.org/skipper-routes: |
-  Path("/") -&gt; setResponseHeader("X", "bar") -&gt; inlineContent("&lt;html&gt;&lt;body&gt;hello&lt;/body&gt;&lt;/html&gt;") -&gt; status(200) -&gt; &lt;shunt&gt;
-</code></pre>
+<div class="codehilite"><pre><span></span>zalando.org/skipper-routes: |
+  Path(&quot;/&quot;) -&amp;gt; setResponseHeader(&quot;X&quot;, &quot;bar&quot;) -&amp;gt; inlineContent(&quot;&amp;lt;html&amp;gt;&amp;lt;body&amp;gt;hello&amp;lt;/body&amp;gt;&amp;lt;/html&amp;gt;&quot;) -&amp;gt; status(200) -&amp;gt; &amp;lt;shunt&amp;gt;
+</pre></div>
+
+
 <p>Keep in mind that you need a valid backend definition to backends
 which are available, otherwise Skipper would not accept the entire
 route definition from the ingress object for safety reasons.</p>
-<h3 id="cors-example">CORS example</h3>
+<h3 id="cors-example">CORS example<a class="headerlink" href="#cors-example" title="Permanent link">&para;</a></h3>
 <p>This example shows how to add a custom route for handling <code>OPTIONS</code> requests.</p>
-<pre><code class="yaml">apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  annotations:
-    zalando.org/skipper-routes: |
-      Method(&quot;OPTIONS&quot;) -&gt;
-      setResponseHeader(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;) -&gt;
-      setResponseHeader(&quot;Access-Control-Allow-Methods&quot;, &quot;GET, OPTIONS&quot;) -&gt;
-      setResponseHeader(&quot;Access-Control-Allow-Headers&quot;, &quot;Authorization&quot;) -&gt;
-      status(200) -&gt; &lt;shunt&gt;
-  name: app
-spec:
-  rules:
-  - host: app-default.example.org
-    http:
-      paths:
-      - backend:
-          serviceName: app-svc
-          servicePort: 80
-</code></pre>
+<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">extensions/v1beta1</span>
+<span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">Ingress</span>
+<span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">annotations</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">zalando.org/skipper-routes</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">|</span>
+      <span class="no">Method(&quot;OPTIONS&quot;) -&gt;</span>
+      <span class="no">setResponseHeader(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;) -&gt;</span>
+      <span class="no">setResponseHeader(&quot;Access-Control-Allow-Methods&quot;, &quot;GET, OPTIONS&quot;) -&gt;</span>
+      <span class="no">setResponseHeader(&quot;Access-Control-Allow-Headers&quot;, &quot;Authorization&quot;) -&gt;</span>
+      <span class="no">status(200) -&gt; &lt;shunt&gt;</span>
+  <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">app</span>
+<span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">rules</span><span class="p p-Indicator">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">host</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">app-default.example.org</span>
+    <span class="l l-Scalar l-Scalar-Plain">http</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">paths</span><span class="p p-Indicator">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">backend</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">serviceName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">app-svc</span>
+          <span class="l l-Scalar l-Scalar-Plain">servicePort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
+</pre></div>
 
 <p>This will generate a custom route for the ingress which looks like this:</p>
-<pre><code>Host(/^app-default[.]example[.]org$/) &amp;&amp; Method(&quot;OPTIONS&quot;) -&gt;
+<div class="codehilite"><pre><span></span>Host(/^app-default[.]example[.]org$/) &amp;&amp; Method(&quot;OPTIONS&quot;) -&gt;
   setResponseHeader(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;) -&gt;
   setResponseHeader(&quot;Access-Control-Allow-Methods&quot;, &quot;GET, OPTIONS&quot;) -&gt;
   setResponseHeader(&quot;Access-Control-Allow-Headers&quot;, &quot;Authorization&quot;) -&gt;
   status(200) -&gt; &lt;shunt&gt;
-</code></pre>
+</pre></div>
 
-<h3 id="multiple-routes">Multiple routes</h3>
+<h3 id="multiple-routes">Multiple routes<a class="headerlink" href="#multiple-routes" title="Permanent link">&para;</a></h3>
 <p>You can also set multiple routes, but you have to set the names of the
 route as defined in eskip:</p>
-<pre><code>zalando.org/skipper-routes: |
-  routename1: Path("/") -&gt; localRatelimit(2, "1h") -&gt; inlineContent("A") -&gt; status(200) -&gt; &lt;shunt&gt;;
-  routename2: Path("/foo") -&gt; localRatelimit(5, "1h") -&gt; inlineContent("B") -&gt; status(200) -&gt; &lt;shunt&gt;;
-</code></pre>
+<div class="codehilite"><pre><span></span><span class="nt">zalando</span><span class="p">.</span><span class="nc">org</span><span class="o">/</span><span class="nt">skipper-routes</span><span class="o">:</span> <span class="o">|</span>
+  <span class="nt">routename1</span><span class="o">:</span> <span class="nt">Path</span><span class="o">(</span><span class="s2">&quot;/&quot;</span><span class="o">)</span> <span class="nt">-</span><span class="o">&amp;</span><span class="nt">gt</span><span class="o">;</span> <span class="nt">localRatelimit</span><span class="o">(</span><span class="nt">2</span><span class="o">,</span> <span class="s2">&quot;1h&quot;</span><span class="o">)</span> <span class="nt">-</span><span class="o">&amp;</span><span class="nt">gt</span><span class="o">;</span> <span class="nt">inlineContent</span><span class="o">(</span><span class="s2">&quot;A&quot;</span><span class="o">)</span> <span class="nt">-</span><span class="o">&amp;</span><span class="nt">gt</span><span class="o">;</span> <span class="nt">status</span><span class="o">(</span><span class="nt">200</span><span class="o">)</span> <span class="nt">-</span><span class="o">&amp;</span><span class="nt">gt</span><span class="o">;</span> <span class="o">&amp;</span><span class="nt">lt</span><span class="o">;</span><span class="nt">shunt</span><span class="o">&amp;</span><span class="nt">gt</span><span class="o">;;</span>
+  <span class="nt">routename2</span><span class="o">:</span> <span class="nt">Path</span><span class="o">(</span><span class="s2">&quot;/foo&quot;</span><span class="o">)</span> <span class="nt">-</span><span class="o">&amp;</span><span class="nt">gt</span><span class="o">;</span> <span class="nt">localRatelimit</span><span class="o">(</span><span class="nt">5</span><span class="o">,</span> <span class="s2">&quot;1h&quot;</span><span class="o">)</span> <span class="nt">-</span><span class="o">&amp;</span><span class="nt">gt</span><span class="o">;</span> <span class="nt">inlineContent</span><span class="o">(</span><span class="s2">&quot;B&quot;</span><span class="o">)</span> <span class="nt">-</span><span class="o">&amp;</span><span class="nt">gt</span><span class="o">;</span> <span class="nt">status</span><span class="o">(</span><span class="nt">200</span><span class="o">)</span> <span class="nt">-</span><span class="o">&amp;</span><span class="nt">gt</span><span class="o">;</span> <span class="o">&amp;</span><span class="nt">lt</span><span class="o">;</span><span class="nt">shunt</span><span class="o">&amp;</span><span class="nt">gt</span><span class="o">;;</span>
+</pre></div>
+
+
 <p>Make sure the <code>;</code> semicolon is used to terminate the routes, if you
 use multiple routes definitions.</p>
-<h1 id="filters-basic-http-manipulations">Filters - Basic HTTP manipulations</h1>
+<h1 id="filters-basic-http-manipulations">Filters - Basic HTTP manipulations<a class="headerlink" href="#filters-basic-http-manipulations" title="Permanent link">&para;</a></h1>
 <p>HTTP manipulations are done by using skipper filters. Changes can be
 done in the request path, meaning request to your backend or in the
 response path to the client, which made the request.</p>
 <p>The following examples can be used within <code>zalando.org/skipper-filter</code>
 annotation.</p>
-<h2 id="add-a-request-header">Add a request Header</h2>
+<h2 id="add-a-request-header">Add a request Header<a class="headerlink" href="#add-a-request-header" title="Permanent link">&para;</a></h2>
 <p>Add a HTTP header in the request path to your backend.</p>
-<pre><code>setRequestHeader("X-Foo", "bar")
-</code></pre>
-<h2 id="add-a-response-header">Add a response Header</h2>
+<div class="codehilite"><pre><span></span>setRequestHeader(&quot;X-Foo&quot;, &quot;bar&quot;)
+</pre></div>
+
+
+<h2 id="add-a-response-header">Add a response Header<a class="headerlink" href="#add-a-response-header" title="Permanent link">&para;</a></h2>
 <p>Add a HTTP header in the response path of your clients.</p>
-<pre><code>setResponseHeader("X-Foo", "bar")
-</code></pre>
-<h2 id="enable-gzip">Enable gzip</h2>
+<div class="codehilite"><pre><span></span>setResponseHeader(&quot;X-Foo&quot;, &quot;bar&quot;)
+</pre></div>
+
+
+<h2 id="enable-gzip">Enable gzip<a class="headerlink" href="#enable-gzip" title="Permanent link">&para;</a></h2>
 <p>Compress responses with gzip.</p>
-<pre><code>compress() // compress all valid MIME types
-compress("text/html") // only compress HTML files
-compress(9, "text/html") // control the level of compression, 1 = fastest, 9 = best compression, 0 = no compression
-</code></pre>
-<h2 id="set-the-path">Set the Path</h2>
+<div class="codehilite"><pre><span></span>compress() // compress all valid MIME types
+compress(&quot;text/html&quot;) // only compress HTML files
+compress(9, &quot;text/html&quot;) // control the level of compression, 1 = fastest, 9 = best compression, 0 = no compression
+</pre></div>
+
+
+<h2 id="set-the-path">Set the Path<a class="headerlink" href="#set-the-path" title="Permanent link">&para;</a></h2>
 <p>Change the path in the request path to your backend to <code>/newPath/</code>.</p>
-<pre><code>setPath("/newPath/")
-</code></pre>
-<h2 id="modify-path">Modify Path</h2>
+<div class="codehilite"><pre><span></span>setPath(&quot;/newPath/&quot;)
+</pre></div>
+
+
+<h2 id="modify-path">Modify Path<a class="headerlink" href="#modify-path" title="Permanent link">&para;</a></h2>
 <p>Modify the path in the request path from <code>/api/foo</code> to your backend to <code>/foo</code>.</p>
-<pre><code>modPath("^/api/", "/")
-</code></pre>
-<h2 id="set-the-querystring">Set the Querystring</h2>
+<div class="codehilite"><pre><span></span>modPath(&quot;^/api/&quot;, &quot;/&quot;)
+</pre></div>
+
+
+<h2 id="set-the-querystring">Set the Querystring<a class="headerlink" href="#set-the-querystring" title="Permanent link">&para;</a></h2>
 <p>Set the Querystring in the request path to your backend to <code>?text=godoc%20skipper</code>.</p>
-<pre><code>setQuery("text", "godoc skipper")
-</code></pre>
-<h2 id="redirect">Redirect</h2>
-<p>Create a redirect with HTTP code 301 to https://foo.example.org/.</p>
-<pre><code>redirectTo(301, "https://foo.example.org/")
-</code></pre>
-<h2 id="cookies">Cookies</h2>
+<div class="codehilite"><pre><span></span>setQuery(&quot;text&quot;, &quot;godoc skipper&quot;)
+</pre></div>
+
+
+<h2 id="redirect">Redirect<a class="headerlink" href="#redirect" title="Permanent link">&para;</a></h2>
+<p>Create a redirect with HTTP code 301 to <a href="https://foo.example.org/">https://foo.example.org/</a>.</p>
+<div class="codehilite"><pre><span></span>redirectTo(301, &quot;https://foo.example.org/&quot;)
+</pre></div>
+
+
+<h2 id="cookies">Cookies<a class="headerlink" href="#cookies" title="Permanent link">&para;</a></h2>
 <p>Set a Cookie in the request path to your backend.</p>
-<pre><code>requestCookie("test-session", "abc")
-</code></pre>
+<div class="codehilite"><pre><span></span>requestCookie(&quot;test-session&quot;, &quot;abc&quot;)
+</pre></div>
+
+
 <p>Set a Cookie in the response path of your clients.</p>
-<pre><code>responseCookie("test-session", "abc", 31536000)
-responseCookie("test-session", "abc", 31536000, "change-only")
+<div class="codehilite"><pre><span></span>responseCookie(&quot;test-session&quot;, &quot;abc&quot;, 31536000)
+responseCookie(&quot;test-session&quot;, &quot;abc&quot;, 31536000, &quot;change-only&quot;)
 
 // response cookie without HttpOnly:
-jsCookie("test-session-info", "abc-debug", 31536000, "change-only")
-</code></pre>
-<h2 id="authorization">Authorization</h2>
+jsCookie(&quot;test-session-info&quot;, &quot;abc-debug&quot;, 31536000, &quot;change-only&quot;)
+</pre></div>
+
+
+<h2 id="authorization">Authorization<a class="headerlink" href="#authorization" title="Permanent link">&para;</a></h2>
 <p>Our <a href="https://godoc.org/github.com/zalando/skipper/filters/auth">filter auth godoc</a>
 shows how to use filters for authorization.</p>
-<h3 id="basic-auth">Basic Auth</h3>
-<pre><code>% htpasswd -nbm myName myPassword
+<h3 id="basic-auth">Basic Auth<a class="headerlink" href="#basic-auth" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><span class="c">% htpasswd -nbm myName myPassword</span>
 
-basicAuth("/path/to/htpasswd")
-basicAuth("/path/to/htpasswd", "My Website")
-</code></pre>
-<h3 id="bearer-token-oauthjwt">Bearer Token (OAuth/JWT)</h3>
+<span class="n">basicAuth</span><span class="p">(</span>&quot;<span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">htpasswd</span>&quot;<span class="p">)</span>
+<span class="n">basicAuth</span><span class="p">(</span>&quot;<span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">htpasswd</span>&quot;<span class="p">,</span> &quot;<span class="n">My</span> <span class="n">Website</span>&quot;<span class="p">)</span>
+</pre></div>
+
+
+<h3 id="bearer-token-oauthjwt">Bearer Token (OAuth/JWT)<a class="headerlink" href="#bearer-token-oauthjwt" title="Permanent link">&para;</a></h3>
 <p>OAuth2/JWT tokens can be validated and allowed based on different
 content of the token. Please check the filter documentation for that:</p>
 <ul>
@@ -552,76 +1139,88 @@ you to match a route based on the content of a token:</p>
 </ul>
 <p>These are not validating the tokens, which should be done separately
 by the filters mentioned above.</p>
-<h2 id="diagnosis-throttling-bandwidth-latency">Diagnosis - Throttling Bandwidth - Latency</h2>
+<h2 id="diagnosis-throttling-bandwidth-latency">Diagnosis - Throttling Bandwidth - Latency<a class="headerlink" href="#diagnosis-throttling-bandwidth-latency" title="Permanent link">&para;</a></h2>
 <p>For diagnosis purpose there are filters that enable you to throttle
 the bandwidth or add latency. For the full list of filters see our
 <a href="https://godoc.org/github.com/zalando/skipper/filters/diag">diag filter godoc page</a>.</p>
-<pre><code>bandwidth(30) // incoming in kb/s
+<div class="codehilite"><pre><span></span>bandwidth(30) // incoming in kb/s
 backendBandwidth(30) // outgoing in kb/s
 backendLatency(120) // in ms
-</code></pre>
-<h2 id="flow-id-to-trace-request-flows">Flow Id to trace request flows</h2>
+</pre></div>
+
+
+<h2 id="flow-id-to-trace-request-flows">Flow Id to trace request flows<a class="headerlink" href="#flow-id-to-trace-request-flows" title="Permanent link">&para;</a></h2>
 <p>To trace request flows skipper can generate a unique Flow Id for every
 HTTP request that it receives. You can then find the trace of the
 request in all your access logs.  Skipper sets the X-Flow-Id header to
 a unique value. Read more about this in our
 <a href="https://godoc.org/github.com/zalando/skipper/filters/flowid">flowid filter godoc</a>.</p>
-<pre><code> flowId("reuse")
-</code></pre>
-<h1 id="filters-reliability-features">Filters - reliability features</h1>
+<div class="codehilite"><pre><span></span> flowId(&quot;reuse&quot;)
+</pre></div>
+
+
+<h1 id="filters-reliability-features">Filters - reliability features<a class="headerlink" href="#filters-reliability-features" title="Permanent link">&para;</a></h1>
 <p>Filters can modify http requests and responses. There are plenty of
 things you can do with them.</p>
-<h2 id="circuitbreaker">Circuitbreaker</h2>
-<h3 id="consecutive-breaker">Consecutive Breaker</h3>
+<h2 id="circuitbreaker">Circuitbreaker<a class="headerlink" href="#circuitbreaker" title="Permanent link">&para;</a></h2>
+<h3 id="consecutive-breaker">Consecutive Breaker<a class="headerlink" href="#consecutive-breaker" title="Permanent link">&para;</a></h3>
 <p>The <a href="https://godoc.org/github.com/zalando/skipper/filters/circuit#NewConsecutiveBreaker">consecutiveBreaker</a>
 filter is a breaker for the ingress route that open if the backend failures
 for the route reach a value of N (in this example N=15), where N is a
 mandatory argument of the filter and there are some more optional arguments
 <a href="https://godoc.org/github.com/zalando/skipper/filters/circuit#NewConsecutiveBreaker">documented</a>:</p>
-<pre><code>consecutiveBreaker(15)
-</code></pre>
+<div class="codehilite"><pre><span></span>consecutiveBreaker(15)
+</pre></div>
+
+
 <p>The ingress spec would look like this:</p>
-<pre><code>apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  annotations:
-    zalando.org/skipper-filter: consecutiveBreaker(15)
-  name: app
-spec:
-  rules:
-  - host: app-default.example.org
-    http:
-      paths:
-      - backend:
-          serviceName: app-svc
-          servicePort: 80
-</code></pre>
-<h3 id="rate-breaker">Rate Breaker</h3>
+<div class="codehilite"><pre><span></span><span class="n">apiVersion</span><span class="o">:</span> <span class="n">extensions</span><span class="o">/</span><span class="n">v1beta1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Ingress</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">annotations</span><span class="o">:</span>
+    <span class="n">zalando</span><span class="o">.</span><span class="na">org</span><span class="o">/</span><span class="n">skipper</span><span class="o">-</span><span class="n">filter</span><span class="o">:</span> <span class="n">consecutiveBreaker</span><span class="o">(</span><span class="mi">15</span><span class="o">)</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">app</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">rules</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">host</span><span class="o">:</span> <span class="n">app</span><span class="o">-</span><span class="k">default</span><span class="o">.</span><span class="na">example</span><span class="o">.</span><span class="na">org</span>
+    <span class="n">http</span><span class="o">:</span>
+      <span class="n">paths</span><span class="o">:</span>
+      <span class="o">-</span> <span class="n">backend</span><span class="o">:</span>
+          <span class="n">serviceName</span><span class="o">:</span> <span class="n">app</span><span class="o">-</span><span class="n">svc</span>
+          <span class="n">servicePort</span><span class="o">:</span> <span class="mi">80</span>
+</pre></div>
+
+
+<h3 id="rate-breaker">Rate Breaker<a class="headerlink" href="#rate-breaker" title="Permanent link">&para;</a></h3>
 <p>The <a href="https://godoc.org/github.com/zalando/skipper/filters/circuit#NewRateBreaker">rateBreaker</a>
 filter is a breaker for the ingress route that open if the backend
 failures for the route reach a value of N within a window of the last
 M requests, where N (in this example 30) and M (in this example 300)
 are mandatory arguments of the filter and there are some more optional arguments
 <a href="https://godoc.org/github.com/zalando/skipper/filters/circuit#NewRateBreaker">documented</a>.</p>
-<pre><code>rateBreaker(30, 300)
-</code></pre>
+<div class="codehilite"><pre><span></span>rateBreaker(30, 300)
+</pre></div>
+
+
 <p>The ingress spec would look like this:</p>
-<pre><code>apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  annotations:
-    zalando.org/skipper-filter: rateBreaker(30, 300)
-  name: app
-spec:
-  rules:
-  - host: app-default.example.org
-    http:
-      paths:
-      - backend:
-          serviceName: app-svc
-          servicePort: 80
-</code></pre>
-<h2 id="ratelimits">Ratelimits</h2>
+<div class="codehilite"><pre><span></span><span class="n">apiVersion</span><span class="o">:</span> <span class="n">extensions</span><span class="o">/</span><span class="n">v1beta1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Ingress</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">annotations</span><span class="o">:</span>
+    <span class="n">zalando</span><span class="o">.</span><span class="na">org</span><span class="o">/</span><span class="n">skipper</span><span class="o">-</span><span class="n">filter</span><span class="o">:</span> <span class="n">rateBreaker</span><span class="o">(</span><span class="mi">30</span><span class="o">,</span> <span class="mi">300</span><span class="o">)</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">app</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">rules</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">host</span><span class="o">:</span> <span class="n">app</span><span class="o">-</span><span class="k">default</span><span class="o">.</span><span class="na">example</span><span class="o">.</span><span class="na">org</span>
+    <span class="n">http</span><span class="o">:</span>
+      <span class="n">paths</span><span class="o">:</span>
+      <span class="o">-</span> <span class="n">backend</span><span class="o">:</span>
+          <span class="n">serviceName</span><span class="o">:</span> <span class="n">app</span><span class="o">-</span><span class="n">svc</span>
+          <span class="n">servicePort</span><span class="o">:</span> <span class="mi">80</span>
+</pre></div>
+
+
+<h2 id="ratelimits">Ratelimits<a class="headerlink" href="#ratelimits" title="Permanent link">&para;</a></h2>
 <p>There are two kind of ratelimits:</p>
 <ol>
 <li>Client side ratelimits are used to slow down login enumeration
@@ -637,129 +1236,141 @@ side as described above.</li>
 <p>Ratelimits are enforced per route.</p>
 <p>More details you will find in <a href="https://godoc.org/github.com/zalando/skipper/filters/ratelimit">ratelimit package</a>
 and <a href="https://godoc.org/github.com/zalando/skipper/dataclients/kubernetes">Kubernetes dataclient</a> documentation.</p>
-<h3 id="client-ratelimits">Client Ratelimits</h3>
+<h3 id="client-ratelimits">Client Ratelimits<a class="headerlink" href="#client-ratelimits" title="Permanent link">&para;</a></h3>
 <p>The example shows 20 calls per hour per client, based on
 X-Forwarded-For header or IP incase there is no X-Forwarded-For header
 set, are allowed to each skipper instance for the given ingress.</p>
-<pre><code>apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  annotations:
-    zalando.org/skipper-filter: localRatelimit(20, "1h")
-  name: app
-spec:
-  rules:
-  - host: app-default.example.org
-    http:
-      paths:
-      - backend:
-          serviceName: app-svc
-          servicePort: 80
-</code></pre>
+<div class="codehilite"><pre><span></span><span class="n">apiVersion</span><span class="o">:</span> <span class="n">extensions</span><span class="o">/</span><span class="n">v1beta1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Ingress</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">annotations</span><span class="o">:</span>
+    <span class="n">zalando</span><span class="o">.</span><span class="na">org</span><span class="o">/</span><span class="n">skipper</span><span class="o">-</span><span class="n">filter</span><span class="o">:</span> <span class="n">localRatelimit</span><span class="o">(</span><span class="mi">20</span><span class="o">,</span> <span class="s2">&quot;1h&quot;</span><span class="o">)</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">app</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">rules</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">host</span><span class="o">:</span> <span class="n">app</span><span class="o">-</span><span class="k">default</span><span class="o">.</span><span class="na">example</span><span class="o">.</span><span class="na">org</span>
+    <span class="n">http</span><span class="o">:</span>
+      <span class="n">paths</span><span class="o">:</span>
+      <span class="o">-</span> <span class="n">backend</span><span class="o">:</span>
+          <span class="n">serviceName</span><span class="o">:</span> <span class="n">app</span><span class="o">-</span><span class="n">svc</span>
+          <span class="n">servicePort</span><span class="o">:</span> <span class="mi">80</span>
+</pre></div>
+
+
 <p>If you need to rate limit service to service communication and
 you use Authorization headers to protect your backend from your
-clients, then you can pass a 3 parameter to group clients by "Authorization
-Header":</p>
-<pre><code>apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  annotations:
-    zalando.org/skipper-filter: localRatelimit(20, "1h", "auth")
-  name: app
-spec:
-  rules:
-  - host: app-default.example.org
-    http:
-      paths:
-      - backend:
-          serviceName: app-svc
-          servicePort: 80
-</code></pre>
-<h3 id="service-ratelimits">Service Ratelimits</h3>
+clients, then you can pass a 3 parameter to group clients by &ldquo;Authorization
+Header&rdquo;:</p>
+<div class="codehilite"><pre><span></span><span class="n">apiVersion</span><span class="o">:</span> <span class="n">extensions</span><span class="o">/</span><span class="n">v1beta1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Ingress</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">annotations</span><span class="o">:</span>
+    <span class="n">zalando</span><span class="o">.</span><span class="na">org</span><span class="o">/</span><span class="n">skipper</span><span class="o">-</span><span class="n">filter</span><span class="o">:</span> <span class="n">localRatelimit</span><span class="o">(</span><span class="mi">20</span><span class="o">,</span> <span class="s2">&quot;1h&quot;</span><span class="o">,</span> <span class="s2">&quot;auth&quot;</span><span class="o">)</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">app</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">rules</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">host</span><span class="o">:</span> <span class="n">app</span><span class="o">-</span><span class="k">default</span><span class="o">.</span><span class="na">example</span><span class="o">.</span><span class="na">org</span>
+    <span class="n">http</span><span class="o">:</span>
+      <span class="n">paths</span><span class="o">:</span>
+      <span class="o">-</span> <span class="n">backend</span><span class="o">:</span>
+          <span class="n">serviceName</span><span class="o">:</span> <span class="n">app</span><span class="o">-</span><span class="n">svc</span>
+          <span class="n">servicePort</span><span class="o">:</span> <span class="mi">80</span>
+</pre></div>
+
+
+<h3 id="service-ratelimits">Service Ratelimits<a class="headerlink" href="#service-ratelimits" title="Permanent link">&para;</a></h3>
 <p>The example shows 50 calls per minute are allowed to each skipper
 instance for the given ingress.</p>
-<pre><code>apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  annotations:
-    zalando.org/skipper-filter: ratelimit(50, "1m")
-  name: app
-spec:
-  rules:
-  - host: app-default.example.org
-    http:
-      paths:
-      - backend:
-          serviceName: app-svc
-          servicePort: 80
-</code></pre>
-<h3 id="cluster-ratelimits">Cluster Ratelimits</h3>
+<div class="codehilite"><pre><span></span><span class="n">apiVersion</span><span class="o">:</span> <span class="n">extensions</span><span class="o">/</span><span class="n">v1beta1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Ingress</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">annotations</span><span class="o">:</span>
+    <span class="n">zalando</span><span class="o">.</span><span class="na">org</span><span class="o">/</span><span class="n">skipper</span><span class="o">-</span><span class="n">filter</span><span class="o">:</span> <span class="n">ratelimit</span><span class="o">(</span><span class="mi">50</span><span class="o">,</span> <span class="s2">&quot;1m&quot;</span><span class="o">)</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">app</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">rules</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">host</span><span class="o">:</span> <span class="n">app</span><span class="o">-</span><span class="k">default</span><span class="o">.</span><span class="na">example</span><span class="o">.</span><span class="na">org</span>
+    <span class="n">http</span><span class="o">:</span>
+      <span class="n">paths</span><span class="o">:</span>
+      <span class="o">-</span> <span class="n">backend</span><span class="o">:</span>
+          <span class="n">serviceName</span><span class="o">:</span> <span class="n">app</span><span class="o">-</span><span class="n">svc</span>
+          <span class="n">servicePort</span><span class="o">:</span> <span class="mi">80</span>
+</pre></div>
+
+
+<h3 id="cluster-ratelimits">Cluster Ratelimits<a class="headerlink" href="#cluster-ratelimits" title="Permanent link">&para;</a></h3>
 <p>Cluster ratelimits are eventual consistent and require the flag
 <code>-enable-swarm</code> to be set.</p>
-<h4 id="service">Service</h4>
+<h4 id="service">Service<a class="headerlink" href="#service" title="Permanent link">&para;</a></h4>
 <p>The example shows 50 calls per minute are allowed to pass this ingress
 rule to the backend.</p>
-<pre><code>apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  annotations:
-    zalando.org/skipper-filter: clusterRatelimit(50, "1m")
-  name: app
-spec:
-  rules:
-  - host: app-default.example.org
-    http:
-      paths:
-      - backend:
-          serviceName: app-svc
-          servicePort: 80
-</code></pre>
-<h4 id="client">Client</h4>
+<div class="codehilite"><pre><span></span><span class="n">apiVersion</span><span class="o">:</span> <span class="n">extensions</span><span class="o">/</span><span class="n">v1beta1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Ingress</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">annotations</span><span class="o">:</span>
+    <span class="n">zalando</span><span class="o">.</span><span class="na">org</span><span class="o">/</span><span class="n">skipper</span><span class="o">-</span><span class="n">filter</span><span class="o">:</span> <span class="n">clusterRatelimit</span><span class="o">(</span><span class="mi">50</span><span class="o">,</span> <span class="s2">&quot;1m&quot;</span><span class="o">)</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">app</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">rules</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">host</span><span class="o">:</span> <span class="n">app</span><span class="o">-</span><span class="k">default</span><span class="o">.</span><span class="na">example</span><span class="o">.</span><span class="na">org</span>
+    <span class="n">http</span><span class="o">:</span>
+      <span class="n">paths</span><span class="o">:</span>
+      <span class="o">-</span> <span class="n">backend</span><span class="o">:</span>
+          <span class="n">serviceName</span><span class="o">:</span> <span class="n">app</span><span class="o">-</span><span class="n">svc</span>
+          <span class="n">servicePort</span><span class="o">:</span> <span class="mi">80</span>
+</pre></div>
+
+
+<h4 id="client">Client<a class="headerlink" href="#client" title="Permanent link">&para;</a></h4>
 <p>The example shows 10 calls per hour are allowed per client,
 X-Forwarded-For header, to pass this ingress rule to the backend.</p>
-<pre><code>apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  annotations:
-    zalando.org/skipper-filter: clusterRatelimit(10, "1h", "xfwd")
-  name: app
-spec:
-  rules:
-  - host: app-default.example.org
-    http:
-      paths:
-      - backend:
-          serviceName: app-svc
-          servicePort: 80
-</code></pre>
-<h2 id="shadow-traffic">Shadow Traffic</h2>
+<div class="codehilite"><pre><span></span><span class="n">apiVersion</span><span class="o">:</span> <span class="n">extensions</span><span class="o">/</span><span class="n">v1beta1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Ingress</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">annotations</span><span class="o">:</span>
+    <span class="n">zalando</span><span class="o">.</span><span class="na">org</span><span class="o">/</span><span class="n">skipper</span><span class="o">-</span><span class="n">filter</span><span class="o">:</span> <span class="n">clusterRatelimit</span><span class="o">(</span><span class="mi">10</span><span class="o">,</span> <span class="s2">&quot;1h&quot;</span><span class="o">,</span> <span class="s2">&quot;xfwd&quot;</span><span class="o">)</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">app</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">rules</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">host</span><span class="o">:</span> <span class="n">app</span><span class="o">-</span><span class="k">default</span><span class="o">.</span><span class="na">example</span><span class="o">.</span><span class="na">org</span>
+    <span class="n">http</span><span class="o">:</span>
+      <span class="n">paths</span><span class="o">:</span>
+      <span class="o">-</span> <span class="n">backend</span><span class="o">:</span>
+          <span class="n">serviceName</span><span class="o">:</span> <span class="n">app</span><span class="o">-</span><span class="n">svc</span>
+          <span class="n">servicePort</span><span class="o">:</span> <span class="mi">80</span>
+</pre></div>
+
+
+<h2 id="shadow-traffic">Shadow Traffic<a class="headerlink" href="#shadow-traffic" title="Permanent link">&para;</a></h2>
 <p>If you want to test a new replacement of a production service with
 production load, you can copy incoming requests to your new endpoint
 and ignore the responses from your new backend. This can be done by
 the <a href="https://godoc.org/github.com/zalando/skipper/filters/tee">tee() and teenf() filters</a>.</p>
-<pre><code>apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  annotations:
-    zalando.org/skipper-filter: teenf("https://app-new.example.org")
-  name: app
-spec:
-  rules:
-  - host: app-default.example.org
-    http:
-      paths:
-      - backend:
-          serviceName: app-svc
-          servicePort: 80
-</code></pre>
-<h1 id="predicates">Predicates</h1>
+<div class="codehilite"><pre><span></span><span class="n">apiVersion</span><span class="o">:</span> <span class="n">extensions</span><span class="o">/</span><span class="n">v1beta1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Ingress</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">annotations</span><span class="o">:</span>
+    <span class="n">zalando</span><span class="o">.</span><span class="na">org</span><span class="sr">/skipper-filter: teenf(&quot;https://</span><span class="n">app</span><span class="o">-</span><span class="k">new</span><span class="o">.</span><span class="na">example</span><span class="o">.</span><span class="na">org</span><span class="err">&quot;</span><span class="o">)</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">app</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">rules</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">host</span><span class="o">:</span> <span class="n">app</span><span class="o">-</span><span class="k">default</span><span class="o">.</span><span class="na">example</span><span class="o">.</span><span class="na">org</span>
+    <span class="n">http</span><span class="o">:</span>
+      <span class="n">paths</span><span class="o">:</span>
+      <span class="o">-</span> <span class="n">backend</span><span class="o">:</span>
+          <span class="n">serviceName</span><span class="o">:</span> <span class="n">app</span><span class="o">-</span><span class="n">svc</span>
+          <span class="n">servicePort</span><span class="o">:</span> <span class="mi">80</span>
+</pre></div>
+
+
+<h1 id="predicates">Predicates<a class="headerlink" href="#predicates" title="Permanent link">&para;</a></h1>
 <p><a href="https://godoc.org/github.com/zalando/skipper/predicates">Predicates</a>
 are influencing the route matching, which you might want to carefully
 test before using it in production. This enables you to do feature
 toggles or time based enabling endpoints.</p>
 <p>You can use all kinds of <a href="https://godoc.org/github.com/zalando/skipper/predicates">predicates</a>
 with <a href="https://godoc.org/github.com/zalando/skipper/filters">filters</a> together.</p>
-<h2 id="feature-toggle">Feature Toggle</h2>
+<h2 id="feature-toggle">Feature Toggle<a class="headerlink" href="#feature-toggle" title="Permanent link">&para;</a></h2>
 <p>Feature toggles are often implemented as query string to select a new
 feature. Normally you would have to implement this in your
 application, but Skipper can help you with that and you can select
@@ -771,53 +1382,59 @@ query string in the URL has <code>version=alpha</code> set, for example
 <code>https://app-default.example.org/mypath?version=alpha</code>, the service
 <code>alpha-svc</code> will get the traffic, if not <code>prod-svc</code>.</p>
 <p>alpha-svc:</p>
-<pre><code>apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  annotations:
-    zalando.org/skipper-predicate: QueryParam("version", "^alpha$")
-  name: alpha-app
-spec:
-  rules:
-  - host: app-default.example.org
-    http:
-      paths:
-      - backend:
-          serviceName: alpha-svc
-          servicePort: 80
-</code></pre>
+<div class="codehilite"><pre><span></span><span class="n">apiVersion</span><span class="o">:</span> <span class="n">extensions</span><span class="o">/</span><span class="n">v1beta1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Ingress</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">annotations</span><span class="o">:</span>
+    <span class="n">zalando</span><span class="o">.</span><span class="na">org</span><span class="o">/</span><span class="n">skipper</span><span class="o">-</span><span class="n">predicate</span><span class="o">:</span> <span class="n">QueryParam</span><span class="o">(</span><span class="s2">&quot;version&quot;</span><span class="o">,</span> <span class="s2">&quot;^alpha$&quot;</span><span class="o">)</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">alpha</span><span class="o">-</span><span class="n">app</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">rules</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">host</span><span class="o">:</span> <span class="n">app</span><span class="o">-</span><span class="k">default</span><span class="o">.</span><span class="na">example</span><span class="o">.</span><span class="na">org</span>
+    <span class="n">http</span><span class="o">:</span>
+      <span class="n">paths</span><span class="o">:</span>
+      <span class="o">-</span> <span class="n">backend</span><span class="o">:</span>
+          <span class="n">serviceName</span><span class="o">:</span> <span class="n">alpha</span><span class="o">-</span><span class="n">svc</span>
+          <span class="n">servicePort</span><span class="o">:</span> <span class="mi">80</span>
+</pre></div>
+
+
 <p>prod-svc:</p>
-<pre><code>apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  name: prod-app
-spec:
-  rules:
-  - host: app-default.example.org
-    http:
-      paths:
-      - backend:
-          serviceName: prod-svc
-          servicePort: 80
-</code></pre>
-<h2 id="ip-whitelisting">IP Whitelisting</h2>
+<div class="codehilite"><pre><span></span><span class="n">apiVersion</span><span class="o">:</span> <span class="n">extensions</span><span class="o">/</span><span class="n">v1beta1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Ingress</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">prod</span><span class="o">-</span><span class="n">app</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">rules</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">host</span><span class="o">:</span> <span class="n">app</span><span class="o">-</span><span class="k">default</span><span class="o">.</span><span class="na">example</span><span class="o">.</span><span class="na">org</span>
+    <span class="n">http</span><span class="o">:</span>
+      <span class="n">paths</span><span class="o">:</span>
+      <span class="o">-</span> <span class="n">backend</span><span class="o">:</span>
+          <span class="n">serviceName</span><span class="o">:</span> <span class="n">prod</span><span class="o">-</span><span class="n">svc</span>
+          <span class="n">servicePort</span><span class="o">:</span> <span class="mi">80</span>
+</pre></div>
+
+
+<h2 id="ip-whitelisting">IP Whitelisting<a class="headerlink" href="#ip-whitelisting" title="Permanent link">&para;</a></h2>
 <p>This ingress route will only allow traffic from networks 1.2.3.0/24 and 195.168.0.0/17</p>
-<pre><code>apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  annotations:
-    zalando.org/skipper-predicate: Source("1.2.3.0/24", "195.168.0.0/17")
-  name: app
-spec:
-  rules:
-  - host: app-default.example.org
-    http:
-      paths:
-      - backend:
-          serviceName: app-svc
-          servicePort: 80
-</code></pre>
-<h2 id="ab-test">A/B test</h2>
+<div class="codehilite"><pre><span></span><span class="n">apiVersion</span><span class="o">:</span> <span class="n">extensions</span><span class="o">/</span><span class="n">v1beta1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Ingress</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">annotations</span><span class="o">:</span>
+    <span class="n">zalando</span><span class="o">.</span><span class="na">org</span><span class="sr">/skipper-predicate: Source(&quot;1.2.3.0/24&quot;, &quot;195.168.0.0/</span><span class="mi">17</span><span class="err">&quot;</span><span class="o">)</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">app</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">rules</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">host</span><span class="o">:</span> <span class="n">app</span><span class="o">-</span><span class="k">default</span><span class="o">.</span><span class="na">example</span><span class="o">.</span><span class="na">org</span>
+    <span class="n">http</span><span class="o">:</span>
+      <span class="n">paths</span><span class="o">:</span>
+      <span class="o">-</span> <span class="n">backend</span><span class="o">:</span>
+          <span class="n">serviceName</span><span class="o">:</span> <span class="n">app</span><span class="o">-</span><span class="n">svc</span>
+          <span class="n">servicePort</span><span class="o">:</span> <span class="mi">80</span>
+</pre></div>
+
+
+<h2 id="ab-test">A/B test<a class="headerlink" href="#ab-test" title="Permanent link">&para;</a></h2>
 <p>Implementing A/B testing is heavy. Skipper can help you to do
 that. You need to have a traffic split somewhere and have your
 customers sticky to either A or B flavor of your application. Most
@@ -828,73 +1445,81 @@ in a response to the client and the
 can be used to match the route based on the cookie. Like this you can
 have sticky sessions to either A or B for your clients.  This example
 shows to have 10% traffic using A and the rest using B.</p>
-<p>10% choice of setting the Cookie "flavor" to "A":</p>
-<pre><code>apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  annotations:
-    zalando.org/skipper-predicate: Traffic(.1)
-    zalando.org/skipper-filter: responseCookie("flavor, "A", 31536000)
-  name: app
-spec:
-  rules:
-  - host: app-default.example.org
-    http:
-      paths:
-      - backend:
-          serviceName: a-app-svc
-          servicePort: 80
-</code></pre>
-<p>Rest is setting Cookie "flavor" to "B":</p>
-<pre><code>apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  annotations:
-    zalando.org/skipper-filter: responseCookie("flavor, "B", 31536000)
-  name: app
-spec:
-  rules:
-  - host: app-default.example.org
-    http:
-      paths:
-      - backend:
-          serviceName: b-app-svc
-          servicePort: 80
-</code></pre>
+<p>10% choice of setting the Cookie &ldquo;flavor&rdquo; to &ldquo;A&rdquo;:</p>
+<div class="codehilite"><pre><span></span><span class="n">apiVersion</span><span class="o">:</span> <span class="n">extensions</span><span class="o">/</span><span class="n">v1beta1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Ingress</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">annotations</span><span class="o">:</span>
+    <span class="n">zalando</span><span class="o">.</span><span class="na">org</span><span class="o">/</span><span class="n">skipper</span><span class="o">-</span><span class="n">predicate</span><span class="o">:</span> <span class="n">Traffic</span><span class="o">(.</span><span class="mi">1</span><span class="o">)</span>
+    <span class="n">zalando</span><span class="o">.</span><span class="na">org</span><span class="o">/</span><span class="n">skipper</span><span class="o">-</span><span class="n">filter</span><span class="o">:</span> <span class="n">responseCookie</span><span class="o">(</span><span class="s2">&quot;flavor, &quot;</span><span class="n">A</span><span class="err">&quot;</span><span class="o">,</span> <span class="mi">31536000</span><span class="o">)</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">app</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">rules</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">host</span><span class="o">:</span> <span class="n">app</span><span class="o">-</span><span class="k">default</span><span class="o">.</span><span class="na">example</span><span class="o">.</span><span class="na">org</span>
+    <span class="n">http</span><span class="o">:</span>
+      <span class="n">paths</span><span class="o">:</span>
+      <span class="o">-</span> <span class="n">backend</span><span class="o">:</span>
+          <span class="n">serviceName</span><span class="o">:</span> <span class="n">a</span><span class="o">-</span><span class="n">app</span><span class="o">-</span><span class="n">svc</span>
+          <span class="n">servicePort</span><span class="o">:</span> <span class="mi">80</span>
+</pre></div>
+
+
+<p>Rest is setting Cookie &ldquo;flavor&rdquo; to &ldquo;B&rdquo;:</p>
+<div class="codehilite"><pre><span></span><span class="n">apiVersion</span><span class="o">:</span> <span class="n">extensions</span><span class="o">/</span><span class="n">v1beta1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Ingress</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">annotations</span><span class="o">:</span>
+    <span class="n">zalando</span><span class="o">.</span><span class="na">org</span><span class="o">/</span><span class="n">skipper</span><span class="o">-</span><span class="n">filter</span><span class="o">:</span> <span class="n">responseCookie</span><span class="o">(</span><span class="s2">&quot;flavor, &quot;</span><span class="n">B</span><span class="err">&quot;</span><span class="o">,</span> <span class="mi">31536000</span><span class="o">)</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">app</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">rules</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">host</span><span class="o">:</span> <span class="n">app</span><span class="o">-</span><span class="k">default</span><span class="o">.</span><span class="na">example</span><span class="o">.</span><span class="na">org</span>
+    <span class="n">http</span><span class="o">:</span>
+      <span class="n">paths</span><span class="o">:</span>
+      <span class="o">-</span> <span class="n">backend</span><span class="o">:</span>
+          <span class="n">serviceName</span><span class="o">:</span> <span class="n">b</span><span class="o">-</span><span class="n">app</span><span class="o">-</span><span class="n">svc</span>
+          <span class="n">servicePort</span><span class="o">:</span> <span class="mi">80</span>
+</pre></div>
+
+
 <p>To be sticky, you have to create 2 ingress with predicate to match
-routes with the cookie we set before. For "A" this would be:</p>
-<pre><code>apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  annotations:
-    zalando.org/skipper-predicate: Cookie("flavor", /^A$/)
-  name: app
-spec:
-  rules:
-  - host: app-default.example.org
-    http:
-      paths:
-      - backend:
-          serviceName: a-app-svc
-          servicePort: 80
-</code></pre>
-<p>For "B" this would be:</p>
-<pre><code>apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  annotations:
-    zalando.org/skipper-predicate: Cookie("flavor", /^B$/)
-  name: app
-spec:
-  rules:
-  - host: app-default.example.org
-    http:
-      paths:
-      - backend:
-          serviceName: b-app-svc
-          servicePort: 80
-</code></pre>
-<h1 id="blue-green-deployments">Blue-Green deployments</h1>
+routes with the cookie we set before. For &ldquo;A&rdquo; this would be:</p>
+<div class="codehilite"><pre><span></span><span class="n">apiVersion</span><span class="o">:</span> <span class="n">extensions</span><span class="o">/</span><span class="n">v1beta1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Ingress</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">annotations</span><span class="o">:</span>
+    <span class="n">zalando</span><span class="o">.</span><span class="na">org</span><span class="sr">/skipper-predicate: Cookie(&quot;flavor&quot;, /^A$/</span><span class="o">)</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">app</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">rules</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">host</span><span class="o">:</span> <span class="n">app</span><span class="o">-</span><span class="k">default</span><span class="o">.</span><span class="na">example</span><span class="o">.</span><span class="na">org</span>
+    <span class="n">http</span><span class="o">:</span>
+      <span class="n">paths</span><span class="o">:</span>
+      <span class="o">-</span> <span class="n">backend</span><span class="o">:</span>
+          <span class="n">serviceName</span><span class="o">:</span> <span class="n">a</span><span class="o">-</span><span class="n">app</span><span class="o">-</span><span class="n">svc</span>
+          <span class="n">servicePort</span><span class="o">:</span> <span class="mi">80</span>
+</pre></div>
+
+
+<p>For &ldquo;B&rdquo; this would be:</p>
+<div class="codehilite"><pre><span></span><span class="n">apiVersion</span><span class="o">:</span> <span class="n">extensions</span><span class="o">/</span><span class="n">v1beta1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Ingress</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">annotations</span><span class="o">:</span>
+    <span class="n">zalando</span><span class="o">.</span><span class="na">org</span><span class="sr">/skipper-predicate: Cookie(&quot;flavor&quot;, /^B$/</span><span class="o">)</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">app</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">rules</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">host</span><span class="o">:</span> <span class="n">app</span><span class="o">-</span><span class="k">default</span><span class="o">.</span><span class="na">example</span><span class="o">.</span><span class="na">org</span>
+    <span class="n">http</span><span class="o">:</span>
+      <span class="n">paths</span><span class="o">:</span>
+      <span class="o">-</span> <span class="n">backend</span><span class="o">:</span>
+          <span class="n">serviceName</span><span class="o">:</span> <span class="n">b</span><span class="o">-</span><span class="n">app</span><span class="o">-</span><span class="n">svc</span>
+          <span class="n">servicePort</span><span class="o">:</span> <span class="mi">80</span>
+</pre></div>
+
+
+<h1 id="blue-green-deployments">Blue-Green deployments<a class="headerlink" href="#blue-green-deployments" title="Permanent link">&para;</a></h1>
 <p>To do blue-green deployments you have to have control over traffic
 switching. Skipper gives you the opportunity to set weights to backend
 services in your ingress specification. <code>zalando.org/backend-weights</code>
@@ -905,48 +1530,52 @@ simplicity this example shows 2 backends, which should be the default
 case for supporting blue-green deployments.</p>
 <p>In the following example <strong>my-app-1</strong> service will get <strong>80%</strong> of the traffic
 and <strong>my-app-2</strong> will get <strong>20%</strong> of the traffic:</p>
-<pre><code>apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  name: my-app
-  labels:
-    application: my-app
-  annotations:
-    zalando.org/backend-weights: |
-      {"my-app-1": 80, "my-app-2": 20}
-spec:
-  rules:
-  - host: my-app.example.org
-    http:
-      paths:
-      - backend:
-          serviceName: my-app-1
-          servicePort: http
-        path: /
-      - backend:
-          serviceName: my-app-2
-          servicePort: http
-        path: /
-</code></pre>
-<h1 id="chaining-filters-and-predicates">Chaining Filters and Predicates</h1>
+<div class="codehilite"><pre><span></span><span class="n">apiVersion</span><span class="o">:</span> <span class="n">extensions</span><span class="o">/</span><span class="n">v1beta1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Ingress</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">my</span><span class="o">-</span><span class="n">app</span>
+  <span class="n">labels</span><span class="o">:</span>
+    <span class="n">application</span><span class="o">:</span> <span class="n">my</span><span class="o">-</span><span class="n">app</span>
+  <span class="n">annotations</span><span class="o">:</span>
+    <span class="n">zalando</span><span class="o">.</span><span class="na">org</span><span class="o">/</span><span class="n">backend</span><span class="o">-</span><span class="n">weights</span><span class="o">:</span> <span class="o">|</span>
+      <span class="o">{</span><span class="s2">&quot;my-app-1&quot;</span><span class="o">:</span> <span class="mi">80</span><span class="o">,</span> <span class="s2">&quot;my-app-2&quot;</span><span class="o">:</span> <span class="mi">20</span><span class="o">}</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">rules</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">host</span><span class="o">:</span> <span class="n">my</span><span class="o">-</span><span class="n">app</span><span class="o">.</span><span class="na">example</span><span class="o">.</span><span class="na">org</span>
+    <span class="n">http</span><span class="o">:</span>
+      <span class="n">paths</span><span class="o">:</span>
+      <span class="o">-</span> <span class="n">backend</span><span class="o">:</span>
+          <span class="n">serviceName</span><span class="o">:</span> <span class="n">my</span><span class="o">-</span><span class="n">app</span><span class="o">-</span><span class="mi">1</span>
+          <span class="n">servicePort</span><span class="o">:</span> <span class="n">http</span>
+        <span class="n">path</span><span class="o">:</span> <span class="o">/</span>
+      <span class="o">-</span> <span class="n">backend</span><span class="o">:</span>
+          <span class="n">serviceName</span><span class="o">:</span> <span class="n">my</span><span class="o">-</span><span class="n">app</span><span class="o">-</span><span class="mi">2</span>
+          <span class="n">servicePort</span><span class="o">:</span> <span class="n">http</span>
+        <span class="n">path</span><span class="o">:</span> <span class="o">/</span>
+</pre></div>
+
+
+<h1 id="chaining-filters-and-predicates">Chaining Filters and Predicates<a class="headerlink" href="#chaining-filters-and-predicates" title="Permanent link">&para;</a></h1>
 <p>You can set multiple filters in a chain similar to the <a href="https://godoc.org/github.com/zalando/skipper/eskip">eskip format</a>.</p>
-<pre><code>apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  annotations:
-    zalando.org/skipper-predicate: Cookie("flavor", /^B$/) &amp;&amp; Source("1.2.3.0/24", "195.168.0.0/17")
-    zalando.org/skipper-filter: localRatelimit(50, "10m") -&gt; requestCookie("test-session", "abc")
-  name: app
-spec:
-  rules:
-  - host: app-default.example.org
-    http:
-      paths:
-      - backend:
-          serviceName: app-svc
-          servicePort: 80
-</code></pre>
-<h1 id="controlling-https-redirect">Controlling HTTPS redirect</h1>
+<div class="codehilite"><pre><span></span><span class="n">apiVersion</span><span class="o">:</span> <span class="n">extensions</span><span class="o">/</span><span class="n">v1beta1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Ingress</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">annotations</span><span class="o">:</span>
+    <span class="n">zalando</span><span class="o">.</span><span class="na">org</span><span class="sr">/skipper-predicate: Cookie(&quot;flavor&quot;, /^B$/) &amp;amp;&amp;amp; Source(&quot;1.2.3.0/24&quot;, &quot;195.168.0.0/</span><span class="mi">17</span><span class="s2">&quot;)</span>
+<span class="s2">    zalando.org/skipper-filter: localRatelimit(50, &quot;</span><span class="mi">10</span><span class="n">m</span><span class="s2">&quot;) -&amp;gt; requestCookie(&quot;</span><span class="n">test</span><span class="o">-</span><span class="n">session</span><span class="s2">&quot;, &quot;</span><span class="n">abc</span><span class="err">&quot;</span><span class="o">)</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">app</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">rules</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">host</span><span class="o">:</span> <span class="n">app</span><span class="o">-</span><span class="k">default</span><span class="o">.</span><span class="na">example</span><span class="o">.</span><span class="na">org</span>
+    <span class="n">http</span><span class="o">:</span>
+      <span class="n">paths</span><span class="o">:</span>
+      <span class="o">-</span> <span class="n">backend</span><span class="o">:</span>
+          <span class="n">serviceName</span><span class="o">:</span> <span class="n">app</span><span class="o">-</span><span class="n">svc</span>
+          <span class="n">servicePort</span><span class="o">:</span> <span class="mi">80</span>
+</pre></div>
+
+
+<h1 id="controlling-https-redirect">Controlling HTTPS redirect<a class="headerlink" href="#controlling-https-redirect" title="Permanent link">&para;</a></h1>
 <p>Skipper Ingress can provide HTTP-&gt;HTTPS redirection. Enabling it and setting the status code used by default can
 be done with the command line options: -kubernetes-https-redirect and -kubernetes-https-redirect-code. By using
 annotations, this behavior can be overridden from the individual ingress specs for the scope of routes generated
@@ -960,98 +1589,100 @@ based on these ingresses specs.</p>
   status code for the current ingress.</li>
 </ul>
 <p>Example:</p>
-<pre><code>apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  annotations:
-    zalando.org/skipper-ingress-redirect: true
-    zalando.org/skipper-ingress-redirect-code: 301
-  name: app
-spec:
-  rules:
-  - host: mobile-api.example.org
-    http:
-      paths:
-      - backend:
-          serviceName: app-svc
-          servicePort: 80
-</code></pre></div>
-        </div>
+<div class="codehilite"><pre><span></span><span class="n">apiVersion</span><span class="o">:</span> <span class="n">extensions</span><span class="o">/</span><span class="n">v1beta1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Ingress</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">annotations</span><span class="o">:</span>
+    <span class="n">zalando</span><span class="o">.</span><span class="na">org</span><span class="o">/</span><span class="n">skipper</span><span class="o">-</span><span class="n">ingress</span><span class="o">-</span><span class="n">redirect</span><span class="o">:</span> <span class="kc">true</span>
+    <span class="n">zalando</span><span class="o">.</span><span class="na">org</span><span class="o">/</span><span class="n">skipper</span><span class="o">-</span><span class="n">ingress</span><span class="o">-</span><span class="n">redirect</span><span class="o">-</span><span class="n">code</span><span class="o">:</span> <span class="mi">301</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">app</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">rules</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">host</span><span class="o">:</span> <span class="n">mobile</span><span class="o">-</span><span class="n">api</span><span class="o">.</span><span class="na">example</span><span class="o">.</span><span class="na">org</span>
+    <span class="n">http</span><span class="o">:</span>
+      <span class="n">paths</span><span class="o">:</span>
+      <span class="o">-</span> <span class="n">backend</span><span class="o">:</span>
+          <span class="n">serviceName</span><span class="o">:</span> <span class="n">app</span><span class="o">-</span><span class="n">svc</span>
+          <span class="n">servicePort</span><span class="o">:</span> <span class="mi">80</span>
+</pre></div>
+                
+                  
+                
+              
+              
+                
 
-        <footer class="col-md-12">
-            <hr>
-            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
-        </footer>
-        <script>
-            var base_url = "../..",
-                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
-        </script>
-        <script src="../../js/base.js" defer></script>
-        <script src="../../search/main.js" defer></script>
 
-        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                <h4 class="modal-title" id="exampleModalLabel">Search</h4>
-            </div>
-            <div class="modal-body">
-                <p>
-                    From here you can search these documents. Enter
-                    your search terms below.
-                </p>
-                <form role="form">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
-                    </div>
-                </form>
-                <div id="mkdocs-search-results"></div>
-            </div>
-            <div class="modal-footer">
-            </div>
+              
+            </article>
+          </div>
         </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../ingress-controller/" title="Ingress Controller Deployment" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Ingress Controller Deployment
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../ingress-backends/" title="Ingress Backends" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Ingress Backends
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
     </div>
-</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="Keyboard Shortcuts Modal" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                <h4 class="modal-title" id="exampleModalLabel">Keyboard Shortcuts</h4>
-            </div>
-            <div class="modal-body">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th style="width: 20%;">Keys</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td class="help shortcut"><kbd>?</kbd></td>
-                    <td>Open this help</td>
-                  </tr>
-                  <tr>
-                    <td class="next shortcut"><kbd>n</kbd></td>
-                    <td>Next page</td>
-                  </tr>
-                  <tr>
-                    <td class="prev shortcut"><kbd>p</kbd></td>
-                    <td>Previous page</td>
-                  </tr>
-                  <tr>
-                    <td class="search shortcut"><kbd>s</kbd></td>
-                    <td>Search</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div class="modal-footer">
-            </div>
-        </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        powered by
+        <a href="https://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+      </div>
+      
+        
+      
     </div>
-</div>
-
-    </body>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/application.5e60981f.js"></script>
+      
+      <script>app.initialize({version:"1.0.1",url:{base:"../.."}})</script>
+      
+    
+    
+      
+    
+  </body>
 </html>

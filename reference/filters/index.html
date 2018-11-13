@@ -1,260 +1,1584 @@
+
+
+
+
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        
-        
-        
-        <link rel="shortcut icon" href="../../img/favicon.ico">
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../../favicon.ico">
+      <meta name="generator" content="mkdocs-1.0.1, mkdocs-material-3.0.6">
+    
+    
+      
         <title>Filters - Skipper</title>
-        <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
-        <link href="../../css/font-awesome.min.css" rel="stylesheet">
-        <link href="../../css/base.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
-        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!--[if lt IE 9]>
-            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-        <![endif]-->
-
-        <script src="../../js/jquery-1.10.2.min.js" defer></script>
-        <script src="../../js/bootstrap-3.0.3.min.js" defer></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-        <script>hljs.initHighlightingOnLoad();</script> 
-    </head>
-
-    <body>
-
-        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
-            <div class="container">
-
-                <!-- Collapsed navigation -->
-                <div class="navbar-header">
-                    <!-- Expander button -->
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="../..">Skipper</a>
-                </div>
-
-                <!-- Expanded navigation -->
-                <div class="navbar-collapse collapse">
-                        <!-- Main navigation -->
-                        <ul class="nav navbar-nav">
-                            <li >
-                                <a href="../..">Introduction</a>
-                            </li>
-                            <li class="dropdown active">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference <b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    
-<li class="active">
-    <a href="./">Filters</a>
-</li>
-                                    
-<li >
-    <a href="../predicates/">Predicates</a>
-</li>
-                                    
-<li >
-    <a href="../scripts/">Scripts</a>
-</li>
-                                    
-<li >
-    <a href="../plugins/">Plugins</a>
-</li>
-                                    
-<li >
-    <a href="../architecture/">Architecture</a>
-</li>
-                                    
-<li >
-    <a href="../development/">Development</a>
-</li>
-                                    
-<li >
-    <a href="../../tutorials/video-howto-build/">Video - How to build</a>
-</li>
-                                    
-  <li class="dropdown-submenu">
-    <a href="#">Data Clients</a>
-    <ul class="dropdown-menu">
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/application.451f80e5.css">
+      
+        <link rel="stylesheet" href="../../assets/stylesheets/application-palette.22915126.css">
+      
+      
+        
+        
+        <meta name="theme-color" content="">
+      
+    
+    
+      <script src="../../assets/javascripts/modernizr.1aa3b519.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../assets/fonts/material-icons.css">
+    
+    
+  </head>
+  
+    
+    
+    <body dir="ltr" data-md-color-primary="white" data-md-color-accent="">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448"
+    viewBox="0 0 416 448" id="__github">
+  <path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19-18.125
+        8.5-18.125-8.5-10.75-19-3.125-20.5 3.125-20.5 10.75-19 18.125-8.5
+        18.125 8.5 10.75 19 3.125 20.5zM320 304q0 10-3.125 20.5t-10.75
+        19-18.125 8.5-18.125-8.5-10.75-19-3.125-20.5 3.125-20.5 10.75-19
+        18.125-8.5 18.125 8.5 10.75 19 3.125 20.5zM360
+        304q0-30-17.25-51t-46.75-21q-10.25 0-48.75 5.25-17.75 2.75-39.25
+        2.75t-39.25-2.75q-38-5.25-48.75-5.25-29.5 0-46.75 21t-17.25 51q0 22 8
+        38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0
+        37.25-1.75t35-7.375 30.5-15 20.25-25.75 8-38.375zM416 260q0 51.75-15.25
+        82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5-41.75
+        1.125q-19.5 0-35.5-0.75t-36.875-3.125-38.125-7.5-34.25-12.875-30.25-20.25-21.5-28.75q-15.5-30.75-15.5-82.75
+        0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25
+        30.875q36.75-8.75 77.25-8.75 37 0 70 8 26.25-20.5
+        46.75-30.25t47.25-9.75q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34
+        99.5z" />
+</svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#skipper-filters" tabindex="1" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="../.." title="Skipper" class="md-header-nav__button md-logo">
+          
+            <img src="../../favicon.ico" width="24" height="24">
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
             
-<li >
-    <a href="../../data-clients/eskip-file/">Eskip File</a>
-</li>
+              <span class="md-header-nav__topic">
+                Skipper
+              </span>
+              <span class="md-header-nav__topic">
+                Filters
+              </span>
             
-<li >
-    <a href="../../data-clients/etcd/">Etcd</a>
-</li>
-            
-<li >
-    <a href="../../data-clients/kubernetes/">Kubernetes</a>
-</li>
-            
-<li >
-    <a href="../../data-clients/innkeeper/">Innkeeper API</a>
-</li>
-            
-<li >
-    <a href="../../data-clients/route-string/">Route String</a>
-</li>
-    </ul>
-  </li>
-                                    
-  <li class="dropdown-submenu">
-    <a href="#">Operation</a>
-    <ul class="dropdown-menu">
-            
-<li >
-    <a href="../../operation/deployment/">Deployment</a>
-</li>
-            
-<li >
-    <a href="../../operation/operation/">Operation</a>
-</li>
-    </ul>
-  </li>
-                                </ul>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Kubernetes <b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    
-<li >
-    <a href="../../kubernetes/ingress-controller/">Ingress Controller Deployment</a>
-</li>
-                                    
-<li >
-    <a href="../../kubernetes/ingress-usage/">Ingress Usage</a>
-</li>
-                                    
-<li >
-    <a href="../../kubernetes/ingress-backends/">Ingress Backends</a>
-</li>
-                                </ul>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tutorials <b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    
-<li >
-    <a href="../../tutorials/basics/">Basis</a>
-</li>
-                                    
-<li >
-    <a href="../../tutorials/common-use-cases/">Common Use Cases</a>
-</li>
-                                    
-<li >
-    <a href="../../tutorials/development/">Development</a>
-</li>
-                                    
-<li >
-    <a href="../../tutorials/auth/">Authentication and Autorization</a>
-</li>
-                                    
-<li >
-    <a href="../../tutorials/ratelimit/">Ratelimits</a>
-</li>
-                                </ul>
-                            </li>
-                        </ul>
-
-                    <ul class="nav navbar-nav navbar-right">
-                        <li>
-                            <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
-                                <i class="fa fa-search"></i> Search
-                            </a>
-                        </li>
-                            <li >
-                                <a rel="next" href="../..">
-                                    <i class="fa fa-arrow-left"></i> Previous
-                                </a>
-                            </li>
-                            <li >
-                                <a rel="prev" href="../predicates/">
-                                    Next <i class="fa fa-arrow-right"></i>
-                                </a>
-                            </li>
-                    </ul>
-                </div>
-            </div>
+          
         </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          
+            <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+            
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+          
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
 
-        <div class="container">
-                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
-    <ul class="nav bs-sidenav">
-        <li class="main active"><a href="#skipper-filters">Skipper Filters</a></li>
-            <li><a href="#setrequestheader">setRequestHeader</a></li>
-            <li><a href="#setresponseheader">setResponseHeader</a></li>
-            <li><a href="#appendrequestheader">appendRequestHeader</a></li>
-            <li><a href="#appendresponseheader">appendResponseHeader</a></li>
-            <li><a href="#droprequestheader">dropRequestHeader</a></li>
-            <li><a href="#dropresponseheader">dropResponseHeader</a></li>
-            <li><a href="#modpath">modPath</a></li>
-            <li><a href="#setpath">setPath</a></li>
-            <li><a href="#redirectto">redirectTo</a></li>
-            <li><a href="#redirecttolower">redirectToLower</a></li>
-            <li><a href="#static">static</a></li>
-            <li><a href="#stripquery">stripQuery</a></li>
-            <li><a href="#preservehost">preserveHost</a></li>
-            <li><a href="#status">status</a></li>
-            <li><a href="#compress">compress</a></li>
-            <li><a href="#setquery">setQuery</a></li>
-            <li><a href="#dropquery">dropQuery</a></li>
-            <li><a href="#inlinecontent">inlineContent</a></li>
-            <li><a href="#flowid">flowId</a></li>
-            <li><a href="#randomcontent">randomContent</a></li>
-            <li><a href="#latency">latency</a></li>
-            <li><a href="#bandwidth">bandwidth</a></li>
-            <li><a href="#chunks">chunks</a></li>
-            <li><a href="#backendlatency">backendLatency</a></li>
-            <li><a href="#backendbandwidth">backendBandwidth</a></li>
-            <li><a href="#backendchunks">backendChunks</a></li>
-            <li><a href="#tee">tee</a></li>
-            <li><a href="#teenf">teenf</a></li>
-            <li><a href="#basicauth">basicAuth</a></li>
-            <li><a href="#webhook">webhook</a></li>
-            <li><a href="#oauthtokeninfoanyscope">oauthTokeninfoAnyScope</a></li>
-            <li><a href="#oauthtokeninfoallscope">oauthTokeninfoAllScope</a></li>
-            <li><a href="#oauthtokeninfoanykv">oauthTokeninfoAnyKV</a></li>
-            <li><a href="#oauthtokeninfoallkv">oauthTokeninfoAllKV</a></li>
-            <li><a href="#oauthtokenintrospectionanyclaims">oauthTokenintrospectionAnyClaims</a></li>
-            <li><a href="#oauthtokenintrospectionallclaims">oauthTokenintrospectionAllClaims</a></li>
-            <li><a href="#oauthtokenintrospectionanykv">oauthTokenintrospectionAnyKV</a></li>
-            <li><a href="#oauthtokenintrospectionallkv">oauthTokenintrospectionAllKV</a></li>
-            <li><a href="#forwardtoken">forwardToken</a></li>
-            <li><a href="#requestcookie">requestCookie</a></li>
-            <li><a href="#responsecookie">responseCookie</a></li>
-            <li><a href="#jscookie">jsCookie</a></li>
-            <li><a href="#consecutivebreaker">consecutiveBreaker</a></li>
-            <li><a href="#ratebreaker">rateBreaker</a></li>
-            <li><a href="#disablebreaker">disableBreaker</a></li>
-            <li><a href="#localratelimit">~~localRatelimit~~</a></li>
-            <li><a href="#clientratelimit">clientRatelimit</a></li>
-            <li><a href="#ratelimit">ratelimit</a></li>
-            <li><a href="#clusterclientratelimit">clusterClientRatelimit</a></li>
-            <li><a href="#clusterratelimit">clusterRatelimit</a></li>
-            <li><a href="#lua">lua</a></li>
-            <li><a href="#corsorigin">corsOrigin</a></li>
-            <li><a href="#headertoquery">headerToQuery</a></li>
-            <li><a href="#querytoheader">queryToHeader</a></li>
-            <li><a href="#accesslogdisabled">~~accessLogDisabled~~</a></li>
-            <li><a href="#disableaccesslog">disableAccessLog</a></li>
-            <li><a href="#enableaccesslog">enableAccessLog</a></li>
-            <li><a href="#auditlog">auditLog</a></li>
-            <li><a href="#apiusagemonitoring">apiUsageMonitoring</a></li>
+
+  
+
+
+  <a href="https://github.com/zalando/skipper/" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#__github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      GitHub
+    </div>
+  </a>
+
+          </div>
+        </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+        
+
+  
+
+<nav class="md-tabs md-tabs--active" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  <li class="md-tabs__item">
+    
+      <a href="../.." title="Introduction" class="md-tabs__link">
+        Introduction
+      </a>
+    
+  </li>
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="./" title="Reference" class="md-tabs__link md-tabs__link--active">
+          Reference
+        </a>
+      
+    </li>
+  
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../../kubernetes/ingress-controller/" title="Kubernetes" class="md-tabs__link">
+          Kubernetes
+        </a>
+      
+    </li>
+  
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../../tutorials/basics/" title="Tutorials" class="md-tabs__link">
+          Tutorials
+        </a>
+      
+    </li>
+  
+
+      
     </ul>
-</div></div>
-                <div class="col-md-9" role="main">
+  </div>
+</nav>
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="../.." title="Skipper" class="md-nav__button md-logo">
+      
+        <img src="../../favicon.ico" width="48" height="48">
+      
+    </a>
+    Skipper
+  </label>
+  
+    <div class="md-nav__source">
+      
 
-<h1 id="skipper-filters">Skipper Filters</h1>
+
+  
+
+
+  <a href="https://github.com/zalando/skipper/" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#__github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      GitHub
+    </div>
+  </a>
+
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../.." title="Introduction" class="md-nav__link">
+      Introduction
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2" checked>
+    
+    <label class="md-nav__link" for="nav-2">
+      Reference
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        Reference
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Filters
+      </label>
+    
+    <a href="./" title="Filters" class="md-nav__link md-nav__link--active">
+      Filters
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#setrequestheader" title="setRequestHeader" class="md-nav__link">
+    setRequestHeader
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setresponseheader" title="setResponseHeader" class="md-nav__link">
+    setResponseHeader
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendrequestheader" title="appendRequestHeader" class="md-nav__link">
+    appendRequestHeader
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendresponseheader" title="appendResponseHeader" class="md-nav__link">
+    appendResponseHeader
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#droprequestheader" title="dropRequestHeader" class="md-nav__link">
+    dropRequestHeader
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dropresponseheader" title="dropResponseHeader" class="md-nav__link">
+    dropResponseHeader
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#modpath" title="modPath" class="md-nav__link">
+    modPath
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setpath" title="setPath" class="md-nav__link">
+    setPath
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#redirectto" title="redirectTo" class="md-nav__link">
+    redirectTo
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#redirecttolower" title="redirectToLower" class="md-nav__link">
+    redirectToLower
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#static" title="static" class="md-nav__link">
+    static
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stripquery" title="stripQuery" class="md-nav__link">
+    stripQuery
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#preservehost" title="preserveHost" class="md-nav__link">
+    preserveHost
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#status" title="status" class="md-nav__link">
+    status
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#compress" title="compress" class="md-nav__link">
+    compress
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setquery" title="setQuery" class="md-nav__link">
+    setQuery
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dropquery" title="dropQuery" class="md-nav__link">
+    dropQuery
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#inlinecontent" title="inlineContent" class="md-nav__link">
+    inlineContent
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#flowid" title="flowId" class="md-nav__link">
+    flowId
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#randomcontent" title="randomContent" class="md-nav__link">
+    randomContent
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#latency" title="latency" class="md-nav__link">
+    latency
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bandwidth" title="bandwidth" class="md-nav__link">
+    bandwidth
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunks" title="chunks" class="md-nav__link">
+    chunks
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#backendlatency" title="backendLatency" class="md-nav__link">
+    backendLatency
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#backendbandwidth" title="backendBandwidth" class="md-nav__link">
+    backendBandwidth
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#backendchunks" title="backendChunks" class="md-nav__link">
+    backendChunks
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tee" title="tee" class="md-nav__link">
+    tee
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#teenf" title="teenf" class="md-nav__link">
+    teenf
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#basicauth" title="basicAuth" class="md-nav__link">
+    basicAuth
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#webhook" title="webhook" class="md-nav__link">
+    webhook
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#oauthtokeninfoanyscope" title="oauthTokeninfoAnyScope" class="md-nav__link">
+    oauthTokeninfoAnyScope
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#oauthtokeninfoallscope" title="oauthTokeninfoAllScope" class="md-nav__link">
+    oauthTokeninfoAllScope
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#oauthtokeninfoanykv" title="oauthTokeninfoAnyKV" class="md-nav__link">
+    oauthTokeninfoAnyKV
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#oauthtokeninfoallkv" title="oauthTokeninfoAllKV" class="md-nav__link">
+    oauthTokeninfoAllKV
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#oauthtokenintrospectionanyclaims" title="oauthTokenintrospectionAnyClaims" class="md-nav__link">
+    oauthTokenintrospectionAnyClaims
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#oauthtokenintrospectionallclaims" title="oauthTokenintrospectionAllClaims" class="md-nav__link">
+    oauthTokenintrospectionAllClaims
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#oauthtokenintrospectionanykv" title="oauthTokenintrospectionAnyKV" class="md-nav__link">
+    oauthTokenintrospectionAnyKV
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#oauthtokenintrospectionallkv" title="oauthTokenintrospectionAllKV" class="md-nav__link">
+    oauthTokenintrospectionAllKV
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#forwardtoken" title="forwardToken" class="md-nav__link">
+    forwardToken
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#requestcookie" title="requestCookie" class="md-nav__link">
+    requestCookie
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#responsecookie" title="responseCookie" class="md-nav__link">
+    responseCookie
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#jscookie" title="jsCookie" class="md-nav__link">
+    jsCookie
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consecutivebreaker" title="consecutiveBreaker" class="md-nav__link">
+    consecutiveBreaker
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ratebreaker" title="rateBreaker" class="md-nav__link">
+    rateBreaker
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#disablebreaker" title="disableBreaker" class="md-nav__link">
+    disableBreaker
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#localratelimit" title="~~localRatelimit~~" class="md-nav__link">
+    ~~localRatelimit~~
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#clientratelimit" title="clientRatelimit" class="md-nav__link">
+    clientRatelimit
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ratelimit" title="ratelimit" class="md-nav__link">
+    ratelimit
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#clusterclientratelimit" title="clusterClientRatelimit" class="md-nav__link">
+    clusterClientRatelimit
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#clusterratelimit" title="clusterRatelimit" class="md-nav__link">
+    clusterRatelimit
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lua" title="lua" class="md-nav__link">
+    lua
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#corsorigin" title="corsOrigin" class="md-nav__link">
+    corsOrigin
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#headertoquery" title="headerToQuery" class="md-nav__link">
+    headerToQuery
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#querytoheader" title="queryToHeader" class="md-nav__link">
+    queryToHeader
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#accesslogdisabled" title="~~accessLogDisabled~~" class="md-nav__link">
+    ~~accessLogDisabled~~
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#disableaccesslog" title="disableAccessLog" class="md-nav__link">
+    disableAccessLog
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#enableaccesslog" title="enableAccessLog" class="md-nav__link">
+    enableAccessLog
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#auditlog" title="auditLog" class="md-nav__link">
+    auditLog
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apiusagemonitoring" title="apiUsageMonitoring" class="md-nav__link">
+    apiUsageMonitoring
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../predicates/" title="Predicates" class="md-nav__link">
+      Predicates
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../scripts/" title="Scripts" class="md-nav__link">
+      Scripts
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../plugins/" title="Plugins" class="md-nav__link">
+      Plugins
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../architecture/" title="Architecture" class="md-nav__link">
+      Architecture
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../development/" title="Development" class="md-nav__link">
+      Development
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../tutorials/video-howto-build/" title="Video - How to build" class="md-nav__link">
+      Video - How to build
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2-8" type="checkbox" id="nav-2-8">
+    
+    <label class="md-nav__link" for="nav-2-8">
+      Data Clients
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-2-8">
+        Data Clients
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../data-clients/eskip-file/" title="Eskip File" class="md-nav__link">
+      Eskip File
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../data-clients/etcd/" title="Etcd" class="md-nav__link">
+      Etcd
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../data-clients/kubernetes/" title="Kubernetes" class="md-nav__link">
+      Kubernetes
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../data-clients/route-string/" title="Route String" class="md-nav__link">
+      Route String
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2-9" type="checkbox" id="nav-2-9">
+    
+    <label class="md-nav__link" for="nav-2-9">
+      Operation
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-2-9">
+        Operation
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../operation/deployment/" title="Deployment" class="md-nav__link">
+      Deployment
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../operation/operation/" title="Operation" class="md-nav__link">
+      Operation
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+    
+    <label class="md-nav__link" for="nav-3">
+      Kubernetes
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        Kubernetes
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../kubernetes/ingress-controller/" title="Ingress Controller Deployment" class="md-nav__link">
+      Ingress Controller Deployment
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../kubernetes/ingress-usage/" title="Ingress Usage" class="md-nav__link">
+      Ingress Usage
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../kubernetes/ingress-backends/" title="Ingress Backends" class="md-nav__link">
+      Ingress Backends
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      Tutorials
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        Tutorials
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../tutorials/basics/" title="Basics" class="md-nav__link">
+      Basics
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../tutorials/common-use-cases/" title="Common Use Cases" class="md-nav__link">
+      Common Use Cases
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../tutorials/development/" title="Development" class="md-nav__link">
+      Development
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../tutorials/auth/" title="Authentication and Autorization" class="md-nav__link">
+      Authentication and Autorization
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../tutorials/ratelimit/" title="Ratelimits" class="md-nav__link">
+      Ratelimits
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#setrequestheader" title="setRequestHeader" class="md-nav__link">
+    setRequestHeader
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setresponseheader" title="setResponseHeader" class="md-nav__link">
+    setResponseHeader
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendrequestheader" title="appendRequestHeader" class="md-nav__link">
+    appendRequestHeader
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendresponseheader" title="appendResponseHeader" class="md-nav__link">
+    appendResponseHeader
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#droprequestheader" title="dropRequestHeader" class="md-nav__link">
+    dropRequestHeader
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dropresponseheader" title="dropResponseHeader" class="md-nav__link">
+    dropResponseHeader
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#modpath" title="modPath" class="md-nav__link">
+    modPath
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setpath" title="setPath" class="md-nav__link">
+    setPath
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#redirectto" title="redirectTo" class="md-nav__link">
+    redirectTo
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#redirecttolower" title="redirectToLower" class="md-nav__link">
+    redirectToLower
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#static" title="static" class="md-nav__link">
+    static
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stripquery" title="stripQuery" class="md-nav__link">
+    stripQuery
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#preservehost" title="preserveHost" class="md-nav__link">
+    preserveHost
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#status" title="status" class="md-nav__link">
+    status
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#compress" title="compress" class="md-nav__link">
+    compress
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setquery" title="setQuery" class="md-nav__link">
+    setQuery
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dropquery" title="dropQuery" class="md-nav__link">
+    dropQuery
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#inlinecontent" title="inlineContent" class="md-nav__link">
+    inlineContent
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#flowid" title="flowId" class="md-nav__link">
+    flowId
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#randomcontent" title="randomContent" class="md-nav__link">
+    randomContent
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#latency" title="latency" class="md-nav__link">
+    latency
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bandwidth" title="bandwidth" class="md-nav__link">
+    bandwidth
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunks" title="chunks" class="md-nav__link">
+    chunks
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#backendlatency" title="backendLatency" class="md-nav__link">
+    backendLatency
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#backendbandwidth" title="backendBandwidth" class="md-nav__link">
+    backendBandwidth
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#backendchunks" title="backendChunks" class="md-nav__link">
+    backendChunks
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tee" title="tee" class="md-nav__link">
+    tee
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#teenf" title="teenf" class="md-nav__link">
+    teenf
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#basicauth" title="basicAuth" class="md-nav__link">
+    basicAuth
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#webhook" title="webhook" class="md-nav__link">
+    webhook
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#oauthtokeninfoanyscope" title="oauthTokeninfoAnyScope" class="md-nav__link">
+    oauthTokeninfoAnyScope
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#oauthtokeninfoallscope" title="oauthTokeninfoAllScope" class="md-nav__link">
+    oauthTokeninfoAllScope
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#oauthtokeninfoanykv" title="oauthTokeninfoAnyKV" class="md-nav__link">
+    oauthTokeninfoAnyKV
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#oauthtokeninfoallkv" title="oauthTokeninfoAllKV" class="md-nav__link">
+    oauthTokeninfoAllKV
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#oauthtokenintrospectionanyclaims" title="oauthTokenintrospectionAnyClaims" class="md-nav__link">
+    oauthTokenintrospectionAnyClaims
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#oauthtokenintrospectionallclaims" title="oauthTokenintrospectionAllClaims" class="md-nav__link">
+    oauthTokenintrospectionAllClaims
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#oauthtokenintrospectionanykv" title="oauthTokenintrospectionAnyKV" class="md-nav__link">
+    oauthTokenintrospectionAnyKV
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#oauthtokenintrospectionallkv" title="oauthTokenintrospectionAllKV" class="md-nav__link">
+    oauthTokenintrospectionAllKV
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#forwardtoken" title="forwardToken" class="md-nav__link">
+    forwardToken
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#requestcookie" title="requestCookie" class="md-nav__link">
+    requestCookie
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#responsecookie" title="responseCookie" class="md-nav__link">
+    responseCookie
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#jscookie" title="jsCookie" class="md-nav__link">
+    jsCookie
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consecutivebreaker" title="consecutiveBreaker" class="md-nav__link">
+    consecutiveBreaker
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ratebreaker" title="rateBreaker" class="md-nav__link">
+    rateBreaker
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#disablebreaker" title="disableBreaker" class="md-nav__link">
+    disableBreaker
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#localratelimit" title="~~localRatelimit~~" class="md-nav__link">
+    ~~localRatelimit~~
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#clientratelimit" title="clientRatelimit" class="md-nav__link">
+    clientRatelimit
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ratelimit" title="ratelimit" class="md-nav__link">
+    ratelimit
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#clusterclientratelimit" title="clusterClientRatelimit" class="md-nav__link">
+    clusterClientRatelimit
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#clusterratelimit" title="clusterRatelimit" class="md-nav__link">
+    clusterRatelimit
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lua" title="lua" class="md-nav__link">
+    lua
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#corsorigin" title="corsOrigin" class="md-nav__link">
+    corsOrigin
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#headertoquery" title="headerToQuery" class="md-nav__link">
+    headerToQuery
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#querytoheader" title="queryToHeader" class="md-nav__link">
+    queryToHeader
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#accesslogdisabled" title="~~accessLogDisabled~~" class="md-nav__link">
+    ~~accessLogDisabled~~
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#disableaccesslog" title="disableAccessLog" class="md-nav__link">
+    disableAccessLog
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#enableaccesslog" title="enableAccessLog" class="md-nav__link">
+    enableAccessLog
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#auditlog" title="auditLog" class="md-nav__link">
+    auditLog
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apiusagemonitoring" title="apiUsageMonitoring" class="md-nav__link">
+    apiUsageMonitoring
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/zalando/skipper/edit/master/docs/reference/filters.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                
+                
+                <h1 id="skipper-filters">Skipper Filters<a class="headerlink" href="#skipper-filters" title="Permanent link">&para;</a></h1>
 <p>The parameters can be strings, regex or float64 / int</p>
 <ul>
 <li><code>string</code> is a string surrounded by double quotes (<code>"</code>)</li>
@@ -265,10 +1589,10 @@
 <p>Filters are a generic tool and can change HTTP header and body in the request and response path.
 Filter can be chained using the arrow operator <code>-&gt;</code>.</p>
 <p>Example route with a match all, 2 filters and a backend:</p>
-<pre><code>all: * -&gt; filter1 -&gt; filter2 -&gt; &quot;http://127.0.0.1:1234/&quot;;
-</code></pre>
+<div class="codehilite"><pre><span></span><span class="nt">all</span><span class="o">:</span> <span class="o">*</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="nt">filter1</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="nt">filter2</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="s2">&quot;http://127.0.0.1:1234/&quot;</span><span class="o">;</span>
+</pre></div>
 
-<h2 id="setrequestheader">setRequestHeader</h2>
+<h2 id="setrequestheader">setRequestHeader<a class="headerlink" href="#setrequestheader" title="Permanent link">&para;</a></h2>
 <p>Set headers for requests.</p>
 <p>Parameters:</p>
 <ul>
@@ -276,41 +1600,41 @@ Filter can be chained using the arrow operator <code>-&gt;</code>.</p>
 <li>header value (string)</li>
 </ul>
 <p>Example:</p>
-<pre><code>foo: * -&gt; setRequestHeader(&quot;X-Passed-Skipper&quot;, &quot;true&quot;) -&gt; &quot;https://backend.example.org&quot;;
-</code></pre>
+<div class="codehilite"><pre><span></span><span class="nt">foo</span><span class="o">:</span> <span class="o">*</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="nt">setRequestHeader</span><span class="o">(</span><span class="s2">&quot;X-Passed-Skipper&quot;</span><span class="o">,</span> <span class="s2">&quot;true&quot;</span><span class="o">)</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="s2">&quot;https://backend.example.org&quot;</span><span class="o">;</span>
+</pre></div>
 
-<h2 id="setresponseheader">setResponseHeader</h2>
+<h2 id="setresponseheader">setResponseHeader<a class="headerlink" href="#setresponseheader" title="Permanent link">&para;</a></h2>
 <p>Same as <a href="#setrequestheader">setRequestHeader</a>, only for responses</p>
-<h2 id="appendrequestheader">appendRequestHeader</h2>
+<h2 id="appendrequestheader">appendRequestHeader<a class="headerlink" href="#appendrequestheader" title="Permanent link">&para;</a></h2>
 <p>Same as <a href="#setrequestheader">setRequestHeader</a>, does not remove a possibly existing value, but adds a new header value</p>
-<h2 id="appendresponseheader">appendResponseHeader</h2>
+<h2 id="appendresponseheader">appendResponseHeader<a class="headerlink" href="#appendresponseheader" title="Permanent link">&para;</a></h2>
 <p>Same as <a href="#appendrequestheader">appendRequestHeader</a>, only for responses</p>
-<h2 id="droprequestheader">dropRequestHeader</h2>
+<h2 id="droprequestheader">dropRequestHeader<a class="headerlink" href="#droprequestheader" title="Permanent link">&para;</a></h2>
 <p>Removes a header from the request</p>
 <p>Parameters:</p>
 <ul>
 <li>header name (string)</li>
 </ul>
 <p>Example:</p>
-<pre><code>foo: * -&gt; dropRequestHeader(&quot;User-Agent&quot;) -&gt; &quot;https://backend.example.org&quot;;
-</code></pre>
+<div class="codehilite"><pre><span></span><span class="nt">foo</span><span class="o">:</span> <span class="o">*</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="nt">dropRequestHeader</span><span class="o">(</span><span class="s2">&quot;User-Agent&quot;</span><span class="o">)</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="s2">&quot;https://backend.example.org&quot;</span><span class="o">;</span>
+</pre></div>
 
-<h2 id="dropresponseheader">dropResponseHeader</h2>
+<h2 id="dropresponseheader">dropResponseHeader<a class="headerlink" href="#dropresponseheader" title="Permanent link">&para;</a></h2>
 <p>Same as <a href="#droprequestheader">dropRequestHeader</a> but for responses from the backend</p>
-<h2 id="modpath">modPath</h2>
+<h2 id="modpath">modPath<a class="headerlink" href="#modpath" title="Permanent link">&para;</a></h2>
 <p>Replace all matched regex expressions in the path.</p>
 <p>Parameters:</p>
 <ul>
 <li>the expression to match (regex)</li>
 <li>the replacement (string)</li>
 </ul>
-<h2 id="setpath">setPath</h2>
+<h2 id="setpath">setPath<a class="headerlink" href="#setpath" title="Permanent link">&para;</a></h2>
 <p>Replace the path of the original request to the replacement.</p>
 <p>Parameters:</p>
 <ul>
 <li>the replacement (string)</li>
 </ul>
-<h2 id="redirectto">redirectTo</h2>
+<h2 id="redirectto">redirectTo<a class="headerlink" href="#redirectto" title="Permanent link">&para;</a></h2>
 <p>Creates an HTTP redirect response.</p>
 <p>Parameters:</p>
 <ul>
@@ -318,12 +1642,12 @@ Filter can be chained using the arrow operator <code>-&gt;</code>.</p>
 <li>location (string)</li>
 </ul>
 <p>Example:</p>
-<pre><code>redir: PathRegex(/^\/foo\/bar/) -&gt; redirectTo(302, &quot;/foo/newBar&quot;) -&gt; &lt;shunt&gt;;
-</code></pre>
+<div class="codehilite"><pre><span></span><span class="n">redir</span><span class="o">:</span> <span class="n">PathRegex</span><span class="o">(/^\/</span><span class="n">foo</span><span class="o">\/</span><span class="n">bar</span><span class="sr">/) -&gt; redirectTo(302, &quot;/foo/</span><span class="n">newBar</span><span class="err">&quot;</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">&lt;</span><span class="n">shunt</span><span class="o">&gt;;</span>
+</pre></div>
 
-<h2 id="redirecttolower">redirectToLower</h2>
+<h2 id="redirecttolower">redirectToLower<a class="headerlink" href="#redirecttolower" title="Permanent link">&para;</a></h2>
 <p>Same as <a href="#redirectTo">redirectTo</a>, but replaces all strings to lower case.</p>
-<h2 id="static">static</h2>
+<h2 id="static">static<a class="headerlink" href="#static" title="Permanent link">&para;</a></h2>
 <p>Serves static content from the filesystem.</p>
 <p>Parameters:</p>
 <ul>
@@ -332,44 +1656,42 @@ Filter can be chained using the arrow operator <code>-&gt;</code>.</p>
 </ul>
 <p>Example:</p>
 <p>This serves files from <code>/srv/www/dehydrated</code> when requested via <code>/.well-known/acme-challenge/</code>,
-e.g. the request <code>GET /.well-known/acme-challenge/foo</code> will serve the file <code>/srv/www/dehydrated/foo</code>.</p>
-<pre><code>acme: Host(/./) &amp;&amp; Method(&quot;GET&quot;) &amp;&amp; Path(&quot;/.well-known/acme-challenge/*&quot;)
-    -&gt; static(&quot;/.well-known/acme-challenge/&quot;, &quot;/srv/www/dehydrated&quot;) -&gt; &lt;shunt&gt;;
-</code></pre>
-
+e.g. the request <code>GET /.well-known/acme-challenge/foo</code> will serve the file <code>/srv/www/dehydrated/foo</code>.
+<div class="codehilite"><pre><span></span><span class="n">acme</span><span class="o">:</span> <span class="n">Host</span><span class="o">(/./)</span> <span class="o">&amp;&amp;</span> <span class="n">Method</span><span class="o">(</span><span class="s2">&quot;GET&quot;</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="n">Path</span><span class="o">(</span><span class="s2">&quot;/.well-known/acme-challenge/*&quot;</span><span class="o">)</span>
+    <span class="o">-&gt;</span> <span class="kd">static</span><span class="o">(</span><span class="s2">&quot;/.well-known/acme-challenge/&quot;</span><span class="o">,</span> <span class="s2">&quot;/srv/www/dehydrated&quot;</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">&lt;</span><span class="n">shunt</span><span class="o">&gt;;</span>
+</pre></div></p>
 <p>Notes:</p>
 <ul>
 <li>redirects to the directory when a file <code>index.html</code> exists and it is requested, i.e. <code>GET /foo/index.html</code> redirects to <code>/foo/</code> which serves then the <code>/foo/index.html</code></li>
 <li>serves the content of the <code>index.html</code> when a directory is requested</li>
 <li>does a simple directory listing of files / directories when no <code>index.html</code> is present</li>
 </ul>
-<h2 id="stripquery">stripQuery</h2>
-<h2 id="preservehost">preserveHost</h2>
+<h2 id="stripquery">stripQuery<a class="headerlink" href="#stripquery" title="Permanent link">&para;</a></h2>
+<h2 id="preservehost">preserveHost<a class="headerlink" href="#preservehost" title="Permanent link">&para;</a></h2>
 <p>Sets the incoming <code>Host:</code> header on the outgoing backend connection.</p>
 <p>It can be used to override the <code>proxyPreserveHost</code> behavior for individual routes.</p>
-<p>Parameters: "true" or "false"</p>
+<p>Parameters: &ldquo;true&rdquo; or &ldquo;false&rdquo;</p>
 <ul>
-<li>"true" - use the Host header from the incoming request</li>
-<li>"false" - use the host from the backend address</li>
+<li>&ldquo;true&rdquo; - use the Host header from the incoming request</li>
+<li>&ldquo;false&rdquo; - use the host from the backend address</li>
 </ul>
-<p>Example:</p>
-<pre><code>route1: * -&gt; preserveHost(&quot;true&quot;) -&gt; &quot;http://backend.example.org&quot;;
-</code></pre>
-
-<h2 id="status">status</h2>
+<p>Example:
+<div class="codehilite"><pre><span></span><span class="nt">route1</span><span class="o">:</span> <span class="o">*</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="nt">preserveHost</span><span class="o">(</span><span class="s2">&quot;true&quot;</span><span class="o">)</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="s2">&quot;http://backend.example.org&quot;</span><span class="o">;</span>
+</pre></div></p>
+<h2 id="status">status<a class="headerlink" href="#status" title="Permanent link">&para;</a></h2>
 <p>Sets the response status code to the given value, with no regards to the backend response.</p>
 <p>Parameters:</p>
 <ul>
 <li>status code (int)</li>
 </ul>
 <p>Example:</p>
-<pre><code>route1: Host(/^all401\.example\.org$/) -&gt; status(401) -&gt; &lt;shunt&gt;;
-</code></pre>
+<div class="codehilite"><pre><span></span><span class="n">route1</span><span class="o">:</span> <span class="n">Host</span><span class="o">(/^</span><span class="n">all401</span><span class="o">\.</span><span class="n">example</span><span class="o">\.</span><span class="n">org$</span><span class="o">/)</span> <span class="o">-&gt;</span> <span class="n">status</span><span class="o">(</span><span class="mi">401</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">&lt;</span><span class="n">shunt</span><span class="o">&gt;;</span>
+</pre></div>
 
-<h2 id="compress">compress</h2>
+<h2 id="compress">compress<a class="headerlink" href="#compress" title="Permanent link">&para;</a></h2>
 <p>The filter, when executed on the response path, checks if the response entity can
 be compressed. To decide, it checks the Content-Encoding, the Cache-Control and
-the Content-Type headers. It doesn't compress the content if the Content-Encoding
+the Content-Type headers. It doesn&rsquo;t compress the content if the Content-Encoding
 is set to other than identity, or the Cache-Control applies the no-transform
 pragma, or the Content-Type is set to an unsupported value.</p>
 <p>The default supported content types are: <code>text/plain</code>, <code>text/html</code>, <code>application/json</code>,
@@ -378,20 +1700,20 @@ pragma, or the Content-Type is set to an unsupported value.</p>
 <p>The default set of MIME types can be reset or extended by passing in the desired
 types as filter arguments. When extending the defaults, the first argument needs to
 be <code>"..."</code>. E.g. to compress tiff in addition to the defaults:</p>
-<pre><code>* -&gt; compress(&quot;...&quot;, &quot;image/tiff&quot;) -&gt; &quot;https://www.example.org&quot;
-</code></pre>
+<div class="codehilite"><pre><span></span>* -&gt; compress(&quot;...&quot;, &quot;image/tiff&quot;) -&gt; &quot;https://www.example.org&quot;
+</pre></div>
 
-<p>To reset the supported types, e.g. to compress only HTML, the "..." argument needs
+<p>To reset the supported types, e.g. to compress only HTML, the &ldquo;&hellip;&rdquo; argument needs
 to be omitted:</p>
-<pre><code>* -&gt; compress(&quot;text/html&quot;) -&gt; &quot;https://www.example.org&quot;
-</code></pre>
+<div class="codehilite"><pre><span></span>* -&gt; compress(&quot;text/html&quot;) -&gt; &quot;https://www.example.org&quot;
+</pre></div>
 
 <p>It is possible to control the compression level, by setting it as the first filter
 argument, in front of the MIME types. The default compression level is best-speed.
 The possible values are integers between 0 and 9 (inclusive), where 0 means
 no-compression, 1 means best-speed and 9 means best-compression. Example:</p>
-<pre><code>* -&gt; compress(9, &quot;image/tiff&quot;) -&gt; &quot;https://www.example.org&quot;
-</code></pre>
+<div class="codehilite"><pre><span></span>* -&gt; compress(9, &quot;image/tiff&quot;) -&gt; &quot;https://www.example.org&quot;
+</pre></div>
 
 <p>The filter also checks the incoming request, if it accepts the supported encodings,
 explicitly stated in the Accept-Encoding header. The filter currently supports <code>gzip</code>
@@ -402,7 +1724,7 @@ Accept-Encoding header is not set. It ignores * in the Accept-Encoding header.</
 transfer encoding, sets the Content-Encoding to the selected encoding and sets the
 <code>Vary: Accept-Encoding</code> header, if missing.</p>
 <p>The compression happens in a streaming way, using only a small internal buffer.</p>
-<h2 id="setquery">setQuery</h2>
+<h2 id="setquery">setQuery<a class="headerlink" href="#setquery" title="Permanent link">&para;</a></h2>
 <p>Set the query string <code>?k=v</code> in the request to the backend to a given value.</p>
 <p>Parameters:</p>
 <ul>
@@ -410,10 +1732,10 @@ transfer encoding, sets the Content-Encoding to the selected encoding and sets t
 <li>value (string)</li>
 </ul>
 <p>Example:</p>
-<pre><code>setQuery(&quot;k&quot;, &quot;v&quot;)
-</code></pre>
+<div class="codehilite"><pre><span></span>setQuery(&quot;k&quot;, &quot;v&quot;)
+</pre></div>
 
-<h2 id="dropquery">dropQuery</h2>
+<h2 id="dropquery">dropQuery<a class="headerlink" href="#dropquery" title="Permanent link">&para;</a></h2>
 <p>Delete the query string <code>?k=v</code> in the request to the backend for a
 given key.</p>
 <p>Parameters:</p>
@@ -421,97 +1743,97 @@ given key.</p>
 <li>key (string)</li>
 </ul>
 <p>Example:</p>
-<pre><code>dropQuery(&quot;k&quot;)
-</code></pre>
+<div class="codehilite"><pre><span></span>dropQuery(&quot;k&quot;)
+</pre></div>
 
-<h2 id="inlinecontent">inlineContent</h2>
+<h2 id="inlinecontent">inlineContent<a class="headerlink" href="#inlinecontent" title="Permanent link">&para;</a></h2>
 <p>Returns arbitrary content in the HTTP body.</p>
 <p>Parameters:</p>
 <ul>
 <li>arbitrary (string)</li>
 </ul>
 <p>Example:</p>
-<pre><code>* -&gt; inlineContent(&quot;&lt;h1&gt;Hello&lt;/h1&gt;&quot;) -&gt; &lt;shunt&gt;
-</code></pre>
+<div class="codehilite"><pre><span></span>* -&gt; inlineContent(&quot;<span class="nt">&lt;h1&gt;</span>Hello<span class="nt">&lt;/h1&gt;</span>&quot;) -&gt; <span class="nt">&lt;shunt&gt;</span>
+</pre></div>
 
-<h2 id="flowid">flowId</h2>
-<p>Sets an X-Flow-Id header, if it's not already in the request.
+<h2 id="flowid">flowId<a class="headerlink" href="#flowid" title="Permanent link">&para;</a></h2>
+<p>Sets an X-Flow-Id header, if it&rsquo;s not already in the request.
 This allows you to have a trace in your logs, that traces from
 the incoming request on the edge to all backend services.</p>
 <p>Paramters:</p>
 <ul>
 <li>no parameter: resets always the X-Flow-Id header to a new value</li>
-<li>"reuse": only create X-Flow-Id header if not set in the request</li>
+<li>&ldquo;reuse&rdquo;: only create X-Flow-Id header if not set in the request</li>
 </ul>
 <p>Example:</p>
-<pre><code>* -&gt; flowId() -&gt; &quot;https://some-backend.example.org&quot;;
-* -&gt; flowId(&quot;reuse&quot;) -&gt; &quot;https://some-backend.example.org&quot;;
-</code></pre>
+<div class="codehilite"><pre><span></span><span class="o">*</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="nt">flowId</span><span class="o">()</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="s2">&quot;https://some-backend.example.org&quot;</span><span class="o">;</span>
+<span class="o">*</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="nt">flowId</span><span class="o">(</span><span class="s2">&quot;reuse&quot;</span><span class="o">)</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="s2">&quot;https://some-backend.example.org&quot;</span><span class="o">;</span>
+</pre></div>
 
-<h2 id="randomcontent">randomContent</h2>
+<h2 id="randomcontent">randomContent<a class="headerlink" href="#randomcontent" title="Permanent link">&para;</a></h2>
 <p>Generate response with random text of specified length.</p>
 <p>Parameters:</p>
 <ul>
 <li>length of data (int)</li>
 </ul>
 <p>Example:</p>
-<pre><code>* -&gt; randomContent(42) -&gt; &lt;shunt&gt;;
-</code></pre>
+<div class="codehilite"><pre><span></span>* -&gt; randomContent(42) -&gt; &lt;shunt&gt;;
+</pre></div>
 
-<h2 id="latency">latency</h2>
+<h2 id="latency">latency<a class="headerlink" href="#latency" title="Permanent link">&para;</a></h2>
 <p>Enable adding artificial latency</p>
 <p>Parameters:</p>
 <ul>
 <li>latency in milliseconds (int)</li>
 </ul>
 <p>Example:</p>
-<pre><code>* -&gt; latency(120) -&gt; &quot;https://www.example.org&quot;;
-</code></pre>
+<div class="codehilite"><pre><span></span><span class="o">*</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="nt">latency</span><span class="o">(</span><span class="nt">120</span><span class="o">)</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="s2">&quot;https://www.example.org&quot;</span><span class="o">;</span>
+</pre></div>
 
-<h2 id="bandwidth">bandwidth</h2>
+<h2 id="bandwidth">bandwidth<a class="headerlink" href="#bandwidth" title="Permanent link">&para;</a></h2>
 <p>Enable bandwidth throttling.</p>
 <p>Parameters:</p>
 <ul>
 <li>bandwidth in kb/s (int)</li>
 </ul>
 <p>Example:</p>
-<pre><code>* -&gt; bandwidth(30) -&gt; &quot;https://www.example.org&quot;;
-</code></pre>
+<div class="codehilite"><pre><span></span><span class="o">*</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="nt">bandwidth</span><span class="o">(</span><span class="nt">30</span><span class="o">)</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="s2">&quot;https://www.example.org&quot;</span><span class="o">;</span>
+</pre></div>
 
-<h2 id="chunks">chunks</h2>
+<h2 id="chunks">chunks<a class="headerlink" href="#chunks" title="Permanent link">&para;</a></h2>
 <p>Enables adding chunking responses with custom chunk size with
 artificial delays in between response chunks. To disable delays, set
-the second parameter to "0".</p>
+the second parameter to &ldquo;0&rdquo;.</p>
 <p>Parameters:</p>
 <ul>
 <li>byte length (int)</li>
 <li>time duration (time.Duration)</li>
 </ul>
 <p>Example:</p>
-<pre><code>* -&gt; chunks(1024, &quot;120ms&quot;) -&gt; &quot;https://www.example.org&quot;;
-* -&gt; chunks(1024, &quot;0&quot;) -&gt; &quot;https://www.example.org&quot;;
-</code></pre>
+<div class="codehilite"><pre><span></span><span class="o">*</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="nt">chunks</span><span class="o">(</span><span class="nt">1024</span><span class="o">,</span> <span class="s2">&quot;120ms&quot;</span><span class="o">)</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="s2">&quot;https://www.example.org&quot;</span><span class="o">;</span>
+<span class="o">*</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="nt">chunks</span><span class="o">(</span><span class="nt">1024</span><span class="o">,</span> <span class="s2">&quot;0&quot;</span><span class="o">)</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="s2">&quot;https://www.example.org&quot;</span><span class="o">;</span>
+</pre></div>
 
-<h2 id="backendlatency">backendLatency</h2>
+<h2 id="backendlatency">backendLatency<a class="headerlink" href="#backendlatency" title="Permanent link">&para;</a></h2>
 <p>Same as <a href="#latency">latency filter</a>, but on the request path and not on
 the response path.</p>
-<h2 id="backendbandwidth">backendBandwidth</h2>
+<h2 id="backendbandwidth">backendBandwidth<a class="headerlink" href="#backendbandwidth" title="Permanent link">&para;</a></h2>
 <p>Same as <a href="#bandwidth">bandwidth filter</a>, but on the request path and not on
 the response path.</p>
-<h2 id="backendchunks">backendChunks</h2>
+<h2 id="backendchunks">backendChunks<a class="headerlink" href="#backendchunks" title="Permanent link">&para;</a></h2>
 <p>Same as <a href="#chunks">chunks filter</a>, but on the request path and not on
 the response path.</p>
-<h2 id="tee">tee</h2>
+<h2 id="tee">tee<a class="headerlink" href="#tee" title="Permanent link">&para;</a></h2>
 <p>Provides a unix-like <code>tee</code> feature for routing.</p>
-<p>Using this filter, the request will be sent to a "shadow" backend in addition
+<p>Using this filter, the request will be sent to a &ldquo;shadow&rdquo; backend in addition
 to the main backend of the route.</p>
 <p>Example:</p>
-<pre><code>* -&gt; tee(&quot;https://audit-logging.example.org&quot;) -&gt; &quot;https://foo.example.org&quot;;
-</code></pre>
+<div class="codehilite"><pre><span></span><span class="o">*</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="nt">tee</span><span class="o">(</span><span class="s2">&quot;https://audit-logging.example.org&quot;</span><span class="o">)</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="s2">&quot;https://foo.example.org&quot;</span><span class="o">;</span>
+</pre></div>
 
 <p>This will send an identical request for foo.example.org to
 audit-logging.example.org. Another use case could be using it for benchmarking
-a new backend with some real traffic. This we call "shadow traffic".</p>
+a new backend with some real traffic. This we call &ldquo;shadow traffic&rdquo;.</p>
 <p>The above route will forward the request to <code>https://foo.example.org</code> as it
 normally would do, but in addition to that, it will send an identical request to
 <code>https://audit-logging.example.org</code>. The request sent to
@@ -519,14 +1841,14 @@ normally would do, but in addition to that, it will send an identical request to
 and a copy of the body stream. The <code>tee</code> response is ignored for this shadow backend.</p>
 <p>It is possible to change the path of the tee request, in a similar way to the
 <a href="#modpath">modPath</a> filter:</p>
-<pre><code>Path(&quot;/api/v1&quot;) -&gt; tee(&quot;https://api.example.org&quot;, &quot;^/v1&quot;, &quot;/v2&quot; ) -&gt; &quot;http://api.example.org&quot;;
-</code></pre>
+<div class="codehilite"><pre><span></span><span class="nt">Path</span><span class="o">(</span><span class="s2">&quot;/api/v1&quot;</span><span class="o">)</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="nt">tee</span><span class="o">(</span><span class="s2">&quot;https://api.example.org&quot;</span><span class="o">,</span> <span class="s2">&quot;^/v1&quot;</span><span class="o">,</span> <span class="s2">&quot;/v2&quot;</span> <span class="o">)</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="s2">&quot;http://api.example.org&quot;</span><span class="o">;</span>
+</pre></div>
 
 <p>In the above example, one can test how a new version of an API would behave on
 incoming requests.</p>
-<h2 id="teenf">teenf</h2>
+<h2 id="teenf">teenf<a class="headerlink" href="#teenf" title="Permanent link">&para;</a></h2>
 <p>The same as <a href="#tee">tee filter</a>, but does not follow redirects from the backend.</p>
-<h2 id="basicauth">basicAuth</h2>
+<h2 id="basicauth">basicAuth<a class="headerlink" href="#basicauth" title="Permanent link">&para;</a></h2>
 <p>Enable Basic Authentication</p>
 <p>The filter accepts two parameters, the first mandatory one is the path to the
 htpasswd file usually used with Apache or nginx. The second one is the optional
@@ -534,23 +1856,23 @@ realm name that will be displayed in the browser. MD5, SHA1 and BCrypt are suppo
 for Basic authentication password storage, see also
 <a href="https://github.com/abbot/go-http-auth">the http-auth module page</a>.</p>
 <p>Examples:</p>
-<pre><code>basicAuth(&quot;/path/to/htpasswd&quot;)
+<div class="codehilite"><pre><span></span>basicAuth(&quot;/path/to/htpasswd&quot;)
 basicAuth(&quot;/path/to/htpasswd&quot;, &quot;My Website&quot;)
-</code></pre>
+</pre></div>
 
-<h2 id="webhook">webhook</h2>
+<h2 id="webhook">webhook<a class="headerlink" href="#webhook" title="Permanent link">&para;</a></h2>
 <p>The <code>webhook</code> filter makes it possible to have your own authentication and
 authorization endpoint as a filter.</p>
 <p>Headers from the incoming request will be copied into the request that
 is being done to the webhook endpoint. Responses from the webhook with
 status code less than 300 will be authorized, rest unauthorized.</p>
 <p>Examples:</p>
-<pre><code>webhook(&quot;https://custom-webhook.example.org/auth&quot;)
-</code></pre>
+<div class="codehilite"><pre><span></span>webhook(&quot;https://custom-webhook.example.org/auth&quot;)
+</pre></div>
 
 <p>The webhook timeout has a default of 2 seconds and can be globally
 changed, if skipper is started with <code>-webhook-timeout=2s</code> flag.</p>
-<h2 id="oauthtokeninfoanyscope">oauthTokeninfoAnyScope</h2>
+<h2 id="oauthtokeninfoanyscope">oauthTokeninfoAnyScope<a class="headerlink" href="#oauthtokeninfoanyscope" title="Permanent link">&para;</a></h2>
 <p>If skipper is started with <code>-oauth2-tokeninfo-url</code> flag, you can use
 this filter.</p>
 <p>The filter accepts variable number of string arguments, which are used to
@@ -559,10 +1881,10 @@ header. If any of the configured scopes from the filter is found
 inside the tokeninfo result for the incoming token, it will allow the
 request to pass.</p>
 <p>Examples:</p>
-<pre><code>oauthTokeninfoAnyScope(&quot;s1&quot;, &quot;s2&quot;, &quot;s3&quot;)
-</code></pre>
+<div class="codehilite"><pre><span></span>oauthTokeninfoAnyScope(&quot;s1&quot;, &quot;s2&quot;, &quot;s3&quot;)
+</pre></div>
 
-<h2 id="oauthtokeninfoallscope">oauthTokeninfoAllScope</h2>
+<h2 id="oauthtokeninfoallscope">oauthTokeninfoAllScope<a class="headerlink" href="#oauthtokeninfoallscope" title="Permanent link">&para;</a></h2>
 <p>If skipper is started with <code>-oauth2-tokeninfo-url</code> flag, you can use
 this filter.</p>
 <p>The filter accepts variable number of string arguments, which are used to
@@ -571,10 +1893,10 @@ header. If all of the configured scopes from the filter are found
 inside the tokeninfo result for the incoming token, it will allow the
 request to pass.</p>
 <p>Examples:</p>
-<pre><code>oauthTokeninfoAllScope(&quot;s1&quot;, &quot;s2&quot;, &quot;s3&quot;)
-</code></pre>
+<div class="codehilite"><pre><span></span>oauthTokeninfoAllScope(&quot;s1&quot;, &quot;s2&quot;, &quot;s3&quot;)
+</pre></div>
 
-<h2 id="oauthtokeninfoanykv">oauthTokeninfoAnyKV</h2>
+<h2 id="oauthtokeninfoanykv">oauthTokeninfoAnyKV<a class="headerlink" href="#oauthtokeninfoanykv" title="Permanent link">&para;</a></h2>
 <p>If skipper is started with <code>-oauth2-tokeninfo-url</code> flag, you can use
 this filter.</p>
 <p>The filter accepts an even number of variable arguments of type
@@ -583,10 +1905,10 @@ string, which are used to validate the incoming token from the
 value pairs from the filter is found inside the tokeninfo result for
 the incoming token, it will allow the request to pass.</p>
 <p>Examples:</p>
-<pre><code>oauthTokeninfoAnyKV(&quot;k1&quot;, &quot;v1&quot;, &quot;k2&quot;, &quot;v2&quot;)
-</code></pre>
+<div class="codehilite"><pre><span></span>oauthTokeninfoAnyKV(&quot;k1&quot;, &quot;v1&quot;, &quot;k2&quot;, &quot;v2&quot;)
+</pre></div>
 
-<h2 id="oauthtokeninfoallkv">oauthTokeninfoAllKV</h2>
+<h2 id="oauthtokeninfoallkv">oauthTokeninfoAllKV<a class="headerlink" href="#oauthtokeninfoallkv" title="Permanent link">&para;</a></h2>
 <p>If skipper is started with <code>-oauth2-tokeninfo-url</code> flag, you can use
 this filter.</p>
 <p>The filter accepts an even number of variable arguments of type
@@ -595,10 +1917,10 @@ string, which are used to validate the incoming token from the
 value pairs from the filter are found inside the tokeninfo result for
 the incoming token, it will allow the request to pass.</p>
 <p>Examples:</p>
-<pre><code>oauthTokeninfoAllKV(&quot;k1&quot;, &quot;v1&quot;, &quot;k2&quot;, &quot;v2&quot;)
-</code></pre>
+<div class="codehilite"><pre><span></span>oauthTokeninfoAllKV(&quot;k1&quot;, &quot;v1&quot;, &quot;k2&quot;, &quot;v2&quot;)
+</pre></div>
 
-<h2 id="oauthtokenintrospectionanyclaims">oauthTokenintrospectionAnyClaims</h2>
+<h2 id="oauthtokenintrospectionanyclaims">oauthTokenintrospectionAnyClaims<a class="headerlink" href="#oauthtokenintrospectionanyclaims" title="Permanent link">&para;</a></h2>
 <p>The filter accepts variable number of string arguments, which are used
 to validate the incoming token from the <code>Authorization: Bearer
 &lt;token&gt;</code> header. The first argument to the filter is the issuer URL,
@@ -609,10 +1931,10 @@ to find the configuration and for example supported claims.</p>
 found inside the tokenintrospection (RFC7662) result for the incoming
 token, it will allow the request to pass.</p>
 <p>Examples:</p>
-<pre><code>oauthTokenintrospectionAnyClaims(&quot;c1&quot;, &quot;c2&quot;, &quot;c3&quot;)
-</code></pre>
+<div class="codehilite"><pre><span></span>oauthTokenintrospectionAnyClaims(&quot;c1&quot;, &quot;c2&quot;, &quot;c3&quot;)
+</pre></div>
 
-<h2 id="oauthtokenintrospectionallclaims">oauthTokenintrospectionAllClaims</h2>
+<h2 id="oauthtokenintrospectionallclaims">oauthTokenintrospectionAllClaims<a class="headerlink" href="#oauthtokenintrospectionallclaims" title="Permanent link">&para;</a></h2>
 <p>The filter accepts variable number of string arguments, which are used
 to validate the incoming token from the <code>Authorization: Bearer
 &lt;token&gt;</code> header. The first argument to the filter is the issuer URL,
@@ -623,10 +1945,10 @@ to find the configuration and for example supported claims.</p>
 found inside the tokenintrospection (RFC7662) result for the incoming
 token, it will allow the request to pass.</p>
 <p>Examples:</p>
-<pre><code>oauthTokenintrospectionAllClaims(&quot;c1&quot;, &quot;c2&quot;, &quot;c3&quot;)
-</code></pre>
+<div class="codehilite"><pre><span></span>oauthTokenintrospectionAllClaims(&quot;c1&quot;, &quot;c2&quot;, &quot;c3&quot;)
+</pre></div>
 
-<h2 id="oauthtokenintrospectionanykv">oauthTokenintrospectionAnyKV</h2>
+<h2 id="oauthtokenintrospectionanykv">oauthTokenintrospectionAnyKV<a class="headerlink" href="#oauthtokenintrospectionanykv" title="Permanent link">&para;</a></h2>
 <p>The filter accepts an even number of variable arguments of type
 string, which are used to validate the incoming token from the
 <code>Authorization: Bearer &lt;token&gt;</code> header.  The first argument to the
@@ -638,10 +1960,10 @@ to find the configuration and for example supported claims.</p>
 inside the tokenintrospection (RFC7662) result for the incoming token,
 it will allow the request to pass.</p>
 <p>Examples:</p>
-<pre><code>oauthTokenintrospectionAnyKV(&quot;k1&quot;, &quot;v1&quot;, &quot;k2&quot;, &quot;v2&quot;)
-</code></pre>
+<div class="codehilite"><pre><span></span>oauthTokenintrospectionAnyKV(&quot;k1&quot;, &quot;v1&quot;, &quot;k2&quot;, &quot;v2&quot;)
+</pre></div>
 
-<h2 id="oauthtokenintrospectionallkv">oauthTokenintrospectionAllKV</h2>
+<h2 id="oauthtokenintrospectionallkv">oauthTokenintrospectionAllKV<a class="headerlink" href="#oauthtokenintrospectionallkv" title="Permanent link">&para;</a></h2>
 <p>The filter accepts an even number of variable arguments of type
 string, which are used to validate the incoming token from the
 <code>Authorization: Bearer &lt;token&gt;</code> header.  The first argument to the
@@ -653,20 +1975,20 @@ to find the configuration and for example supported claims.</p>
 inside the tokenintrospection (RFC7662) result for the incoming token,
 it will allow the request to pass.</p>
 <p>Examples:</p>
-<pre><code>oauthTokenintrospectionAllKV(&quot;k1&quot;, &quot;v1&quot;, &quot;k2&quot;, &quot;v2&quot;)
-</code></pre>
+<div class="codehilite"><pre><span></span>oauthTokenintrospectionAllKV(&quot;k1&quot;, &quot;v1&quot;, &quot;k2&quot;, &quot;v2&quot;)
+</pre></div>
 
-<h2 id="forwardtoken">forwardToken</h2>
+<h2 id="forwardtoken">forwardToken<a class="headerlink" href="#forwardtoken" title="Permanent link">&para;</a></h2>
 <p>The filter accepts a single string as an argument. The argument is the header
 name where the result of token info or token introspection is added when the
 request is passed to the backend.</p>
 <p>If this filter is used when there is no token introspection or token info data
 then it does not have any effect.</p>
 <p>Examples:</p>
-<pre><code>forwardToken(&quot;X-Tokeninfo-Forward&quot;)
-</code></pre>
+<div class="codehilite"><pre><span></span>forwardToken(&quot;X-Tokeninfo-Forward&quot;)
+</pre></div>
 
-<h2 id="requestcookie">requestCookie</h2>
+<h2 id="requestcookie">requestCookie<a class="headerlink" href="#requestcookie" title="Permanent link">&para;</a></h2>
 <p>Append a cookie to the request header.</p>
 <p>Parameters:</p>
 <ul>
@@ -674,31 +1996,31 @@ then it does not have any effect.</p>
 <li>cookie value (string)</li>
 </ul>
 <p>Example:</p>
-<pre><code>requestCookie(&quot;test-session&quot;, &quot;abc&quot;)
-</code></pre>
+<div class="codehilite"><pre><span></span>requestCookie(&quot;test-session&quot;, &quot;abc&quot;)
+</pre></div>
 
-<h2 id="responsecookie">responseCookie</h2>
-<p>Appends cookies to responses in the "Set-Cookie" header. The response cookie
+<h2 id="responsecookie">responseCookie<a class="headerlink" href="#responsecookie" title="Permanent link">&para;</a></h2>
+<p>Appends cookies to responses in the &ldquo;Set-Cookie&rdquo; header. The response cookie
 accepts an optional argument to control the max-age property of the cookie,
 of type <code>int</code>, in seconds. The response cookie accepts an optional fourth
-argument, "change-only", to control if the cookie should be set on every
+argument, &ldquo;change-only&rdquo;, to control if the cookie should be set on every
 response, or only if the request does not contain a cookie with the provided
 name and value.</p>
 <p>Example:</p>
-<pre><code>responseCookie(&quot;test-session&quot;, &quot;abc&quot;)
+<div class="codehilite"><pre><span></span>responseCookie(&quot;test-session&quot;, &quot;abc&quot;)
 responseCookie(&quot;test-session&quot;, &quot;abc&quot;, 31536000),
 responseCookie(&quot;test-session&quot;, &quot;abc&quot;, 31536000, &quot;change-only&quot;)
-</code></pre>
+</pre></div>
 
-<h2 id="jscookie">jsCookie</h2>
+<h2 id="jscookie">jsCookie<a class="headerlink" href="#jscookie" title="Permanent link">&para;</a></h2>
 <p>The JS cookie behaves exactly as the response cookie, but it does not set the
 <code>HttpOnly</code> directive, so these cookies will be accessible from JS code running
 in web browsers.</p>
 <p>Example:</p>
-<pre><code>jsCookie(&quot;test-session-info&quot;, &quot;abc-debug&quot;, 31536000, &quot;change-only&quot;)
-</code></pre>
+<div class="codehilite"><pre><span></span>jsCookie(&quot;test-session-info&quot;, &quot;abc-debug&quot;, 31536000, &quot;change-only&quot;)
+</pre></div>
 
-<h2 id="consecutivebreaker">consecutiveBreaker</h2>
+<h2 id="consecutivebreaker">consecutiveBreaker<a class="headerlink" href="#consecutivebreaker" title="Permanent link">&para;</a></h2>
 <p>This breaker opens when the proxy could not connect to a backend or received
 a &gt;=500 status code at least N times in a row. When open, the proxy returns
 503 - Service Unavailable response during the breaker timeout. After this timeout,
@@ -714,8 +2036,8 @@ open state. If all succeed, it goes to closed state again.</p>
 <li>idle-ttl (time string, parseable by <a href="https://godoc.org/time#ParseDuration">time.Duration</a>) - optional</li>
 </ul>
 <p>See also the <a href="https://godoc.org/github.com/zalando/skipper/circuit">circuit breaker docs</a>.</p>
-<h2 id="ratebreaker">rateBreaker</h2>
-<p>The "rate breaker" works similar to the <a href="#consecutivebreaker">consecutiveBreaker</a>, but
+<h2 id="ratebreaker">rateBreaker<a class="headerlink" href="#ratebreaker" title="Permanent link">&para;</a></h2>
+<p>The &ldquo;rate breaker&rdquo; works similar to the <a href="#consecutivebreaker">consecutiveBreaker</a>, but
 instead of considering N consecutive failures for going open, it maintains a sliding
 window of the last M events, both successes and failures, and opens only when the number
 of failures reaches N within the window. This way the sliding window is not time based
@@ -728,22 +2050,22 @@ and allows the same breaker characteristics for low and high rate traffic.</p>
 <li>idle-ttl (time string, parseable by <a href="https://godoc.org/time#ParseDuration">time.Duration</a>) - optional</li>
 </ul>
 <p>See also the <a href="https://godoc.org/github.com/zalando/skipper/circuit">circuit breaker docs</a>.</p>
-<h2 id="disablebreaker">disableBreaker</h2>
+<h2 id="disablebreaker">disableBreaker<a class="headerlink" href="#disablebreaker" title="Permanent link">&para;</a></h2>
 <p>Change (or set) the breaker configurations for an individual route and disable for another, in eskip:</p>
-<pre><code>updates: Method(&quot;POST&quot;) &amp;&amp; Host(&quot;foo.example.org&quot;)
-  -&gt; consecutiveBreaker(9)
-  -&gt; &quot;https://foo.backend.net&quot;;
+<div class="codehilite"><pre><span></span><span class="n">updates</span><span class="o">:</span> <span class="n">Method</span><span class="o">(</span><span class="s2">&quot;POST&quot;</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="n">Host</span><span class="o">(</span><span class="s2">&quot;foo.example.org&quot;</span><span class="o">)</span>
+  <span class="o">-&gt;</span> <span class="n">consecutiveBreaker</span><span class="o">(</span><span class="mi">9</span><span class="o">)</span>
+  <span class="o">-&gt;</span> <span class="s2">&quot;https://foo.backend.net&quot;</span><span class="o">;</span>
 
-backendHealthcheck: Path(&quot;/healthcheck&quot;)
-  -&gt; disableBreaker()
-  -&gt; &quot;https://foo.backend.net&quot;;
-</code></pre>
+<span class="n">backendHealthcheck</span><span class="o">:</span> <span class="n">Path</span><span class="o">(</span><span class="s2">&quot;/healthcheck&quot;</span><span class="o">)</span>
+  <span class="o">-&gt;</span> <span class="n">disableBreaker</span><span class="o">()</span>
+  <span class="o">-&gt;</span> <span class="s2">&quot;https://foo.backend.net&quot;</span><span class="o">;</span>
+</pre></div>
 
 <p>See also the <a href="https://godoc.org/github.com/zalando/skipper/circuit">circuit breaker docs</a>.</p>
-<h2 id="localratelimit">~~localRatelimit~~</h2>
+<h2 id="localratelimit">~~localRatelimit~~<a class="headerlink" href="#localratelimit" title="Permanent link">&para;</a></h2>
 <p><strong>DEPRECATED</strong> use <a href="#clientRatelimit">clientRatelimit</a> with the same
   settings instead.</p>
-<h2 id="clientratelimit">clientRatelimit</h2>
+<h2 id="clientratelimit">clientRatelimit<a class="headerlink" href="#clientratelimit" title="Permanent link">&para;</a></h2>
 <p>Per skipper instance calculated ratelimit, that allows number of
 requests by client. The definition of the same client is based on data
 of the http header and can be changed with an optional third
@@ -756,14 +2078,14 @@ roughly 15 MB per filter for 100.000 clients.</p>
 <ul>
 <li>number of allowed requests per time period (int)</li>
 <li>time period for requests being counted (time.Duration)</li>
-<li>optional parameter can be set to: "auth" (string)</li>
+<li>optional parameter can be set to: &ldquo;auth&rdquo; (string)</li>
 </ul>
-<pre><code>clientRatelimit(3, &quot;1m&quot;)
+<div class="codehilite"><pre><span></span>clientRatelimit(3, &quot;1m&quot;)
 clientRatelimit(3, &quot;1m&quot;, &quot;auth&quot;)
-</code></pre>
+</pre></div>
 
 <p>See also the <a href="https://godoc.org/github.com/zalando/skipper/ratelimit">ratelimit docs</a>.</p>
-<h2 id="ratelimit">ratelimit</h2>
+<h2 id="ratelimit">ratelimit<a class="headerlink" href="#ratelimit" title="Permanent link">&para;</a></h2>
 <p>Per skipper instance calculated ratelimit, that allows number of
 requests to a backend. You need to run skipper
 with command line flag <code>-enable-ratelimits</code>.</p>
@@ -772,12 +2094,12 @@ with command line flag <code>-enable-ratelimits</code>.</p>
 <li>number of allowed requests per time period (int)</li>
 <li>time period for requests being counted (time.Duration)</li>
 </ul>
-<pre><code>ratelimit(20, &quot;1m&quot;)
+<div class="codehilite"><pre><span></span>ratelimit(20, &quot;1m&quot;)
 ratelimit(300, &quot;1h&quot;)
-</code></pre>
+</pre></div>
 
 <p>See also the <a href="https://godoc.org/github.com/zalando/skipper/ratelimit">ratelimit docs</a>.</p>
-<h2 id="clusterclientratelimit">clusterClientRatelimit</h2>
+<h2 id="clusterclientratelimit">clusterClientRatelimit<a class="headerlink" href="#clusterclientratelimit" title="Permanent link">&para;</a></h2>
 <p>This ratelimit is calculated across all skipper peers and allows the
 given number of requests by client. The definition of the same client
 is based on data of the http header and can be changed with an
@@ -791,14 +2113,14 @@ for 100.000 clients and 1000 skipper peers.</p>
 <ul>
 <li>number of allowed requests per time period (int)</li>
 <li>time period for requests being counted (time.Duration)</li>
-<li>optional parameter can be set to: "auth" (string)</li>
+<li>optional parameter can be set to: &ldquo;auth&rdquo; (string)</li>
 </ul>
-<pre><code>clusterClientRatelimit(10, &quot;1h&quot;)
+<div class="codehilite"><pre><span></span>clusterClientRatelimit(10, &quot;1h&quot;)
 clusterClientRatelimit(10, &quot;1h&quot;, &quot;auth&quot;)
-</code></pre>
+</pre></div>
 
 <p>See also the <a href="https://godoc.org/github.com/zalando/skipper/ratelimit">ratelimit docs</a>.</p>
-<h2 id="clusterratelimit">clusterRatelimit</h2>
+<h2 id="clusterratelimit">clusterRatelimit<a class="headerlink" href="#clusterratelimit" title="Permanent link">&para;</a></h2>
 <p>This ratelimit is calculated across all skipper peers and allows the
 given number of requests to a backend. You need to have run skipper
 with command line flags <code>-enable-swarm</code> and <code>-enable-ratelimits</code>.</p>
@@ -807,14 +2129,14 @@ with command line flags <code>-enable-swarm</code> and <code>-enable-ratelimits<
 <li>number of allowed requests per time period (int)</li>
 <li>time period for requests being counted (time.Duration)</li>
 </ul>
-<pre><code>clusterRatelimit(20, &quot;1m&quot;)
+<div class="codehilite"><pre><span></span>clusterRatelimit(20, &quot;1m&quot;)
 clusterRatelimit(300, &quot;1h&quot;)
-</code></pre>
+</pre></div>
 
 <p>See also the <a href="https://godoc.org/github.com/zalando/skipper/ratelimit">ratelimit docs</a>.</p>
-<h2 id="lua">lua</h2>
+<h2 id="lua">lua<a class="headerlink" href="#lua" title="Permanent link">&para;</a></h2>
 <p>See <a href="../scripts/">the scripts page</a></p>
-<h2 id="corsorigin">corsOrigin</h2>
+<h2 id="corsorigin">corsOrigin<a class="headerlink" href="#corsorigin" title="Permanent link">&para;</a></h2>
 <p>The filter accepts an optional variadic list of acceptable origin
 parameters. If the input argument list is empty, the header will
 always be set to <code>*</code> which means any origin is acceptable. Otherwise
@@ -826,12 +2148,12 @@ only set on the response.</p>
 <li>url (variadic string)</li>
 </ul>
 <p>Examples:</p>
-<pre><code>corsOrigin()
+<div class="codehilite"><pre><span></span>corsOrigin()
 corsOrigin(&quot;https://www.example.org&quot;)
 corsOrigin(&quot;https://www.example.org&quot;, &quot;http://localhost:9001&quot;)
-</code></pre>
+</pre></div>
 
-<h2 id="headertoquery">headerToQuery</h2>
+<h2 id="headertoquery">headerToQuery<a class="headerlink" href="#headertoquery" title="Permanent link">&para;</a></h2>
 <p>Filter which assigns the value of a given header from the incoming Request to a given query param</p>
 <p>Parameters:</p>
 <ul>
@@ -839,12 +2161,12 @@ corsOrigin(&quot;https://www.example.org&quot;, &quot;http://localhost:9001&quot
 <li>The name of the query param key to add to request</li>
 </ul>
 <p>Examples:</p>
-<pre><code>headerToQuery(&quot;X-Foo-Header&quot;, &quot;foo-query-param&quot;)
-</code></pre>
+<div class="codehilite"><pre><span></span>headerToQuery(&quot;X-Foo-Header&quot;, &quot;foo-query-param&quot;)
+</pre></div>
 
 <p>The above filter will set <code>foo-query-param</code> query param respectively to the <code>X-Foo-Header</code> header
 and will override the value if the queryparam exists already</p>
-<h2 id="querytoheader">queryToHeader</h2>
+<h2 id="querytoheader">queryToHeader<a class="headerlink" href="#querytoheader" title="Permanent link">&para;</a></h2>
 <p>Filter which assigns the value of a given query param from the
 incoming Request to a given Header with optional format string value.</p>
 <p>Parameters:</p>
@@ -855,46 +2177,46 @@ incoming Request to a given Header with optional format string value.</p>
   value from the query value as before</li>
 </ul>
 <p>Examples:</p>
-<pre><code>queryToHeader(&quot;foo-query-param&quot;, &quot;X-Foo-Header&quot;)
+<div class="codehilite"><pre><span></span>queryToHeader(&quot;foo-query-param&quot;, &quot;X-Foo-Header&quot;)
 queryToHeader(&quot;access_token&quot;, &quot;Authorization&quot;, &quot;Bearer %s&quot;)
-</code></pre>
+</pre></div>
 
 <p>The first filter will set <code>X-Foo-Header</code> header respectively to the <code>foo-query-param</code> query param
 and will not override the value if the header exists already.</p>
 <p>The second filter will set <code>Authorization</code> header to the
 <code>access_token</code> query param with a prefix value <code>Bearer</code> and will
 not override the value if the header exists already.</p>
-<h2 id="accesslogdisabled">~~accessLogDisabled~~</h2>
+<h2 id="accesslogdisabled">~~accessLogDisabled~~<a class="headerlink" href="#accesslogdisabled" title="Permanent link">&para;</a></h2>
 <p><strong>Deprecated:</strong> use <a href="#disableaccesslog">disableAccessLog</a> or <a href="#enableaccesslog">enableAccessLog</a></p>
 <p>The <code>accessLogDisabled</code> filter overrides global Skipper <code>AccessLogDisabled</code> setting for a specific route, which allows to either turn-off
 the access log for specific route while access log, in general, is enabled or vice versa.</p>
 <p>Example:</p>
-<pre><code>accessLogDisabled(&quot;false&quot;)
-</code></pre>
+<div class="codehilite"><pre><span></span>accessLogDisabled(&quot;false&quot;)
+</pre></div>
 
-<h2 id="disableaccesslog">disableAccessLog</h2>
+<h2 id="disableaccesslog">disableAccessLog<a class="headerlink" href="#disableaccesslog" title="Permanent link">&para;</a></h2>
 <p>Filter overrides global Skipper <code>AccessLogDisabled</code> setting and allows to turn-off the access log for specific route
 while access log, in general, is enabled.</p>
 <p>Example:</p>
-<pre><code>disableAccessLog()
-</code></pre>
+<div class="codehilite"><pre><span></span>disableAccessLog()
+</pre></div>
 
-<h2 id="enableaccesslog">enableAccessLog</h2>
+<h2 id="enableaccesslog">enableAccessLog<a class="headerlink" href="#enableaccesslog" title="Permanent link">&para;</a></h2>
 <p>Filter overrides global Skipper <code>AccessLogDisabled</code> setting and allows to turn-on the access log for specific route
 while access log, in general, is disabled.</p>
 <p>Example:</p>
-<pre><code>enableAccessLog()
-</code></pre>
+<div class="codehilite"><pre><span></span>enableAccessLog()
+</pre></div>
 
-<h2 id="auditlog">auditLog</h2>
+<h2 id="auditlog">auditLog<a class="headerlink" href="#auditlog" title="Permanent link">&para;</a></h2>
 <p>Filter <code>auditLog()</code> logs the request and N bytes of the body into the
 log file. N defaults to 1024 and can be overidden with
 <code>-max-audit-body=&lt;int&gt;</code>. <code>N=0</code> omits logging the body.</p>
 <p>Example:</p>
-<pre><code>auditLog()
-</code></pre>
+<div class="codehilite"><pre><span></span>auditLog()
+</pre></div>
 
-<h2 id="apiusagemonitoring">apiUsageMonitoring</h2>
+<h2 id="apiusagemonitoring">apiUsageMonitoring<a class="headerlink" href="#apiusagemonitoring" title="Permanent link">&para;</a></h2>
 <p>The <code>apiUsageMonitoring</code> filter adds API related metrics to the Skipper monitoring. It is by default not activated. Activate
 it by providing the <code>-enable-api-usage-monitoring</code> flag at Skipper startup. In its deactivated state, it is still
 registered as a valid filter (allowing route configurations to specify it), but will perform no operation. That allows,
@@ -902,13 +2224,14 @@ per instance, production environments to use it and testing environments not to 
 for all environments.</p>
 <p>NOTE: Make sure to activate the metrics flavour proper to your environment using the <code>metrics-flavour</code>
 flag in order to get those metrics.</p>
-<p>Example:</p>
-<pre><code class="bash">skipper -enable-api-usage-monitoring -metrics-flavour prometheus
-</code></pre>
-
+<p>Example:
+<div class="codehilite"><pre><span></span>skipper -enable-api-usage-monitoring -metrics-flavour prometheus
+</pre></div></p>
 <p>The structure of the metrics is:</p>
-<pre><code>apiUsageMonitoring.custom.&lt;Application ID&gt;.&lt;API ID&gt;.&lt;HTTP Verb&gt;.&lt;Path Template&gt;.&lt;Metric Name&gt;
-</code></pre>
+<div class="codehilite"><pre><span></span>apiUsageMonitoring.custom.&amp;lt;Application ID&amp;gt;.&amp;lt;API ID&amp;gt;.&amp;lt;HTTP Verb&amp;gt;.&amp;lt;Path Template&amp;gt;.&amp;lt;Metric Name&amp;gt;
+</pre></div>
+
+
 <p>The available metrics are:</p>
 <ul>
 <li>HTTP exchanges counting:<ul>
@@ -920,40 +2243,40 @@ flag in order to get those metrics.</p>
 </ul>
 </li>
 <li>Timing:<ul>
-<li><strong>latency</strong>: time between the first observable moment (a call to the filter's <code>Request</code>) until the last (a call to the filter's <code>Response</code>) </li>
+<li><strong>latency</strong>: time between the first observable moment (a call to the filter&rsquo;s <code>Request</code>) until the last (a call to the filter&rsquo;s <code>Response</code>) </li>
 </ul>
 </li>
 </ul>
 <p>Endpoints can be monitored using the <code>apiUsageMonitoring</code> filter in the route. It accepts JSON objects (as strings)
 of the following format.</p>
-<pre><code class="yaml">api-usage-monitoring-configuration:
-  type: object
-  required:
-    - application_id
-    - api_id
-    - path_templates
-  properties:
-    application_id:
-      type: string
-      description: ID of the application
-      example: order-service
-    api_id:
-      type: string
-      description: ID of the API
-      example: orders-api
-    path_templates:
-      description: Endpoints to be monitored.
-      type: array
-      items:
-        type: string
-        description: &gt;
-          Path template in /articles/{article-id} (OpenAPI 3) or in /articles/:article-id format.
-          NOTE: They will be normalized to the :this format for metrics naming.
-        example: /orders/{order-id}
-</code></pre>
+<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">api-usage-monitoring-configuration</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">type</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">object</span>
+  <span class="l l-Scalar l-Scalar-Plain">required</span><span class="p p-Indicator">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">application_id</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">api_id</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">path_templates</span>
+  <span class="l l-Scalar l-Scalar-Plain">properties</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">application_id</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">type</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
+      <span class="l l-Scalar l-Scalar-Plain">description</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">ID of the application</span>
+      <span class="l l-Scalar l-Scalar-Plain">example</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">order-service</span>
+    <span class="l l-Scalar l-Scalar-Plain">api_id</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">type</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
+      <span class="l l-Scalar l-Scalar-Plain">description</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">ID of the API</span>
+      <span class="l l-Scalar l-Scalar-Plain">example</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">orders-api</span>
+    <span class="l l-Scalar l-Scalar-Plain">path_templates</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">description</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">Endpoints to be monitored.</span>
+      <span class="l l-Scalar l-Scalar-Plain">type</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">array</span>
+      <span class="l l-Scalar l-Scalar-Plain">items</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">type</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
+        <span class="l l-Scalar l-Scalar-Plain">description</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">&gt;</span>
+          <span class="no">Path template in /articles/{article-id} (OpenAPI 3) or in /articles/:article-id format.</span>
+          <span class="no">NOTE: They will be normalized to the :this format for metrics naming.</span>
+        <span class="l l-Scalar l-Scalar-Plain">example</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">/orders/{order-id}</span>
+</pre></div>
 
 <p>Configuration Example:</p>
-<pre><code>apiUsageMonitoring(`
+<div class="codehilite"><pre><span></span>apiUsageMonitoring(`
     {
         &quot;application_id&quot;: &quot;my-app&quot;,
         &quot;api_id&quot;: &quot;orders-api&quot;,
@@ -971,100 +2294,110 @@ of the following format.</p>
         ]
     }
 `)
-</code></pre>
+</pre></div>
 
 <p>NOTE: Non configured paths will be tracked with <code>&lt;unknown&gt;</code> application ID, API ID
 and path template.</p>
-<pre><code>apiUsageMonitoring.custom.&lt;unknown&gt;.&lt;unknown&gt;.GET.&lt;unknown&gt;.http_count
-</code></pre>
+<div class="codehilite"><pre><span></span>apiUsageMonitoring.custom.&amp;lt;unknown&amp;gt;.&amp;lt;unknown&amp;gt;.GET.&amp;lt;unknown&amp;gt;.http_count
+</pre></div>
+
+
 <p>Based on the previous configuration, here is an example of a counter metric.</p>
-<pre><code>apiUsageMonitoring.custom.my-app.orders-api.GET.foo/orders/:order-id.http_count
-</code></pre>
+<div class="codehilite"><pre><span></span>apiUsageMonitoring.custom.my-app.orders-api.GET.foo/orders/:order-id.http_count
+</pre></div>
+
+
 <p>Here is the <em>Prometheus</em> query to obtain it.</p>
-<pre><code>sum(rate(skipper_custom_total{key="apiUsageMonitoring.custom.my-app.orders-api.GET.foo/orders/:order-id.http_count"}[60s])) by (key)
-</code></pre>
+<div class="codehilite"><pre><span></span>sum(rate(skipper_custom_total{key=&quot;apiUsageMonitoring.custom.my-app.orders-api.GET.foo/orders/:order-id.http_count&quot;}[60s])) by (key)
+</pre></div>
+
+
 <p>Here is an example of a histogram metric.</p>
-<pre><code>apiUsageMonitoring.custom.my_app.orders-api.POST.foo/orders.latency
-</code></pre>
+<div class="codehilite"><pre><span></span>apiUsageMonitoring.custom.my_app.orders-api.POST.foo/orders.latency
+</pre></div>
+
+
 <p>Here is the <em>Prometheus</em> query to obtain it.</p>
-<pre><code>histogram_quantile(0.5, sum(rate(skipper_custom_duration_seconds_bucket{key="apiUsageMonitoring.custom.my-app.orders-api.POST.foo/orders.latency"}[60s])) by (le, key))
-</code></pre></div>
-        </div>
+<div class="codehilite"><pre><span></span>histogram_quantile(0.5, sum(rate(skipper_custom_duration_seconds_bucket{key=&quot;apiUsageMonitoring.custom.my-app.orders-api.POST.foo/orders.latency&quot;}[60s])) by (le, key))
+</pre></div>
+                
+                  
+                
+              
+              
+                
 
-        <footer class="col-md-12">
-            <hr>
-            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
-        </footer>
-        <script>
-            var base_url = "../..",
-                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
-        </script>
-        <script src="../../js/base.js" defer></script>
-        <script src="../../search/main.js" defer></script>
 
-        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                <h4 class="modal-title" id="exampleModalLabel">Search</h4>
-            </div>
-            <div class="modal-body">
-                <p>
-                    From here you can search these documents. Enter
-                    your search terms below.
-                </p>
-                <form role="form">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
-                    </div>
-                </form>
-                <div id="mkdocs-search-results"></div>
-            </div>
-            <div class="modal-footer">
-            </div>
+              
+            </article>
+          </div>
         </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../.." title="Introduction" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Introduction
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../predicates/" title="Predicates" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Predicates
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
     </div>
-</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="Keyboard Shortcuts Modal" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                <h4 class="modal-title" id="exampleModalLabel">Keyboard Shortcuts</h4>
-            </div>
-            <div class="modal-body">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th style="width: 20%;">Keys</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td class="help shortcut"><kbd>?</kbd></td>
-                    <td>Open this help</td>
-                  </tr>
-                  <tr>
-                    <td class="next shortcut"><kbd>n</kbd></td>
-                    <td>Next page</td>
-                  </tr>
-                  <tr>
-                    <td class="prev shortcut"><kbd>p</kbd></td>
-                    <td>Previous page</td>
-                  </tr>
-                  <tr>
-                    <td class="search shortcut"><kbd>s</kbd></td>
-                    <td>Search</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div class="modal-footer">
-            </div>
-        </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        powered by
+        <a href="https://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+      </div>
+      
+        
+      
     </div>
-</div>
-
-    </body>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/application.5e60981f.js"></script>
+      
+      <script>app.initialize({version:"1.0.1",url:{base:"../.."}})</script>
+      
+    
+    
+      
+    
+  </body>
 </html>

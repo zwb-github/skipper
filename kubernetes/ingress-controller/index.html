@@ -1,227 +1,857 @@
+
+
+
+
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        
-        
-        
-        <link rel="shortcut icon" href="../../img/favicon.ico">
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../../favicon.ico">
+      <meta name="generator" content="mkdocs-1.0.1, mkdocs-material-3.0.6">
+    
+    
+      
         <title>Ingress Controller Deployment - Skipper</title>
-        <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
-        <link href="../../css/font-awesome.min.css" rel="stylesheet">
-        <link href="../../css/base.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
-        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!--[if lt IE 9]>
-            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-        <![endif]-->
-
-        <script src="../../js/jquery-1.10.2.min.js" defer></script>
-        <script src="../../js/bootstrap-3.0.3.min.js" defer></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-        <script>hljs.initHighlightingOnLoad();</script> 
-    </head>
-
-    <body>
-
-        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
-            <div class="container">
-
-                <!-- Collapsed navigation -->
-                <div class="navbar-header">
-                    <!-- Expander button -->
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="../..">Skipper</a>
-                </div>
-
-                <!-- Expanded navigation -->
-                <div class="navbar-collapse collapse">
-                        <!-- Main navigation -->
-                        <ul class="nav navbar-nav">
-                            <li >
-                                <a href="../..">Introduction</a>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference <b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    
-<li >
-    <a href="../../reference/filters/">Filters</a>
-</li>
-                                    
-<li >
-    <a href="../../reference/predicates/">Predicates</a>
-</li>
-                                    
-<li >
-    <a href="../../reference/scripts/">Scripts</a>
-</li>
-                                    
-<li >
-    <a href="../../reference/plugins/">Plugins</a>
-</li>
-                                    
-<li >
-    <a href="../../reference/architecture/">Architecture</a>
-</li>
-                                    
-<li >
-    <a href="../../reference/development/">Development</a>
-</li>
-                                    
-<li >
-    <a href="../../tutorials/video-howto-build/">Video - How to build</a>
-</li>
-                                    
-  <li class="dropdown-submenu">
-    <a href="#">Data Clients</a>
-    <ul class="dropdown-menu">
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/application.451f80e5.css">
+      
+        <link rel="stylesheet" href="../../assets/stylesheets/application-palette.22915126.css">
+      
+      
+        
+        
+        <meta name="theme-color" content="">
+      
+    
+    
+      <script src="../../assets/javascripts/modernizr.1aa3b519.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../assets/fonts/material-icons.css">
+    
+    
+  </head>
+  
+    
+    
+    <body dir="ltr" data-md-color-primary="white" data-md-color-accent="">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448"
+    viewBox="0 0 416 448" id="__github">
+  <path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19-18.125
+        8.5-18.125-8.5-10.75-19-3.125-20.5 3.125-20.5 10.75-19 18.125-8.5
+        18.125 8.5 10.75 19 3.125 20.5zM320 304q0 10-3.125 20.5t-10.75
+        19-18.125 8.5-18.125-8.5-10.75-19-3.125-20.5 3.125-20.5 10.75-19
+        18.125-8.5 18.125 8.5 10.75 19 3.125 20.5zM360
+        304q0-30-17.25-51t-46.75-21q-10.25 0-48.75 5.25-17.75 2.75-39.25
+        2.75t-39.25-2.75q-38-5.25-48.75-5.25-29.5 0-46.75 21t-17.25 51q0 22 8
+        38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0
+        37.25-1.75t35-7.375 30.5-15 20.25-25.75 8-38.375zM416 260q0 51.75-15.25
+        82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5-41.75
+        1.125q-19.5 0-35.5-0.75t-36.875-3.125-38.125-7.5-34.25-12.875-30.25-20.25-21.5-28.75q-15.5-30.75-15.5-82.75
+        0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25
+        30.875q36.75-8.75 77.25-8.75 37 0 70 8 26.25-20.5
+        46.75-30.25t47.25-9.75q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34
+        99.5z" />
+</svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#skipper-ingress-controller" tabindex="1" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="../.." title="Skipper" class="md-header-nav__button md-logo">
+          
+            <img src="../../favicon.ico" width="24" height="24">
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
             
-<li >
-    <a href="../../data-clients/eskip-file/">Eskip File</a>
-</li>
+              <span class="md-header-nav__topic">
+                Skipper
+              </span>
+              <span class="md-header-nav__topic">
+                Ingress Controller Deployment
+              </span>
             
-<li >
-    <a href="../../data-clients/etcd/">Etcd</a>
-</li>
-            
-<li >
-    <a href="../../data-clients/kubernetes/">Kubernetes</a>
-</li>
-            
-<li >
-    <a href="../../data-clients/innkeeper/">Innkeeper API</a>
-</li>
-            
-<li >
-    <a href="../../data-clients/route-string/">Route String</a>
-</li>
-    </ul>
-  </li>
-                                    
-  <li class="dropdown-submenu">
-    <a href="#">Operation</a>
-    <ul class="dropdown-menu">
-            
-<li >
-    <a href="../../operation/deployment/">Deployment</a>
-</li>
-            
-<li >
-    <a href="../../operation/operation/">Operation</a>
-</li>
-    </ul>
-  </li>
-                                </ul>
-                            </li>
-                            <li class="dropdown active">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Kubernetes <b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    
-<li class="active">
-    <a href="./">Ingress Controller Deployment</a>
-</li>
-                                    
-<li >
-    <a href="../ingress-usage/">Ingress Usage</a>
-</li>
-                                    
-<li >
-    <a href="../ingress-backends/">Ingress Backends</a>
-</li>
-                                </ul>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tutorials <b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    
-<li >
-    <a href="../../tutorials/basics/">Basis</a>
-</li>
-                                    
-<li >
-    <a href="../../tutorials/common-use-cases/">Common Use Cases</a>
-</li>
-                                    
-<li >
-    <a href="../../tutorials/development/">Development</a>
-</li>
-                                    
-<li >
-    <a href="../../tutorials/auth/">Authentication and Autorization</a>
-</li>
-                                    
-<li >
-    <a href="../../tutorials/ratelimit/">Ratelimits</a>
-</li>
-                                </ul>
-                            </li>
-                        </ul>
-
-                    <ul class="nav navbar-nav navbar-right">
-                        <li>
-                            <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
-                                <i class="fa fa-search"></i> Search
-                            </a>
-                        </li>
-                            <li >
-                                <a rel="next" href="../../operation/operation/">
-                                    <i class="fa fa-arrow-left"></i> Previous
-                                </a>
-                            </li>
-                            <li >
-                                <a rel="prev" href="../ingress-usage/">
-                                    Next <i class="fa fa-arrow-right"></i>
-                                </a>
-                            </li>
-                    </ul>
-                </div>
-            </div>
+          
         </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          
+            <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+            
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+          
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
 
-        <div class="container">
-                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
-    <ul class="nav bs-sidenav">
-        <li class="main active"><a href="#skipper-ingress-controller">Skipper Ingress Controller</a></li>
-            <li><a href="#why-you-should-use-skipper-as-ingress-controller">Why you should use skipper as ingress controller?</a></li>
-            <li><a href="#what-is-an-ingress-controller">What is an Ingress-Controller?</a></li>
-            <li><a href="#why-skipper-uses-endpoints-and-not-services">Why skipper uses endpoints and not services?</a></li>
-            <li><a href="#aws-deployment">AWS deployment</a></li>
-            <li><a href="#baremetal-deployment">Baremetal deployment</a></li>
-            <li><a href="#requirements">Requirements</a></li>
-        <li class="main "><a href="#install-skipper-as-ingress-controller">Install Skipper as ingress-controller</a></li>
-            <li><a href="#multiple-skipper-deployments">Multiple skipper deployments</a></li>
-            <li><a href="#scoping-skipper-deployments-to-a-single-namespace">Scoping Skipper Deployments to a Single Namespace</a></li>
-            <li><a href="#install-skipper-with-enabled-rbac">Install Skipper with enabled RBAC</a></li>
-            <li><a href="#helm-based-deployment">Helm-based deployment</a></li>
+
+  
+
+
+  <a href="https://github.com/zalando/skipper/" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#__github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      GitHub
+    </div>
+  </a>
+
+          </div>
+        </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+        
+
+  
+
+<nav class="md-tabs md-tabs--active" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  <li class="md-tabs__item">
+    
+      <a href="../.." title="Introduction" class="md-tabs__link">
+        Introduction
+      </a>
+    
+  </li>
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../../reference/filters/" title="Reference" class="md-tabs__link">
+          Reference
+        </a>
+      
+    </li>
+  
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="./" title="Kubernetes" class="md-tabs__link md-tabs__link--active">
+          Kubernetes
+        </a>
+      
+    </li>
+  
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../../tutorials/basics/" title="Tutorials" class="md-tabs__link">
+          Tutorials
+        </a>
+      
+    </li>
+  
+
+      
     </ul>
-</div></div>
-                <div class="col-md-9" role="main">
+  </div>
+</nav>
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="../.." title="Skipper" class="md-nav__button md-logo">
+      
+        <img src="../../favicon.ico" width="48" height="48">
+      
+    </a>
+    Skipper
+  </label>
+  
+    <div class="md-nav__source">
+      
 
-<h1 id="skipper-ingress-controller">Skipper Ingress Controller</h1>
+
+  
+
+
+  <a href="https://github.com/zalando/skipper/" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#__github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      GitHub
+    </div>
+  </a>
+
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../.." title="Introduction" class="md-nav__link">
+      Introduction
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+    
+    <label class="md-nav__link" for="nav-2">
+      Reference
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        Reference
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../reference/filters/" title="Filters" class="md-nav__link">
+      Filters
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../reference/predicates/" title="Predicates" class="md-nav__link">
+      Predicates
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../reference/scripts/" title="Scripts" class="md-nav__link">
+      Scripts
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../reference/plugins/" title="Plugins" class="md-nav__link">
+      Plugins
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../reference/architecture/" title="Architecture" class="md-nav__link">
+      Architecture
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../reference/development/" title="Development" class="md-nav__link">
+      Development
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../tutorials/video-howto-build/" title="Video - How to build" class="md-nav__link">
+      Video - How to build
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2-8" type="checkbox" id="nav-2-8">
+    
+    <label class="md-nav__link" for="nav-2-8">
+      Data Clients
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-2-8">
+        Data Clients
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../data-clients/eskip-file/" title="Eskip File" class="md-nav__link">
+      Eskip File
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../data-clients/etcd/" title="Etcd" class="md-nav__link">
+      Etcd
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../data-clients/kubernetes/" title="Kubernetes" class="md-nav__link">
+      Kubernetes
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../data-clients/route-string/" title="Route String" class="md-nav__link">
+      Route String
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2-9" type="checkbox" id="nav-2-9">
+    
+    <label class="md-nav__link" for="nav-2-9">
+      Operation
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-2-9">
+        Operation
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../operation/deployment/" title="Deployment" class="md-nav__link">
+      Deployment
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../operation/operation/" title="Operation" class="md-nav__link">
+      Operation
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" checked>
+    
+    <label class="md-nav__link" for="nav-3">
+      Kubernetes
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        Kubernetes
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Ingress Controller Deployment
+      </label>
+    
+    <a href="./" title="Ingress Controller Deployment" class="md-nav__link md-nav__link--active">
+      Ingress Controller Deployment
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-you-should-use-skipper-as-ingress-controller" title="Why you should use skipper as ingress controller?" class="md-nav__link">
+    Why you should use skipper as ingress controller?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-an-ingress-controller" title="What is an Ingress-Controller?" class="md-nav__link">
+    What is an Ingress-Controller?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-skipper-uses-endpoints-and-not-services" title="Why skipper uses endpoints and not services?" class="md-nav__link">
+    Why skipper uses endpoints and not services?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#aws-deployment" title="AWS deployment" class="md-nav__link">
+    AWS deployment
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#baremetal-deployment" title="Baremetal deployment" class="md-nav__link">
+    Baremetal deployment
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#requirements" title="Requirements" class="md-nav__link">
+    Requirements
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../ingress-usage/" title="Ingress Usage" class="md-nav__link">
+      Ingress Usage
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../ingress-backends/" title="Ingress Backends" class="md-nav__link">
+      Ingress Backends
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      Tutorials
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        Tutorials
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../tutorials/basics/" title="Basics" class="md-nav__link">
+      Basics
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../tutorials/common-use-cases/" title="Common Use Cases" class="md-nav__link">
+      Common Use Cases
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../tutorials/development/" title="Development" class="md-nav__link">
+      Development
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../tutorials/auth/" title="Authentication and Autorization" class="md-nav__link">
+      Authentication and Autorization
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../tutorials/ratelimit/" title="Ratelimits" class="md-nav__link">
+      Ratelimits
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-you-should-use-skipper-as-ingress-controller" title="Why you should use skipper as ingress controller?" class="md-nav__link">
+    Why you should use skipper as ingress controller?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-an-ingress-controller" title="What is an Ingress-Controller?" class="md-nav__link">
+    What is an Ingress-Controller?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-skipper-uses-endpoints-and-not-services" title="Why skipper uses endpoints and not services?" class="md-nav__link">
+    Why skipper uses endpoints and not services?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#aws-deployment" title="AWS deployment" class="md-nav__link">
+    AWS deployment
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#baremetal-deployment" title="Baremetal deployment" class="md-nav__link">
+    Baremetal deployment
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#requirements" title="Requirements" class="md-nav__link">
+    Requirements
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/zalando/skipper/edit/master/docs/kubernetes/ingress-controller.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                
+                
+                <h1 id="skipper-ingress-controller">Skipper Ingress Controller<a class="headerlink" href="#skipper-ingress-controller" title="Permanent link">&para;</a></h1>
 <p>This documentation is meant for for cluster operators and describes
 how to install Skipper as Ingress-Controller into your Kubernetes
 Cluster.</p>
-<h2 id="why-you-should-use-skipper-as-ingress-controller">Why you should use skipper as ingress controller?</h2>
+<h2 id="why-you-should-use-skipper-as-ingress-controller">Why you should use skipper as ingress controller?<a class="headerlink" href="#why-you-should-use-skipper-as-ingress-controller" title="Permanent link">&para;</a></h2>
 <p>Baremetal loadbalancer perform really well, but the configuration is
 not updated frequently and most of these installations are not meant
 to rapidly change. With introducing Kubernetes this will change and
 there is a need of rapid changing http routers. Skipper is designed
-for rapidly changing it's routing tree.</p>
+for rapidly changing it&rsquo;s routing tree.</p>
 <p>Cloud loadbalancers are fine to scale and to change, but do not
 provide many features. Skipper has advanced resiliency and deployment
 features, that you can use to enhance your environment. For example
 ratelimits, circuitbreakers, blue-green deployments, shadow traffic
 and <a href="../ingress-usage/">more</a>.</p>
-<h2 id="what-is-an-ingress-controller">What is an Ingress-Controller?</h2>
+<h2 id="what-is-an-ingress-controller">What is an Ingress-Controller?<a class="headerlink" href="#what-is-an-ingress-controller" title="Permanent link">&para;</a></h2>
 <p>Ingress-controllers are serving http requests into a Kubernetes
 cluster. Most of the time traffic will pass ingress and go to a
 Kubernetes endpoints of the respective pods.
@@ -235,7 +865,7 @@ to some stable IP addresses that act as a loadbalancer.</p>
 <p>You would point your DNS entries to the
 loadbalancer in front of skipper, for example automated using
 <a href="https://github.com/kubernetes-incubator/external-dns">external-dns</a>.</p>
-<h2 id="why-skipper-uses-endpoints-and-not-services">Why skipper uses endpoints and not services?</h2>
+<h2 id="why-skipper-uses-endpoints-and-not-services">Why skipper uses endpoints and not services?<a class="headerlink" href="#why-skipper-uses-endpoints-and-not-services" title="Permanent link">&para;</a></h2>
 <p>Skipper does not use <a href="http://kubernetes.io/docs/user-guide/services">Kubernetes
 Services</a> to route
 traffic to the pods. Instead it uses the Endpoints API to bypass
@@ -247,7 +877,7 @@ retries to another endpoint in case it gets a connection refused or
 TLS handshake error to the endpoint.  Other reasons are future support
 of features like session affinity, different loadbalancer
 algorithms or distributed loadbalancing also known as service mesh.</p>
-<h2 id="aws-deployment">AWS deployment</h2>
+<h2 id="aws-deployment">AWS deployment<a class="headerlink" href="#aws-deployment" title="Permanent link">&para;</a></h2>
 <p>In AWS, this could be an ALB with DNS pointing to the ALB. The ALB can
 then point to an ingress-controller running on an EC2 node and uses
 Kubernetes <code>hostnetwork</code> port specification in the Pod spec.</p>
@@ -257,7 +887,7 @@ Kubernetes <code>hostnetwork</code> port specification in the Pod spec.</p>
 endpoints for <a href="https://opensource.zalando.com/skipper/kubernetes/ingress-controller/#why-skipper-uses-endpoints-and-not-services">good reasons</a>,
 therefore the real traffic flow is shown in the next picture.
 <img alt="technical ingress-traffic-flow" src="../../img/ingress-traffic-flow-aws-technical.svg" /></p>
-<h2 id="baremetal-deployment">Baremetal deployment</h2>
+<h2 id="baremetal-deployment">Baremetal deployment<a class="headerlink" href="#baremetal-deployment" title="Permanent link">&para;</a></h2>
 <p>In datacenter, baremetal environments, you probably have a hardware
 loadbalancer or some haproxy or nginx setup, that serves most of your
 production traffic and DNS points to these endpoints. For example
@@ -271,7 +901,7 @@ if you for example use PowerDNS as provider and have a loadbalancer
 controller that modifies the status field in ingress to your
 loadbalancer virtual IP.</p>
 <p><img alt="ingress-traffic-flow" src="../../img/ingress-traffic-flow-baremetal.svg" /></p>
-<h2 id="requirements">Requirements</h2>
+<h2 id="requirements">Requirements<a class="headerlink" href="#requirements" title="Permanent link">&para;</a></h2>
 <p>In general for one endpoint you need, a DNS A/AAAA record pointing to
 one or more loadbalancer IPs. Skipper is best used behind this
 layer 4 loadbalancer to route and manipulate HTTP data.</p>
@@ -289,7 +919,7 @@ layer 4 loadbalancer to route and manipulate HTTP data.</p>
 <li>you can use an automated redirect for all port 80 requests to https with <code>-kubernetes-https-redirect</code>
 and change the default redirect code with <code>-kubernetes-https-redirect-code</code></li>
 </ul>
-<h1 id="install-skipper-as-ingress-controller">Install Skipper as ingress-controller</h1>
+<h1 id="install-skipper-as-ingress-controller">Install Skipper as ingress-controller<a class="headerlink" href="#install-skipper-as-ingress-controller" title="Permanent link">&para;</a></h1>
 <p>You should have a base understanding of <a href="https://kubernetes.io">Kubernetes</a> and
 <a href="https://kubernetes.io/docs/concepts/services-networking/ingress/">Ingress</a>.</p>
 <p>Prerequisites: First you have to install skipper-ingress as for
@@ -297,129 +927,140 @@ example daemonset, create a deployment and a service.</p>
 <p>We start to deploy skipper-ingress as a daemonset, use hostNetwork and
 expose the TCP port 9999 on each Kubernetes worker node for incoming ingress
 traffic.</p>
-<pre><code>% cat skipper-ingress-ds.yaml
-apiVersion: extensions/v1beta1
-kind: DaemonSet
-metadata:
-  name: skipper-ingress
-  namespace: kube-system
-  labels:
-    application: skipper-ingress
-    version: v0.10.5
-    component: ingress
-spec:
-  selector:
-    matchLabels:
-      application: skipper-ingress
-  updateStrategy:
-    type: RollingUpdate
-  template:
-    metadata:
-      name: skipper-ingress
-      labels:
-        application: skipper-ingress
-        version: v0.10.5
-        component: ingress
-      annotations:
-        scheduler.alpha.kubernetes.io/critical-pod: ''
-    spec:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: master
-                operator: DoesNotExist
-      tolerations:
-      - key: CriticalAddonsOnly
-        operator: Exists
-      hostNetwork: true
-      containers:
-      - name: skipper-ingress
-        image: registry.opensource.zalan.do/pathfinder/skipper:v0.10.5
-        ports:
-        - name: ingress-port
-          containerPort: 9999
-          hostPort: 9999
-        args:
-          - "skipper"
-          - "-kubernetes"
-          - "-kubernetes-in-cluster"
-          - "-address=:9999"
-          - "-proxy-preserve-host"
-          - "-serve-host-metrics"
-          - "-enable-ratelimits"
-          - "-experimental-upgrade"
-          - "-metrics-exp-decay-sample"
-          - "-lb-healthcheck-interval=3s"
-          - "-metrics-flavour=codahale,prometheus"
-          - "-enable-connection-metrics"
-        resources:
-          requests:
-            cpu: 25m
-            memory: 25Mi
-        readinessProbe:
-          httpGet:
-            path: /kube-system/healthz
-            port: 9999
-          initialDelaySeconds: 5
-          timeoutSeconds: 5
-</code></pre>
+<div class="codehilite"><pre><span></span><span class="c1"># cat skipper-ingress-ds.yaml</span>
+<span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">extensions/v1beta1</span>
+<span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">DaemonSet</span>
+<span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">skipper-ingress</span>
+  <span class="l l-Scalar l-Scalar-Plain">namespace</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">kube-system</span>
+  <span class="l l-Scalar l-Scalar-Plain">labels</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">application</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">skipper-ingress</span>
+    <span class="l l-Scalar l-Scalar-Plain">version</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">v0.10.112</span>
+    <span class="l l-Scalar l-Scalar-Plain">component</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">ingress</span>
+<span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">selector</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">matchLabels</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">application</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">skipper-ingress</span>
+  <span class="l l-Scalar l-Scalar-Plain">updateStrategy</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">type</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">RollingUpdate</span>
+  <span class="l l-Scalar l-Scalar-Plain">template</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">skipper-ingress</span>
+      <span class="l l-Scalar l-Scalar-Plain">labels</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">application</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">skipper-ingress</span>
+        <span class="l l-Scalar l-Scalar-Plain">version</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">v0.10.112</span>
+        <span class="l l-Scalar l-Scalar-Plain">component</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">ingress</span>
+      <span class="l l-Scalar l-Scalar-Plain">annotations</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">scheduler.alpha.kubernetes.io/critical-pod</span><span class="p p-Indicator">:</span> <span class="s">&#39;&#39;</span>
+    <span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">priorityClassName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">system-node-critical</span>
+      <span class="l l-Scalar l-Scalar-Plain">tolerations</span><span class="p p-Indicator">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">key</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">dedicated</span>
+        <span class="l l-Scalar l-Scalar-Plain">operator</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">Exists</span>
+      <span class="l l-Scalar l-Scalar-Plain">nodeSelector</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">kubernetes.io/role</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">worker</span>
+      <span class="l l-Scalar l-Scalar-Plain">hostNetwork</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+      <span class="l l-Scalar l-Scalar-Plain">containers</span><span class="p p-Indicator">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">skipper-ingress</span>
+        <span class="l l-Scalar l-Scalar-Plain">image</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">registry.opensource.zalan.do/pathfinder/skipper:v0.10.112</span>
+        <span class="l l-Scalar l-Scalar-Plain">ports</span><span class="p p-Indicator">:</span>
+        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">ingress-port</span>
+          <span class="l l-Scalar l-Scalar-Plain">containerPort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">9999</span>
+          <span class="l l-Scalar l-Scalar-Plain">hostPort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">9999</span>
+        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">metrics-port</span>
+          <span class="l l-Scalar l-Scalar-Plain">containerPort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">9911</span>
+        <span class="l l-Scalar l-Scalar-Plain">args</span><span class="p p-Indicator">:</span>
+          <span class="p p-Indicator">-</span> <span class="s">&quot;skipper&quot;</span>
+          <span class="p p-Indicator">-</span> <span class="s">&quot;-kubernetes&quot;</span>
+          <span class="p p-Indicator">-</span> <span class="s">&quot;-kubernetes-in-cluster&quot;</span>
+          <span class="p p-Indicator">-</span> <span class="s">&quot;-kubernetes-path-mode=path-prefix&quot;</span>
+          <span class="p p-Indicator">-</span> <span class="s">&quot;-address=:9999&quot;</span>
+          <span class="p p-Indicator">-</span> <span class="s">&quot;-wait-first-route-load&quot;</span>
+          <span class="p p-Indicator">-</span> <span class="s">&quot;-proxy-preserve-host&quot;</span>
+          <span class="p p-Indicator">-</span> <span class="s">&quot;-serve-host-metrics&quot;</span>
+          <span class="p p-Indicator">-</span> <span class="s">&quot;-enable-ratelimits&quot;</span>
+          <span class="p p-Indicator">-</span> <span class="s">&quot;-experimental-upgrade&quot;</span>
+          <span class="p p-Indicator">-</span> <span class="s">&quot;-metrics-exp-decay-sample&quot;</span>
+          <span class="p p-Indicator">-</span> <span class="s">&quot;-reverse-source-predicate&quot;</span>
+          <span class="p p-Indicator">-</span> <span class="s">&quot;-lb-healthcheck-interval=3s&quot;</span>
+          <span class="p p-Indicator">-</span> <span class="s">&quot;-metrics-flavour=codahale,prometheus&quot;</span>
+          <span class="p p-Indicator">-</span> <span class="s">&quot;-enable-connection-metrics&quot;</span>
+          <span class="p p-Indicator">-</span> <span class="s">&quot;-max-audit-body=0&quot;</span>
+          <span class="p p-Indicator">-</span> <span class="s">&quot;-histogram-metric-buckets=.01,.025,.05,.075,.1,.2,.3,.4,.5,.75,1,2,3,4,5,7,10,15,20,30,60,120,300,600&quot;</span>
+        <span class="l l-Scalar l-Scalar-Plain">resources</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">requests</span><span class="p p-Indicator">:</span>
+            <span class="l l-Scalar l-Scalar-Plain">cpu</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">150m</span>
+            <span class="l l-Scalar l-Scalar-Plain">memory</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">150Mi</span>
+        <span class="l l-Scalar l-Scalar-Plain">readinessProbe</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">httpGet</span><span class="p p-Indicator">:</span>
+            <span class="l l-Scalar l-Scalar-Plain">path</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">/kube-system/healthz</span>
+            <span class="l l-Scalar l-Scalar-Plain">port</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">9999</span>
+          <span class="l l-Scalar l-Scalar-Plain">initialDelaySeconds</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+          <span class="l l-Scalar l-Scalar-Plain">timeoutSeconds</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+        <span class="l l-Scalar l-Scalar-Plain">securityContext</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">readOnlyRootFilesystem</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+          <span class="l l-Scalar l-Scalar-Plain">runAsNonRoot</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+          <span class="l l-Scalar l-Scalar-Plain">runAsUser</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">1000</span>
+</pre></div>
+
 <p>Please check, that you are using the <a href="https://github.com/zalando/skipper/releases/latest">latest
 release</a>, we do
 not maintain the <strong>latest</strong> tag.</p>
 <p>We now deploy a simple demo application serving html:</p>
-<pre><code>% cat demo-deployment.yaml
-apiVersion: apps/v1beta1
-kind: Deployment
-metadata:
-  name: skipper-demo
-spec:
-  replicas: 2
-  template:
-    metadata:
-      labels:
-        application: skipper-demo
-    spec:
-      containers:
-      - name: skipper-demo
-        image: registry.opensource.zalan.do/pathfinder/skipper:v0.10.5
-        args:
-          - "skipper"
-          - "-inline-routes"
-          - "* -&gt; inlineContent(\"&lt;body style='color: white; background-color: green;'&gt;&lt;h1&gt;Hello!&lt;/h1&gt;\") -&gt; &lt;shunt&gt;"
-        ports:
-        - containerPort: 9090
-</code></pre>
+<div class="codehilite"><pre><span></span><span class="c1"># cat demo-deployment.yaml</span>
+<span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">apps/v1beta1</span>
+<span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">Deployment</span>
+<span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">skipper-demo</span>
+<span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">replicas</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">2</span>
+  <span class="l l-Scalar l-Scalar-Plain">template</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">labels</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">application</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">skipper-demo</span>
+    <span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">containers</span><span class="p p-Indicator">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">skipper-demo</span>
+        <span class="l l-Scalar l-Scalar-Plain">image</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">registry.opensource.zalan.do/pathfinder/skipper:v0.10.112</span>
+        <span class="l l-Scalar l-Scalar-Plain">args</span><span class="p p-Indicator">:</span>
+          <span class="p p-Indicator">-</span> <span class="s">&quot;skipper&quot;</span>
+          <span class="p p-Indicator">-</span> <span class="s">&quot;-inline-routes&quot;</span>
+          <span class="p p-Indicator">-</span> <span class="s">&quot;*</span><span class="nv"> </span><span class="s">-&gt;</span><span class="nv"> </span><span class="s">inlineContent(\&quot;&lt;body</span><span class="nv"> </span><span class="s">style=&#39;color:</span><span class="nv"> </span><span class="s">white;</span><span class="nv"> </span><span class="s">background-color:</span><span class="nv"> </span><span class="s">green;&#39;&gt;&lt;h1&gt;Hello!&lt;/h1&gt;\&quot;)</span><span class="nv"> </span><span class="s">-&gt;</span><span class="nv"> </span><span class="s">&lt;shunt&gt;&quot;</span>
+        <span class="l l-Scalar l-Scalar-Plain">ports</span><span class="p p-Indicator">:</span>
+        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">containerPort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">9090</span>
+</pre></div>
+
 <p>We deploy a service type ClusterIP that we will select from ingress:</p>
-<pre><code>% cat demo-svc.yaml
-apiVersion: v1
-kind: Service
-metadata:
-  name: skipper-demo
-  labels:
-    application: skipper-demo
-spec:
-  type: ClusterIP
-  ports:
-    - port: 80
-      protocol: TCP
-      targetPort: 9090
-      name: external
-  selector:
-    application: skipper-demo
-</code></pre>
+<div class="codehilite"><pre><span></span><span class="c1"># cat demo-svc.yaml</span>
+<span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">v1</span>
+<span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">Service</span>
+<span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">skipper-demo</span>
+  <span class="l l-Scalar l-Scalar-Plain">labels</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">application</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">skipper-demo</span>
+<span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">type</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">ClusterIP</span>
+  <span class="l l-Scalar l-Scalar-Plain">ports</span><span class="p p-Indicator">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">port</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
+      <span class="l l-Scalar l-Scalar-Plain">protocol</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">TCP</span>
+      <span class="l l-Scalar l-Scalar-Plain">targetPort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">9090</span>
+      <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">external</span>
+  <span class="l l-Scalar l-Scalar-Plain">selector</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">application</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">skipper-demo</span>
+</pre></div>
+
 <p>To deploy both, you have to run:</p>
-<pre><code>% kubectl create -f demo-deployment.yaml
-% kubectl create -f demo-svc.yaml
-</code></pre>
+<div class="codehilite"><pre><span></span>kubectl create -f demo-deployment.yaml
+kubectl create -f demo-svc.yaml
+</pre></div>
+
 <p>Now we have a skipper-ingress running as daemonset exposing the TCP
 port 9999 on each worker node, a backend application running with 2
 replicas that serves some html on TCP port 9090, and we expose a
 cluster service on TCP port 80. Besides skipper-ingress, deployment
 and service can not be reached from outside the cluster. Now we expose
 the application with Ingress to the external network:</p>
-<pre><code>% cat demo-ing.yaml
+<div class="codehilite"><pre><span></span><span class="c1"># cat demo-ing.yaml</span>
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
@@ -431,14 +1072,17 @@ spec:
       paths:
       - backend:
           serviceName: skipper-demo
-          servicePort: 80
-</code></pre>
+          servicePort: <span class="m">80</span>
+</pre></div>
+
 <p>To deploy this ingress, you have to run:</p>
-<pre><code>% kubectl create -f demo-ing.yaml
-</code></pre>
+<div class="codehilite"><pre><span></span>kubectl create -f demo-ing.yaml
+</pre></div>
+
 <p>Skipper will configure itself for the given ingress, such that you can test doing:</p>
-<pre><code>% curl -v -H"Host: skipper-demo.&lt;mydomain.org&gt;" http://&lt;nodeip&gt;:9999/
-</code></pre>
+<div class="codehilite"><pre><span></span>curl -v -H<span class="s2">&quot;Host: skipper-demo.&lt;mydomain.org&gt;&quot;</span> http://&lt;nodeip&gt;:9999/
+</pre></div>
+
 <p>The next question you may ask is: how to expose this to your customers?</p>
 <p>The answer depends on your setup and complexity requirements. In the
 simplest case you could add one A record in your DNS <code>*.&lt;mydomain.org&gt;</code>
@@ -449,34 +1093,35 @@ something that configures your frontend loadbalancer, for example
 <a href="https://github.com/zalando-incubator/kube-ingress-aws-controller">kube-aws-ingress-controller</a>,
 and your DNS, <a href="https://github.com/kubernetes-incubator/external-dns">external-dns</a>
 automatically.</p>
-<h2 id="multiple-skipper-deployments">Multiple skipper deployments</h2>
+<h2 id="multiple-skipper-deployments">Multiple skipper deployments<a class="headerlink" href="#multiple-skipper-deployments" title="Permanent link">&para;</a></h2>
 <p>If you want to split for example <code>internal</code> and <code>public</code> traffic, it
 might be a good choice to split your ingress deployments. Skipper has
 the flag <code>--kubernetes-ingress-class=&lt;string&gt;</code> to only select ingress
 objects that have the annotation <code>kubernetes.io/ingress.class</code> set to
 <code>&lt;string&gt;</code>. Skipper will only create routes for ingress objects with
-it's annotation or ingress objects that do not have this annotation.</p>
+it&rsquo;s annotation or ingress objects that do not have this annotation.</p>
 <p>The default ingress class is <code>skipper</code>, if not set. You have to create
 your ingress objects with the annotation
 <code>kubernetes.io/ingress.class: skipper</code> to make sure only skipper will
 serve the traffic.</p>
 <p>Example ingress:</p>
-<pre><code>apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  annotations:
-    kubernetes.io/ingress.class: skipper
-  name: app
-spec:
-  rules:
-  - host: app-default.example.org
-    http:
-      paths:
-      - backend:
-          serviceName: app-svc
-          servicePort: 80
-</code></pre>
-<h2 id="scoping-skipper-deployments-to-a-single-namespace">Scoping Skipper Deployments to a Single Namespace</h2>
+<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">extensions/v1beta1</span>
+<span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">Ingress</span>
+<span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">annotations</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">kubernetes.io/ingress.class</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">skipper</span>
+  <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">app</span>
+<span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">rules</span><span class="p p-Indicator">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">host</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">app-default.example.org</span>
+    <span class="l l-Scalar l-Scalar-Plain">http</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">paths</span><span class="p p-Indicator">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">backend</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">serviceName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">app-svc</span>
+          <span class="l l-Scalar l-Scalar-Plain">servicePort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
+</pre></div>
+
+<h2 id="scoping-skipper-deployments-to-a-single-namespace">Scoping Skipper Deployments to a Single Namespace<a class="headerlink" href="#scoping-skipper-deployments-to-a-single-namespace" title="Permanent link">&para;</a></h2>
 <p>In some instances you might want skipper to only watch for ingress objects
 created in a single namespace. This can be achieved by using
 <code>kubernetes-namespace=&lt;string&gt;</code> where <code>&lt;string&gt;</code> is the Kubernetes namespace.
@@ -484,113 +1129,136 @@ Specifying this option forces Skipper to look at the namespace ingresses
 endpoint rather than the cluster-wide ingresses endpoint.</p>
 <p>By default this value is an empty string (<code>""</code>) and will scope the skipper
 instance to be cluster-wide, watching all <code>Ingress</code> objects across all namespaces.</p>
-<h2 id="install-skipper-with-enabled-rbac">Install Skipper with enabled RBAC</h2>
-<p>If Role-Based Access Control ("RBAC") is enabled you have to create some additional
+<h2 id="install-skipper-with-enabled-rbac">Install Skipper with enabled RBAC<a class="headerlink" href="#install-skipper-with-enabled-rbac" title="Permanent link">&para;</a></h2>
+<p>If Role-Based Access Control (&ldquo;RBAC&rdquo;) is enabled you have to create some additional
 resources to enable Skipper to query the Kubernetes API.</p>
 <p>This guide describes all necessary resources to get Skipper up and running in a
-Kubernetes cluster with RBAC enabled but it's highly recommended to read the
+Kubernetes cluster with RBAC enabled but it&rsquo;s highly recommended to read the
 <a href="https://kubernetes.io/docs/admin/authorization/rbac/">RBAC docs</a> to get a better
 understanding which permissions are delegated to Skipper within your Kubernetes cluster.</p>
 <p>First create a new <code>ServiceAccount</code> which will be assigned to the Skipper pods:</p>
-<pre><code>apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: skipper-ingress
-  namespace: kube-system
-</code></pre>
+<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">v1</span>
+<span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">ServiceAccount</span>
+<span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">skipper-ingress</span>
+  <span class="l l-Scalar l-Scalar-Plain">namespace</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">kube-system</span>
+</pre></div>
+
 <p>the required permissions are defined within a <code>ClusterRole</code> resource.</p>
-<p><em>Note: It's important to use a <code>ClusterRole</code> instead of normal <code>Role</code> because otherwise Skipper could only access resources in the namespace the <code>Role</code> was created!</em></p>
+<p><em>Note: It&rsquo;s important to use a <code>ClusterRole</code> instead of normal <code>Role</code> because otherwise Skipper could only access resources in the namespace the <code>Role</code> was created!</em></p>
 <p>ClusterRole:</p>
-<pre><code>apiVersion: rbac.authorization.k8s.io/v1beta1
-kind: ClusterRole
-metadata:
-  name: skipper-ingress
-rules:
-- apiGroups: ["extensions"]
-  resources: ["ingresses", ]
-  verbs: ["get", "list"]
-- apiGroups: [""]
-  resources: ["namespaces", "services", "endpoints"]
-  verbs: ["get"]
-</code></pre>
+<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">rbac.authorization.k8s.io/v1beta1</span>
+<span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">ClusterRole</span>
+<span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">skipper-ingress</span>
+<span class="l l-Scalar l-Scalar-Plain">rules</span><span class="p p-Indicator">:</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">apiGroups</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">[</span><span class="s">&quot;extensions&quot;</span><span class="p p-Indicator">]</span>
+  <span class="l l-Scalar l-Scalar-Plain">resources</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">[</span><span class="s">&quot;ingresses&quot;</span><span class="p p-Indicator">,</span> <span class="p p-Indicator">]</span>
+  <span class="l l-Scalar l-Scalar-Plain">verbs</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">[</span><span class="s">&quot;get&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;list&quot;</span><span class="p p-Indicator">]</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">apiGroups</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">[</span><span class="s">&quot;&quot;</span><span class="p p-Indicator">]</span>
+  <span class="l l-Scalar l-Scalar-Plain">resources</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">[</span><span class="s">&quot;namespaces&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;services&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;endpoints&quot;</span><span class="p p-Indicator">]</span>
+  <span class="l l-Scalar l-Scalar-Plain">verbs</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">[</span><span class="s">&quot;get&quot;</span><span class="p p-Indicator">]</span>
+</pre></div>
+
 <p>This <code>ClusterRole</code> defines access to <code>get</code> and <code>list</code> all created ingresses, namespaces, services and endpoints.</p>
 <p>To assign the defined <code>ClusterRole</code> to the previously created <code>ServiceAccount</code>
 a <code>ClusterRoleBinding</code> has to be created:</p>
 <p>ClusterRoleBinding:</p>
-<pre><code>apiVersion: rbac.authorization.k8s.io/v1beta1
-kind: ClusterRoleBinding
-metadata:
-  name: skipper-ingress
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: skipper-ingress
-subjects:
-- kind: ServiceAccount
-  name: skipper-ingress
-  namespace: kube-system
-</code></pre>
+<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">rbac.authorization.k8s.io/v1beta1</span>
+<span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">ClusterRoleBinding</span>
+<span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">skipper-ingress</span>
+<span class="l l-Scalar l-Scalar-Plain">roleRef</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">apiGroup</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">rbac.authorization.k8s.io</span>
+  <span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">ClusterRole</span>
+  <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">skipper-ingress</span>
+<span class="l l-Scalar l-Scalar-Plain">subjects</span><span class="p p-Indicator">:</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">ServiceAccount</span>
+  <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">skipper-ingress</span>
+  <span class="l l-Scalar l-Scalar-Plain">namespace</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">kube-system</span>
+</pre></div>
+
 <p>Last but not least the <code>ServiceAccount</code> has to be assigned to the Skipper daemonset.</p>
 <p>daemonset:</p>
-<pre><code>apiVersion: extensions/v1beta1
-kind: DaemonSet
-metadata:
-  name: skipper-ingress
-  namespace: kube-system
-  labels:
-    component: ingress
-spec:
-  selector:
-    matchLabels:
-      component: ingress
-  updateStrategy:
-    type: RollingUpdate
-  template:
-    metadata:
-      name: skipper-ingress
-      labels:
-        component: ingress
-        application: skipper
-    spec:
-      hostNetwork: true
-      serviceAccountName: skipper-ingress
-      containers:
-      - name: skipper-ingress
-        image: registry.opensource.zalan.do/pathfinder/skipper:v0.10.5
-        ports:
-        - name: ingress-port
-          containerPort: 9999
-          hostPort: 9999
-        - name: metrics-port
-          containerPort: 9911
-        args:
-          - "skipper"
-          - "-kubernetes"
-          - "-kubernetes-in-cluster"
-          - "-address=:9999"
-          - "-proxy-preserve-host"
-          - "-serve-host-metrics"
-          - "-enable-ratelimits"
-          - "-experimental-upgrade"
-          - "-metrics-exp-decay-sample"
-          - "-lb-healthcheck-interval=3s"
-          - "-metrics-flavour=codahale,prometheus"
-          - "-enable-connection-metrics"
-        resources:
-          requests:
-            cpu: 200m
-            memory: 200Mi
-        readinessProbe:
-          httpGet:
-            path: /kube-system/healthz
-            port: 9999
-          initialDelaySeconds: 5
-          timeoutSeconds: 5
-</code></pre>
+<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">extensions/v1beta1</span>
+<span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">DaemonSet</span>
+<span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">skipper-ingress</span>
+  <span class="l l-Scalar l-Scalar-Plain">namespace</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">kube-system</span>
+  <span class="l l-Scalar l-Scalar-Plain">labels</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">application</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">skipper-ingress</span>
+    <span class="l l-Scalar l-Scalar-Plain">version</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">v0.10.112</span>
+    <span class="l l-Scalar l-Scalar-Plain">component</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">ingress</span>
+<span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">selector</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">matchLabels</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">application</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">skipper-ingress</span>
+  <span class="l l-Scalar l-Scalar-Plain">updateStrategy</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">type</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">RollingUpdate</span>
+  <span class="l l-Scalar l-Scalar-Plain">template</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">skipper-ingress</span>
+      <span class="l l-Scalar l-Scalar-Plain">labels</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">application</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">skipper-ingress</span>
+        <span class="l l-Scalar l-Scalar-Plain">version</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">v0.10.112</span>
+        <span class="l l-Scalar l-Scalar-Plain">component</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">ingress</span>
+      <span class="l l-Scalar l-Scalar-Plain">annotations</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">scheduler.alpha.kubernetes.io/critical-pod</span><span class="p p-Indicator">:</span> <span class="s">&#39;&#39;</span>
+    <span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">priorityClassName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">system-node-critical</span>
+      <span class="l l-Scalar l-Scalar-Plain">tolerations</span><span class="p p-Indicator">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">key</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">dedicated</span>
+        <span class="l l-Scalar l-Scalar-Plain">operator</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">Exists</span>
+      <span class="l l-Scalar l-Scalar-Plain">nodeSelector</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">kubernetes.io/role</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">worker</span>
+      <span class="l l-Scalar l-Scalar-Plain">hostNetwork</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+      <span class="l l-Scalar l-Scalar-Plain">containers</span><span class="p p-Indicator">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">skipper-ingress</span>
+        <span class="l l-Scalar l-Scalar-Plain">image</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">registry.opensource.zalan.do/pathfinder/skipper:v0.10.112</span>
+        <span class="l l-Scalar l-Scalar-Plain">ports</span><span class="p p-Indicator">:</span>
+        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">ingress-port</span>
+          <span class="l l-Scalar l-Scalar-Plain">containerPort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">9999</span>
+          <span class="l l-Scalar l-Scalar-Plain">hostPort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">9999</span>
+        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">metrics-port</span>
+          <span class="l l-Scalar l-Scalar-Plain">containerPort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">9911</span>
+        <span class="l l-Scalar l-Scalar-Plain">args</span><span class="p p-Indicator">:</span>
+          <span class="p p-Indicator">-</span> <span class="s">&quot;skipper&quot;</span>
+          <span class="p p-Indicator">-</span> <span class="s">&quot;-kubernetes&quot;</span>
+          <span class="p p-Indicator">-</span> <span class="s">&quot;-kubernetes-in-cluster&quot;</span>
+          <span class="p p-Indicator">-</span> <span class="s">&quot;-kubernetes-path-mode=path-prefix&quot;</span>
+          <span class="p p-Indicator">-</span> <span class="s">&quot;-address=:9999&quot;</span>
+          <span class="p p-Indicator">-</span> <span class="s">&quot;-wait-first-route-load&quot;</span>
+          <span class="p p-Indicator">-</span> <span class="s">&quot;-proxy-preserve-host&quot;</span>
+          <span class="p p-Indicator">-</span> <span class="s">&quot;-serve-host-metrics&quot;</span>
+          <span class="p p-Indicator">-</span> <span class="s">&quot;-enable-ratelimits&quot;</span>
+          <span class="p p-Indicator">-</span> <span class="s">&quot;-experimental-upgrade&quot;</span>
+          <span class="p p-Indicator">-</span> <span class="s">&quot;-metrics-exp-decay-sample&quot;</span>
+          <span class="p p-Indicator">-</span> <span class="s">&quot;-reverse-source-predicate&quot;</span>
+          <span class="p p-Indicator">-</span> <span class="s">&quot;-lb-healthcheck-interval=3s&quot;</span>
+          <span class="p p-Indicator">-</span> <span class="s">&quot;-metrics-flavour=codahale,prometheus&quot;</span>
+          <span class="p p-Indicator">-</span> <span class="s">&quot;-enable-connection-metrics&quot;</span>
+          <span class="p p-Indicator">-</span> <span class="s">&quot;-max-audit-body=0&quot;</span>
+          <span class="p p-Indicator">-</span> <span class="s">&quot;-histogram-metric-buckets=.01,.025,.05,.075,.1,.2,.3,.4,.5,.75,1,2,3,4,5,7,10,15,20,30,60,120,300,600&quot;</span>
+        <span class="l l-Scalar l-Scalar-Plain">resources</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">requests</span><span class="p p-Indicator">:</span>
+            <span class="l l-Scalar l-Scalar-Plain">cpu</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">150m</span>
+            <span class="l l-Scalar l-Scalar-Plain">memory</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">150Mi</span>
+        <span class="l l-Scalar l-Scalar-Plain">readinessProbe</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">httpGet</span><span class="p p-Indicator">:</span>
+            <span class="l l-Scalar l-Scalar-Plain">path</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">/kube-system/healthz</span>
+            <span class="l l-Scalar l-Scalar-Plain">port</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">9999</span>
+          <span class="l l-Scalar l-Scalar-Plain">initialDelaySeconds</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+          <span class="l l-Scalar l-Scalar-Plain">timeoutSeconds</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+        <span class="l l-Scalar l-Scalar-Plain">securityContext</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">readOnlyRootFilesystem</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+          <span class="l l-Scalar l-Scalar-Plain">runAsNonRoot</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+          <span class="l l-Scalar l-Scalar-Plain">runAsUser</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">1000</span>
+</pre></div>
+
 <p>Please check, that you are using the <a href="https://github.com/zalando/skipper/releases/latest">latest
 release</a>, we do
 not maintain the <strong>latest</strong> tag.</p>
-<h2 id="helm-based-deployment">Helm-based deployment</h2>
+<h2 id="helm-based-deployment">Helm-based deployment<a class="headerlink" href="#helm-based-deployment" title="Permanent link">&para;</a></h2>
 <p><a href="https://helm.sh/">Helm</a> calls itself the package manager for Kubernetes and therefore take cares of the deployment of whole applications including resources like services, configurations and so on.</p>
 <p>Skipper is also available as community contributed Helm chart in the public <a href="https://quay.io/repository/">quay.io</a> registry.
 The latest packaged release can be found <a href="https://quay.io/application/baez/skipper">here</a>.
@@ -609,98 +1277,104 @@ Check the GitHub repository for all details.</p>
 </ul>
 <p>If your environment is setup correctly you should be able to run <code>helm version --client</code> and <code>helm registry version quay.io</code> and get some information about your tooling without any error.</p>
 <p>It is possible to deploy the chart without any further configuration like this:</p>
-<pre><code>helm registry upgrade quay.io/baez/skipper -- \
+<div class="codehilite"><pre><span></span>helm registry upgrade quay.io/baez/skipper -- \
     --install \
     --wait \
-    "&lt;your release name e.g. skipper&gt;"
-</code></pre>
+    &quot;your release name e.g. skipper&quot;
+</pre></div>
+
+
 <p>The <code>--wait</code> switch can be omitted as it only takes care that Helm is waiting until the chart is completely deployed (meaning all resources are created).</p>
 <p>To update the deployment to a newer version the same command can be used.</p>
-<p>If you have RBAC enabled in your Kubernetes instance you don't have to create all the previously described resources on your own but you can let Helm create them by simply adding one more switch:</p>
-<pre><code>helm registry upgrade quay.io/baez/skipper -- \
+<p>If you have RBAC enabled in your Kubernetes instance you don&rsquo;t have to create all the previously described resources on your own but you can let Helm create them by simply adding one more switch:</p>
+<div class="codehilite"><pre><span></span>helm registry upgrade quay.io/baez/skipper -- \
     --install \
     --wait \
     --set rbac.create=true \
-    "&lt;your release name e.g. skipper&gt;"
-</code></pre>
+    &quot;your release name e.g. skipper&quot;
+</pre></div>
+
+
 <p>There are some more options available for customization of the chart.
-Check the repository if you need more configuration possibilities.</p></div>
-        </div>
+Check the repository if you need more configuration possibilities.</p>
+                
+                  
+                
+              
+              
+                
 
-        <footer class="col-md-12">
-            <hr>
-            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
-        </footer>
-        <script>
-            var base_url = "../..",
-                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
-        </script>
-        <script src="../../js/base.js" defer></script>
-        <script src="../../search/main.js" defer></script>
 
-        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                <h4 class="modal-title" id="exampleModalLabel">Search</h4>
-            </div>
-            <div class="modal-body">
-                <p>
-                    From here you can search these documents. Enter
-                    your search terms below.
-                </p>
-                <form role="form">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
-                    </div>
-                </form>
-                <div id="mkdocs-search-results"></div>
-            </div>
-            <div class="modal-footer">
-            </div>
+              
+            </article>
+          </div>
         </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../../operation/operation/" title="Operation" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Operation
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../ingress-usage/" title="Ingress Usage" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Ingress Usage
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
     </div>
-</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="Keyboard Shortcuts Modal" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                <h4 class="modal-title" id="exampleModalLabel">Keyboard Shortcuts</h4>
-            </div>
-            <div class="modal-body">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th style="width: 20%;">Keys</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td class="help shortcut"><kbd>?</kbd></td>
-                    <td>Open this help</td>
-                  </tr>
-                  <tr>
-                    <td class="next shortcut"><kbd>n</kbd></td>
-                    <td>Next page</td>
-                  </tr>
-                  <tr>
-                    <td class="prev shortcut"><kbd>p</kbd></td>
-                    <td>Previous page</td>
-                  </tr>
-                  <tr>
-                    <td class="search shortcut"><kbd>s</kbd></td>
-                    <td>Search</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div class="modal-footer">
-            </div>
-        </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        powered by
+        <a href="https://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+      </div>
+      
+        
+      
     </div>
-</div>
-
-    </body>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/application.5e60981f.js"></script>
+      
+      <script>app.initialize({version:"1.0.1",url:{base:"../.."}})</script>
+      
+    
+    
+      
+    
+  </body>
 </html>

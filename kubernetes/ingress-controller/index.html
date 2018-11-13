@@ -1297,6 +1297,64 @@ Check the GitHub repository for all details.</p>
 
 <p>There are some more options available for customization of the chart.
 Check the repository if you need more configuration possibilities.</p>
+<h2 id="run-as-api-gateway-with-east-west-setup">Run as API Gateway with East-West setup<a class="headerlink" href="#run-as-api-gateway-with-east-west-setup" title="Permanent link">&para;</a></h2>
+<p>East-West means cluster internal service-to-service communication.
+For this you need to resolve DNS to skipper for an additional domain
+<code>.skipper.cluster.local</code> we introduce and add HTTP routes to route to
+the specified backend from your normal ingress object.</p>
+<h3 id="skipper">Skipper<a class="headerlink" href="#skipper" title="Permanent link">&para;</a></h3>
+<p>To enable the East-West in skipper, you need to run skipper with
+<code>-enable-kubernetes-east-west</code> enabled. Skipper will duplicate all
+routes with a <code>Host()</code> predicate and change it to match the host
+header scheme: <code>&lt;name&gt;.&lt;namespace&gt;.skipper.cluster.local</code>.</p>
+<p>You need also to have a kubernetes service type ClusterIP and write
+down the IP (p.e. <code>10.3.11.28</code>), which you will need in CoreDNS setup.</p>
+<h3 id="coredns">CoreDNS<a class="headerlink" href="#coredns" title="Permanent link">&para;</a></h3>
+<p>You can create the DNS records with the <code>template</code> plugin from CoreDNS.</p>
+<p>Corefile example:
+<div class="codehilite"><pre><span></span><span class="x">.:53 {</span>
+<span class="x">    errors</span>
+<span class="x">    health</span>
+<span class="x">    kubernetes cluster.local in-addr.arpa ip6.arpa {</span>
+<span class="x">        pods insecure</span>
+<span class="x">        upstream</span>
+<span class="x">        fallthrough in-addr.arpa ip6.arpa</span>
+<span class="x">    }</span>
+<span class="x">    template IN A skipper.cluster.local  {</span>
+<span class="x">      match &quot;^.*[.]skipper[.]cluster[.]local&quot;</span>
+<span class="x">      answer &quot;</span><span class="cp">{{</span> <span class="nv">.Name</span> <span class="cp">}}</span><span class="x"> 60 IN A 10.3.11.28&quot;</span>
+<span class="x">      fallthrough</span>
+<span class="x">    }</span>
+<span class="x">    prometheus :9153</span>
+<span class="x">    proxy . /etc/resolv.conf</span>
+<span class="x">    cache 30</span>
+<span class="x">    reload</span>
+<span class="x">}</span>
+</pre></div></p>
+<h3 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">&para;</a></h3>
+<p>If the setup was done correctly, the following ingress example will
+create an internal route with
+<code>Host(/^demo[.]default[.]skipper[.]cluster[.]local)</code> predicate:</p>
+<div class="codehilite"><pre><span></span><span class="n">apiVersion</span><span class="o">:</span> <span class="n">extensions</span><span class="o">/</span><span class="n">v1beta1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Ingress</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">demo</span>
+  <span class="kd">namespace</span><span class="o">:</span> <span class="k">default</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">rules</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">host</span><span class="o">:</span> <span class="n">demo</span><span class="o">.</span><span class="na">example</span><span class="o">.</span><span class="na">org</span>
+    <span class="n">http</span><span class="o">:</span>
+      <span class="n">paths</span><span class="o">:</span>
+      <span class="o">-</span> <span class="n">backend</span><span class="o">:</span>
+          <span class="n">serviceName</span><span class="o">:</span> <span class="n">example</span>
+          <span class="n">servicePort</span><span class="o">:</span> <span class="mi">80</span>
+</pre></div>
+
+<p>Your clients inside the cluster should call this example with
+<code>demo.default.skipper.cluster.local</code> in their host header. Example
+from inside a container:</p>
+<div class="codehilite"><pre><span></span>curl demo.default.skipper.cluster.local
+</pre></div>
                 
                   
                 

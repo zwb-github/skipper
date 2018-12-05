@@ -772,6 +772,46 @@
     apiUsageMonitoring
   </a>
   
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#available-metrics" title="Available Metrics" class="md-nav__link">
+    Available Metrics
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#endpoint-related-metrics" title="Endpoint Related Metrics" class="md-nav__link">
+    Endpoint Related Metrics
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#client-related-metrics" title="Client Related Metrics" class="md-nav__link">
+    Client Related Metrics
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#filter-configuration" title="Filter Configuration" class="md-nav__link">
+    Filter Configuration
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
       
@@ -1569,6 +1609,46 @@
     apiUsageMonitoring
   </a>
   
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#available-metrics" title="Available Metrics" class="md-nav__link">
+    Available Metrics
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#endpoint-related-metrics" title="Endpoint Related Metrics" class="md-nav__link">
+    Endpoint Related Metrics
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#client-related-metrics" title="Client Related Metrics" class="md-nav__link">
+    Client Related Metrics
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#filter-configuration" title="Filter Configuration" class="md-nav__link">
+    Filter Configuration
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
       
@@ -2234,30 +2314,197 @@ it by providing the <code>-enable-api-usage-monitoring</code> flag at Skipper st
 registered as a valid filter (allowing route configurations to specify it), but will perform no operation. That allows,
 per instance, production environments to use it and testing environments not to while keeping the same route configuration
 for all environments.</p>
+<p>For the client based metrics, additional flags need to be specified.</p>
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>api-usage-monitoring-realm-keys</code></td>
+<td>Name of the property in the JWT JSON body that contains the name of the <em>realm</em>.</td>
+</tr>
+<tr>
+<td><code>api-usage-monitoring-client-keys</code></td>
+<td>Name of the property in the JWT JSON body that contains the name of the <em>client</em>.</td>
+</tr>
+<tr>
+<td><code>api-usage-monitoring-default-client-tracking-pattern</code></td>
+<td>Optional. Default is empty. Allows to deploy Skipper with a default client tracking pattern. When <code>apiUsageMonitoring</code> configuration does not specify one, this default is used instead of disabling the client metrics.</td>
+</tr>
+</tbody>
+</table>
 <p>NOTE: Make sure to activate the metrics flavour proper to your environment using the <code>metrics-flavour</code>
 flag in order to get those metrics.</p>
-<p>Example:
-<div class="codehilite"><pre><span></span>skipper -enable-api-usage-monitoring -metrics-flavour prometheus
-</pre></div></p>
-<p>The structure of the metrics is:</p>
-<div class="codehilite"><pre><span></span>apiUsageMonitoring.custom.&lt;Application ID&gt;.&lt;API ID&gt;.&lt;HTTP Verb&gt;.&lt;Path Template&gt;.&lt;Metric Name&gt;
+<p>Example:</p>
+<div class="codehilite"><pre><span></span>skipper -metrics-flavour prometheus -enable-api-usage-monitoring -api-usage-monitoring-realm-keys<span class="o">=</span><span class="s2">&quot;realm&quot;</span> -api-usage-monitoring-client-keys<span class="o">=</span><span class="s2">&quot;managed-id&quot;</span>
+</pre></div>
+
+<p>The structure of the metrics is all of those elements, separated by <code>.</code> dots:</p>
+<table>
+<thead>
+<tr>
+<th>Part</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>apiUsageMonitoring.custom</code></td>
+<td>Every filter metrics starts with the name of the filter followed by <code>custom</code>. This part is constant.</td>
+</tr>
+<tr>
+<td>Application ID</td>
+<td>Identifier of the application, configured in the filter under <code>app_id</code>.</td>
+</tr>
+<tr>
+<td>API ID</td>
+<td>Identifier of the API, configured in the filter under <code>api_id</code>.</td>
+</tr>
+<tr>
+<td>Method</td>
+<td>The request&rsquo;s method (verb), capitalized (ex: <code>GET</code>, <code>POST</code>, <code>PUT</code>, <code>DELETE</code>).</td>
+</tr>
+<tr>
+<td>Path</td>
+<td>The request&rsquo;s path, in the form of the path template configured in the filter under <code>path_templates</code>.</td>
+</tr>
+<tr>
+<td>Realm</td>
+<td>The realm in which the client is authenticated.</td>
+</tr>
+<tr>
+<td>Client</td>
+<td>Identifier under which the client is authenticated.</td>
+</tr>
+<tr>
+<td>Metric Name</td>
+<td>Name (or key) of the metric being tracked.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="available-metrics">Available Metrics<a class="headerlink" href="#available-metrics" title="Permanent link">&para;</a></h3>
+<h4 id="endpoint-related-metrics">Endpoint Related Metrics<a class="headerlink" href="#endpoint-related-metrics" title="Permanent link">&para;</a></h4>
+<p>Those metrics are not identifying the realm and client. They always have <code>*</code> in their place.</p>
+<p>Example:</p>
+<div class="codehilite"><pre><span></span>                                                                             + Realm
+                                                                             |
+apiUsageMonitoring.custom.orders-backend.orders-api.GET.foo/orders/:order-id.*.*.http_count
+                                                                               | |
+                                                                               | + Metric Name
+                                                                               + Client
 </pre></div>
 
 <p>The available metrics are:</p>
-<ul>
-<li>HTTP exchanges counting:<ul>
-<li><strong>http_count</strong>: the number of HTTP exchanges</li>
-<li><strong>http5xx_count</strong>: number of HTTP exchanges resulting in a server error (HTTP status in the 500s)</li>
-<li><strong>http4xx_count</strong>: number of HTTP exchanges resulting in a client error (HTTP status in the 400s)</li>
-<li><strong>http3xx_count</strong>: number of HTTP exchanges resulting in a redirect (HTTP status in the 300s)</li>
-<li><strong>http2xx_count</strong>: number of HTTP exchanges resulting in success (HTTP status in the 200s)</li>
-</ul>
-</li>
-<li>Timing:<ul>
-<li><strong>latency</strong>: time between the first observable moment (a call to the filter&rsquo;s <code>Request</code>) until the last (a call to the filter&rsquo;s <code>Response</code>) </li>
-</ul>
-</li>
-</ul>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Metric Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Counter</td>
+<td><code>http_count</code></td>
+<td>number of HTTP exchanges</td>
+</tr>
+<tr>
+<td>Counter</td>
+<td><code>http1xx_count</code></td>
+<td>number of HTTP exchanges resulting in information (HTTP status in the 100s)</td>
+</tr>
+<tr>
+<td>Counter</td>
+<td><code>http2xx_count</code></td>
+<td>number of HTTP exchanges resulting in success (HTTP status in the 200s)</td>
+</tr>
+<tr>
+<td>Counter</td>
+<td><code>http3xx_count</code></td>
+<td>number of HTTP exchanges resulting in a redirect (HTTP status in the 300s)</td>
+</tr>
+<tr>
+<td>Counter</td>
+<td><code>http4xx_count</code></td>
+<td>number of HTTP exchanges resulting in a client error (HTTP status in the 400s)</td>
+</tr>
+<tr>
+<td>Counter</td>
+<td><code>http5xx_count</code></td>
+<td>number of HTTP exchanges resulting in a server error (HTTP status in the 500s)</td>
+</tr>
+<tr>
+<td>Histogram</td>
+<td><code>latency</code></td>
+<td>time between the first observable moment (a call to the filter&rsquo;s <code>Request</code>) until the last (a call to the filter&rsquo;s <code>Response</code>)</td>
+</tr>
+</tbody>
+</table>
+<h4 id="client-related-metrics">Client Related Metrics<a class="headerlink" href="#client-related-metrics" title="Permanent link">&para;</a></h4>
+<p>Those metrics are not identifying endpoint (path) and HTTP verb. They always have <code>*</code> as their place.</p>
+<p>Example:</p>
+<div class="codehilite"><pre><span></span>                                                    + HTTP Verb
+                                                    | + Path Template     + Metric Name
+                                                    | |                   |
+apiUsageMonitoring.custom.orders-backend.orders-api.*.*.users.mmustermann.http_count
+                                                        |     |
+                                                        |     + Client
+                                                        + Realm
+</pre></div>
+
+<p>The available metrics are:</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Metric Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Counter</td>
+<td><code>http_count</code></td>
+<td>number of HTTP exchanges</td>
+</tr>
+<tr>
+<td>Counter</td>
+<td><code>http1xx_count</code></td>
+<td>number of HTTP exchanges resulting in information (HTTP status in the 100s)</td>
+</tr>
+<tr>
+<td>Counter</td>
+<td><code>http2xx_count</code></td>
+<td>number of HTTP exchanges resulting in success (HTTP status in the 200s)</td>
+</tr>
+<tr>
+<td>Counter</td>
+<td><code>http3xx_count</code></td>
+<td>number of HTTP exchanges resulting in a redirect (HTTP status in the 300s)</td>
+</tr>
+<tr>
+<td>Counter</td>
+<td><code>http4xx_count</code></td>
+<td>number of HTTP exchanges resulting in a client error (HTTP status in the 400s)</td>
+</tr>
+<tr>
+<td>Counter</td>
+<td><code>http5xx_count</code></td>
+<td>number of HTTP exchanges resulting in a server error (HTTP status in the 500s)</td>
+</tr>
+<tr>
+<td>Counter</td>
+<td><code>latency_sum</code></td>
+<td>sum of seconds (in decimal form) between the first observable moment (a call to the filter&rsquo;s <code>Request</code>) until the last (a call to the filter&rsquo;s <code>Response</code>)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="filter-configuration">Filter Configuration<a class="headerlink" href="#filter-configuration" title="Permanent link">&para;</a></h3>
 <p>Endpoints can be monitored using the <code>apiUsageMonitoring</code> filter in the route. It accepts JSON objects (as strings)
 of the following format.</p>
 <div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">api-usage-monitoring-configuration</span><span class="p p-Indicator">:</span>
@@ -2284,6 +2531,25 @@ of the following format.</p>
           <span class="no">Path template in /articles/{article-id} (OpenAPI 3) or in /articles/:article-id format.</span>
           <span class="no">NOTE: They will be normalized to the :this format for metrics naming.</span>
         <span class="l l-Scalar l-Scalar-Plain">example</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">/orders/{order-id}</span>
+    <span class="l l-Scalar l-Scalar-Plain">client_tracking_pattern</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">description</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">&gt;</span>
+            <span class="no">The pattern that the combination `realm.client` must match in order for the client</span>
+            <span class="no">based metrics to be tracked, in form of a regular expression.</span>
+
+            <span class="no">By default (if undefined), it is set to `services\\..*`.</span>
+
+            <span class="no">An empty string disables the client metrics completely.</span>
+
+            <span class="no">IMPORTANT: Avoid patterns that would match too many different values like `.*` or `users\\..*`. Too</span>
+            <span class="no">many different metric keys would badly affect the performances of the metric systems (e.g.: Prometheus).</span>
+        <span class="l l-Scalar l-Scalar-Plain">type</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
+        <span class="l l-Scalar l-Scalar-Plain">examples</span><span class="p p-Indicator">:</span>
+            <span class="l l-Scalar l-Scalar-Plain">all_services</span><span class="p p-Indicator">:</span>
+                <span class="l l-Scalar l-Scalar-Plain">summary</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">All services are tracked (clients of the realm `services`).</span>
+                <span class="l l-Scalar l-Scalar-Plain">value</span><span class="p p-Indicator">:</span> <span class="s">&quot;services\\..*&quot;</span>
+            <span class="l l-Scalar l-Scalar-Plain">just_some_services</span><span class="p p-Indicator">:</span>
+                <span class="l l-Scalar l-Scalar-Plain">summary</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">Only services `orders` and `shipment` are tracked.</span>
+                <span class="l l-Scalar l-Scalar-Plain">value</span><span class="p p-Indicator">:</span> <span class="s">&quot;services\\.(orders|shipment)&quot;</span>
 </pre></div>
 
 <p>Configuration Example:</p>
@@ -2295,7 +2561,8 @@ of the following format.</p>
             &quot;foo/orders&quot;,
             &quot;foo/orders/:order-id&quot;,
             &quot;foo/orders/:order-id/order_item/{order-item-id}&quot;
-        ]
+        ],
+        &quot;client_tracking_pattern&quot;: &quot;users\\.(joe|sabine)&quot;
     }`,`{
         &quot;application_id&quot;: &quot;my-app&quot;,
         &quot;api_id&quot;: &quot;customers-api&quot;,
@@ -2309,26 +2576,23 @@ of the following format.</p>
 
 <p>NOTE: Non configured paths will be tracked with <code>&lt;unknown&gt;</code> application ID, API ID
 and path template.</p>
-<div class="codehilite"><pre><span></span>apiUsageMonitoring.custom.&lt;unknown&gt;.&lt;unknown&gt;.GET.&lt;unknown&gt;.http_count
+<div class="codehilite"><pre><span></span>apiUsageMonitoring.custom.&lt;unknown&gt;.&lt;unknown&gt;.GET.&lt;unknown&gt;.*.*.http_count
 </pre></div>
 
 <p>Based on the previous configuration, here is an example of a counter metric.</p>
-<div class="codehilite"><pre><span></span>apiUsageMonitoring.custom.my-app.orders-api.GET.foo/orders/:order-id.http_count
+<div class="codehilite"><pre><span></span>apiUsageMonitoring.custom.my-app.orders-api.GET.foo/orders/:order-id.*.*.http_count
 </pre></div>
-
 
 <p>Here is the <em>Prometheus</em> query to obtain it.</p>
-<div class="codehilite"><pre><span></span>sum(rate(skipper_custom_total{key=&quot;apiUsageMonitoring.custom.my-app.orders-api.GET.foo/orders/:order-id.http_count&quot;}[60s])) by (key)
+<div class="codehilite"><pre><span></span>sum(rate(skipper_custom_total{key=&quot;apiUsageMonitoring.custom.my-app.orders-api.GET.foo/orders/:order-id.*.*.http_count&quot;}[60s])) by (key)
 </pre></div>
-
 
 <p>Here is an example of a histogram metric.</p>
 <div class="codehilite"><pre><span></span>apiUsageMonitoring.custom.my_app.orders-api.POST.foo/orders.latency
 </pre></div>
 
-
 <p>Here is the <em>Prometheus</em> query to obtain it.</p>
-<div class="codehilite"><pre><span></span>histogram_quantile(0.5, sum(rate(skipper_custom_duration_seconds_bucket{key=&quot;apiUsageMonitoring.custom.my-app.orders-api.POST.foo/orders.latency&quot;}[60s])) by (le, key))
+<div class="codehilite"><pre><span></span>histogram_quantile(0.5, sum(rate(skipper_custom_duration_seconds_bucket{key=&quot;apiUsageMonitoring.custom.my-app.orders-api.POST.foo/orders.*.*.latency&quot;}[60s])) by (le, key))
 </pre></div>
                 
                   

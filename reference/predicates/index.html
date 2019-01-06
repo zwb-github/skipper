@@ -1077,7 +1077,7 @@
 <p>Predicates are a generic tool and can change the route matching behavior.
 Predicates can be chained using the double ampersand operator <code>&amp;&amp;</code>.</p>
 <p>Example route with a Host, Method and Path match predicates and a backend:</p>
-<div class="codehilite"><pre><span></span><span class="n">all</span><span class="o">:</span> <span class="n">Host</span><span class="o">(</span><span class="s2">&quot;^my-host-header\.example\.org$&quot;</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="n">Method</span><span class="o">(</span><span class="s2">&quot;GET&quot;</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="n">Path</span><span class="o">(</span><span class="s2">&quot;/hello&quot;</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;http://127.0.0.1:1234/&quot;</span><span class="o">;</span>
+<div class="codehilite"><pre><span></span><span class="n">all</span><span class="o">:</span> <span class="n">Host</span><span class="o">(/^</span><span class="n">my</span><span class="o">-</span><span class="n">host</span><span class="o">-</span><span class="n">header</span><span class="o">\.</span><span class="n">example</span><span class="o">\.</span><span class="n">org$</span><span class="sr">/) &amp;&amp; Method(&quot;GET&quot;) &amp;&amp; Path(&quot;/hello&quot;) -&gt; &quot;http://127.0.0.1:1234/</span><span class="err">&quot;</span><span class="o">;</span>
 </pre></div>
 
 <h2 id="path">Path<a class="headerlink" href="#path" title="Permanent link">&para;</a></h2>
@@ -1132,8 +1132,8 @@ PathRegexp(&quot;^/foo/(bar|qux)&quot;)
 <li>Host (regex)</li>
 </ul>
 <p>Examples:</p>
-<div class="codehilite"><pre><span></span>Host(&quot;/^my-host-header\.example\.org$/&quot;)
-Host(&quot;/header\.example\.org$/&quot;)
+<div class="codehilite"><pre><span></span>Host(/^my-host-header\.example\.org$/)
+Host(/header\.example\.org$/)
 </pre></div>
 
 <h2 id="method">Method<a class="headerlink" href="#method" title="Permanent link">&para;</a></h2>

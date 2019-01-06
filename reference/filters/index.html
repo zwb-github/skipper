@@ -632,6 +632,33 @@
     forwardToken
   </a>
   
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#oauthoidcuserinfo" title="oauthOIDCUserInfo" class="md-nav__link">
+    oauthOIDCUserInfo
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#oauthoidcanyclaims" title="oauthOIDCAnyClaims" class="md-nav__link">
+    oauthOIDCAnyClaims
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#oauthoidcallclaims" title="oauthOIDCAllClaims" class="md-nav__link">
+    oauthOIDCAllClaims
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1469,6 +1496,33 @@
     forwardToken
   </a>
   
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#oauthoidcuserinfo" title="oauthOIDCUserInfo" class="md-nav__link">
+    oauthOIDCUserInfo
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#oauthoidcanyclaims" title="oauthOIDCAnyClaims" class="md-nav__link">
+    oauthOIDCAnyClaims
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#oauthoidcallclaims" title="oauthOIDCAllClaims" class="md-nav__link">
+    oauthOIDCAllClaims
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2080,6 +2134,49 @@ then it does not have any effect.</p>
 <div class="codehilite"><pre><span></span>forwardToken(&quot;X-Tokeninfo-Forward&quot;)
 </pre></div>
 
+<h3 id="oauthoidcuserinfo">oauthOIDCUserInfo<a class="headerlink" href="#oauthoidcuserinfo" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span>oauthOIDCUserInfo(&quot;https://oidc-provider.example.com&quot;, &quot;client_id&quot;, &quot;client_secret&quot;,
+    &quot;http://target.example.com/subpath/callback&quot;, &quot;email profile&quot;, &quot;name email picture&quot;)
+</pre></div>
+
+<p>The filter needs the following parameters:</p>
+<ul>
+<li><strong>OpenID Connect Provider URL</strong> For example Google OpenID Connect is available on <code>https://accounts.google.com</code></li>
+<li><strong>Client ID</strong> This value is obtained from the provider upon registration of the application.</li>
+<li><strong>Client Secret</strong>  Also obtained from the provider</li>
+<li><strong>Callback URL</strong> The entire path to the callback from the provider on which the token will be received.
+    It can be any value which is a subpath on which the filter is applied.</li>
+<li><strong>Scopes</strong> The OpenID scopes separated by spaces which need to be specified when requesting the token from the provider.</li>
+<li><strong>Claims</strong> The claims which should be present in the token returned by the provider.</li>
+</ul>
+<h3 id="oauthoidcanyclaims">oauthOIDCAnyClaims<a class="headerlink" href="#oauthoidcanyclaims" title="Permanent link">&para;</a></h3>
+<p><div class="codehilite"><pre><span></span>oauthOIDCAnyClaims(&quot;https://oidc-provider.example.com&quot;, &quot;client_id&quot;, &quot;client_secret&quot;,
+    &quot;http://target.example.com/subpath/callback&quot;, &quot;email profile&quot;, &quot;name email picture&quot;)
+</pre></div>
+The filter needs the following parameters:</p>
+<ul>
+<li><strong>OpenID Connect Provider URL</strong> For example Google OpenID Connect is available on <code>https://accounts.google.com</code></li>
+<li><strong>Client ID</strong> This value is obtained from the provider upon registration of the application.</li>
+<li><strong>Client Secret</strong>  Also obtained from the provider</li>
+<li><strong>Callback URL</strong> The entire path to the callback from the provider on which the token will be received.
+    It can be any value which is a subpath on which the filter is applied.</li>
+<li><strong>Scopes</strong> The OpenID scopes separated by spaces which need to be specified when requesting the token from the provider.</li>
+<li><strong>Claims</strong> Several claims can be specified and the request is allowed as long as at least one of them is present.</li>
+</ul>
+<h3 id="oauthoidcallclaims">oauthOIDCAllClaims<a class="headerlink" href="#oauthoidcallclaims" title="Permanent link">&para;</a></h3>
+<p><div class="codehilite"><pre><span></span>oauthOIDCAllClaims(&quot;https://oidc-provider.example.com&quot;, &quot;client_id&quot;, &quot;client_secret&quot;,
+    &quot;http://target.example.com/subpath/callback&quot;, &quot;email profile&quot;, &quot;name email picture&quot;)
+</pre></div>
+The filter needs the following parameters:</p>
+<ul>
+<li><strong>OpenID Connect Provider URL</strong> For example Google OpenID Connect is available on <code>https://accounts.google.com</code></li>
+<li><strong>Client ID</strong> This value is obtained from the provider upon registration of the application.</li>
+<li><strong>Client Secret</strong>  Also obtained from the provider</li>
+<li><strong>Callback URL</strong> The entire path to the callback from the provider on which the token will be received.
+    It can be any value which is a subpath on which the filter is applied.</li>
+<li><strong>Scopes</strong> The OpenID scopes separated by spaces which need to be specified when requesting the token from the provider.</li>
+<li><strong>Claims</strong> Several claims can be specified and the request is allowed only when all claims are present.</li>
+</ul>
 <h2 id="requestcookie">requestCookie<a class="headerlink" href="#requestcookie" title="Permanent link">&para;</a></h2>
 <p>Append a cookie to the request header.</p>
 <p>Parameters:</p>
@@ -2574,11 +2671,6 @@ of the following format.</p>
 `)
 </pre></div>
 
-<p>NOTE: Non configured paths will be tracked with <code>&lt;unknown&gt;</code> application ID, API ID
-and path template.</p>
-<div class="codehilite"><pre><span></span>apiUsageMonitoring.custom.&lt;unknown&gt;.&lt;unknown&gt;.GET.&lt;unknown&gt;.*.*.http_count
-</pre></div>
-
 <p>Based on the previous configuration, here is an example of a counter metric.</p>
 <div class="codehilite"><pre><span></span>apiUsageMonitoring.custom.my-app.orders-api.GET.foo/orders/:order-id.*.*.http_count
 </pre></div>
@@ -2593,6 +2685,17 @@ and path template.</p>
 
 <p>Here is the <em>Prometheus</em> query to obtain it.</p>
 <div class="codehilite"><pre><span></span>histogram_quantile(0.5, sum(rate(skipper_custom_duration_seconds_bucket{key=&quot;apiUsageMonitoring.custom.my-app.orders-api.POST.foo/orders.*.*.latency&quot;}[60s])) by (le, key))
+</pre></div>
+
+<p>NOTE: Non configured paths will be tracked with <code>&lt;unknown&gt;</code> application ID, API ID
+and path template.</p>
+<div class="codehilite"><pre><span></span>apiUsageMonitoring.custom.&lt;unknown&gt;.&lt;unknown&gt;.GET.&lt;unknown&gt;.*.*.http_count
+</pre></div>
+
+<p>However, if all <code>application_id</code>s of your configuration refer to the same application,
+the filter assume that also non configured paths will be directed to this application.
+E.g.:</p>
+<div class="codehilite"><pre><span></span>apiUsageMonitoring.custom.my-app.&lt;unknown&gt;.GET.&lt;unknown&gt;.*.*.http_count
 </pre></div>
                 
                   

@@ -672,6 +672,33 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#redirects" title="Redirects" class="md-nav__link">
+    Redirects
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#overwrite-the-current-ingress-with-a-redirect" title="Overwrite the current ingress with a redirect" class="md-nav__link">
+    Overwrite the current ingress with a redirect
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#redirect-a-specific-path-from-ingress" title="Redirect a specific path from ingress" class="md-nav__link">
+    Redirect a specific path from ingress
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#return-static-content" title="Return static content" class="md-nav__link">
     Return static content
   </a>
@@ -1176,6 +1203,33 @@
   
     <nav class="md-nav">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#redirects" title="Redirects" class="md-nav__link">
+    Redirects
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#overwrite-the-current-ingress-with-a-redirect" title="Overwrite the current ingress with a redirect" class="md-nav__link">
+    Overwrite the current ingress with a redirect
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#redirect-a-specific-path-from-ingress" title="Redirect a specific path from ingress" class="md-nav__link">
+    Redirect a specific path from ingress
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#return-static-content" title="Return static content" class="md-nav__link">
@@ -1698,6 +1752,72 @@ ingress, then it will be based on the skipper command line parameter
 <li><a href="../../reference/predicates/#pathsubtree">PathSubtree()</a></li>
 <li><a href="../../reference/predicates/#pathregexp">PathRegexp()</a></li>
 </ul>
+<p>If you have a <code>path:</code> value defined in your ingress resource, a custom
+route is not allowed to use <code>Path()</code> nor <code>PathSubtree()</code> predicates.
+You will get an error in Skipper logs, similar to:</p>
+<div class="codehilite"><pre><span></span>[APP]time=&quot;2019-01-02T13:30:16Z&quot; level=error msg=&quot;Failed to add route having 2 path routes: Path(\&quot;/foo/bar\&quot;) -&gt; inlineContent(\&quot;custom route\&quot;) -&gt; status(200) -&gt; &lt;shunt&gt;&quot;
+</pre></div>
+
+<h3 id="redirects">Redirects<a class="headerlink" href="#redirects" title="Permanent link">&para;</a></h3>
+<h4 id="overwrite-the-current-ingress-with-a-redirect">Overwrite the current ingress with a redirect<a class="headerlink" href="#overwrite-the-current-ingress-with-a-redirect" title="Permanent link">&para;</a></h4>
+<p><a href="https://github.com/zalando/skipper/issues/867">Sometimes</a> you want to
+overwrite the current ingress with a redirect to a nicer downtime
+page.</p>
+<p>The following example shows how to create a temporary redirect with status
+code 307 to <a href="https://outage.example.org">https://outage.example.org</a>. No requests will pass to your
+backend defined, because the created route from the annotation
+<code>zalando.org/skipper-routes</code> will get 3 Predicates
+<code>Host("^app-default[.]example[.]org$") &amp;&amp; Path("/") &amp;&amp; PathRegexp("/")</code>,
+instead of the 2 Predicates
+<code>Host("^app-default[.]example[.]org$") &amp;&amp; Path("/")</code>, that will be
+created for the ingress backend.</p>
+<div class="codehilite"><pre><span></span><span class="n">apiVersion</span><span class="o">:</span> <span class="n">extensions</span><span class="o">/</span><span class="n">v1beta1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Ingress</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">app</span>
+  <span class="kd">namespace</span><span class="o">:</span> <span class="k">default</span>
+  <span class="n">annotations</span><span class="o">:</span>
+    <span class="n">zalando</span><span class="o">.</span><span class="na">org</span><span class="o">/</span><span class="n">skipper</span><span class="o">-</span><span class="n">routes</span><span class="o">:</span> <span class="o">|</span>
+       <span class="n">redirect_app_default</span><span class="o">:</span> <span class="n">PathRegexp</span><span class="o">(</span><span class="s2">&quot;/&quot;</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">redirectTo</span><span class="o">(</span><span class="mi">307</span><span class="o">,</span> <span class="s2">&quot;https://outage.example.org/&quot;</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">&lt;</span><span class="n">shunt</span><span class="o">&gt;;</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">rules</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">host</span><span class="o">:</span> <span class="s2">&quot;app-default.example.org&quot;</span>
+    <span class="n">http</span><span class="o">:</span>
+      <span class="n">paths</span><span class="o">:</span>
+      <span class="o">-</span> <span class="n">path</span><span class="o">:</span> <span class="o">/</span>
+        <span class="n">backend</span><span class="o">:</span>
+          <span class="n">serviceName</span><span class="o">:</span> <span class="n">app</span><span class="o">-</span><span class="n">svc</span>
+          <span class="n">servicePort</span><span class="o">:</span> <span class="mi">80</span>
+</pre></div>
+
+<h4 id="redirect-a-specific-path-from-ingress">Redirect a specific path from ingress<a class="headerlink" href="#redirect-a-specific-path-from-ingress" title="Permanent link">&para;</a></h4>
+<p>Sometimes you want to have a redirect from
+<code>http://app-default.example.org/myredirect</code> to
+<code>https://somewhere.example.org/another/path</code>.</p>
+<p>The following example shows how to create a permanent redirect with status
+code 308 from <code>http://app-default.example.org/myredirect</code> to
+<code>https://somewhere.example.org/another/path</code>, other paths will not be
+redirected and passed to the backend selected by <code>serviceName=app-svc</code> and
+<code>servicePort=80</code>:</p>
+<div class="codehilite"><pre><span></span><span class="n">apiVersion</span><span class="o">:</span> <span class="n">extensions</span><span class="o">/</span><span class="n">v1beta1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Ingress</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">app</span>
+  <span class="kd">namespace</span><span class="o">:</span> <span class="k">default</span>
+  <span class="n">annotations</span><span class="o">:</span>
+    <span class="n">zalando</span><span class="o">.</span><span class="na">org</span><span class="o">/</span><span class="n">skipper</span><span class="o">-</span><span class="n">routes</span><span class="o">:</span> <span class="o">|</span>
+       <span class="n">redirect_app_default</span><span class="o">:</span> <span class="n">PathRegexp</span><span class="o">(</span><span class="s2">&quot;/myredirect&quot;</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">redirectTo</span><span class="o">(</span><span class="mi">308</span><span class="o">,</span> <span class="s2">&quot;https://somewhere.example.org/another/path&quot;</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">&lt;</span><span class="n">shunt</span><span class="o">&gt;;</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">rules</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">host</span><span class="o">:</span> <span class="s2">&quot;app-default.example.org&quot;</span>
+    <span class="n">http</span><span class="o">:</span>
+      <span class="n">paths</span><span class="o">:</span>
+      <span class="o">-</span> <span class="n">path</span><span class="o">:</span> <span class="o">/</span>
+        <span class="n">backend</span><span class="o">:</span>
+          <span class="n">serviceName</span><span class="o">:</span> <span class="n">app</span><span class="o">-</span><span class="n">svc</span>
+          <span class="n">servicePort</span><span class="o">:</span> <span class="mi">80</span>
+</pre></div>
+
 <h3 id="return-static-content">Return static content<a class="headerlink" href="#return-static-content" title="Permanent link">&para;</a></h3>
 <p>The following example sets a response header <code>X: bar</code>, a response body
 <code>&lt;html&gt;&lt;body&gt;hello&lt;/body&gt;&lt;/html&gt;</code> and respond from the ingress
@@ -1750,6 +1870,33 @@ route as defined in eskip:</p>
 
 <p>Make sure the <code>;</code> semicolon is used to terminate the routes, if you
 use multiple routes definitions.</p>
+<p><strong>Disclaimer</strong>: This feature works only with having different <code>Path*</code>
+predicates in ingress, if there are no paths rules defined. For
+example this will <strong>not</strong> work:</p>
+<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">extensions/v1beta1</span>
+<span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">Ingress</span>
+<span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">skipper-ingress</span>
+  <span class="l l-Scalar l-Scalar-Plain">annotations</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">kubernetes.io/ingress.class</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">skipper</span>
+    <span class="l l-Scalar l-Scalar-Plain">zalando.org/skipper-routes</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">|</span>
+       <span class="no">redirect1: Path(&quot;/foo/&quot;) -&gt; redirectTo(308, &quot;/bar/&quot;) -&gt; &lt;shunt&gt;;</span>
+  <span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">rules</span><span class="p p-Indicator">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">host</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">foo.bar</span>
+        <span class="l l-Scalar l-Scalar-Plain">http</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">paths</span><span class="p p-Indicator">:</span>
+            <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">path</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">/something/</span>
+              <span class="l l-Scalar l-Scalar-Plain">backend</span><span class="p p-Indicator">:</span>
+                <span class="l l-Scalar l-Scalar-Plain">serviceName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">something</span>
+                <span class="l l-Scalar l-Scalar-Plain">servicePort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
+            <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">path</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">/else/</span>
+              <span class="l l-Scalar l-Scalar-Plain">backend</span><span class="p p-Indicator">:</span>
+                <span class="l l-Scalar l-Scalar-Plain">serviceName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">else</span>
+                <span class="l l-Scalar l-Scalar-Plain">servicePort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
+</pre></div>
+
+<p>A possible solution will be a skipper route CRD: <a href="https://github.com/zalando/skipper/issues/660">https://github.com/zalando/skipper/issues/660</a></p>
 <h2 id="filters-basic-http-manipulations">Filters - Basic HTTP manipulations<a class="headerlink" href="#filters-basic-http-manipulations" title="Permanent link">&para;</a></h2>
 <p>HTTP manipulations are done by using skipper filters. Changes can be
 done in the request path, meaning request to your backend or in the

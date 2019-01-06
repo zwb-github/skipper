@@ -884,7 +884,8 @@
                 
                 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
 <p>Ratelimits are calculated for a number of requests and a
-<code>time.Duration</code> for a given bucket.</p>
+<code>time.Duration</code> for a given bucket. To enable rate limits you need to
+run skipper with <code>enable-ratelimits</code>.</p>
 <p>A <code>time.Duration</code> is specified as string and can for example be &ldquo;10s&rdquo;
 for ten seconds, &ldquo;5m&rdquo; for five minutes or &ldquo;2h&rdquo; for two hours.</p>
 <p>As bucket skipper can use either the backend or some client
@@ -919,8 +920,9 @@ header, you can specify:</p>
 <div class="codehilite"><pre><span></span>clientRatelimit(10, &quot;1m&quot;)
 </pre></div>
 
-<p>The same for Authorization Header you would use:</p>
-<div class="codehilite"><pre><span></span>clientRatelimit(10, &quot;1m&quot;, &quot;auth&quot;)
+<p>There is an optional third argument that selects the same client by HTTP
+header value. As an example for Authorization Header you would use:</p>
+<div class="codehilite"><pre><span></span>clientRatelimit(10, &quot;1m&quot;, &quot;Authorization&quot;)
 </pre></div>
 
 <p>Internally skipper has a clean interval to clean up old buckets to reduce

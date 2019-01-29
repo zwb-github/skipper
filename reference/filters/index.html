@@ -2277,37 +2277,44 @@ ratelimit(300, &quot;1h&quot;)
 
 <p>See also the <a href="https://godoc.org/github.com/zalando/skipper/ratelimit">ratelimit docs</a>.</p>
 <h2 id="clusterclientratelimit">clusterClientRatelimit<a class="headerlink" href="#clusterclientratelimit" title="Permanent link">&para;</a></h2>
-<p>This ratelimit is calculated across all skipper peers and allows the
-given number of requests by client. The definition of the same client
-is based on data of the http header and can be changed with an
-optional third parameter. If the third parameter is set skipper will
-use the Authorization header to put the request in the same client
-bucket, else the X-Forwarded-For Header will be used.  You need to run
-skipper with command line flags <code>-enable-swarm</code> and
+<p>This ratelimit is calculated across all skipper peers and the same
+rate limit group. The first parameter is a string to select the same
+ratelimit group across one or more routes.  The rate limit group
+allows the given number of requests by client. The definition of the
+same client is based on data of the http header and can be changed
+with an optional fourth parameter. If the fourth parameter is set
+skipper will use the Authorization header to put the request in the
+same client bucket, else the X-Forwarded-For Header will be used.  You
+need to run skipper with command line flags <code>-enable-swarm</code> and
 <code>-enable-ratelimits</code>. Skipper will consume roughly 15 MB per filter
 for 100.000 clients and 1000 skipper peers.</p>
 <p>Parameters:</p>
 <ul>
+<li>rate limit group (string)</li>
 <li>number of allowed requests per time period (int)</li>
 <li>time period for requests being counted (time.Duration)</li>
 <li>optional parameter can be set to: &ldquo;auth&rdquo; (string)</li>
 </ul>
-<div class="codehilite"><pre><span></span>clusterClientRatelimit(10, &quot;1h&quot;)
-clusterClientRatelimit(10, &quot;1h&quot;, &quot;auth&quot;)
+<div class="codehilite"><pre><span></span>clusterClientRatelimit(&quot;groupA&quot;, 10, &quot;1h&quot;)
+clusterClientRatelimit(&quot;groupA&quot;, 10, &quot;1h&quot;, &quot;auth&quot;)
 </pre></div>
 
 <p>See also the <a href="https://godoc.org/github.com/zalando/skipper/ratelimit">ratelimit docs</a>.</p>
 <h2 id="clusterratelimit">clusterRatelimit<a class="headerlink" href="#clusterratelimit" title="Permanent link">&para;</a></h2>
-<p>This ratelimit is calculated across all skipper peers and allows the
-given number of requests to a backend. You need to have run skipper
-with command line flags <code>-enable-swarm</code> and <code>-enable-ratelimits</code>.</p>
+<p>This ratelimit is calculated across all skipper peers and the same
+rate limit group. The first parameter is a string to select the same
+ratelimit group across one or more routes.  The rate limit group
+allows the given number of requests to a backend. You need to have run
+skipper with command line flags <code>-enable-swarm</code> and
+<code>-enable-ratelimits</code>.</p>
 <p>Parameters:</p>
 <ul>
+<li>rate limit group (string)</li>
 <li>number of allowed requests per time period (int)</li>
 <li>time period for requests being counted (time.Duration)</li>
 </ul>
-<div class="codehilite"><pre><span></span>clusterRatelimit(20, &quot;1m&quot;)
-clusterRatelimit(300, &quot;1h&quot;)
+<div class="codehilite"><pre><span></span>clusterRatelimit(&quot;groupB&quot;, 20, &quot;1m&quot;)
+clusterRatelimit(&quot;groupB&quot;, 300, &quot;1h&quot;)
 </pre></div>
 
 <p>See also the <a href="https://godoc.org/github.com/zalando/skipper/ratelimit">ratelimit docs</a>.</p>
@@ -2373,16 +2380,24 @@ the access log for specific route while access log, in general, is enabled or vi
 
 <h2 id="disableaccesslog">disableAccessLog<a class="headerlink" href="#disableaccesslog" title="Permanent link">&para;</a></h2>
 <p>Filter overrides global Skipper <code>AccessLogDisabled</code> setting and allows to turn-off the access log for specific route
-while access log, in general, is enabled.</p>
+while access log, in general, is enabled. It is also possible to disable access logs only for a subset of response codes
+from backend by providing an optional list of response code prefixes.</p>
+<p>Parameters:
+* response code prefixes (variadic int) - optional</p>
 <p>Example:</p>
 <div class="codehilite"><pre><span></span>disableAccessLog()
+disableAccessLog(1, 301, 40)
 </pre></div>
 
 <h2 id="enableaccesslog">enableAccessLog<a class="headerlink" href="#enableaccesslog" title="Permanent link">&para;</a></h2>
 <p>Filter overrides global Skipper <code>AccessLogDisabled</code> setting and allows to turn-on the access log for specific route
-while access log, in general, is disabled.</p>
+while access log, in general, is disabled. It is also possible to enable access logs only for a subset of response codes
+from backend by providing an optional list of response code prefixes.</p>
+<p>Parameters:
+* response code prefixes (variadic int) - optional</p>
 <p>Example:</p>
 <div class="codehilite"><pre><span></span>enableAccessLog()
+enableAccessLog(1, 301, 20)
 </pre></div>
 
 <h2 id="auditlog">auditLog<a class="headerlink" href="#auditlog" title="Permanent link">&para;</a></h2>

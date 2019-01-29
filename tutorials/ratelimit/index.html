@@ -940,10 +940,12 @@ requirements, that are dependent on your dataclient in use.</p>
 <h3 id="backend-ratelimit_1">Backend Ratelimit<a class="headerlink" href="#backend-ratelimit_1" title="Permanent link">&para;</a></h3>
 <p>The backend ratelimit filter is <code>clusterRatelimit()</code>. You can define
 how many requests a route allows for a given <code>time.Duration</code> in total
-for all skipper instances summed up.</p>
-<p>For example to limit the route to 10 requests per minute in total for
-the cluster, you can specify:</p>
-<div class="codehilite"><pre><span></span>clusterRatelimit(10, &quot;1m&quot;)
+for all skipper instances summed up. The first parameter is the group
+parameter, which can be used to select the same ratelimit group across
+one or more routes</p>
+<p>For example rate limit &ldquo;groupA&rdquo; limits the rate limit group to 10
+requests per minute in total for the cluster, you can specify:</p>
+<div class="codehilite"><pre><span></span>clusterRatelimit(&quot;groupA&quot;, 10, &quot;1m&quot;)
 </pre></div>
 
 <h3 id="client-ratelimit_1">Client Ratelimit<a class="headerlink" href="#client-ratelimit_1" title="Permanent link">&para;</a></h3>
@@ -951,15 +953,17 @@ the cluster, you can specify:</p>
 information from the request to find the bucket which will get the
 increased request count.  You can define how many requests a client is
 allowed to hit this route for a given <code>time.Duration</code> in total for all
-skipper instances summed up.</p>
-<p>For example to limit the route to 10 requests per minute for the full
-skipper swarm for the same client selected by the X-Forwarded-For
-header, you can specify:</p>
-<div class="codehilite"><pre><span></span>clusterClientRatelimit(10, &quot;1m&quot;)
+skipper instances summed up. The first parameter is the group
+parameter, which can be used to select the same ratelimit group across
+one or more routes</p>
+<p>For example rate limit &ldquo;groupB&rdquo; limits the rate limit group to 10
+requests per minute for the full skipper swarm for the same client
+selected by the X-Forwarded-For header, you can specify:</p>
+<div class="codehilite"><pre><span></span>clusterClientRatelimit(&quot;groupB&quot;, 10, &quot;1m&quot;)
 </pre></div>
 
 <p>The same for Authorization Header you would use:</p>
-<div class="codehilite"><pre><span></span>clusterClientRatelimit(10, &quot;1m&quot;, &quot;auth&quot;)
+<div class="codehilite"><pre><span></span>clusterClientRatelimit(&quot;groupC&quot;, 10, &quot;1m&quot;, &quot;auth&quot;)
 </pre></div>
 
 <p>Internally skipper has a clean interval to clean up old buckets to reduce

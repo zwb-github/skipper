@@ -359,6 +359,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../backends/" title="Backends" class="md-nav__link">
+      Backends
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../scripts/" title="Scripts" class="md-nav__link">
       Scripts
     </a>
@@ -478,13 +490,13 @@
 
   <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2-8" type="checkbox" id="nav-2-8">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2-9" type="checkbox" id="nav-2-9">
     
-    <label class="md-nav__link" for="nav-2-8">
+    <label class="md-nav__link" for="nav-2-9">
       Data Clients
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
-      <label class="md-nav__title" for="nav-2-8">
+      <label class="md-nav__title" for="nav-2-9">
         Data Clients
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
@@ -550,13 +562,13 @@
 
   <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2-9" type="checkbox" id="nav-2-9">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2-10" type="checkbox" id="nav-2-10">
     
-    <label class="md-nav__link" for="nav-2-9">
+    <label class="md-nav__link" for="nav-2-10">
       Operation
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
-      <label class="md-nav__title" for="nav-2-9">
+      <label class="md-nav__title" for="nav-2-10">
         Operation
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
@@ -832,11 +844,12 @@ always a current routing table which will be replaced on change.</p>
 <p>A route is one entry in the routing table. A route consists of one or
 more <code>predicate</code>, that are used to find a route for a given HTTP
 request. A route can also have one or more <code>filter</code>, that can modify
-the content of the request or response.  A route always points to a
-backend, or it&rsquo;s a <code>&lt;shunt&gt;</code>, meaning that skipper serves the requests
-for the route, or a <code>&lt;loopback&gt;</code>, meaning that the request will be
+the content of the request or response.  A route can point to a
+backend, it can be a <code>&lt;shunt&gt;</code>, meaning that skipper serves the requests
+for the route, a <code>&lt;loopback&gt;</code>, meaning that the requests will be
 matched against the routing table again after filters have modified
-it.</p>
+them, or a <code>&lt;dynamic&gt;</code>, meaning that the target url can be set dynamically 
+by a filter (e.g. <a href="../filters/#setdynamicbackendurl">setDynamicBackendUrl</a>). </p>
 <p><a href="http://opentracing.io/">Opentracing API</a> is supported via
 <a href="https://github.com/skipper-plugins/opentracing">skipper-plugins</a>. For
 example <a href="https://github.com/jaegertracing/jaeger">Jaeger</a> is supported.</p>

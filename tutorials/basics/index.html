@@ -357,6 +357,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../reference/backends/" title="Backends" class="md-nav__link">
+      Backends
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../../reference/scripts/" title="Scripts" class="md-nav__link">
       Scripts
     </a>
@@ -418,13 +430,13 @@
 
   <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2-8" type="checkbox" id="nav-2-8">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2-9" type="checkbox" id="nav-2-9">
     
-    <label class="md-nav__link" for="nav-2-8">
+    <label class="md-nav__link" for="nav-2-9">
       Data Clients
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
-      <label class="md-nav__title" for="nav-2-8">
+      <label class="md-nav__title" for="nav-2-9">
         Data Clients
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
@@ -490,13 +502,13 @@
 
   <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2-9" type="checkbox" id="nav-2-9">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2-10" type="checkbox" id="nav-2-10">
     
-    <label class="md-nav__link" for="nav-2-9">
+    <label class="md-nav__link" for="nav-2-10">
       Operation
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
-      <label class="md-nav__title" for="nav-2-9">
+      <label class="md-nav__title" for="nav-2-10">
         Operation
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
@@ -1101,11 +1113,11 @@ always a current routing table which will be replaced on change.</p>
 <p>A route is one entry in the routing table. A route consists of one or
 more <code>predicate</code>, that are used to find a route for a given HTTP
 request. A route can also have one or more <code>filter</code>, that can modify
-the content of the request or response.  A route always points to a
-backend, or it&rsquo;s a <code>&lt;shunt&gt;</code>, meaning that skipper serves the requests
-for the route, or a <code>&lt;loopback&gt;</code>, meaning that the request will be
+the content of the request or response.  A route can point to a
+backend, it can be a <code>&lt;shunt&gt;</code>, meaning that skipper serves the requests
+for the route, a <code>&lt;loopback&gt;</code>, meaning that the requests will be
 matched against the routing table again after filters have modified
-it.</p>
+them, or a <code>&lt;dynamic&gt;</code>, meaning that the target backend must be set in a filter.</p>
 <p><a href="http://opentracing.io/">Opentracing API</a> is supported via
 <code>tracers</code> and you can find all of them in <code>./tracing/tracers/</code>. For
 example <a href="https://github.com/jaegertracing/jaeger">Jaeger</a> is supported.</p>
@@ -1185,7 +1197,10 @@ is an URL string.</p>
 <ul>
 <li><code>&lt;loopback&gt;</code> restart route processing with the possibly changed request</li>
 <li><code>&lt;shunt&gt;</code> stops processing, used for fast returns</li>
+<li><code>&lt;dynamic&gt;</code> target is set dynamically in a filter</li>
+<li><code>&lt;$algorithm, "be1", "be2", ..., "beN"&gt;</code> load balanced backend with N backends</li>
 </ul>
+<p>See more about backends in <a href="../../reference/backends/">backend references</a>.</p>
 <h3 id="dataclient">Dataclient<a class="headerlink" href="#dataclient" title="Permanent link">&para;</a></h3>
 <p>Dataclients are used to pull route information from a data source. The
 data will be used to create routes according to the dataclient. As a

@@ -789,6 +789,48 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#setdynamicbackendhostfromheader" title="setDynamicBackendHostFromHeader" class="md-nav__link">
+    setDynamicBackendHostFromHeader
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setdynamicbackendschemefromheader" title="setDynamicBackendSchemeFromHeader" class="md-nav__link">
+    setDynamicBackendSchemeFromHeader
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setdynamicbackendurlfromheader" title="setDynamicBackendUrlFromHeader" class="md-nav__link">
+    setDynamicBackendUrlFromHeader
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setdynamicbackendhost" title="setDynamicBackendHost" class="md-nav__link">
+    setDynamicBackendHost
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setdynamicbackendscheme" title="setDynamicBackendScheme" class="md-nav__link">
+    setDynamicBackendScheme
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setdynamicbackendurl" title="setDynamicBackendUrl" class="md-nav__link">
+    setDynamicBackendUrl
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#apiusagemonitoring" title="apiUsageMonitoring" class="md-nav__link">
     apiUsageMonitoring
   </a>
@@ -864,6 +906,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../backends/" title="Backends" class="md-nav__link">
+      Backends
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../scripts/" title="Scripts" class="md-nav__link">
       Scripts
     </a>
@@ -925,13 +979,13 @@
 
   <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2-8" type="checkbox" id="nav-2-8">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2-9" type="checkbox" id="nav-2-9">
     
-    <label class="md-nav__link" for="nav-2-8">
+    <label class="md-nav__link" for="nav-2-9">
       Data Clients
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
-      <label class="md-nav__title" for="nav-2-8">
+      <label class="md-nav__title" for="nav-2-9">
         Data Clients
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
@@ -997,13 +1051,13 @@
 
   <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2-9" type="checkbox" id="nav-2-9">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2-10" type="checkbox" id="nav-2-10">
     
-    <label class="md-nav__link" for="nav-2-9">
+    <label class="md-nav__link" for="nav-2-10">
       Operation
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
-      <label class="md-nav__title" for="nav-2-9">
+      <label class="md-nav__title" for="nav-2-10">
         Operation
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
@@ -1642,6 +1696,48 @@
         <li class="md-nav__item">
   <a href="#auditlog" title="auditLog" class="md-nav__link">
     auditLog
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setdynamicbackendhostfromheader" title="setDynamicBackendHostFromHeader" class="md-nav__link">
+    setDynamicBackendHostFromHeader
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setdynamicbackendschemefromheader" title="setDynamicBackendSchemeFromHeader" class="md-nav__link">
+    setDynamicBackendSchemeFromHeader
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setdynamicbackendurlfromheader" title="setDynamicBackendUrlFromHeader" class="md-nav__link">
+    setDynamicBackendUrlFromHeader
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setdynamicbackendhost" title="setDynamicBackendHost" class="md-nav__link">
+    setDynamicBackendHost
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setdynamicbackendscheme" title="setDynamicBackendScheme" class="md-nav__link">
+    setDynamicBackendScheme
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setdynamicbackendurl" title="setDynamicBackendUrl" class="md-nav__link">
+    setDynamicBackendUrl
   </a>
   
 </li>
@@ -2406,6 +2502,79 @@ log file. N defaults to 1024 and can be overidden with
 <code>-max-audit-body=&lt;int&gt;</code>. <code>N=0</code> omits logging the body.</p>
 <p>Example:</p>
 <div class="codehilite"><pre><span></span>auditLog()
+</pre></div>
+
+<h2 id="setdynamicbackendhostfromheader">setDynamicBackendHostFromHeader<a class="headerlink" href="#setdynamicbackendhostfromheader" title="Permanent link">&para;</a></h2>
+<p>Filter sets the backend host for a route, value is taken from the provided header.
+Can be used only with <code>&lt;dynamic&gt;</code> backend. Meant to be used together with <a href="#setdynamicbackendschemefromheader">setDynamicBackendSchemeFromHeader</a>
+or <a href="#setdynamicbackendscheme">setDynamicBackendScheme</a>. If this filter chained together with <a href="#setdynamicbackendurlfromheader">setDynamicBackendUrlFromHeader</a> 
+or <a href="#setdynamicbackendurl">setDynamicBackendUrl</a> filters, the latter ones would have priority.</p>
+<p>Parameters:</p>
+<ul>
+<li>header name (string)</li>
+</ul>
+<p>Example:</p>
+<div class="codehilite"><pre><span></span><span class="nt">foo</span><span class="o">:</span> <span class="o">*</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="nt">setDynamicBackendHostFromHeader</span><span class="o">(</span><span class="s2">&quot;X-Forwarded-Host&quot;</span><span class="o">)</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nt">dynamic</span><span class="o">&gt;;</span>
+</pre></div>
+
+<h2 id="setdynamicbackendschemefromheader">setDynamicBackendSchemeFromHeader<a class="headerlink" href="#setdynamicbackendschemefromheader" title="Permanent link">&para;</a></h2>
+<p>Filter sets the backend scheme for a route, value is taken from the provided header.
+Can be used only with <code>&lt;dynamic&gt;</code> backend. Meant to be used together with <a href="#setdynamicbackendhostfromheader">setDynamicBackendHostFromHeader</a>
+or <a href="#setdynamicbackendhost">setDynamicBackendHost</a>. If this filter chained together with 
+<a href="#setdynamicbackendurlfromheader">setDynamicBackendUrlFromHeader</a> or <a href="#setdynamicbackendurl">setDynamicBackendUrl</a>, the latter ones would have priority.</p>
+<p>Parameters:</p>
+<ul>
+<li>header name (string)</li>
+</ul>
+<p>Example:</p>
+<div class="codehilite"><pre><span></span><span class="nt">foo</span><span class="o">:</span> <span class="o">*</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="nt">setDynamicBackendSchemeFromHeader</span><span class="o">(</span><span class="s2">&quot;X-Forwarded-Proto&quot;</span><span class="o">)</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nt">dynamic</span><span class="o">&gt;;</span>
+</pre></div>
+
+<h2 id="setdynamicbackendurlfromheader">setDynamicBackendUrlFromHeader<a class="headerlink" href="#setdynamicbackendurlfromheader" title="Permanent link">&para;</a></h2>
+<p>Filter sets the backend url for a route, value is taken from the provided header.
+Can be used only with <code>&lt;dynamic&gt;</code> backend. </p>
+<p>Parameters:</p>
+<ul>
+<li>header name (string)</li>
+</ul>
+<p>Example:</p>
+<div class="codehilite"><pre><span></span><span class="nt">foo</span><span class="o">:</span> <span class="o">*</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="nt">setDynamicBackendUrlFromHeader</span><span class="o">(</span><span class="s2">&quot;X-Custom-Url&quot;</span><span class="o">)</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nt">dynamic</span><span class="o">&gt;;</span>
+</pre></div>
+
+<h2 id="setdynamicbackendhost">setDynamicBackendHost<a class="headerlink" href="#setdynamicbackendhost" title="Permanent link">&para;</a></h2>
+<p>Filter sets the backend host for a route. Can be used only with <code>&lt;dynamic&gt;</code> backend.
+Meant to be used together with <a href="#setdynamicbackendschemefromheader">setDynamicBackendSchemeFromHeader</a>
+or <a href="#setdynamicbackendscheme">setDynamicBackendScheme</a>. If this filter chained together with <a href="#setdynamicbackendurlfromheader">setDynamicBackendUrlFromHeader</a> 
+or <a href="#setdynamicbackendurl">setDynamicBackendUrl</a>, the latter ones would have priority.</p>
+<p>Parameters:</p>
+<ul>
+<li>host (string)</li>
+</ul>
+<p>Example:</p>
+<div class="codehilite"><pre><span></span><span class="nt">foo</span><span class="o">:</span> <span class="o">*</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="nt">setDynamicBackendHost</span><span class="o">(</span><span class="s2">&quot;example.com&quot;</span><span class="o">)</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nt">dynamic</span><span class="o">&gt;;</span>
+</pre></div>
+
+<h2 id="setdynamicbackendscheme">setDynamicBackendScheme<a class="headerlink" href="#setdynamicbackendscheme" title="Permanent link">&para;</a></h2>
+<p>Filter sets the backend scheme for a route. Can be used only with <code>&lt;dynamic&gt;</code> backend.
+Meant to be used together with <a href="#setdynamicbackendhostfromheader">setDynamicBackendHostFromHeader</a>
+or <a href="#setdynamicbackendhost">setDynamicBackendHost</a>. If this filter chained together with 
+<a href="#setdynamicbackendurlfromheader">setDynamicBackendUrlFromHeader</a> or <a href="#setdynamicbackendurl">setDynamicBackendUrl</a>, the latter ones would have priority.</p>
+<p>Parameters:</p>
+<ul>
+<li>scheme (string)</li>
+</ul>
+<p>Example:</p>
+<div class="codehilite"><pre><span></span><span class="nt">foo</span><span class="o">:</span> <span class="o">*</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="nt">setDynamicBackendScheme</span><span class="o">(</span><span class="s2">&quot;https&quot;</span><span class="o">)</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nt">dynamic</span><span class="o">&gt;;</span>
+</pre></div>
+
+<h2 id="setdynamicbackendurl">setDynamicBackendUrl<a class="headerlink" href="#setdynamicbackendurl" title="Permanent link">&para;</a></h2>
+<p>Filter sets the backend url for a route. Can be used only with <code>&lt;dynamic&gt;</code> backend. </p>
+<p>Parameters:</p>
+<ul>
+<li>url (string)</li>
+</ul>
+<p>Example:</p>
+<div class="codehilite"><pre><span></span><span class="nt">foo</span><span class="o">:</span> <span class="o">*</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="nt">setDynamicBackendUrl</span><span class="o">(</span><span class="s2">&quot;https://example.com&quot;</span><span class="o">)</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nt">dynamic</span><span class="o">&gt;;</span>
 </pre></div>
 
 <h2 id="apiusagemonitoring">apiUsageMonitoring<a class="headerlink" href="#apiusagemonitoring" title="Permanent link">&para;</a></h2>

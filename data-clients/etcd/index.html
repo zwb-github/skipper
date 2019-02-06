@@ -359,6 +359,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../reference/backends/" title="Backends" class="md-nav__link">
+      Backends
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../../reference/scripts/" title="Scripts" class="md-nav__link">
       Scripts
     </a>
@@ -422,13 +434,13 @@
 
   <li class="md-nav__item md-nav__item--active md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2-8" type="checkbox" id="nav-2-8" checked>
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2-9" type="checkbox" id="nav-2-9" checked>
     
-    <label class="md-nav__link" for="nav-2-8">
+    <label class="md-nav__link" for="nav-2-9">
       Data Clients
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
-      <label class="md-nav__title" for="nav-2-8">
+      <label class="md-nav__title" for="nav-2-9">
         Data Clients
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
@@ -460,9 +472,66 @@
       
     
     
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Etcd
+      </label>
+    
     <a href="./" title="Etcd" class="md-nav__link md-nav__link--active">
       Etcd
     </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-storing-skipper-routes-in-etcd" title="Why storing Skipper routes in etcd?" class="md-nav__link">
+    Why storing Skipper routes in etcd?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#starting-skipper-with-etcd" title="Starting Skipper with etcd" class="md-nav__link">
+    Starting Skipper with etcd
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#etcd-version" title="etcd version" class="md-nav__link">
+    etcd version
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#storage-schema" title="Storage schema" class="md-nav__link">
+    Storage schema
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#maintaining-route-configuration-in-etcd" title="Maintaining route configuration in etcd" class="md-nav__link">
+    Maintaining route configuration in etcd
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
     
   </li>
 
@@ -503,13 +572,13 @@
 
   <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2-9" type="checkbox" id="nav-2-9">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2-10" type="checkbox" id="nav-2-10">
     
-    <label class="md-nav__link" for="nav-2-9">
+    <label class="md-nav__link" for="nav-2-10">
       Operation
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
-      <label class="md-nav__title" for="nav-2-9">
+      <label class="md-nav__title" for="nav-2-10">
         Operation
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
@@ -722,6 +791,50 @@
     
   
   
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-storing-skipper-routes-in-etcd" title="Why storing Skipper routes in etcd?" class="md-nav__link">
+    Why storing Skipper routes in etcd?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#starting-skipper-with-etcd" title="Starting Skipper with etcd" class="md-nav__link">
+    Starting Skipper with etcd
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#etcd-version" title="etcd version" class="md-nav__link">
+    etcd version
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#storage-schema" title="Storage schema" class="md-nav__link">
+    Storage schema
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#maintaining-route-configuration-in-etcd" title="Maintaining route configuration in etcd" class="md-nav__link">
+    Maintaining route configuration in etcd
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -735,8 +848,87 @@
                   <a href="https://github.com/zalando/skipper/edit/master/docs/data-clients/etcd.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
-                <h1 id="etcd">ETCD<a class="headerlink" href="#etcd" title="Permanent link">&para;</a></h1>
-<p>TODO</p>
+                <h1 id="etcd">etcd<a class="headerlink" href="#etcd" title="Permanent link">&para;</a></h1>
+<p>etcd is an open-source distributed key value store:
+<a href="https://github.com/etcd-io/etcd">https://github.com/etcd-io/etcd</a>. Skipper can use it as a route configuration
+storage and continuously synchronize the routing from etcd.</p>
+<h2 id="why-storing-skipper-routes-in-etcd">Why storing Skipper routes in etcd?<a class="headerlink" href="#why-storing-skipper-routes-in-etcd" title="Permanent link">&para;</a></h2>
+<p>When running multiple Skipper instances, changing the configuration of each instance by accessing the instances
+directly on the fly can be complex and error-prone. With etcd, we need to update the routes only in etcd and
+each Skipper instance will synchronize its routing from the new version.</p>
+<p>Further benefits of using etcd are improved resiliency and the usage of a standard configuration storage for
+various system components of a distributed system, not only Skipper.</p>
+<p><em>Note</em>: in case of Kubernetes, the standard recommended way is to use the <a href="../kubernetes/">Kubernetes Ingress
+API</a>.</p>
+<h2 id="starting-skipper-with-etcd">Starting Skipper with etcd<a class="headerlink" href="#starting-skipper-with-etcd" title="Permanent link">&para;</a></h2>
+<p>Example:</p>
+<div class="codehilite"><pre><span></span>skipper -etcd-urls http://localhost:2379,http://localhost:4001
+</pre></div>
+
+<p>An additional startup option is the <code>-etcd-prefix</code>. When using multiple Skipper deployments with different
+purpose, this option allows us to store separate configuration sets for them in the same etcd cluster. Example:</p>
+<div class="codehilite"><pre><span></span>skipper -etcd-urls https://cluster-config -etcd-prefix skipper1
+</pre></div>
+
+<p><em>Note</em>: when the etcd URL points to an <a href="https://coreos.com/etcd/docs/latest/v2/proxy.html">etcd proxy</a>, Skipper
+will internally use the proxy only to resolve the URLs of the etcd replicas, and access them for the route
+configuration directly.</p>
+<h2 id="etcd-version">etcd version<a class="headerlink" href="#etcd-version" title="Permanent link">&para;</a></h2>
+<p>Skipper uses currently the V2 API of etcd.</p>
+<h2 id="storage-schema">Storage schema<a class="headerlink" href="#storage-schema" title="Permanent link">&para;</a></h2>
+<p>Skipper expects to find the route configuration by default at the <code>/v2/keys/skipper/routes</code> path. In this path,
+the &lsquo;skipper&rsquo; segment can be optionally overridden by the <code>-etcd-prefix</code> startup option.</p>
+<p>The <code>/v2/keys/skipper/routes</code> node is a directory that contains the routes as individual child nodes, accessed
+by the path <code>/v2/keys/skipper/routes/&lt;routeID&gt;</code>. The value of the route nodes is the route expression without
+the route ID in <a href="https://godoc.org/github.com/zalando/skipper/eskip">eskip format</a>.</p>
+<h2 id="maintaining-route-configuration-in-etcd">Maintaining route configuration in etcd<a class="headerlink" href="#maintaining-route-configuration-in-etcd" title="Permanent link">&para;</a></h2>
+<p>etcd (v2) allows generic access to its API via the HTTP protocol. It also provides a supporting client tool:
+etcdctl. Following the above described schema, both of them can be used to maintain Skipper routes. In addition,
+Skipper also provides a supporting client tool: <a href="https://godoc.org/github.com/zalando/skipper/cmd/eskip">eskip</a>,
+which can provide more convenient access to the routes in etcd.</p>
+<p>Getting all routes, a single route, insert or update and delete via HTTP:</p>
+<div class="codehilite"><pre><span></span>curl http://localhost:2379/v2/keys/skipper/routes
+curl http://localhost:2379/v2/keys/skipper/routes/hello
+curl -X PUT -d &#39;value=* -&gt; status(200) -&gt; inlineContent(&quot;Hello, world!&quot;) -&gt; &lt;shunt&gt;&#39; http://localhost:2379/v2/keys/skipper/routes/hello
+curl -X DELETE http://localhost:2379/v2/keys/skipper/routes/hello
+</pre></div>
+
+<p>Getting all route IDs, a route expression stored with an ID, insert or update and delete with etcdctl:</p>
+<div class="codehilite"><pre><span></span>etcdctl --endpoints http://localhost:2379,http://localhost:4001 ls /skipper/routes
+etcdctl --endpoints http://localhost:2379,http://localhost:4001 get /skipper/routes/hello
+etcdctl --endpoints http://localhost:2379,http://localhost:4001 set -- /skipper/routes/hello &#39;* -&gt; status(200) -&gt; inlineContent(&quot;Hello, world!&quot;) -&gt; &lt;shunt&gt;&#39;
+etcdctl --endpoints http://localhost:2379,http://localhost:4001 rm /skipper/routes/bello
+</pre></div>
+
+<p>We use the name &lsquo;eskip&rsquo; for two related concepts: the eskip syntax of route configuration and the eskip command
+line tool. The command line tool can be used to check the syntax of skipper routes, format route files, prepend
+or append filters to multiple routes, and also to access etcd.</p>
+<p>Getting all routes, a single route, insert or update and delete with eskip:</p>
+<div class="codehilite"><pre><span></span>eskip print -etcd-urls http://localhost:2379,http://localhost:4001
+eskip print -etcd-urls http://localhost:2379,http://localhost:4001 | grep hello
+eskip upsert -etcd-urls http://localhost:2379,http://localhost:4001 -routes &#39;hello: * -&gt; status(200) -&gt; inlineContent(&quot;Hello, world!&quot;) -&gt; &lt;shunt&gt;&#39;
+eskip delete -etcd-urls http://localhost:2379,http://localhost:4001 -ids hello
+</pre></div>
+
+<p>When storing multiple configuration sets in etcd, we can use the <code>-etcd-prefix</code> to distinguish between them.</p>
+<p>Instead of using routes inline, it may be more convenient to edit them in a file and store them in etcd directly
+from the file.</p>
+<p>Contents of example.eskip:</p>
+<div class="codehilite"><pre><span></span><span class="nt">hello</span><span class="o">:</span> <span class="o">*</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="nt">status</span><span class="o">(</span><span class="nt">200</span><span class="o">)</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="nt">inlineContent</span><span class="o">(</span><span class="s2">&quot;Hello, world!&quot;</span><span class="o">)</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nt">shunt</span><span class="o">&gt;;</span>
+<span class="nt">helloTest</span><span class="o">:</span> <span class="nt">Path</span><span class="o">(</span><span class="s2">&quot;/test&quot;</span><span class="o">)</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="nt">status</span><span class="o">(</span><span class="nt">200</span><span class="o">)</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="nt">inlineContent</span><span class="o">(</span><span class="s2">&quot;Hello, test!&quot;</span><span class="o">)</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nt">shunt</span><span class="o">&gt;;</span>
+</pre></div>
+
+<p>Updating those routes in etcd that are defined in the file, or inserting them from the file in case they don&rsquo;t
+exist in etcd, yet:</p>
+<div class="codehilite"><pre><span></span>eskip upsert -etcd-urls http://localhost:2379,http://localhost:4001 example.eskip
+</pre></div>
+
+<p>The above command won&rsquo;t modify or delete those routes, whose ID is missing from example.eskip. To fully sync a
+set of routes from a file to etcd, use the reset subcommand:</p>
+<div class="codehilite"><pre><span></span>eskip reset -etcd-urls http://localhost:2379,http://localhost:4001 example.eskip
+</pre></div>
+
+<p>For more information see the <a href="https://godoc.org/github.com/zalando/skipper/cmd/eskip">documentation</a> or <code>eskip -help</code>.</p>
                 
                   
                 

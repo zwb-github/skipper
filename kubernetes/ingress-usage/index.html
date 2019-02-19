@@ -11,6 +11,8 @@
       <meta http-equiv="x-ua-compatible" content="ie=edge">
       
       
+        <link rel="canonical" href="https://opensource.zalando.com/skipper/kubernetes/ingress-usage/">
+      
       
       
         <meta name="lang:clipboard.copy" content="Copy to clipboard">
@@ -32,7 +34,7 @@
         <meta name="lang:search.tokenizer" content="[\s\-]+">
       
       <link rel="shortcut icon" href="../../favicon.ico">
-      <meta name="generator" content="mkdocs-1.0.1, mkdocs-material-3.0.6">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-3.0.4">
     
     
       
@@ -98,7 +100,7 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
     
-      <a href="#skipper-ingress-usage" tabindex="1" class="md-skip">
+      <a href="../../#skipper-ingress-usage" tabindex="1" class="md-skip">
         Skip to content
       </a>
     
@@ -107,7 +109,7 @@
   <nav class="md-header-nav md-grid">
     <div class="md-flex">
       <div class="md-flex__cell md-flex__cell--shrink">
-        <a href="../.." title="Skipper" class="md-header-nav__button md-logo">
+        <a href="https://opensource.zalando.com/skipper/" title="Skipper" class="md-header-nav__button md-logo">
           
             <img src="../../favicon.ico" width="24" height="24">
           
@@ -264,7 +266,7 @@
                   <div class="md-sidebar__inner">
                     <nav class="md-nav md-nav--primary" data-md-level="0">
   <label class="md-nav__title md-nav__title--site" for="__drawer">
-    <a href="../.." title="Skipper" class="md-nav__button md-logo">
+    <a href="https://opensource.zalando.com/skipper/" title="Skipper" class="md-nav__button md-logo">
       
         <img src="../../favicon.ico" width="48" height="48">
       
@@ -631,6 +633,19 @@
   <a href="#http-host-header-routing" title="HTTP Host header routing" class="md-nav__link">
     HTTP Host header routing
   </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#multiple-ingresses-defining-the-same-route" title="Multiple Ingresses defining the same route" class="md-nav__link">
+    Multiple Ingresses defining the same route
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1165,6 +1180,19 @@
     HTTP Host header routing
   </a>
   
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#multiple-ingresses-defining-the-same-route" title="Multiple Ingresses defining the same route" class="md-nav__link">
+    Multiple Ingresses defining the same route
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1630,7 +1658,7 @@ features Skipper provides</p>
 <tr>
 <td>ExternalName</td>
 <td>no, <a href="https://github.com/zalando/skipper/issues/549">related issue</a></td>
-<td><a href="../dataclients/route-string/#proxy-to-a-given-url">use deployment with routestring</a></td>
+<td><a href="../../data-clients/route-string/#proxy-to-a-given-url">use deployment with routestring</a></td>
 </tr>
 <tr>
 <td>LoadBalancer</td>
@@ -1687,6 +1715,50 @@ Cloud migration.</p>
 </pre></div>
 
 
+<h3 id="multiple-ingresses-defining-the-same-route">Multiple Ingresses defining the same route<a class="headerlink" href="#multiple-ingresses-defining-the-same-route" title="Permanent link">&para;</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If multiple ingresses define the same host and the same predicates, traffic routing may become non-deterministic. </p>
+</div>
+<p>Consider the following two ingresses which have the same hostname and therefore
+overlap. In skipper the routing of this is currently undefined as skipper
+doesn&rsquo;t pick one over the other, but just creates routes (possible overlapping)
+for each of the ingresses.</p>
+<p>In this example (taken from the issues we saw in production clusters) one
+ingress points to a service with no endpoints and the other to a service with
+endpoints. (Most likely service-x was renamed to service-x-live and the old
+ingress was forgot).</p>
+<div class="codehilite"><pre><span></span><span class="n">apiVersion</span><span class="o">:</span> <span class="n">extensions</span><span class="o">/</span><span class="n">v1beta1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Ingress</span>
+<span class="n">metadata</span><span class="o">:</span>
+<span class="n">name</span><span class="o">:</span> <span class="n">service</span><span class="o">-</span><span class="n">x</span>
+<span class="n">spec</span><span class="o">:</span>
+<span class="n">rules</span><span class="o">:</span>
+<span class="o">-</span> <span class="n">host</span><span class="o">:</span> <span class="n">service</span><span class="o">-</span><span class="n">x</span><span class="o">.</span><span class="na">example</span><span class="o">.</span><span class="na">org</span>
+    <span class="n">http</span><span class="o">:</span>
+    <span class="n">paths</span><span class="o">:</span>
+    <span class="o">-</span> <span class="n">backend</span><span class="o">:</span>
+        <span class="n">serviceName</span><span class="o">:</span> <span class="n">service</span><span class="o">-</span><span class="n">x</span> <span class="err">#</span> <span class="k">this</span> <span class="n">service</span> <span class="n">has</span> <span class="mi">0</span> <span class="n">endpoints</span>
+        <span class="n">servicePort</span><span class="o">:</span> <span class="mi">80</span>
+</pre></div>
+
+
+<p>&#x200B;</p>
+<div class="codehilite"><pre><span></span><span class="n">apiVersion</span><span class="o">:</span> <span class="n">extensions</span><span class="o">/</span><span class="n">v1beta1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Ingress</span>
+<span class="n">metadata</span><span class="o">:</span>
+<span class="n">name</span><span class="o">:</span> <span class="n">service</span><span class="o">-</span><span class="n">x</span><span class="o">-</span><span class="n">live</span>
+<span class="n">spec</span><span class="o">:</span>
+<span class="n">rules</span><span class="o">:</span>
+<span class="o">-</span> <span class="n">host</span><span class="o">:</span> <span class="n">service</span><span class="o">-</span><span class="n">x</span><span class="o">.</span><span class="na">example</span><span class="o">.</span><span class="na">org</span>
+    <span class="n">http</span><span class="o">:</span>
+    <span class="n">paths</span><span class="o">:</span>
+    <span class="o">-</span> <span class="n">backend</span><span class="o">:</span>
+        <span class="n">serviceName</span><span class="o">:</span> <span class="n">service</span><span class="o">-</span><span class="n">x</span><span class="o">-</span><span class="n">live</span>
+        <span class="n">servicePort</span><span class="o">:</span> <span class="mi">80</span>
+</pre></div>
+
+
 <h2 id="ingress-path-handling">Ingress path handling<a class="headerlink" href="#ingress-path-handling" title="Permanent link">&para;</a></h2>
 <p>Ingress paths can be interpreted in four different modes:</p>
 <ol>
@@ -1725,21 +1797,21 @@ path.</p>
 <li><strong>Predicates</strong> change the route matching, beyond normal ingress definitions</li>
 </ul>
 <p>This example shows how to add predicates and filters:</p>
-<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">extensions/v1beta1</span>
-<span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">Ingress</span>
-<span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">annotations</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">zalando.org/skipper-predicate</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">predicate1 &amp;&amp; predicate2 &amp;&amp; .. &amp;&amp; predicateN</span>
-    <span class="l l-Scalar l-Scalar-Plain">zalando.org/skipper-filter</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">filter1 -&gt; filter2 -&gt; .. -&gt; filterN</span>
-  <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">app</span>
-<span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">rules</span><span class="p p-Indicator">:</span>
-  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">host</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">app-default.example.org</span>
-    <span class="l l-Scalar l-Scalar-Plain">http</span><span class="p p-Indicator">:</span>
-      <span class="l l-Scalar l-Scalar-Plain">paths</span><span class="p p-Indicator">:</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">backend</span><span class="p p-Indicator">:</span>
-          <span class="l l-Scalar l-Scalar-Plain">serviceName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">app-svc</span>
-          <span class="l l-Scalar l-Scalar-Plain">servicePort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
+<div class="codehilite"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">extensions/v1beta1</span>
+<span class="nt">kind</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Ingress</span>
+<span class="nt">metadata</span><span class="p">:</span>
+  <span class="nt">annotations</span><span class="p">:</span>
+    <span class="nt">zalando.org/skipper-predicate</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">predicate1 &amp;&amp; predicate2 &amp;&amp; .. &amp;&amp; predicateN</span>
+    <span class="nt">zalando.org/skipper-filter</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">filter1 -&gt; filter2 -&gt; .. -&gt; filterN</span>
+  <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">app</span>
+<span class="nt">spec</span><span class="p">:</span>
+  <span class="nt">rules</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="nt">host</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">app-default.example.org</span>
+    <span class="nt">http</span><span class="p">:</span>
+      <span class="nt">paths</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="nt">backend</span><span class="p">:</span>
+          <span class="nt">serviceName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">app-svc</span>
+          <span class="nt">servicePort</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
 </pre></div>
 
 <h2 id="custom-routes">Custom Routes<a class="headerlink" href="#custom-routes" title="Permanent link">&para;</a></h2>
@@ -1843,25 +1915,25 @@ which are available, otherwise Skipper would not accept the entire
 route definition from the ingress object for safety reasons.</p>
 <h3 id="cors-example">CORS example<a class="headerlink" href="#cors-example" title="Permanent link">&para;</a></h3>
 <p>This example shows how to add a custom route for handling <code>OPTIONS</code> requests.</p>
-<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">extensions/v1beta1</span>
-<span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">Ingress</span>
-<span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">annotations</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">zalando.org/skipper-routes</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">|</span>
+<div class="codehilite"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">extensions/v1beta1</span>
+<span class="nt">kind</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Ingress</span>
+<span class="nt">metadata</span><span class="p">:</span>
+  <span class="nt">annotations</span><span class="p">:</span>
+    <span class="nt">zalando.org/skipper-routes</span><span class="p">:</span> <span class="p p-Indicator">|</span>
       <span class="no">Method(&quot;OPTIONS&quot;) -&gt;</span>
       <span class="no">setResponseHeader(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;) -&gt;</span>
       <span class="no">setResponseHeader(&quot;Access-Control-Allow-Methods&quot;, &quot;GET, OPTIONS&quot;) -&gt;</span>
       <span class="no">setResponseHeader(&quot;Access-Control-Allow-Headers&quot;, &quot;Authorization&quot;) -&gt;</span>
       <span class="no">status(200) -&gt; &lt;shunt&gt;</span>
-  <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">app</span>
-<span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">rules</span><span class="p p-Indicator">:</span>
-  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">host</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">app-default.example.org</span>
-    <span class="l l-Scalar l-Scalar-Plain">http</span><span class="p p-Indicator">:</span>
-      <span class="l l-Scalar l-Scalar-Plain">paths</span><span class="p p-Indicator">:</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">backend</span><span class="p p-Indicator">:</span>
-          <span class="l l-Scalar l-Scalar-Plain">serviceName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">app-svc</span>
-          <span class="l l-Scalar l-Scalar-Plain">servicePort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
+  <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">app</span>
+<span class="nt">spec</span><span class="p">:</span>
+  <span class="nt">rules</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="nt">host</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">app-default.example.org</span>
+    <span class="nt">http</span><span class="p">:</span>
+      <span class="nt">paths</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="nt">backend</span><span class="p">:</span>
+          <span class="nt">serviceName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">app-svc</span>
+          <span class="nt">servicePort</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
 </pre></div>
 
 <p>This will generate a custom route for the ingress which looks like this:</p>
@@ -1885,27 +1957,27 @@ use multiple routes definitions.</p>
 <p><strong>Disclaimer</strong>: This feature works only with having different <code>Path*</code>
 predicates in ingress, if there are no paths rules defined. For
 example this will <strong>not</strong> work:</p>
-<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">extensions/v1beta1</span>
-<span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">Ingress</span>
-<span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">skipper-ingress</span>
-  <span class="l l-Scalar l-Scalar-Plain">annotations</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">kubernetes.io/ingress.class</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">skipper</span>
-    <span class="l l-Scalar l-Scalar-Plain">zalando.org/skipper-routes</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">|</span>
+<div class="codehilite"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">extensions/v1beta1</span>
+<span class="nt">kind</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Ingress</span>
+<span class="nt">metadata</span><span class="p">:</span>
+  <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">skipper-ingress</span>
+  <span class="nt">annotations</span><span class="p">:</span>
+    <span class="nt">kubernetes.io/ingress.class</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">skipper</span>
+    <span class="nt">zalando.org/skipper-routes</span><span class="p">:</span> <span class="p p-Indicator">|</span>
        <span class="no">redirect1: Path(&quot;/foo/&quot;) -&gt; redirectTo(308, &quot;/bar/&quot;) -&gt; &lt;shunt&gt;;</span>
-  <span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">rules</span><span class="p p-Indicator">:</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">host</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">foo.bar</span>
-        <span class="l l-Scalar l-Scalar-Plain">http</span><span class="p p-Indicator">:</span>
-          <span class="l l-Scalar l-Scalar-Plain">paths</span><span class="p p-Indicator">:</span>
-            <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">path</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">/something/</span>
-              <span class="l l-Scalar l-Scalar-Plain">backend</span><span class="p p-Indicator">:</span>
-                <span class="l l-Scalar l-Scalar-Plain">serviceName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">something</span>
-                <span class="l l-Scalar l-Scalar-Plain">servicePort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
-            <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">path</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">/else/</span>
-              <span class="l l-Scalar l-Scalar-Plain">backend</span><span class="p p-Indicator">:</span>
-                <span class="l l-Scalar l-Scalar-Plain">serviceName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">else</span>
-                <span class="l l-Scalar l-Scalar-Plain">servicePort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
+  <span class="nt">spec</span><span class="p">:</span>
+    <span class="nt">rules</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="nt">host</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">foo.bar</span>
+        <span class="nt">http</span><span class="p">:</span>
+          <span class="nt">paths</span><span class="p">:</span>
+            <span class="p p-Indicator">-</span> <span class="nt">path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/something/</span>
+              <span class="nt">backend</span><span class="p">:</span>
+                <span class="nt">serviceName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">something</span>
+                <span class="nt">servicePort</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
+            <span class="p p-Indicator">-</span> <span class="nt">path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/else/</span>
+              <span class="nt">backend</span><span class="p">:</span>
+                <span class="nt">serviceName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">else</span>
+                <span class="nt">servicePort</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
 </pre></div>
 
 <p>A possible solution will be a skipper route CRD: <a href="https://github.com/zalando/skipper/issues/660">https://github.com/zalando/skipper/issues/660</a></p>
@@ -1975,7 +2047,7 @@ jsCookie(&quot;test-session-info&quot;, &quot;abc-debug&quot;, 31536000, &quot;c
 
 
 <h3 id="authorization">Authorization<a class="headerlink" href="#authorization" title="Permanent link">&para;</a></h3>
-<p>Our <a href="../../tutorials/auth/">autnetication and authorization tutorial</a>
+<p>Our <a href="../tutorials/auth/">autnetication and authorization tutorial</a>
 or <a href="https://godoc.org/github.com/zalando/skipper/filters/auth">filter auth godoc</a>
 shows how to use filters for authorization.</p>
 <h4 id="basic-auth">Basic Auth<a class="headerlink" href="#basic-auth" title="Permanent link">&para;</a></h4>
@@ -2048,20 +2120,20 @@ documented.</p>
 
 
 <p>The ingress spec would look like this:</p>
-<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">extensions/v1beta1</span>
-<span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">Ingress</span>
-<span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">annotations</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">zalando.org/skipper-filter</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">consecutiveBreaker(15)</span>
-  <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">app</span>
-<span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">rules</span><span class="p p-Indicator">:</span>
-  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">host</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">app-default.example.org</span>
-    <span class="l l-Scalar l-Scalar-Plain">http</span><span class="p p-Indicator">:</span>
-      <span class="l l-Scalar l-Scalar-Plain">paths</span><span class="p p-Indicator">:</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">backend</span><span class="p p-Indicator">:</span>
-          <span class="l l-Scalar l-Scalar-Plain">serviceName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">app-svc</span>
-          <span class="l l-Scalar l-Scalar-Plain">servicePort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
+<div class="codehilite"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">extensions/v1beta1</span>
+<span class="nt">kind</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Ingress</span>
+<span class="nt">metadata</span><span class="p">:</span>
+  <span class="nt">annotations</span><span class="p">:</span>
+    <span class="nt">zalando.org/skipper-filter</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">consecutiveBreaker(15)</span>
+  <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">app</span>
+<span class="nt">spec</span><span class="p">:</span>
+  <span class="nt">rules</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="nt">host</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">app-default.example.org</span>
+    <span class="nt">http</span><span class="p">:</span>
+      <span class="nt">paths</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="nt">backend</span><span class="p">:</span>
+          <span class="nt">serviceName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">app-svc</span>
+          <span class="nt">servicePort</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
 </pre></div>
 
 <h4 id="rate-breaker">Rate Breaker<a class="headerlink" href="#rate-breaker" title="Permanent link">&para;</a></h4>
@@ -2076,20 +2148,20 @@ documented.</p>
 
 
 <p>The ingress spec would look like this:</p>
-<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">extensions/v1beta1</span>
-<span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">Ingress</span>
-<span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">annotations</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">zalando.org/skipper-filter</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">rateBreaker(30, 300)</span>
-  <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">app</span>
-<span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">rules</span><span class="p p-Indicator">:</span>
-  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">host</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">app-default.example.org</span>
-    <span class="l l-Scalar l-Scalar-Plain">http</span><span class="p p-Indicator">:</span>
-      <span class="l l-Scalar l-Scalar-Plain">paths</span><span class="p p-Indicator">:</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">backend</span><span class="p p-Indicator">:</span>
-          <span class="l l-Scalar l-Scalar-Plain">serviceName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">app-svc</span>
-          <span class="l l-Scalar l-Scalar-Plain">servicePort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
+<div class="codehilite"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">extensions/v1beta1</span>
+<span class="nt">kind</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Ingress</span>
+<span class="nt">metadata</span><span class="p">:</span>
+  <span class="nt">annotations</span><span class="p">:</span>
+    <span class="nt">zalando.org/skipper-filter</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">rateBreaker(30, 300)</span>
+  <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">app</span>
+<span class="nt">spec</span><span class="p">:</span>
+  <span class="nt">rules</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="nt">host</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">app-default.example.org</span>
+    <span class="nt">http</span><span class="p">:</span>
+      <span class="nt">paths</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="nt">backend</span><span class="p">:</span>
+          <span class="nt">serviceName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">app-svc</span>
+          <span class="nt">servicePort</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
 </pre></div>
 
 <h3 id="ratelimits">Ratelimits<a class="headerlink" href="#ratelimits" title="Permanent link">&para;</a></h3>
@@ -2113,59 +2185,59 @@ and in our <a href="../../tutorials/ratelimit/">ratelimit tutorial</a>.</p>
 <p>The example shows 20 calls per hour per client, based on
 X-Forwarded-For header or IP incase there is no X-Forwarded-For header
 set, are allowed to each skipper instance for the given ingress.</p>
-<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">extensions/v1beta1</span>
-<span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">Ingress</span>
-<span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">annotations</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">zalando.org/skipper-filter</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">localRatelimit(20, &quot;1h&quot;)</span>
-  <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">app</span>
-<span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">rules</span><span class="p p-Indicator">:</span>
-  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">host</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">app-default.example.org</span>
-    <span class="l l-Scalar l-Scalar-Plain">http</span><span class="p p-Indicator">:</span>
-      <span class="l l-Scalar l-Scalar-Plain">paths</span><span class="p p-Indicator">:</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">backend</span><span class="p p-Indicator">:</span>
-          <span class="l l-Scalar l-Scalar-Plain">serviceName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">app-svc</span>
-          <span class="l l-Scalar l-Scalar-Plain">servicePort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
+<div class="codehilite"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">extensions/v1beta1</span>
+<span class="nt">kind</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Ingress</span>
+<span class="nt">metadata</span><span class="p">:</span>
+  <span class="nt">annotations</span><span class="p">:</span>
+    <span class="nt">zalando.org/skipper-filter</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">localRatelimit(20, &quot;1h&quot;)</span>
+  <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">app</span>
+<span class="nt">spec</span><span class="p">:</span>
+  <span class="nt">rules</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="nt">host</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">app-default.example.org</span>
+    <span class="nt">http</span><span class="p">:</span>
+      <span class="nt">paths</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="nt">backend</span><span class="p">:</span>
+          <span class="nt">serviceName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">app-svc</span>
+          <span class="nt">servicePort</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
 </pre></div>
 
 <p>If you need to rate limit service to service communication and
 you use Authorization headers to protect your backend from your
 clients, then you can pass a 3 parameter to group clients by &ldquo;Authorization
 Header&rdquo;:</p>
-<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">extensions/v1beta1</span>
-<span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">Ingress</span>
-<span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">annotations</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">zalando.org/skipper-filter</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">localRatelimit(20, &quot;1h&quot;, &quot;auth&quot;)</span>
-  <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">app</span>
-<span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">rules</span><span class="p p-Indicator">:</span>
-  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">host</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">app-default.example.org</span>
-    <span class="l l-Scalar l-Scalar-Plain">http</span><span class="p p-Indicator">:</span>
-      <span class="l l-Scalar l-Scalar-Plain">paths</span><span class="p p-Indicator">:</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">backend</span><span class="p p-Indicator">:</span>
-          <span class="l l-Scalar l-Scalar-Plain">serviceName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">app-svc</span>
-          <span class="l l-Scalar l-Scalar-Plain">servicePort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
+<div class="codehilite"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">extensions/v1beta1</span>
+<span class="nt">kind</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Ingress</span>
+<span class="nt">metadata</span><span class="p">:</span>
+  <span class="nt">annotations</span><span class="p">:</span>
+    <span class="nt">zalando.org/skipper-filter</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">localRatelimit(20, &quot;1h&quot;, &quot;auth&quot;)</span>
+  <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">app</span>
+<span class="nt">spec</span><span class="p">:</span>
+  <span class="nt">rules</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="nt">host</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">app-default.example.org</span>
+    <span class="nt">http</span><span class="p">:</span>
+      <span class="nt">paths</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="nt">backend</span><span class="p">:</span>
+          <span class="nt">serviceName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">app-svc</span>
+          <span class="nt">servicePort</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
 </pre></div>
 
 <h4 id="service-ratelimits">Service Ratelimits<a class="headerlink" href="#service-ratelimits" title="Permanent link">&para;</a></h4>
 <p>The example shows 50 calls per minute are allowed to each skipper
 instance for the given ingress.</p>
-<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">extensions/v1beta1</span>
-<span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">Ingress</span>
-<span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">annotations</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">zalando.org/skipper-filter</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">ratelimit(50, &quot;1m&quot;)</span>
-  <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">app</span>
-<span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">rules</span><span class="p p-Indicator">:</span>
-  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">host</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">app-default.example.org</span>
-    <span class="l l-Scalar l-Scalar-Plain">http</span><span class="p p-Indicator">:</span>
-      <span class="l l-Scalar l-Scalar-Plain">paths</span><span class="p p-Indicator">:</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">backend</span><span class="p p-Indicator">:</span>
-          <span class="l l-Scalar l-Scalar-Plain">serviceName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">app-svc</span>
-          <span class="l l-Scalar l-Scalar-Plain">servicePort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
+<div class="codehilite"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">extensions/v1beta1</span>
+<span class="nt">kind</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Ingress</span>
+<span class="nt">metadata</span><span class="p">:</span>
+  <span class="nt">annotations</span><span class="p">:</span>
+    <span class="nt">zalando.org/skipper-filter</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ratelimit(50, &quot;1m&quot;)</span>
+  <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">app</span>
+<span class="nt">spec</span><span class="p">:</span>
+  <span class="nt">rules</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="nt">host</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">app-default.example.org</span>
+    <span class="nt">http</span><span class="p">:</span>
+      <span class="nt">paths</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="nt">backend</span><span class="p">:</span>
+          <span class="nt">serviceName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">app-svc</span>
+          <span class="nt">servicePort</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
 </pre></div>
 
 <h4 id="cluster-ratelimits">Cluster Ratelimits<a class="headerlink" href="#cluster-ratelimits" title="Permanent link">&para;</a></h4>
@@ -2174,39 +2246,39 @@ instance for the given ingress.</p>
 <h5 id="service">Service<a class="headerlink" href="#service" title="Permanent link">&para;</a></h5>
 <p>The example shows 50 calls per minute are allowed to pass this ingress
 rule to the backend.</p>
-<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">extensions/v1beta1</span>
-<span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">Ingress</span>
-<span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">annotations</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">zalando.org/skipper-filter</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">clusterRatelimit(50, &quot;1m&quot;)</span>
-  <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">app</span>
-<span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">rules</span><span class="p p-Indicator">:</span>
-  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">host</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">app-default.example.org</span>
-    <span class="l l-Scalar l-Scalar-Plain">http</span><span class="p p-Indicator">:</span>
-      <span class="l l-Scalar l-Scalar-Plain">paths</span><span class="p p-Indicator">:</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">backend</span><span class="p p-Indicator">:</span>
-          <span class="l l-Scalar l-Scalar-Plain">serviceName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">app-svc</span>
-          <span class="l l-Scalar l-Scalar-Plain">servicePort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
+<div class="codehilite"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">extensions/v1beta1</span>
+<span class="nt">kind</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Ingress</span>
+<span class="nt">metadata</span><span class="p">:</span>
+  <span class="nt">annotations</span><span class="p">:</span>
+    <span class="nt">zalando.org/skipper-filter</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">clusterRatelimit(50, &quot;1m&quot;)</span>
+  <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">app</span>
+<span class="nt">spec</span><span class="p">:</span>
+  <span class="nt">rules</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="nt">host</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">app-default.example.org</span>
+    <span class="nt">http</span><span class="p">:</span>
+      <span class="nt">paths</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="nt">backend</span><span class="p">:</span>
+          <span class="nt">serviceName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">app-svc</span>
+          <span class="nt">servicePort</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
 </pre></div>
 
 <h5 id="client">Client<a class="headerlink" href="#client" title="Permanent link">&para;</a></h5>
 <p>The example shows 10 calls per hour are allowed per client,
 X-Forwarded-For header, to pass this ingress rule to the backend.</p>
-<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">extensions/v1beta1</span>
-<span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">Ingress</span>
-<span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">annotations</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">zalando.org/skipper-filter</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">clusterRatelimit(10, &quot;1h&quot;, &quot;xfwd&quot;)</span>
-  <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">app</span>
-<span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">rules</span><span class="p p-Indicator">:</span>
-  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">host</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">app-default.example.org</span>
-    <span class="l l-Scalar l-Scalar-Plain">http</span><span class="p p-Indicator">:</span>
-      <span class="l l-Scalar l-Scalar-Plain">paths</span><span class="p p-Indicator">:</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">backend</span><span class="p p-Indicator">:</span>
-          <span class="l l-Scalar l-Scalar-Plain">serviceName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">app-svc</span>
-          <span class="l l-Scalar l-Scalar-Plain">servicePort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
+<div class="codehilite"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">extensions/v1beta1</span>
+<span class="nt">kind</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Ingress</span>
+<span class="nt">metadata</span><span class="p">:</span>
+  <span class="nt">annotations</span><span class="p">:</span>
+    <span class="nt">zalando.org/skipper-filter</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">clusterRatelimit(10, &quot;1h&quot;, &quot;xfwd&quot;)</span>
+  <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">app</span>
+<span class="nt">spec</span><span class="p">:</span>
+  <span class="nt">rules</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="nt">host</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">app-default.example.org</span>
+    <span class="nt">http</span><span class="p">:</span>
+      <span class="nt">paths</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="nt">backend</span><span class="p">:</span>
+          <span class="nt">serviceName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">app-svc</span>
+          <span class="nt">servicePort</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
 </pre></div>
 
 <h2 id="shadow-traffic">Shadow Traffic<a class="headerlink" href="#shadow-traffic" title="Permanent link">&para;</a></h2>
@@ -2214,29 +2286,29 @@ X-Forwarded-For header, to pass this ingress rule to the backend.</p>
 production load, you can copy incoming requests to your new endpoint
 and ignore the responses from your new backend. This can be done by
 the <a href="../../reference/filters/#tee">tee()</a> and <a href="../../reference/filters/#teenf">teenf()</a> filters.</p>
-<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">extensions/v1beta1</span>
-<span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">Ingress</span>
-<span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">annotations</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">zalando.org/skipper-filter</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">teenf(&quot;https://app-new.example.org&quot;)</span>
-  <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">app</span>
-<span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">rules</span><span class="p p-Indicator">:</span>
-  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">host</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">app-default.example.org</span>
-    <span class="l l-Scalar l-Scalar-Plain">http</span><span class="p p-Indicator">:</span>
-      <span class="l l-Scalar l-Scalar-Plain">paths</span><span class="p p-Indicator">:</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">backend</span><span class="p p-Indicator">:</span>
-          <span class="l l-Scalar l-Scalar-Plain">serviceName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">app-svc</span>
-          <span class="l l-Scalar l-Scalar-Plain">servicePort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
+<div class="codehilite"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">extensions/v1beta1</span>
+<span class="nt">kind</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Ingress</span>
+<span class="nt">metadata</span><span class="p">:</span>
+  <span class="nt">annotations</span><span class="p">:</span>
+    <span class="nt">zalando.org/skipper-filter</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">teenf(&quot;https://app-new.example.org&quot;)</span>
+  <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">app</span>
+<span class="nt">spec</span><span class="p">:</span>
+  <span class="nt">rules</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="nt">host</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">app-default.example.org</span>
+    <span class="nt">http</span><span class="p">:</span>
+      <span class="nt">paths</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="nt">backend</span><span class="p">:</span>
+          <span class="nt">serviceName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">app-svc</span>
+          <span class="nt">servicePort</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
 </pre></div>
 
 <h2 id="predicates">Predicates<a class="headerlink" href="#predicates" title="Permanent link">&para;</a></h2>
-<p><a href="../../reference/predicates">Predicates</a>
+<p><a href="../../reference/predicates/">Predicates</a>
 are influencing the route matching, which you might want to carefully
 test before using it in production. This enables you to do feature
 toggles or time based enabling endpoints.</p>
-<p>You can use all kinds of <a href="../../reference/predicates">predicates</a>
-with <a href="../../reference/filters">filters</a> together.</p>
+<p>You can use all kinds of <a href="../../reference/predicates/">predicates</a>
+with <a href="../../reference/filters/">filters</a> together.</p>
 <h3 id="feature-toggle">Feature Toggle<a class="headerlink" href="#feature-toggle" title="Permanent link">&para;</a></h3>
 <p>Feature toggles are often implemented as query string to select a new
 feature. Normally you would have to implement this in your
@@ -2249,53 +2321,53 @@ query string in the URL has <code>version=alpha</code> set, for example
 <code>https://app-default.example.org/mypath?version=alpha</code>, the service
 <code>alpha-svc</code> will get the traffic, if not <code>prod-svc</code>.</p>
 <p>alpha-svc:</p>
-<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">extensions/v1beta1</span>
-<span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">Ingress</span>
-<span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">annotations</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">zalando.org/skipper-predicate</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">QueryParam(&quot;version&quot;, &quot;^alpha$&quot;)</span>
-  <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">alpha-app</span>
-<span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">rules</span><span class="p p-Indicator">:</span>
-  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">host</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">app-default.example.org</span>
-    <span class="l l-Scalar l-Scalar-Plain">http</span><span class="p p-Indicator">:</span>
-      <span class="l l-Scalar l-Scalar-Plain">paths</span><span class="p p-Indicator">:</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">backend</span><span class="p p-Indicator">:</span>
-          <span class="l l-Scalar l-Scalar-Plain">serviceName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">alpha-svc</span>
-          <span class="l l-Scalar l-Scalar-Plain">servicePort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
+<div class="codehilite"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">extensions/v1beta1</span>
+<span class="nt">kind</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Ingress</span>
+<span class="nt">metadata</span><span class="p">:</span>
+  <span class="nt">annotations</span><span class="p">:</span>
+    <span class="nt">zalando.org/skipper-predicate</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">QueryParam(&quot;version&quot;, &quot;^alpha$&quot;)</span>
+  <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">alpha-app</span>
+<span class="nt">spec</span><span class="p">:</span>
+  <span class="nt">rules</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="nt">host</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">app-default.example.org</span>
+    <span class="nt">http</span><span class="p">:</span>
+      <span class="nt">paths</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="nt">backend</span><span class="p">:</span>
+          <span class="nt">serviceName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">alpha-svc</span>
+          <span class="nt">servicePort</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
 </pre></div>
 
 <p>prod-svc:</p>
-<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">extensions/v1beta1</span>
-<span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">Ingress</span>
-<span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">prod-app</span>
-<span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">rules</span><span class="p p-Indicator">:</span>
-  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">host</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">app-default.example.org</span>
-    <span class="l l-Scalar l-Scalar-Plain">http</span><span class="p p-Indicator">:</span>
-      <span class="l l-Scalar l-Scalar-Plain">paths</span><span class="p p-Indicator">:</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">backend</span><span class="p p-Indicator">:</span>
-          <span class="l l-Scalar l-Scalar-Plain">serviceName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">prod-svc</span>
-          <span class="l l-Scalar l-Scalar-Plain">servicePort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
+<div class="codehilite"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">extensions/v1beta1</span>
+<span class="nt">kind</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Ingress</span>
+<span class="nt">metadata</span><span class="p">:</span>
+  <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">prod-app</span>
+<span class="nt">spec</span><span class="p">:</span>
+  <span class="nt">rules</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="nt">host</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">app-default.example.org</span>
+    <span class="nt">http</span><span class="p">:</span>
+      <span class="nt">paths</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="nt">backend</span><span class="p">:</span>
+          <span class="nt">serviceName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">prod-svc</span>
+          <span class="nt">servicePort</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
 </pre></div>
 
 <h3 id="ip-whitelisting">IP Whitelisting<a class="headerlink" href="#ip-whitelisting" title="Permanent link">&para;</a></h3>
 <p>This ingress route will only allow traffic from networks 1.2.3.0/24 and 195.168.0.0/17</p>
-<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">extensions/v1beta1</span>
-<span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">Ingress</span>
-<span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">annotations</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">zalando.org/skipper-predicate</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">Source(&quot;1.2.3.0/24&quot;, &quot;195.168.0.0/17&quot;)</span>
-  <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">app</span>
-<span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">rules</span><span class="p p-Indicator">:</span>
-  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">host</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">app-default.example.org</span>
-    <span class="l l-Scalar l-Scalar-Plain">http</span><span class="p p-Indicator">:</span>
-      <span class="l l-Scalar l-Scalar-Plain">paths</span><span class="p p-Indicator">:</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">backend</span><span class="p p-Indicator">:</span>
-          <span class="l l-Scalar l-Scalar-Plain">serviceName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">app-svc</span>
-          <span class="l l-Scalar l-Scalar-Plain">servicePort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
+<div class="codehilite"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">extensions/v1beta1</span>
+<span class="nt">kind</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Ingress</span>
+<span class="nt">metadata</span><span class="p">:</span>
+  <span class="nt">annotations</span><span class="p">:</span>
+    <span class="nt">zalando.org/skipper-predicate</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Source(&quot;1.2.3.0/24&quot;, &quot;195.168.0.0/17&quot;)</span>
+  <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">app</span>
+<span class="nt">spec</span><span class="p">:</span>
+  <span class="nt">rules</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="nt">host</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">app-default.example.org</span>
+    <span class="nt">http</span><span class="p">:</span>
+      <span class="nt">paths</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="nt">backend</span><span class="p">:</span>
+          <span class="nt">serviceName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">app-svc</span>
+          <span class="nt">servicePort</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
 </pre></div>
 
 <h2 id="ab-test">A/B test<a class="headerlink" href="#ab-test" title="Permanent link">&para;</a></h2>
@@ -2310,73 +2382,73 @@ can be used to match the route based on the cookie. Like this you can
 have sticky sessions to either A or B for your clients.  This example
 shows to have 10% traffic using A and the rest using B.</p>
 <p>10% choice of setting the Cookie &ldquo;flavor&rdquo; to &ldquo;A&rdquo;:</p>
-<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">extensions/v1beta1</span>
-<span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">Ingress</span>
-<span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">annotations</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">zalando.org/skipper-predicate</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">Traffic(.1)</span>
-    <span class="l l-Scalar l-Scalar-Plain">zalando.org/skipper-filter</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">responseCookie(&quot;flavor, &quot;A&quot;, 31536000)</span>
-  <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">app</span>
-<span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">rules</span><span class="p p-Indicator">:</span>
-  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">host</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">app-default.example.org</span>
-    <span class="l l-Scalar l-Scalar-Plain">http</span><span class="p p-Indicator">:</span>
-      <span class="l l-Scalar l-Scalar-Plain">paths</span><span class="p p-Indicator">:</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">backend</span><span class="p p-Indicator">:</span>
-          <span class="l l-Scalar l-Scalar-Plain">serviceName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">a-app-svc</span>
-          <span class="l l-Scalar l-Scalar-Plain">servicePort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
+<div class="codehilite"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">extensions/v1beta1</span>
+<span class="nt">kind</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Ingress</span>
+<span class="nt">metadata</span><span class="p">:</span>
+  <span class="nt">annotations</span><span class="p">:</span>
+    <span class="nt">zalando.org/skipper-predicate</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Traffic(.1)</span>
+    <span class="nt">zalando.org/skipper-filter</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">responseCookie(&quot;flavor, &quot;A&quot;, 31536000)</span>
+  <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">app</span>
+<span class="nt">spec</span><span class="p">:</span>
+  <span class="nt">rules</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="nt">host</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">app-default.example.org</span>
+    <span class="nt">http</span><span class="p">:</span>
+      <span class="nt">paths</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="nt">backend</span><span class="p">:</span>
+          <span class="nt">serviceName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">a-app-svc</span>
+          <span class="nt">servicePort</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
 </pre></div>
 
 <p>Rest is setting Cookie &ldquo;flavor&rdquo; to &ldquo;B&rdquo;:</p>
-<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">extensions/v1beta1</span>
-<span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">Ingress</span>
-<span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">annotations</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">zalando.org/skipper-filter</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">responseCookie(&quot;flavor, &quot;B&quot;, 31536000)</span>
-  <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">app</span>
-<span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">rules</span><span class="p p-Indicator">:</span>
-  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">host</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">app-default.example.org</span>
-    <span class="l l-Scalar l-Scalar-Plain">http</span><span class="p p-Indicator">:</span>
-      <span class="l l-Scalar l-Scalar-Plain">paths</span><span class="p p-Indicator">:</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">backend</span><span class="p p-Indicator">:</span>
-          <span class="l l-Scalar l-Scalar-Plain">serviceName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">b-app-svc</span>
-          <span class="l l-Scalar l-Scalar-Plain">servicePort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
+<div class="codehilite"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">extensions/v1beta1</span>
+<span class="nt">kind</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Ingress</span>
+<span class="nt">metadata</span><span class="p">:</span>
+  <span class="nt">annotations</span><span class="p">:</span>
+    <span class="nt">zalando.org/skipper-filter</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">responseCookie(&quot;flavor, &quot;B&quot;, 31536000)</span>
+  <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">app</span>
+<span class="nt">spec</span><span class="p">:</span>
+  <span class="nt">rules</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="nt">host</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">app-default.example.org</span>
+    <span class="nt">http</span><span class="p">:</span>
+      <span class="nt">paths</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="nt">backend</span><span class="p">:</span>
+          <span class="nt">serviceName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">b-app-svc</span>
+          <span class="nt">servicePort</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
 </pre></div>
 
 <p>To be sticky, you have to create 2 ingress with predicate to match
 routes with the cookie we set before. For &ldquo;A&rdquo; this would be:</p>
-<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">extensions/v1beta1</span>
-<span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">Ingress</span>
-<span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">annotations</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">zalando.org/skipper-predicate</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">Cookie(&quot;flavor&quot;, /^A$/)</span>
-  <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">app</span>
-<span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">rules</span><span class="p p-Indicator">:</span>
-  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">host</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">app-default.example.org</span>
-    <span class="l l-Scalar l-Scalar-Plain">http</span><span class="p p-Indicator">:</span>
-      <span class="l l-Scalar l-Scalar-Plain">paths</span><span class="p p-Indicator">:</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">backend</span><span class="p p-Indicator">:</span>
-          <span class="l l-Scalar l-Scalar-Plain">serviceName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">a-app-svc</span>
-          <span class="l l-Scalar l-Scalar-Plain">servicePort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
+<div class="codehilite"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">extensions/v1beta1</span>
+<span class="nt">kind</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Ingress</span>
+<span class="nt">metadata</span><span class="p">:</span>
+  <span class="nt">annotations</span><span class="p">:</span>
+    <span class="nt">zalando.org/skipper-predicate</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Cookie(&quot;flavor&quot;, /^A$/)</span>
+  <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">app</span>
+<span class="nt">spec</span><span class="p">:</span>
+  <span class="nt">rules</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="nt">host</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">app-default.example.org</span>
+    <span class="nt">http</span><span class="p">:</span>
+      <span class="nt">paths</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="nt">backend</span><span class="p">:</span>
+          <span class="nt">serviceName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">a-app-svc</span>
+          <span class="nt">servicePort</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
 </pre></div>
 
 <p>For &ldquo;B&rdquo; this would be:</p>
-<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">extensions/v1beta1</span>
-<span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">Ingress</span>
-<span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">annotations</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">zalando.org/skipper-predicate</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">Cookie(&quot;flavor&quot;, /^B$/)</span>
-  <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">app</span>
-<span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">rules</span><span class="p p-Indicator">:</span>
-  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">host</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">app-default.example.org</span>
-    <span class="l l-Scalar l-Scalar-Plain">http</span><span class="p p-Indicator">:</span>
-      <span class="l l-Scalar l-Scalar-Plain">paths</span><span class="p p-Indicator">:</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">backend</span><span class="p p-Indicator">:</span>
-          <span class="l l-Scalar l-Scalar-Plain">serviceName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">b-app-svc</span>
-          <span class="l l-Scalar l-Scalar-Plain">servicePort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
+<div class="codehilite"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">extensions/v1beta1</span>
+<span class="nt">kind</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Ingress</span>
+<span class="nt">metadata</span><span class="p">:</span>
+  <span class="nt">annotations</span><span class="p">:</span>
+    <span class="nt">zalando.org/skipper-predicate</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Cookie(&quot;flavor&quot;, /^B$/)</span>
+  <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">app</span>
+<span class="nt">spec</span><span class="p">:</span>
+  <span class="nt">rules</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="nt">host</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">app-default.example.org</span>
+    <span class="nt">http</span><span class="p">:</span>
+      <span class="nt">paths</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="nt">backend</span><span class="p">:</span>
+          <span class="nt">serviceName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">b-app-svc</span>
+          <span class="nt">servicePort</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
 </pre></div>
 
 <h2 id="blue-green-deployments">Blue-Green deployments<a class="headerlink" href="#blue-green-deployments" title="Permanent link">&para;</a></h2>
@@ -2390,48 +2462,48 @@ simplicity this example shows 2 backends, which should be the default
 case for supporting blue-green deployments.</p>
 <p>In the following example <strong>my-app-1</strong> service will get <strong>80%</strong> of the traffic
 and <strong>my-app-2</strong> will get <strong>20%</strong> of the traffic:</p>
-<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">extensions/v1beta1</span>
-<span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">Ingress</span>
-<span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my-app</span>
-  <span class="l l-Scalar l-Scalar-Plain">labels</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">application</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my-app</span>
-  <span class="l l-Scalar l-Scalar-Plain">annotations</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">zalando.org/backend-weights</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">|</span>
+<div class="codehilite"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">extensions/v1beta1</span>
+<span class="nt">kind</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Ingress</span>
+<span class="nt">metadata</span><span class="p">:</span>
+  <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my-app</span>
+  <span class="nt">labels</span><span class="p">:</span>
+    <span class="nt">application</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my-app</span>
+  <span class="nt">annotations</span><span class="p">:</span>
+    <span class="nt">zalando.org/backend-weights</span><span class="p">:</span> <span class="p p-Indicator">|</span>
       <span class="no">{&quot;my-app-1&quot;: 80, &quot;my-app-2&quot;: 20}</span>
-<span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">rules</span><span class="p p-Indicator">:</span>
-  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">host</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my-app.example.org</span>
-    <span class="l l-Scalar l-Scalar-Plain">http</span><span class="p p-Indicator">:</span>
-      <span class="l l-Scalar l-Scalar-Plain">paths</span><span class="p p-Indicator">:</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">backend</span><span class="p p-Indicator">:</span>
-          <span class="l l-Scalar l-Scalar-Plain">serviceName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my-app-1</span>
-          <span class="l l-Scalar l-Scalar-Plain">servicePort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">http</span>
-        <span class="l l-Scalar l-Scalar-Plain">path</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">/</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">backend</span><span class="p p-Indicator">:</span>
-          <span class="l l-Scalar l-Scalar-Plain">serviceName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my-app-2</span>
-          <span class="l l-Scalar l-Scalar-Plain">servicePort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">http</span>
-        <span class="l l-Scalar l-Scalar-Plain">path</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">/</span>
+<span class="nt">spec</span><span class="p">:</span>
+  <span class="nt">rules</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="nt">host</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my-app.example.org</span>
+    <span class="nt">http</span><span class="p">:</span>
+      <span class="nt">paths</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="nt">backend</span><span class="p">:</span>
+          <span class="nt">serviceName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my-app-1</span>
+          <span class="nt">servicePort</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http</span>
+        <span class="nt">path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/</span>
+      <span class="p p-Indicator">-</span> <span class="nt">backend</span><span class="p">:</span>
+          <span class="nt">serviceName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my-app-2</span>
+          <span class="nt">servicePort</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http</span>
+        <span class="nt">path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/</span>
 </pre></div>
 
 <p>For more advanced blue-green deployments, check out our <a href="https://github.com/zalando-incubator/stackset-controller">stackset-controller</a>.</p>
 <h2 id="chaining-filters-and-predicates">Chaining Filters and Predicates<a class="headerlink" href="#chaining-filters-and-predicates" title="Permanent link">&para;</a></h2>
 <p>You can set multiple filters in a chain similar to the <a href="https://godoc.org/github.com/zalando/skipper/eskip">eskip format</a>.</p>
-<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">extensions/v1beta1</span>
-<span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">Ingress</span>
-<span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">annotations</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">zalando.org/skipper-predicate</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">Cookie(&quot;flavor&quot;, /^B$/) &amp;&amp; Source(&quot;1.2.3.0/24&quot;, &quot;195.168.0.0/17&quot;)</span>
-    <span class="l l-Scalar l-Scalar-Plain">zalando.org/skipper-filter</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">localRatelimit(50, &quot;10m&quot;) -&gt; requestCookie(&quot;test-session&quot;, &quot;abc&quot;)</span>
-  <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">app</span>
-<span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">rules</span><span class="p p-Indicator">:</span>
-  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">host</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">app-default.example.org</span>
-    <span class="l l-Scalar l-Scalar-Plain">http</span><span class="p p-Indicator">:</span>
-      <span class="l l-Scalar l-Scalar-Plain">paths</span><span class="p p-Indicator">:</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">backend</span><span class="p p-Indicator">:</span>
-          <span class="l l-Scalar l-Scalar-Plain">serviceName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">app-svc</span>
-          <span class="l l-Scalar l-Scalar-Plain">servicePort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
+<div class="codehilite"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">extensions/v1beta1</span>
+<span class="nt">kind</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Ingress</span>
+<span class="nt">metadata</span><span class="p">:</span>
+  <span class="nt">annotations</span><span class="p">:</span>
+    <span class="nt">zalando.org/skipper-predicate</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Cookie(&quot;flavor&quot;, /^B$/) &amp;&amp; Source(&quot;1.2.3.0/24&quot;, &quot;195.168.0.0/17&quot;)</span>
+    <span class="nt">zalando.org/skipper-filter</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">localRatelimit(50, &quot;10m&quot;) -&gt; requestCookie(&quot;test-session&quot;, &quot;abc&quot;)</span>
+  <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">app</span>
+<span class="nt">spec</span><span class="p">:</span>
+  <span class="nt">rules</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="nt">host</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">app-default.example.org</span>
+    <span class="nt">http</span><span class="p">:</span>
+      <span class="nt">paths</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="nt">backend</span><span class="p">:</span>
+          <span class="nt">serviceName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">app-svc</span>
+          <span class="nt">servicePort</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
 </pre></div>
 
 <h2 id="controlling-https-redirect">Controlling HTTPS redirect<a class="headerlink" href="#controlling-https-redirect" title="Permanent link">&para;</a></h2>
@@ -2535,9 +2607,9 @@ based on these ingresses specs.</p>
       
     </div>
     
-      <script src="../../assets/javascripts/application.5e60981f.js"></script>
+      <script src="../../assets/javascripts/application.e72fd936.js"></script>
       
-      <script>app.initialize({version:"1.0.1",url:{base:"../.."}})</script>
+      <script>app.initialize({version:"1.0.4",url:{base:"../.."}})</script>
       
     
     

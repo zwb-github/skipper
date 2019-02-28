@@ -34,7 +34,7 @@
         <meta name="lang:search.tokenizer" content="[\s\-]+">
       
       <link rel="shortcut icon" href="../../favicon.ico">
-      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-3.0.4">
+      <meta name="generator" content="mkdocs-1.0.1, mkdocs-material-3.0.6">
     
     
       
@@ -100,7 +100,7 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
     
-      <a href="../../#kubernetes-backend-deployments" tabindex="1" class="md-skip">
+      <a href="#kubernetes-backend-deployments" tabindex="1" class="md-skip">
         Skip to content
       </a>
     
@@ -876,10 +876,10 @@ in the Pod spec can have a <code>preStop</code> command which executes for
 example a binary. The following will execute the binary <code>sleep</code> with
 argument <code>20</code> to wait 20 seconds before terminating the containers
 within the Pod:</p>
-<div class="codehilite"><pre><span></span><span class="nt">lifecycle</span><span class="p">:</span>
-  <span class="nt">preStop</span><span class="p">:</span>
-    <span class="nt">exec</span><span class="p">:</span>
-      <span class="nt">command</span><span class="p">:</span> <span class="p p-Indicator">[</span><span class="s">&quot;sleep&quot;</span><span class="p p-Indicator">,</span><span class="s">&quot;20&quot;</span><span class="p p-Indicator">]</span>
+<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">lifecycle</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">preStop</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">exec</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">command</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">[</span><span class="s">&quot;sleep&quot;</span><span class="p p-Indicator">,</span><span class="s">&quot;20&quot;</span><span class="p p-Indicator">]</span>
 </pre></div>
 
 <p>20 seconds should be enough to fade your Pod out of the endpoints list
@@ -977,9 +977,9 @@ the instance after 60s.</p>
       
     </div>
     
-      <script src="../../assets/javascripts/application.e72fd936.js"></script>
+      <script src="../../assets/javascripts/application.5e60981f.js"></script>
       
-      <script>app.initialize({version:"1.0.4",url:{base:"../.."}})</script>
+      <script>app.initialize({version:"1.0.1",url:{base:"../.."}})</script>
       
     
     

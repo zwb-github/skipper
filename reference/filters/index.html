@@ -34,7 +34,7 @@
         <meta name="lang:search.tokenizer" content="[\s\-]+">
       
       <link rel="shortcut icon" href="../../favicon.ico">
-      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-3.0.4">
+      <meta name="generator" content="mkdocs-1.0.1, mkdocs-material-3.0.6">
     
     
       
@@ -100,7 +100,7 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
     
-      <a href="../../#skipper-filters" tabindex="1" class="md-skip">
+      <a href="#skipper-filters" tabindex="1" class="md-skip">
         Skip to content
       </a>
     
@@ -2480,24 +2480,30 @@ the access log for specific route while access log, in general, is enabled or vi
 <p>Filter overrides global Skipper <code>AccessLogDisabled</code> setting and allows to turn-off the access log for specific route
 while access log, in general, is enabled. It is also possible to disable access logs only for a subset of response codes
 from backend by providing an optional list of response code prefixes.</p>
-<p>Parameters:
-* response code prefixes (variadic int) - optional</p>
+<p>Parameters:</p>
+<ul>
+<li>response code prefixes (variadic int) - optional</li>
+</ul>
 <p>Example:</p>
 <div class="codehilite"><pre><span></span>disableAccessLog()
 disableAccessLog(1, 301, 40)
 </pre></div>
 
+<p>This disables logs of all requests with status codes <code>1xxs</code>, <code>301</code> and all <code>40xs</code>.</p>
 <h2 id="enableaccesslog">enableAccessLog<a class="headerlink" href="#enableaccesslog" title="Permanent link">&para;</a></h2>
 <p>Filter overrides global Skipper <code>AccessLogDisabled</code> setting and allows to turn-on the access log for specific route
 while access log, in general, is disabled. It is also possible to enable access logs only for a subset of response codes
 from backend by providing an optional list of response code prefixes.</p>
-<p>Parameters:
-* response code prefixes (variadic int) - optional</p>
+<p>Parameters:</p>
+<ul>
+<li>response code prefixes (variadic int) - optional</li>
+</ul>
 <p>Example:</p>
 <div class="codehilite"><pre><span></span>enableAccessLog()
 enableAccessLog(1, 301, 20)
 </pre></div>
 
+<p>This enables logs of all requests with status codes <code>1xxs</code>, <code>301</code> and all <code>20xs</code>.</p>
 <h2 id="auditlog">auditLog<a class="headerlink" href="#auditlog" title="Permanent link">&para;</a></h2>
 <p>Filter <code>auditLog()</code> logs the request and N bytes of the body into the
 log file. N defaults to 1024 and can be overidden with
@@ -2777,47 +2783,48 @@ apiUsageMonitoring.custom.orders-backend.orders-api.*.*.users.mmustermann.http_c
 </table>
 <h3 id="filter-configuration">Filter Configuration<a class="headerlink" href="#filter-configuration" title="Permanent link">&para;</a></h3>
 <p>Endpoints can be monitored using the <code>apiUsageMonitoring</code> filter in the route. It accepts JSON objects (as strings)
-of the following format.</p>
-<div class="codehilite"><pre><span></span><span class="nt">api-usage-monitoring-configuration</span><span class="p">:</span>
-  <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">object</span>
-  <span class="nt">required</span><span class="p">:</span>
+of the format mentioned below. In case any of the required parameters is missing, <code>no-op</code> filter is created, i.e. no
+metrics are captured, but the creation of the route does not fail.</p>
+<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">api-usage-monitoring-configuration</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">type</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">object</span>
+  <span class="l l-Scalar l-Scalar-Plain">required</span><span class="p p-Indicator">:</span>
     <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">application_id</span>
     <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">api_id</span>
     <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">path_templates</span>
-  <span class="nt">properties</span><span class="p">:</span>
-    <span class="nt">application_id</span><span class="p">:</span>
-      <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
-      <span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ID of the application</span>
-      <span class="nt">example</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">order-service</span>
-    <span class="nt">api_id</span><span class="p">:</span>
-      <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
-      <span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ID of the API</span>
-      <span class="nt">example</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">orders-api</span>
-    <span class="nt">path_templates</span><span class="p">:</span>
-      <span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Endpoints to be monitored.</span>
-      <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">array</span>
-      <span class="nt">minLength</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
-      <span class="nt">items</span><span class="p">:</span>
-        <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
-        <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">&gt;</span>
+  <span class="l l-Scalar l-Scalar-Plain">properties</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">application_id</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">type</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
+      <span class="l l-Scalar l-Scalar-Plain">description</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">ID of the application</span>
+      <span class="l l-Scalar l-Scalar-Plain">example</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">order-service</span>
+    <span class="l l-Scalar l-Scalar-Plain">api_id</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">type</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
+      <span class="l l-Scalar l-Scalar-Plain">description</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">ID of the API</span>
+      <span class="l l-Scalar l-Scalar-Plain">example</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">orders-api</span>
+    <span class="l l-Scalar l-Scalar-Plain">path_templates</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">description</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">Endpoints to be monitored.</span>
+      <span class="l l-Scalar l-Scalar-Plain">type</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">array</span>
+      <span class="l l-Scalar l-Scalar-Plain">minLength</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+      <span class="l l-Scalar l-Scalar-Plain">items</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">type</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
+        <span class="l l-Scalar l-Scalar-Plain">description</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">&gt;</span>
           <span class="no">Path template in /articles/{article-id} (OpenAPI 3) or in /articles/:article-id format.</span>
           <span class="no">NOTE: They will be normalized to the :this format for metrics naming.</span>
-        <span class="nt">example</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/orders/{order-id}</span>
-    <span class="nt">client_tracking_pattern</span><span class="p">:</span>
-        <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">&gt;</span>
+        <span class="l l-Scalar l-Scalar-Plain">example</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">/orders/{order-id}</span>
+    <span class="l l-Scalar l-Scalar-Plain">client_tracking_pattern</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">description</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">&gt;</span>
             <span class="no">The pattern that matches client id in form of a regular expression.</span>
 
             <span class="no">By default (if undefined), it is set to `.*`.</span>
 
             <span class="no">An empty string disables the client metrics completely.</span>
-        <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
-        <span class="nt">examples</span><span class="p">:</span>
-            <span class="nt">all_services</span><span class="p">:</span>
-                <span class="nt">summary</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">All services are tracked (for all activated realms).</span>
-                <span class="nt">value</span><span class="p">:</span> <span class="s">&quot;.*&quot;</span>
-            <span class="nt">just_some_services</span><span class="p">:</span>
-                <span class="nt">summary</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Only services `orders-service` and `shipment-service` are tracked.</span>
-                <span class="nt">value</span><span class="p">:</span> <span class="s">&quot;(orders</span><span class="err">\</span><span class="s">-service|shipment</span><span class="err">\</span><span class="s">-service)&quot;</span>
+        <span class="l l-Scalar l-Scalar-Plain">type</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
+        <span class="l l-Scalar l-Scalar-Plain">examples</span><span class="p p-Indicator">:</span>
+            <span class="l l-Scalar l-Scalar-Plain">all_services</span><span class="p p-Indicator">:</span>
+                <span class="l l-Scalar l-Scalar-Plain">summary</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">All services are tracked (for all activated realms).</span>
+                <span class="l l-Scalar l-Scalar-Plain">value</span><span class="p p-Indicator">:</span> <span class="s">&quot;.*&quot;</span>
+            <span class="l l-Scalar l-Scalar-Plain">just_some_services</span><span class="p p-Indicator">:</span>
+                <span class="l l-Scalar l-Scalar-Plain">summary</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">Only services `orders-service` and `shipment-service` are tracked.</span>
+                <span class="l l-Scalar l-Scalar-Plain">value</span><span class="p p-Indicator">:</span> <span class="s">&quot;(orders</span><span class="err">\</span><span class="s">-service|shipment</span><span class="err">\</span><span class="s">-service)&quot;</span>
 </pre></div>
 
 <p>Configuration Example:</p>
@@ -2936,9 +2943,9 @@ E.g.:</p>
       
     </div>
     
-      <script src="../../assets/javascripts/application.e72fd936.js"></script>
+      <script src="../../assets/javascripts/application.5e60981f.js"></script>
       
-      <script>app.initialize({version:"1.0.4",url:{base:"../.."}})</script>
+      <script>app.initialize({version:"1.0.1",url:{base:"../.."}})</script>
       
     
     

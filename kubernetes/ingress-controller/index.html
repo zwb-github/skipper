@@ -608,6 +608,26 @@
     Why you should use skipper as ingress controller?
   </a>
   
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#comparison-with-other-ingress-controllers" title="Comparison with other Ingress controllers" class="md-nav__link">
+    Comparison with other Ingress controllers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comparison-with-service-mesh" title="Comparison with service mesh" class="md-nav__link">
+    Comparison with service mesh
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -806,6 +826,26 @@
     Why you should use skipper as ingress controller?
   </a>
   
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#comparison-with-other-ingress-controllers" title="Comparison with other Ingress controllers" class="md-nav__link">
+    Comparison with other Ingress controllers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comparison-with-service-mesh" title="Comparison with service mesh" class="md-nav__link">
+    Comparison with service mesh
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -877,6 +917,121 @@ provide many features. Skipper has advanced resiliency and deployment
 features, that you can use to enhance your environment. For example
 ratelimits, circuitbreakers, blue-green deployments, shadow traffic
 and <a href="../ingress-usage/">more</a>.</p>
+<h3 id="comparison-with-other-ingress-controllers">Comparison with other Ingress controllers<a class="headerlink" href="#comparison-with-other-ingress-controllers" title="Permanent link">&para;</a></h3>
+<p>At Zalando we chose to run
+<a href="https://github.com/zalando-incubator/kube-ingress-aws-controller">kube-ingress-aws-controller</a>
+with <a href="https://opensource.zalando.com/skipper/kubernetes/ingress-controller/">skipper
+ingress</a>
+as target group. While AWS loadbalancer integration gives us features
+like TLS termination, automated certificate rotation, possible WAF,
+and security groups, the HTTP routing capabilities are very
+limited. Skipper&rsquo;s main advantage compared to other HTTP routers are
+matching and changing HTTP. Another advantage for us and for skipper
+users in general is that defaults with
+<a href="https://github.com/zalando-incubator/kube-ingress-aws-controller">kube-ingress-aws-controller</a>,
+just work as you would expect.</p>
+<p>There are a number of other ingress controllers including
+<a href="https://traefik.io/">traefik</a>,
+<a href="https://kubernetes.github.io/ingress-nginx/">nginx</a>,
+<a href="https://github.com/jcmoraisjr/haproxy-ingress">haproxy</a> or
+<a href="https://github.com/kubernetes-sigs/aws-alb-ingress-controller">aws-alb-ingress-controller</a>. Why
+not one of these?</p>
+<p>HAproxy and Nginx are well understood and good TCP and HTTP proxies,
+that were built, before Kubernetes and their problem is on one hand
+the configuration files, that were built when everything was quite
+static and their list of annotations to implement basic features are
+already quite a big list for users. Skipper was built to support
+dynamic changing of route configurations, that is happening quite
+often in Kubernetes. Other advantages to use skipper is that we are
+easily able to build automated canary deployments,
+<a href="https://github.com/zalando-incubator/stackset-controller">automated blue-green deployments</a>
+or <a href="https://opensource.zalando.com/skipper/kubernetes/ingress-usage/#shadow-traffic">shadow traffic</a>.</p>
+<p>There are also features that have better support by
+aws-alb-ingress-controller, HAproxy and nginx, which is <code>sendfile()</code>
+operations. If you stream a large file or large amount of files, then
+you might want to choose for these types of ingress one of the options.</p>
+<p>Aws-alb-ingress-controller directly routes traffic to your Kubernetes
+services, which is good and bad, because it can reduce latency, but
+comes with the risk of depending on kube-proxy routing, which will
+take up to 30 seconds, ETCD ttl, for finding pods from dead nodes. In
+skipper we passively observe errors from endpoints and are able to
+drop these out of the loadbalancer members. We add these to an
+actively checked member pool, which will enable endpoints if these are
+healthy again from skipper point of view.  Additionally
+aws-alb-ingress-controller does not support features like ALB sharing,
+nor SNI, such that you can save money, if you would use
+kube-ingress-aws-controller instead. Also simple things like <a href="https://opensource.zalando.com/skipper/kubernetes/ingress-usage/#modify-path">path
+rewriting</a>
+is not supported.</p>
+<p>Traefik has a good community and support for Kubernetes. Back in 2015
+there was <a href="https://www.mosaic9.org/">project mosaic</a> founded and one
+of the core components were Skipper as HTTP router. Back then Traefik
+was not in its current state, it was long time before the v1.0.0
+release, and there was not a solution that supported frequent changing
+backends, nor blue-green deployments, nor shadow traffic. One other
+advantage of skipper is, that it is easily extensible, because skipper
+is built as library, you can easily build fully different use cases
+like <a href="https://github.com/zalando-stups/skrop">an image transformation proxy</a>.
+Traefik does not support our current Opentracing provider, nor do they
+supported traffic splitting when we started
+<a href="https://github.com/zalando-incubator/stackset-controller">stackset-controller</a>
+for automated traffic switching. We also started to put some efforts
+into running skipper as API gateway within Kubernetes, which could
+help a significant amount of teams that run a bunch of small
+services. Skipper predicates and filters are a powerful abstraction
+and can enhance the system easily. The user has 2 annotations to add
+predicates and filters to their ingress, which is easily accessible and
+powerful.</p>
+<h3 id="comparison-with-service-mesh">Comparison with service mesh<a class="headerlink" href="#comparison-with-service-mesh" title="Permanent link">&para;</a></h3>
+<p>Why run Skipper and not Istio, Linkerd or other service-mesh solutions?</p>
+<p>Skipper has a Kubernetes native integration, which is reliable, proven
+in production since end of 2015 and runs in March 2019 in 112
+Kubernetes clusters at Zalando. Skipper has most of the features that
+service-mesh systems provides:</p>
+<ul>
+<li><a href="https://opensource.zalando.com/skipper/tutorials/auth/">Authentication/Authorization</a>
+ in <a href="https://opensource.zalando.com/skipper/kubernetes/ingress-usage/#authorization">Kubernetes
+ ingress</a>,
+ and integrate your custom service with <a href="https://opensource.zalando.com/skipper/reference/filters/#webhook">webhook</a></li>
+<li><a href="https://opensource.zalando.com/skipper/kubernetes/ingress-usage/#diagnosis-throttling-bandwidth-latency">Diagnosis tools</a>
+that support latency, bandwidth throttling, random content and more</li>
+<li><a href="https://opensource.zalando.com/skipper/operation/operation/#monitoring">rich amount of metrics</a>
+ you can enable and disable with format Prometheus or Codahale</li>
+<li><a href="https://opensource.zalando.com/skipper/tutorials/development/#opentracing">support for different Opentracing
+providers</a>
+including jaeger, lightstep and instana</li>
+<li><a href="https://opensource.zalando.com/skipper/tutorials/ratelimit/">ratelimits support</a>
+with cluster ratelimits as an outstanding solution, that enables you
+to stop login attacks easily</li>
+<li>Connects to endpoints directly, instead of using kubernetes service</li>
+<li>Retries requests, if the request can be safely retried, which is
+ only the case, if the error happens on TCP/IP connection
+ establishment or a backend defined what request is idempotent.</li>
+<li>Simple <a href="https://opensource.zalando.com/skipper/kubernetes/east-west-usage/">East-West communication</a>
+enables you to have proper communication paths without the need of yet
+another tool to do service discovery.
+See how to <a href="https://opensource.zalando.com/skipper/kubernetes/ingress-controller/#run-as-api-gateway-with-east-west-setup">run skipper as API Gateway with East-West
+setup</a>,
+if you want to run this powerful setup. Kubernetes, skipper and DNS
+ are the service discovery in this case.</li>
+<li><a href="https://opensource.zalando.com/skipper/kubernetes/ingress-usage/#blue-green-deployments">Blue-green deployments</a>
+ with automation if you like to use <a href="https://github.com/zalando-incubator/stackset-controller">stackset-controller</a></li>
+<li><a href="https://opensource.zalando.com/skipper/kubernetes/ingress-usage/#shadow-traffic">shadow-traffic</a>
+ to understand, if the new version is able to handle the traffic as
+ the old one</li>
+<li>A simple way to do <a href="https://opensource.zalando.com/skipper/kubernetes/ingress-usage/#ab-test">A/B tests</a></li>
+<li>You are free to use cloud providers TLS terminations and certificate
+ rotation, which is reliable and secure. Employees can not download
+ private keys and certificates are certified by a public CA. Many mTLS
+ setups rely on insecure CA handling and are hard to debug in case of
+ failure.</li>
+<li>We are happy to get issues and pull requests in our repository, but
+ if you need a feature, which can not be done upstream, you are free
+ to use skipper as a library and create internal features to do
+ whatever you want.</li>
+</ul>
+<p>With Skipper you do not need to choose to go all-in and you are able
+to add features as soon as you need or are comfortable.</p>
 <h2 id="what-is-an-ingress-controller">What is an Ingress-Controller?<a class="headerlink" href="#what-is-an-ingress-controller" title="Permanent link">&para;</a></h2>
 <p>Ingress-controllers are serving http requests into a Kubernetes
 cluster. Most of the time traffic will pass ingress and go to a
@@ -1381,6 +1536,112 @@ create an internal route with
 <code>demo.default.skipper.cluster.local</code> in their host header. Example
 from inside a container:</p>
 <div class="codehilite"><pre><span></span>curl demo.default.skipper.cluster.local
+</pre></div>
+
+<h2 id="running-with-cluster-ratelimits">Running with Cluster Ratelimits<a class="headerlink" href="#running-with-cluster-ratelimits" title="Permanent link">&para;</a></h2>
+<p>Cluster ratelimits require a communication exchange method to build a
+skipper swarm to have a shared knowledge about the requests passing
+all skipper instances. To enable this feature you need to add command
+line option <code>-enable-swarm</code> and <code>-enable-ratelimits</code>.
+The rest depends on the implementation, that can be:</p>
+<ul>
+<li><a href="https://redis.io">Redis</a></li>
+<li><a href="https://www.cs.cornell.edu/projects/Quicksilver/public_pdfs/SWIM.pdf">SWIM</a></li>
+</ul>
+<h3 id="redis-based">Redis based<a class="headerlink" href="#redis-based" title="Permanent link">&para;</a></h3>
+<p>Additionally you have to add <code>-swarm-redis-urls</code> to skipper
+<code>args:</code>. For example: <code>-swarm-redis-urls=skipper-redis-0.skipper-redis.kube-system.svc.cluster.local:6379,skipper-redis-1.skipper-redis.kube-system.svc.cluster.local:6379</code>.</p>
+<p>Running skipper with <code>hostNetwork</code> in kubernetes will not be able to
+resolve redis hostnames as shown in the example, if skipper does not
+have <code>dnsPolicy: ClusterFirstWithHostNet</code> in it&rsquo;s Pod spec, see also
+<a href="https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/#pod-s-dns-policy">DNS policy in the official Kubernetes documentation</a>.</p>
+<p>This setup is considered experimental and should be carefully tested
+before running it in production.</p>
+<p>Example redis statefulset with headless service:</p>
+<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">apps/v1</span>
+<span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">StatefulSet</span>
+<span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">labels</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">application</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">skipper-redis</span>
+    <span class="l l-Scalar l-Scalar-Plain">version</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">v4.0.9</span>
+  <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">skipper-redis</span>
+  <span class="l l-Scalar l-Scalar-Plain">namespace</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">kube-system</span>
+<span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">replicas</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">2</span>
+  <span class="l l-Scalar l-Scalar-Plain">selector</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">matchLabels</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">application</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">skipper-redis</span>
+  <span class="l l-Scalar l-Scalar-Plain">serviceName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">skipper-redis</span>
+  <span class="l l-Scalar l-Scalar-Plain">template</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">labels</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">application</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">skipper-redis</span>
+        <span class="l l-Scalar l-Scalar-Plain">version</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">v4.0.9</span>
+    <span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">containers</span><span class="p p-Indicator">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">image</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">registry.opensource.zalan.do/zmon/redis:4.0.9-master-6</span>
+        <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">skipper-redis</span>
+        <span class="l l-Scalar l-Scalar-Plain">ports</span><span class="p p-Indicator">:</span>
+        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">containerPort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">6379</span>
+          <span class="l l-Scalar l-Scalar-Plain">protocol</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">TCP</span>
+        <span class="l l-Scalar l-Scalar-Plain">readinessProbe</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">exec</span><span class="p p-Indicator">:</span>
+            <span class="l l-Scalar l-Scalar-Plain">command</span><span class="p p-Indicator">:</span>
+            <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">redis-cli</span>
+            <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">ping</span>
+          <span class="l l-Scalar l-Scalar-Plain">failureThreshold</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">3</span>
+          <span class="l l-Scalar l-Scalar-Plain">initialDelaySeconds</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">10</span>
+          <span class="l l-Scalar l-Scalar-Plain">periodSeconds</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">60</span>
+          <span class="l l-Scalar l-Scalar-Plain">successThreshold</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+          <span class="l l-Scalar l-Scalar-Plain">timeoutSeconds</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+        <span class="l l-Scalar l-Scalar-Plain">resources</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">limits</span><span class="p p-Indicator">:</span>
+            <span class="l l-Scalar l-Scalar-Plain">cpu</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">100m</span>
+            <span class="l l-Scalar l-Scalar-Plain">memory</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">100Mi</span>
+      <span class="l l-Scalar l-Scalar-Plain">dnsPolicy</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">ClusterFirst</span>
+      <span class="l l-Scalar l-Scalar-Plain">restartPolicy</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">Always</span>
+      <span class="l l-Scalar l-Scalar-Plain">schedulerName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">default-scheduler</span>
+<span class="nn">---</span>
+<span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">v1</span>
+<span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">Service</span>
+<span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">labels</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">application</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">skipper-redis</span>
+  <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">skipper-redis</span>
+  <span class="l l-Scalar l-Scalar-Plain">namespace</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">kube-system</span>
+<span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">clusterIP</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">None</span>
+  <span class="l l-Scalar l-Scalar-Plain">ports</span><span class="p p-Indicator">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">port</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">6379</span>
+    <span class="l l-Scalar l-Scalar-Plain">protocol</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">TCP</span>
+    <span class="l l-Scalar l-Scalar-Plain">targetPort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">6379</span>
+  <span class="l l-Scalar l-Scalar-Plain">selector</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">application</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">skipper-redis</span>
+  <span class="l l-Scalar l-Scalar-Plain">type</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">ClusterIP</span>
+</pre></div>
+
+<h3 id="swim-based">SWIM based<a class="headerlink" href="#swim-based" title="Permanent link">&para;</a></h3>
+<p><a href="https://www.cs.cornell.edu/projects/Quicksilver/public_pdfs/SWIM.pdf">SWIM</a>
+is a &ldquo;Scalable Weakly-consistent Infection-style Process Group
+Membership Protocol&rdquo;, which is very interesting for example to use for
+cluster ratelimits. This setup is not considered stable enough to run
+production, yet.</p>
+<p>Additionally you have to add the following command line flags to
+skipper&rsquo;s container spec <code>args:</code>:</p>
+<div class="codehilite"><pre><span></span>-swarm-port=9990
+-swarm-label-selector-key=application
+-swarm-label-selector-value=skipper-ingress
+-swarm-leave-timeout=5s
+-swarm-max-msg-buffer=4194304
+-swarm-namespace=kube-system
+</pre></div>
+
+<p>and open another port in Kubernetes and your Firewall settings to make
+the communication work with TCP and UDP to the specified <code>swarm-port</code>:</p>
+<div class="codehilite"><pre><span></span><span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">containerPort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">9990</span>
+  <span class="l l-Scalar l-Scalar-Plain">hostPort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">9990</span>
+  <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">swarm-port</span>
+  <span class="l l-Scalar l-Scalar-Plain">protocol</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">TCP</span>
 </pre></div>
                 
                   

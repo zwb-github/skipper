@@ -762,6 +762,20 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#redis-based-cluster-ratelimits" title="Redis based Cluster Ratelimits" class="md-nav__link">
+    Redis based Cluster Ratelimits
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#swim-based-cluster-ratelimits" title="SWIM based Cluster Ratelimits" class="md-nav__link">
+    SWIM based Cluster Ratelimits
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#backend-ratelimit_1" title="Backend Ratelimit" class="md-nav__link">
     Backend Ratelimit
   </a>
@@ -857,6 +871,20 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#redis-based-cluster-ratelimits" title="Redis based Cluster Ratelimits" class="md-nav__link">
+    Redis based Cluster Ratelimits
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#swim-based-cluster-ratelimits" title="SWIM based Cluster Ratelimits" class="md-nav__link">
+    SWIM based Cluster Ratelimits
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#backend-ratelimit_1" title="Backend Ratelimit" class="md-nav__link">
     Backend Ratelimit
   </a>
@@ -899,7 +927,7 @@
                 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
 <p>Ratelimits are calculated for a number of requests and a
 <code>time.Duration</code> for a given bucket. To enable rate limits you need to
-run skipper with <code>enable-ratelimits</code>.</p>
+run skipper with <code>-enable-ratelimits</code>.</p>
 <p>A <code>time.Duration</code> is specified as string and can for example be &ldquo;10s&rdquo;
 for ten seconds, &ldquo;5m&rdquo; for five minutes or &ldquo;2h&rdquo; for two hours.</p>
 <p>As bucket skipper can use either the backend or some client
@@ -943,14 +971,47 @@ header value. As an example for Authorization Header you would use:</p>
 the memory footprint in the long run.</p>
 <h2 id="cluster-ratelimit">Cluster Ratelimit<a class="headerlink" href="#cluster-ratelimit" title="Permanent link">&para;</a></h2>
 <p>A cluster ratelimit computes all requests for all skipper peers. This
-requires, that you run skipper with <code>-enable-swarm</code> and all
-requirements, that are dependent on your dataclient in use.</p>
+requires, that you run skipper with <code>-enable-swarm</code> and select one of
+the two implementations:</p>
+<ul>
+<li><a href="https://redis.io">Redis</a></li>
+<li><a href="https://www.cs.cornell.edu/projects/Quicksilver/public_pdfs/SWIM.pdf">SWIM</a></li>
+</ul>
+<p>Make sure all requirements, that are dependent on the implementation
+and your dataclient in use.</p>
+<h3 id="redis-based-cluster-ratelimits">Redis based Cluster Ratelimits<a class="headerlink" href="#redis-based-cluster-ratelimits" title="Permanent link">&para;</a></h3>
+<p>This solution is independent of the dataclient being used.  You have
+to run N number of <a href="https://redis.io">Redis</a> instances, where N is &gt;
+0.  Specify <code>-swarm-redis-urls</code>, multiple instances can be separated
+by <code>,</code>, for example: <code>-swarm-redis-urls=redis1:6379,redis2:6379</code>. For
+running skipper in Kubernetes with this, see also <a href="../../kubernetes/ingress-controller/#redis-based">Running with
+Redis based Cluster Ratelimits</a></p>
+<p>The implementation use <a href="https://godoc.org/github.com/go-redis/redis#Ring">redis ring</a>
+to be able to shard via client hashing and spread the load across
+multiple Redis instances to be able to scale out the shared storage.</p>
+<p>The ratelimit algorithm is a sliding window and makes use of the
+following Redis commands:</p>
+<ul>
+<li><a href="https://redis.io/commands/zremrangebyscore">ZREMRANGEBYSCORE</a>,</li>
+<li><a href="https://redis.io/commands/zcard">ZCARD</a>,</li>
+<li><a href="https://redis.io/commands/zadd">ZADD</a> and</li>
+<li><a href="https://redis.io/commands/zrangebyscore">ZRANGEBYSCORE</a></li>
+</ul>
+<p><img alt="Picture showing Skipper with Redis based swarm and ratelimit" src="../../img/redis-and-cluster-ratelimit.svg" /></p>
+<h3 id="swim-based-cluster-ratelimits">SWIM based Cluster Ratelimits<a class="headerlink" href="#swim-based-cluster-ratelimits" title="Permanent link">&para;</a></h3>
+<p><a href="https://www.cs.cornell.edu/projects/Quicksilver/public_pdfs/SWIM.pdf">SWIM</a>
+is a &ldquo;Scalable Weakly-consistent Infection-style Process Group
+Membership Protocol&rdquo;, which is very interesting to use for cluster
+ratelimits. The implementation has some weaknesses in the algorithm,
+that lead sometimes to too much ratelimits or too few and therefore is
+not considered to be stable. For running skipper in Kubernetes with
+this, see also <a href="../../kubernetes/ingress-controller/#swim-based">Running with SWIM based Cluster Ratelimits</a></p>
 <p>In case of Kubernetes you might specify additionally
 <code>-swarm-label-selector-key</code>, which defaults to &ldquo;application&rdquo; and
 <code>-swarm-label-selector-value</code>, which defaults to &ldquo;skipper-ingress&rdquo; and
 <code>-swarm-namespace</code>, which defaults to &ldquo;kube-system&rdquo;.</p>
-<p>The following shows the setup of a cluster ratelimit:</p>
-<p><img alt="Picture showing Skipper swarm and ratelimit" src="../../img/swarm-and-cluster-ratelimit.svg" /></p>
+<p>The following shows the setup of a SWIM based cluster ratelimit:</p>
+<p><img alt="Picture showing Skipper SWIM based swarm and ratelimit" src="../../img/swarm-and-cluster-ratelimit.svg" /></p>
 <h3 id="backend-ratelimit_1">Backend Ratelimit<a class="headerlink" href="#backend-ratelimit_1" title="Permanent link">&para;</a></h3>
 <p>The backend ratelimit filter is <code>clusterRatelimit()</code>. You can define
 how many requests a route allows for a given <code>time.Duration</code> in total

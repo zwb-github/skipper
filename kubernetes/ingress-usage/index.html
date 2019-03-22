@@ -1718,7 +1718,7 @@ Cloud migration.</p>
 <h3 id="multiple-ingresses-defining-the-same-route">Multiple Ingresses defining the same route<a class="headerlink" href="#multiple-ingresses-defining-the-same-route" title="Permanent link">&para;</a></h3>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>If multiple ingresses define the same host and the same predicates, traffic routing may become non-deterministic. </p>
+<p>If multiple ingresses define the same host and the same predicates, traffic routing may become non-deterministic.</p>
 </div>
 <p>Consider the following two ingresses which have the same hostname and therefore
 overlap. In skipper the routing of this is currently undefined as skipper
@@ -2250,7 +2250,7 @@ rule to the backend.</p>
 <span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">Ingress</span>
 <span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
   <span class="l l-Scalar l-Scalar-Plain">annotations</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">zalando.org/skipper-filter</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">clusterRatelimit(50, &quot;1m&quot;)</span>
+    <span class="l l-Scalar l-Scalar-Plain">zalando.org/skipper-filter</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">clusterRatelimit(&quot;groupSvcApp&quot;, 50, &quot;1m&quot;)</span>
   <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">app</span>
 <span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
   <span class="l l-Scalar l-Scalar-Plain">rules</span><span class="p p-Indicator">:</span>
@@ -2269,7 +2269,7 @@ X-Forwarded-For header, to pass this ingress rule to the backend.</p>
 <span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">Ingress</span>
 <span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
   <span class="l l-Scalar l-Scalar-Plain">annotations</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">zalando.org/skipper-filter</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">clusterRatelimit(10, &quot;1h&quot;, &quot;xfwd&quot;)</span>
+    <span class="l l-Scalar l-Scalar-Plain">zalando.org/skipper-filter</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">clusterClientRatelimit(&quot;groupSvcApp&quot;, 10, &quot;1h&quot;)</span>
   <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">app</span>
 <span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
   <span class="l l-Scalar l-Scalar-Plain">rules</span><span class="p p-Indicator">:</span>

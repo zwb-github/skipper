@@ -2338,14 +2338,14 @@ and allows the same breaker characteristics for low and high rate traffic.</p>
 
 <p>See also the <a href="https://godoc.org/github.com/zalando/skipper/circuit">circuit breaker docs</a>.</p>
 <h2 id="localratelimit">~~localRatelimit~~<a class="headerlink" href="#localratelimit" title="Permanent link">&para;</a></h2>
-<p><strong>DEPRECATED</strong> use <a href="#clientRatelimit">clientRatelimit</a> with the same
+<p><strong>DEPRECATED</strong> use <a href="#clientratelimit">clientRatelimit</a> with the same
   settings instead.</p>
 <h2 id="clientratelimit">clientRatelimit<a class="headerlink" href="#clientratelimit" title="Permanent link">&para;</a></h2>
 <p>Per skipper instance calculated ratelimit, that allows number of
 requests by client. The definition of the same client is based on data
 of the http header and can be changed with an optional third
 parameter. If the third parameter is set skipper will use the
-Authorization header to put the request in the same client bucket,
+defined HTTP header to put the request in the same client bucket,
 else the X-Forwarded-For Header will be used. You need to run skipper
 with command line flag <code>-enable-ratelimits</code>. Skipper will consume
 roughly 15 MB per filter for 100.000 clients.</p>
@@ -2353,10 +2353,10 @@ roughly 15 MB per filter for 100.000 clients.</p>
 <ul>
 <li>number of allowed requests per time period (int)</li>
 <li>time period for requests being counted (time.Duration)</li>
-<li>optional parameter can be set to: &ldquo;auth&rdquo; (string)</li>
+<li>optional parameter to set the same client by header (string)</li>
 </ul>
 <div class="codehilite"><pre><span></span>clientRatelimit(3, &quot;1m&quot;)
-clientRatelimit(3, &quot;1m&quot;, &quot;auth&quot;)
+clientRatelimit(3, &quot;1m&quot;, &quot;Authorization&quot;)
 </pre></div>
 
 <p>See also the <a href="https://godoc.org/github.com/zalando/skipper/ratelimit">ratelimit docs</a>.</p>
@@ -2381,20 +2381,19 @@ ratelimit group across one or more routes.  The rate limit group
 allows the given number of requests by client. The definition of the
 same client is based on data of the http header and can be changed
 with an optional fourth parameter. If the fourth parameter is set
-skipper will use the Authorization header to put the request in the
-same client bucket, else the X-Forwarded-For Header will be used.  You
-need to run skipper with command line flags <code>-enable-swarm</code> and
-<code>-enable-ratelimits</code>. Skipper will consume roughly 15 MB per filter
-for 100.000 clients and 1000 skipper peers.</p>
+skipper will use the HTTP header defined by this to put the request in
+the same client bucket, else the X-Forwarded-For Header will be used.
+You need to run skipper with command line flags <code>-enable-swarm</code> and
+<code>-enable-ratelimits</code>. See also our <a href="../../tutorials/ratelimit/#cluster-ratelimit">cluster ratelimit tutorial</a></p>
 <p>Parameters:</p>
 <ul>
 <li>rate limit group (string)</li>
 <li>number of allowed requests per time period (int)</li>
 <li>time period for requests being counted (time.Duration)</li>
-<li>optional parameter can be set to: &ldquo;auth&rdquo; (string)</li>
+<li>optional parameter to set the same client by header (string)</li>
 </ul>
 <div class="codehilite"><pre><span></span>clusterClientRatelimit(&quot;groupA&quot;, 10, &quot;1h&quot;)
-clusterClientRatelimit(&quot;groupA&quot;, 10, &quot;1h&quot;, &quot;auth&quot;)
+clusterClientRatelimit(&quot;groupA&quot;, 10, &quot;1h&quot;, &quot;Authorization&quot;)
 </pre></div>
 
 <p>See also the <a href="https://godoc.org/github.com/zalando/skipper/ratelimit">ratelimit docs</a>.</p>
@@ -2404,7 +2403,7 @@ rate limit group. The first parameter is a string to select the same
 ratelimit group across one or more routes.  The rate limit group
 allows the given number of requests to a backend. You need to have run
 skipper with command line flags <code>-enable-swarm</code> and
-<code>-enable-ratelimits</code>.</p>
+<code>-enable-ratelimits</code>. See also our <a href="../../tutorials/ratelimit/#cluster-ratelimit">cluster ratelimit tutorial</a></p>
 <p>Parameters:</p>
 <ul>
 <li>rate limit group (string)</li>
@@ -2515,7 +2514,7 @@ log file. N defaults to 1024 and can be overidden with
 <h2 id="setdynamicbackendhostfromheader">setDynamicBackendHostFromHeader<a class="headerlink" href="#setdynamicbackendhostfromheader" title="Permanent link">&para;</a></h2>
 <p>Filter sets the backend host for a route, value is taken from the provided header.
 Can be used only with <code>&lt;dynamic&gt;</code> backend. Meant to be used together with <a href="#setdynamicbackendschemefromheader">setDynamicBackendSchemeFromHeader</a>
-or <a href="#setdynamicbackendscheme">setDynamicBackendScheme</a>. If this filter chained together with <a href="#setdynamicbackendurlfromheader">setDynamicBackendUrlFromHeader</a> 
+or <a href="#setdynamicbackendscheme">setDynamicBackendScheme</a>. If this filter chained together with <a href="#setdynamicbackendurlfromheader">setDynamicBackendUrlFromHeader</a>
 or <a href="#setdynamicbackendurl">setDynamicBackendUrl</a> filters, the latter ones would have priority.</p>
 <p>Parameters:</p>
 <ul>
@@ -2528,7 +2527,7 @@ or <a href="#setdynamicbackendurl">setDynamicBackendUrl</a> filters, the latter 
 <h2 id="setdynamicbackendschemefromheader">setDynamicBackendSchemeFromHeader<a class="headerlink" href="#setdynamicbackendschemefromheader" title="Permanent link">&para;</a></h2>
 <p>Filter sets the backend scheme for a route, value is taken from the provided header.
 Can be used only with <code>&lt;dynamic&gt;</code> backend. Meant to be used together with <a href="#setdynamicbackendhostfromheader">setDynamicBackendHostFromHeader</a>
-or <a href="#setdynamicbackendhost">setDynamicBackendHost</a>. If this filter chained together with 
+or <a href="#setdynamicbackendhost">setDynamicBackendHost</a>. If this filter chained together with
 <a href="#setdynamicbackendurlfromheader">setDynamicBackendUrlFromHeader</a> or <a href="#setdynamicbackendurl">setDynamicBackendUrl</a>, the latter ones would have priority.</p>
 <p>Parameters:</p>
 <ul>
@@ -2540,7 +2539,7 @@ or <a href="#setdynamicbackendhost">setDynamicBackendHost</a>. If this filter ch
 
 <h2 id="setdynamicbackendurlfromheader">setDynamicBackendUrlFromHeader<a class="headerlink" href="#setdynamicbackendurlfromheader" title="Permanent link">&para;</a></h2>
 <p>Filter sets the backend url for a route, value is taken from the provided header.
-Can be used only with <code>&lt;dynamic&gt;</code> backend. </p>
+Can be used only with <code>&lt;dynamic&gt;</code> backend.</p>
 <p>Parameters:</p>
 <ul>
 <li>header name (string)</li>
@@ -2552,7 +2551,7 @@ Can be used only with <code>&lt;dynamic&gt;</code> backend. </p>
 <h2 id="setdynamicbackendhost">setDynamicBackendHost<a class="headerlink" href="#setdynamicbackendhost" title="Permanent link">&para;</a></h2>
 <p>Filter sets the backend host for a route. Can be used only with <code>&lt;dynamic&gt;</code> backend.
 Meant to be used together with <a href="#setdynamicbackendschemefromheader">setDynamicBackendSchemeFromHeader</a>
-or <a href="#setdynamicbackendscheme">setDynamicBackendScheme</a>. If this filter chained together with <a href="#setdynamicbackendurlfromheader">setDynamicBackendUrlFromHeader</a> 
+or <a href="#setdynamicbackendscheme">setDynamicBackendScheme</a>. If this filter chained together with <a href="#setdynamicbackendurlfromheader">setDynamicBackendUrlFromHeader</a>
 or <a href="#setdynamicbackendurl">setDynamicBackendUrl</a>, the latter ones would have priority.</p>
 <p>Parameters:</p>
 <ul>
@@ -2565,7 +2564,7 @@ or <a href="#setdynamicbackendurl">setDynamicBackendUrl</a>, the latter ones wou
 <h2 id="setdynamicbackendscheme">setDynamicBackendScheme<a class="headerlink" href="#setdynamicbackendscheme" title="Permanent link">&para;</a></h2>
 <p>Filter sets the backend scheme for a route. Can be used only with <code>&lt;dynamic&gt;</code> backend.
 Meant to be used together with <a href="#setdynamicbackendhostfromheader">setDynamicBackendHostFromHeader</a>
-or <a href="#setdynamicbackendhost">setDynamicBackendHost</a>. If this filter chained together with 
+or <a href="#setdynamicbackendhost">setDynamicBackendHost</a>. If this filter chained together with
 <a href="#setdynamicbackendurlfromheader">setDynamicBackendUrlFromHeader</a> or <a href="#setdynamicbackendurl">setDynamicBackendUrl</a>, the latter ones would have priority.</p>
 <p>Parameters:</p>
 <ul>
@@ -2576,7 +2575,7 @@ or <a href="#setdynamicbackendhost">setDynamicBackendHost</a>. If this filter ch
 </pre></div>
 
 <h2 id="setdynamicbackendurl">setDynamicBackendUrl<a class="headerlink" href="#setdynamicbackendurl" title="Permanent link">&para;</a></h2>
-<p>Filter sets the backend url for a route. Can be used only with <code>&lt;dynamic&gt;</code> backend. </p>
+<p>Filter sets the backend url for a route. Can be used only with <code>&lt;dynamic&gt;</code> backend.</p>
 <p>Parameters:</p>
 <ul>
 <li>url (string)</li>

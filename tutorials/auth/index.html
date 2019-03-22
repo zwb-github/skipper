@@ -746,19 +746,6 @@
     OpenID Connect
   </a>
   
-    <nav class="md-nav">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#ui-authcode-flow" title="UI authcode flow" class="md-nav__link">
-    UI authcode flow
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
       
@@ -845,19 +832,6 @@
   <a href="#openid-connect" title="OpenID Connect" class="md-nav__link">
     OpenID Connect
   </a>
-  
-    <nav class="md-nav">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#ui-authcode-flow" title="UI authcode flow" class="md-nav__link">
-    UI authcode flow
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -986,10 +960,87 @@ The request flow with Tokenintrospection setup is shown in the
 following picture:</p>
 <p><img alt="Skipper with Tokenintrospection" src="../../img/svc-to-svc-tokenintrospection.svg" /></p>
 <h2 id="openid-connect">OpenID Connect<a class="headerlink" href="#openid-connect" title="Permanent link">&para;</a></h2>
-<h3 id="ui-authcode-flow">UI authcode flow<a class="headerlink" href="#ui-authcode-flow" title="Permanent link">&para;</a></h3>
-<p>The pull request implements the authcode flow, which can be used for
-UI authentication and authorization.</p>
-<p><a href="https://github.com/zalando/skipper/pull/743">https://github.com/zalando/skipper/pull/743</a></p>
+<p>OpenID Connect is an OAuth2.0 based authentication and authorization mechanism supported by
+several providers. Skipper can act as a proxy for backend server which requires authenticated clients.
+Skipper handles the authentication with the provider and upon sucessful completion of authentication
+passes subsequent requests to the backend server.</p>
+<p>Skipper&rsquo;s implementation of OpenID Connect Client works as follows:</p>
+<ol>
+<li>Filter is initialized with the following parameters:<ol>
+<li>Secrets file with keys used for encrypting the token in a cookie and also for generating shared secret.</li>
+<li>OpenID Connect Provider URL</li>
+<li>The Client ID</li>
+<li>The Client Secret</li>
+<li>The Callback URL for the client when a user successfully authenticates and is
+    returned.</li>
+<li>The Scopes to be requested along with the <code>openid</code> scope</li>
+<li>The claims that should be present in the token or the fields need in the user
+    information.</li>
+</ol>
+</li>
+<li>The user makes a request to a backend which is covered by an OpenID filter.</li>
+<li>Skipper checks if a cookie is set with any previous successfully completed OpenID authentication.</li>
+<li>If the cookie is valid then Skipper passes the request to the backend.</li>
+<li>If the cookie is not valid then Skipper redirects the user to the OpenID provider with its Client ID and a callback URL.</li>
+<li>When the user successfully completes authentication the provider redirects the user to the callback URL with a token.</li>
+<li>Skipper receives this token and makes a backend channel call to get an ID token
+    and other required information.</li>
+<li>If all the user information/claims are present then it encrypts this and sets a cookie
+    which is encrypted and redirects the user to the originally requested URL.</li>
+</ol>
+<p>To use OpenID define a filter for a backend which needs to be covered by OpenID Connection authentication.</p>
+<div class="codehilite"><pre><span></span><span class="nt">oauthOidcAllClaims</span><span class="o">(</span><span class="s2">&quot;https://accounts.identity-provider.com&quot;</span><span class="o">,</span> <span class="s2">&quot;some-client-id&quot;</span><span class="o">,</span>
+    <span class="s2">&quot;some-client-secret&quot;</span><span class="o">,</span> <span class="s2">&quot;http://callback.com/auth/provider/callback&quot;</span><span class="o">,</span> <span class="s2">&quot;scope1 scope2&quot;</span><span class="o">,</span>
+    <span class="s2">&quot;claim1 claim2&quot;</span><span class="o">)</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="s2">&quot;https://internal.example.org&quot;</span><span class="o">;</span>
+</pre></div>
+
+<p>Here <code>scope1 scope2</code> are the scopes that should be included which requesting authentication from the OpenID provider.
+Any number of scopes can be specified here. The <code>openid</code> scope is added automatically by the filter. The other fields
+which need to be specified are the URL of the provider which in the above example is
+<code>https://accounts.identity-provider.com</code>. The client ID and the client secret. The callback URL which is specified
+while generating the client id and client secret. Then the scopes and finally the claims which should be present along
+with the return id token.</p>
+<div class="codehilite"><pre><span></span><span class="nt">oauthOIDCUserInfo</span><span class="o">(</span><span class="s2">&quot;https://oidc-provider.example.com&quot;</span><span class="o">,</span> <span class="s2">&quot;client_id&quot;</span><span class="o">,</span> <span class="s2">&quot;client_secret&quot;</span><span class="o">,</span>
+    <span class="s2">&quot;http://target.example.com/subpath/callback&quot;</span><span class="o">,</span> <span class="s2">&quot;email profile&quot;</span><span class="o">,</span> 
+    <span class="s2">&quot;name email picture&quot;</span><span class="o">)</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="s2">&quot;https://internal.example.org&quot;</span><span class="o">;</span>
+</pre></div>
+
+<p>This filter is similar but it verifies that the token has certain user information
+information fields accesible with the token return by the provider. The fields can
+be specified at the end like in the example above where the fields <code>name</code>, <code>email</code>
+and <code>picture</code> are requested.</p>
+<p>Upon sucessful authentication Skipper will start allowing the user requests through
+to the backend. Along with the orginal request to the backend Skipper will include
+information which it obtained from the provider. The information is in <code>JSON</code> format
+with the header name <code>Skipper-Oidc-Info</code>. In the case of the claims container the
+header value is in the format.</p>
+<div class="codehilite"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;oauth2token&quot;</span><span class="p">:</span> <span class="s2">&quot;xxx&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;claims&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;claim1&quot;</span><span class="p">:</span> <span class="s2">&quot;val1&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;claim2&quot;</span><span class="p">:</span> <span class="s2">&quot;val2&quot;</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;subject&quot;</span><span class="p">:</span> <span class="s2">&quot;subj&quot;</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>In the case of a user info filter the payload is in the format:</p>
+<div class="codehilite"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;oauth2token&quot;</span><span class="p">:</span> <span class="s2">&quot;xxx&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;userInfo&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;sub&quot;</span><span class="p">:</span> <span class="s2">&quot;sub&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;profile&quot;</span><span class="p">:</span> <span class="s2">&quot;prof&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;abc@example.com&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;email_verified&quot;</span><span class="p">:</span> <span class="s2">&quot;abc@example.com&quot;</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;subject&quot;</span><span class="p">:</span> <span class="s2">&quot;subj&quot;</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>Skipper encrypts the cookies and also generates a nonce during the OAuth2.0 flow
+for which it needs a secret key. This key is in a file which can be rotated periodically
+because it is reread by Skipper. The path to this file can be passed with the flag
+<code>-oidc-secret-file</code> when Skipper is started.</p>
                 
                   
                 

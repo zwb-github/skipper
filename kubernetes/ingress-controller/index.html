@@ -604,16 +604,16 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#why-you-should-use-skipper-as-ingress-controller" title="Why you should use skipper as ingress controller?" class="md-nav__link">
-    Why you should use skipper as ingress controller?
+  <a href="#why-you-should-use-skipper-as-ingress-controller" title="Why you should use Skipper as ingress controller?" class="md-nav__link">
+    Why you should use Skipper as ingress controller?
   </a>
   
     <nav class="md-nav">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#comparison-with-other-ingress-controllers" title="Comparison with other Ingress controllers" class="md-nav__link">
-    Comparison with other Ingress controllers
+  <a href="#comparison-with-other-ingress-controllers" title="Comparison with other Ingress Controllers" class="md-nav__link">
+    Comparison with other Ingress Controllers
   </a>
   
 </li>
@@ -822,16 +822,16 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#why-you-should-use-skipper-as-ingress-controller" title="Why you should use skipper as ingress controller?" class="md-nav__link">
-    Why you should use skipper as ingress controller?
+  <a href="#why-you-should-use-skipper-as-ingress-controller" title="Why you should use Skipper as ingress controller?" class="md-nav__link">
+    Why you should use Skipper as ingress controller?
   </a>
   
     <nav class="md-nav">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#comparison-with-other-ingress-controllers" title="Comparison with other Ingress controllers" class="md-nav__link">
-    Comparison with other Ingress controllers
+  <a href="#comparison-with-other-ingress-controllers" title="Comparison with other Ingress Controllers" class="md-nav__link">
+    Comparison with other Ingress Controllers
   </a>
   
 </li>
@@ -903,135 +903,114 @@
                 
                 
                 <h1 id="skipper-ingress-controller">Skipper Ingress Controller<a class="headerlink" href="#skipper-ingress-controller" title="Permanent link">&para;</a></h1>
-<p>This documentation is meant for for cluster operators and describes
-how to install Skipper as Ingress-Controller into your Kubernetes
+<p>This documentation is meant for cluster operators and describes
+how to install Skipper as Ingress-Controller in your Kubernetes
 Cluster.</p>
-<h2 id="why-you-should-use-skipper-as-ingress-controller">Why you should use skipper as ingress controller?<a class="headerlink" href="#why-you-should-use-skipper-as-ingress-controller" title="Permanent link">&para;</a></h2>
-<p>Baremetal loadbalancer perform really well, but the configuration is
-not updated frequently and most of these installations are not meant
-to rapidly change. With introducing Kubernetes this will change and
-there is a need of rapid changing http routers. Skipper is designed
-for rapidly changing its routing tree.</p>
-<p>Cloud loadbalancers are fine to scale and to change, but do not
+<h2 id="why-you-should-use-skipper-as-ingress-controller">Why you should use Skipper as ingress controller?<a class="headerlink" href="#why-you-should-use-skipper-as-ingress-controller" title="Permanent link">&para;</a></h2>
+<p>Baremetal loadbalancers perform really well, but their configuration is
+not updated frequently and most of the installations are not meant
+for rapid change. With the introduction of Kubernetes this assumption is
+no longer valid and there was a need for a HTTP router which supported
+backend routes which changed very frequently. Skipper was initially designed
+for a rapidly changing routing tree and subsequently used to implement
+an ingress controller in Kubernetes.</p>
+<p>Cloud loadbalancers scale well and can be updated frequently, but do not
 provide many features. Skipper has advanced resiliency and deployment
-features, that you can use to enhance your environment. For example
-ratelimits, circuitbreakers, blue-green deployments, shadow traffic
+features, which you can use to enhance your environment. For example,
+ratelimiters, circuitbreakers, blue-green deployments, shadow traffic
 and <a href="../ingress-usage/">more</a>.</p>
-<h3 id="comparison-with-other-ingress-controllers">Comparison with other Ingress controllers<a class="headerlink" href="#comparison-with-other-ingress-controllers" title="Permanent link">&para;</a></h3>
-<p>At Zalando we chose to run
-<a href="https://github.com/zalando-incubator/kube-ingress-aws-controller">kube-ingress-aws-controller</a>
-with <a href="https://opensource.zalando.com/skipper/kubernetes/ingress-controller/">skipper
-ingress</a>
-as target group. While AWS loadbalancer integration gives us features
-like TLS termination, automated certificate rotation, possible WAF,
-and security groups, the HTTP routing capabilities are very
-limited. Skipper&rsquo;s main advantage compared to other HTTP routers are
-matching and changing HTTP. Another advantage for us and for skipper
-users in general is that defaults with
+<h3 id="comparison-with-other-ingress-controllers">Comparison with other Ingress Controllers<a class="headerlink" href="#comparison-with-other-ingress-controllers" title="Permanent link">&para;</a></h3>
+<p>At Zalando we chose to run <a href="https://github.com/zalando-incubator/kube-ingress-aws-controller"><code>kube-ingress-aws-controller</code></a>
+with <a href="https://opensource.zalando.com/skipper/kubernetes/ingress-controller/"><code>skipper ingress</code></a>
+as the target group. While AWS loadbalancers gives us features
+like TLS termination, automated certificate rotation, possible <a href="https://aws.amazon.com/waf/">WAF</a>,
+and <a href="https://docs.aws.amazon.com/vpc/latest/userguide/VPC_SecurityGroups.html">Security Groups</a>,
+the HTTP routing capabilities are very limited. Skipper&rsquo;s main advantage
+compared to other HTTP routers is matching and changing HTTP. Another advantage
+for us and for skipper users in general is that defaults with
 <a href="https://github.com/zalando-incubator/kube-ingress-aws-controller">kube-ingress-aws-controller</a>,
 just work as you would expect.</p>
 <p>There are a number of other ingress controllers including
 <a href="https://traefik.io/">traefik</a>,
 <a href="https://kubernetes.github.io/ingress-nginx/">nginx</a>,
 <a href="https://github.com/jcmoraisjr/haproxy-ingress">haproxy</a> or
-<a href="https://github.com/kubernetes-sigs/aws-alb-ingress-controller">aws-alb-ingress-controller</a>. Why
-not one of these?</p>
-<p>HAproxy and Nginx are well understood and good TCP and HTTP proxies,
-that were built, before Kubernetes and their problem is on one hand
-the configuration files, that were built when everything was quite
-static and their list of annotations to implement basic features are
-already quite a big list for users. Skipper was built to support
-dynamic changing of route configurations, that is happening quite
-often in Kubernetes. Other advantages to use skipper is that we are
-easily able to build automated canary deployments,
+<a href="https://github.com/kubernetes-sigs/aws-alb-ingress-controller">aws-alb-ingress-controller</a>.
+Why not one of these?</p>
+<p><a href="http://www.haproxy.org/">HAproxy</a> and <a href="https://www.nginx.com/">Nginx</a> are well understood and
+good TCP/HTTP proxies, that were built before Kubernetes. As a result, the first drawback is
+their reliance on static configuration files which comes from a time when routes and their
+configurations were relatively static. Secondly, the list of annotations to implement even
+basic features are already quite a big list for users. Skipper was built to support dynamically
+changing route configurations, which happens quite often in Kubernetes. Other advantage of
+using Skipper is that we are able to easily implement automated canary deployments,
 <a href="https://github.com/zalando-incubator/stackset-controller">automated blue-green deployments</a>
 or <a href="https://opensource.zalando.com/skipper/kubernetes/ingress-usage/#shadow-traffic">shadow traffic</a>.</p>
-<p>There are also features that have better support by
-aws-alb-ingress-controller, HAproxy and nginx, which is <code>sendfile()</code>
-operations. If you stream a large file or large amount of files, then
-you might want to choose for these types of ingress one of the options.</p>
-<p>Aws-alb-ingress-controller directly routes traffic to your Kubernetes
-services, which is good and bad, because it can reduce latency, but
-comes with the risk of depending on kube-proxy routing, which will
-take up to 30 seconds, ETCD ttl, for finding pods from dead nodes. In
-skipper we passively observe errors from endpoints and are able to
-drop these out of the loadbalancer members. We add these to an
-actively checked member pool, which will enable endpoints if these are
-healthy again from skipper point of view.  Additionally
-aws-alb-ingress-controller does not support features like ALB sharing,
-nor SNI, such that you can save money, if you would use
-kube-ingress-aws-controller instead. Also simple things like <a href="https://opensource.zalando.com/skipper/kubernetes/ingress-usage/#modify-path">path
-rewriting</a>
-is not supported.</p>
-<p>Traefik has a good community and support for Kubernetes. Back in 2015
-there was <a href="https://www.mosaic9.org/">project mosaic</a> founded and one
-of the core components were Skipper as HTTP router. Back then Traefik
-was not in its current state, it was long time before the v1.0.0
-release, and there was not a solution that supported frequent changing
-backends, nor blue-green deployments, nor shadow traffic. One other
-advantage of skipper is, that it is easily extensible, because skipper
-is built as library, you can easily build fully different use cases
-like <a href="https://github.com/zalando-stups/skrop">an image transformation proxy</a>.
-Traefik does not support our current Opentracing provider, nor do they
-supported traffic splitting when we started
-<a href="https://github.com/zalando-incubator/stackset-controller">stackset-controller</a>
-for automated traffic switching. We also started to put some efforts
-into running skipper as API gateway within Kubernetes, which could
-help a significant amount of teams that run a bunch of small
-services. Skipper predicates and filters are a powerful abstraction
-and can enhance the system easily. The user has 2 annotations to add
-predicates and filters to their ingress, which is easily accessible and
-powerful.</p>
+<p>However there are some features that have better support in <code>aws-alb-ingress-controller</code>,
+<code>HAproxy</code> and <code>nginx</code>. For instance the <a href="https://linux.die.net/man/2/sendfile"><code>sendfile()</code></a>
+operation. If you need to stream a large file or large amount of files, then you may want to
+go for one of these options.</p>
+<p><code>aws-alb-ingress-controller</code> directly routes traffic to your Kubernetes services, which is
+both good and bad, because it can reduce latency, but comes with the risk of depending on
+kube-proxy routing. <code>kube-proxy</code> routing can take up to 30 seconds, ETCD ttl, for finding
+pods from dead nodes. In Skipper we passively observe errors from endpoints and are able to
+drop these from the loadbalancer members. We add these to an actively checked member pool,
+which will enable endpoints if these are healthy again from skipper point of view.
+Additionally the <code>aws-alb-ingress-controller</code> does not support features like ALB sharing,
+or <a href="https://tools.ietf.org/html/rfc6066#section-3">Server Name Indication</a> which can reduce
+costs. Features like <a href="https://opensource.zalando.com/skipper/kubernetes/ingress-usage/#modify-path">path rewriting</a>
+are also not currently supported.</p>
+<p><code>Traefik</code> has a good community and support for Kubernetes. Skipper originates from
+<a href="https://www.mosaic9.org/">Project Mosaic</a> which was started in 2015. Back then Traefik
+was not yet a mature project and still had time to go before the v1.0.0 release.
+Traefik also does not currently support our <a href="https://opentracing.io/">Opentracing</a> provider.
+It also did not support traffic splitting when we started <a href="https://github.com/zalando-incubator/stackset-controller">stackset-controller</a>
+for automated traffic switching. We have also recently done significant work on running
+Skipper as API gateway within Kubernetes, which could potentially help many teams that
+run a many small services on Kubernetes. Skipper predicates and filters are a powerful
+abstraction which can enhance the system easily.</p>
 <h3 id="comparison-with-service-mesh">Comparison with service mesh<a class="headerlink" href="#comparison-with-service-mesh" title="Permanent link">&para;</a></h3>
-<p>Why run Skipper and not Istio, Linkerd or other service-mesh solutions?</p>
-<p>Skipper has a Kubernetes native integration, which is reliable, proven
-in production since end of 2015 and runs in March 2019 in 112
-Kubernetes clusters at Zalando. Skipper has most of the features that
-service-mesh systems provides:</p>
+<p>Why run Skipper and not <a href="https://istio.io/">Istio</a>, <a href="https://linkerd.io/">Linkerd</a> or other
+service-mesh solutions?</p>
+<p>Skipper has a Kubernetes native integration, which is reliable, proven in production since
+end of 2015 as of March 2019 run in 112 Kubernetes clusters at Zalando. Skipper already has
+most of the features provided
+by service meshes:</p>
 <ul>
-<li><a href="https://opensource.zalando.com/skipper/tutorials/auth/">Authentication/Authorization</a>
- in <a href="https://opensource.zalando.com/skipper/kubernetes/ingress-usage/#authorization">Kubernetes
- ingress</a>,
- and integrate your custom service with <a href="https://opensource.zalando.com/skipper/reference/filters/#webhook">webhook</a></li>
+<li><a href="https://opensource.zalando.com/skipper/tutorials/auth/">Authentication/Authorization</a> in
+<a href="https://opensource.zalando.com/skipper/kubernetes/ingress-usage/#authorization">Kubernetes ingress</a>,
+and can also integrate a custom service with <a href="https://opensource.zalando.com/skipper/reference/filters/#webhook">webhook</a></li>
 <li><a href="https://opensource.zalando.com/skipper/kubernetes/ingress-usage/#diagnosis-throttling-bandwidth-latency">Diagnosis tools</a>
-that support latency, bandwidth throttling, random content and more</li>
-<li><a href="https://opensource.zalando.com/skipper/operation/operation/#monitoring">rich amount of metrics</a>
- you can enable and disable with format Prometheus or Codahale</li>
-<li><a href="https://opensource.zalando.com/skipper/tutorials/development/#opentracing">support for different Opentracing
-providers</a>
+that support latency, bandwidth throttling, random content and more.</li>
+<li><a href="https://opensource.zalando.com/skipper/operation/operation/#monitoring">Rich Metrics</a> which
+ you can enable and disable in the Prometheus format.</li>
+<li><a href="https://opensource.zalando.com/skipper/tutorials/development/#opentracing">Support for different Opentracing providers</a>
 including jaeger, lightstep and instana</li>
-<li><a href="https://opensource.zalando.com/skipper/tutorials/ratelimit/">ratelimits support</a>
-with cluster ratelimits as an outstanding solution, that enables you
-to stop login attacks easily</li>
-<li>Connects to endpoints directly, instead of using kubernetes service</li>
-<li>Retries requests, if the request can be safely retried, which is
- only the case, if the error happens on TCP/IP connection
- establishment or a backend defined what request is idempotent.</li>
-<li>Simple <a href="https://opensource.zalando.com/skipper/kubernetes/east-west-usage/">East-West communication</a>
-enables you to have proper communication paths without the need of yet
-another tool to do service discovery.
-See how to <a href="https://opensource.zalando.com/skipper/kubernetes/ingress-controller/#run-as-api-gateway-with-east-west-setup">run skipper as API Gateway with East-West
-setup</a>,
-if you want to run this powerful setup. Kubernetes, skipper and DNS
- are the service discovery in this case.</li>
+<li><a href="https://opensource.zalando.com/skipper/tutorials/ratelimit/">Ratelimits support</a>
+with cluster ratelimits as an pending solution, which enables you to stop login attacks easily</li>
+<li>Connects to endpoints directly, instead of using Kubernetes services</li>
+<li>Retries requests, if the request can be safely retried, which is only the case if the error
+happens on the TCP/IP connection establishment or a backend whose requests are defined as
+idempotent.</li>
+<li>Simple <a href="https://opensource.zalando.com/skipper/kubernetes/east-west-usage/">East-West Communication</a>
+which enables proper communication paths without the need of yet another tool to do service
+discovery. See how to <a href="https://opensource.zalando.com/skipper/kubernetes/ingress-controller/#run-as-api-gateway-with-east-west-setup">run skipper as API Gateway with East-West setup</a>,
+if you want to run this powerful setup. Kubernetes, Skipper and DNS are the service discovery
+in this case.</li>
 <li><a href="https://opensource.zalando.com/skipper/kubernetes/ingress-usage/#blue-green-deployments">Blue-green deployments</a>
  with automation if you like to use <a href="https://github.com/zalando-incubator/stackset-controller">stackset-controller</a></li>
 <li><a href="https://opensource.zalando.com/skipper/kubernetes/ingress-usage/#shadow-traffic">shadow-traffic</a>
- to understand, if the new version is able to handle the traffic as
- the old one</li>
+ to determine if the new version is able to handle the traffic the same as the old one</li>
 <li>A simple way to do <a href="https://opensource.zalando.com/skipper/kubernetes/ingress-usage/#ab-test">A/B tests</a></li>
-<li>You are free to use cloud providers TLS terminations and certificate
- rotation, which is reliable and secure. Employees can not download
- private keys and certificates are certified by a public CA. Many mTLS
- setups rely on insecure CA handling and are hard to debug in case of
+<li>You are free to use cloud providers TLS terminations and certificate rotation, which is
+reliable and secure. Employees cannot download private keys and certificates are certified
+by a public CA. Many mTLS setups rely on insecure CA handling and are hard to debug in case of
  failure.</li>
-<li>We are happy to get issues and pull requests in our repository, but
- if you need a feature, which can not be done upstream, you are free
- to use skipper as a library and create internal features to do
- whatever you want.</li>
+<li>We are happy to receive issues and pull requests in our repository, but if you need a feature
+which can not be implemented upstream, you are also free to use skipper as a library and
+create internal features to do whatever you want.</li>
 </ul>
-<p>With Skipper you do not need to choose to go all-in and you are able
-to add features as soon as you need or are comfortable.</p>
+<p>With Skipper you do not need to choose to go all-in and you are able to add features as soon
+as you need or are comfortable.</p>
 <h2 id="what-is-an-ingress-controller">What is an Ingress-Controller?<a class="headerlink" href="#what-is-an-ingress-controller" title="Permanent link">&para;</a></h2>
 <p>Ingress-controllers are serving http requests into a Kubernetes
 cluster. Most of the time traffic will pass ingress and go to a

@@ -1204,6 +1204,84 @@ will consume each a little memory per request. If you have high
 traffic per instance and a backend times out it can start to increase
 your memory consumption. Make sure you monitor backend latency,
 request and error rates.</p>
+<h1 id="default-filters">Default Filters<a class="headerlink" href="#default-filters" title="Permanent link">&para;</a></h1>
+<p>Default filters will be applied to all routes created or updated.</p>
+<h2 id="global-default-filters">Global Default Filters<a class="headerlink" href="#global-default-filters" title="Permanent link">&para;</a></h2>
+<p>Global default filters can be specified via two different command line
+flags <code>-default-filters-prepend</code> and
+<code>-default-filters-append</code>. Filters passed to these command line flags
+will be applied to all routes. The difference <code>prepend</code> and <code>append</code> is
+where in the filter chain these default filters are applied.</p>
+<p>For example a user specified the route: <code>r: * -&gt; setPath("/foo")</code>
+If you run skipper with <code>-default-filters-prepend=enableAccessLog(4,5) -&gt; lifo(100,100,"10s")</code>,
+the actual route will look like this: <code>r: * -&gt; enableAccessLog(4,5) -&gt; lifo(100,100,"10s") -&gt; setPath("/foo")</code>.
+If you run skipper with <code>-default-filters-append=enableAccessLog(4,5) -&gt; lifo(100,100,"10s")</code>,
+the actual route will look like this: <code>r: *  -&gt; setPath("/foo") -&gt; enableAccessLog(4,5) -&gt; lifo(100,100,"10s")</code>.</p>
+<h2 id="kubernetes-default-filters">Kubernetes Default Filters<a class="headerlink" href="#kubernetes-default-filters" title="Permanent link">&para;</a></h2>
+<p>Kubernetes dataclient supports default filters. You can enable this feature by
+specifying <code>default-filters-dir</code>. The defined directory must contain per-service
+filter configurations, with file name following the pattern <code>${service}.${namespace}</code>.
+The content of the files is the actual filter configurations. These filters are then
+prepended to the filters already defined in Ingresses.</p>
+<p>The default filters are supposed to be used only if the filters of the same kind
+are not configured on the Ingress resource. Otherwise, it can and will lead to
+potentially contradicting filter configurations and race conditions, i.e.
+you should specify a specific filter either on the Ingress resource or as
+a default filter.</p>
+<h1 id="scheduler">Scheduler<a class="headerlink" href="#scheduler" title="Permanent link">&para;</a></h1>
+<p>HTTP request schedulers change the queuing behavior of in-flight
+requests. A queue has two generic properties: a limit of requests and
+a concurrency level.  The limit of request can be unlimited (unbounded
+queue), or limited (bounded queue).  The concurrency level is either
+limited or unlimited.</p>
+<p>The default scheduler is an unbounded first in first out (FIFO) queue,
+that is provided by <a href="https://golang.org/">Go&rsquo;s</a> standard library.</p>
+<p>Skipper provides 2 last in first out (LIFO) filters to change the
+scheduling behavior.</p>
+<p>On failure conditions, Skipper will return HTTP status code:</p>
+<ul>
+<li>503 if the queue is full, which is expected on the route with a failing backend</li>
+<li>502 if queue access times out, because the queue access was not fast enough</li>
+<li>500 on unknown errors, please create <a href="https://github.com/zalando/skipper/issues/new/choose">an issue</a></li>
+</ul>
+<h2 id="the-problem">The problem<a class="headerlink" href="#the-problem" title="Permanent link">&para;</a></h2>
+<p>Why should you use boundaries to limit concurrency level and limit the
+queue?</p>
+<p>The short answer is resiliency. If you have one route, that is timing
+out, the request queue of skipper will pile up and consume much more
+memory, than before. This can lead to out of memory kill, which will
+affect all other routes. In <a href="https://github.bus.zalan.do/teapot/issues/issues/1792#issuecomment-1315569">this
+comment</a>
+you can see the memory usage increased in <a href="https://golang.org/">Go&rsquo;s</a>
+standard library <code>bufio</code> package.</p>
+<p>Why LIFO queue instead of FIFO queue?</p>
+<p>In normal cases the queue should not contain many requests. Skipper is
+able to process many requests concurrently without letting the queue
+piling up. In overrun situations you might want to process at least
+some fraction of requests instead of timing out all requests. LIFO
+would not time out all requests within the queue, if the backend is
+capable of responding some requests fast enough.</p>
+<h2 id="a-solution">A solution<a class="headerlink" href="#a-solution" title="Permanent link">&para;</a></h2>
+<p>Skipper has two filters <a href="../../reference/filters/#lifo"><code>lifo()</code></a> and
+<a href="../../reference/filters/#lifogroup"><code>lifoGroup()</code></a>, that can limit
+the number of requests for a route.  A <a href="https://github.com/zalando/skipper/pull/1030#issuecomment-485714338">documented load
+test</a>
+shows the behavior with an enabled <code>lifo(100,100,"10s")</code> filter for
+all routes, that was added by default. You can do this, if you pass
+the following flag to skipper:
+<code>-default-filters-prepend=lifo(100,100,"10s")</code>.</p>
+<p>Both LIFO filters will, use a last in first out queue to handle most
+requests fast. If skipper is in an overrun mode, it will serve some
+requests fast and some will timeout. The idea is based on Dropbox
+bandaid proxy, which is not opensource. <a href="https://dropbox.com/">Dropbox</a>
+shared their idea in a <a href="https://blogs.dropbox.com/tech/2018/03/meet-bandaid-the-dropbox-service-proxy/">public
+blogpost</a>.</p>
+<p>Skipper&rsquo;s scheduler implementation makes sure, that one route will not
+interfere with other routes, if these routes are not in the same
+scheduler group. <a href="../../reference/filters/#lifogroup"><code>LifoGroup</code></a> has
+a user chosen scheduler group and
+<a href="../../reference/filters/#lifo"><code>lifo()</code></a> will get a per route unique
+scheduler group.</p>
                 
                   
                 

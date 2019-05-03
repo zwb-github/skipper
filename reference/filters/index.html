@@ -630,6 +630,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#secureoauthtokenintrospectionanyclaims" title="secureOauthTokenintrospectionAnyClaims" class="md-nav__link">
+    secureOauthTokenintrospectionAnyClaims
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#secureoauthtokenintrospectionallclaims" title="secureOauthTokenintrospectionAllClaims" class="md-nav__link">
+    secureOauthTokenintrospectionAllClaims
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#secureoauthtokenintrospectionanykv" title="secureOauthTokenintrospectionAnyKV" class="md-nav__link">
+    secureOauthTokenintrospectionAnyKV
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#secureoauthtokenintrospectionallkv" title="secureOauthTokenintrospectionAllKV" class="md-nav__link">
+    secureOauthTokenintrospectionAllKV
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#forwardtoken" title="forwardToken" class="md-nav__link">
     forwardToken
   </a>
@@ -791,6 +819,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#unverifiedauditlog" title="unverifiedAuditLog" class="md-nav__link">
+    unverifiedAuditLog
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#setdynamicbackendhostfromheader" title="setDynamicBackendHostFromHeader" class="md-nav__link">
     setDynamicBackendHostFromHeader
   </a>
@@ -876,6 +911,20 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lifo" title="lifo" class="md-nav__link">
+    lifo
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lifogroup" title="lifoGroup" class="md-nav__link">
+    lifoGroup
+  </a>
   
 </li>
       
@@ -1542,6 +1591,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#secureoauthtokenintrospectionanyclaims" title="secureOauthTokenintrospectionAnyClaims" class="md-nav__link">
+    secureOauthTokenintrospectionAnyClaims
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#secureoauthtokenintrospectionallclaims" title="secureOauthTokenintrospectionAllClaims" class="md-nav__link">
+    secureOauthTokenintrospectionAllClaims
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#secureoauthtokenintrospectionanykv" title="secureOauthTokenintrospectionAnyKV" class="md-nav__link">
+    secureOauthTokenintrospectionAnyKV
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#secureoauthtokenintrospectionallkv" title="secureOauthTokenintrospectionAllKV" class="md-nav__link">
+    secureOauthTokenintrospectionAllKV
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#forwardtoken" title="forwardToken" class="md-nav__link">
     forwardToken
   </a>
@@ -1703,6 +1780,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#unverifiedauditlog" title="unverifiedAuditLog" class="md-nav__link">
+    unverifiedAuditLog
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#setdynamicbackendhostfromheader" title="setDynamicBackendHostFromHeader" class="md-nav__link">
     setDynamicBackendHostFromHeader
   </a>
@@ -1788,6 +1872,20 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lifo" title="lifo" class="md-nav__link">
+    lifo
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lifogroup" title="lifoGroup" class="md-nav__link">
+    lifoGroup
+  </a>
   
 </li>
       
@@ -2109,7 +2207,11 @@ changed, if skipper is started with <code>-webhook-timeout=2s</code> flag.</p>
 this filter.</p>
 <p>The filter accepts variable number of string arguments, which are used to
 validate the incoming token from the <code>Authorization: Bearer &lt;token&gt;</code>
-header. If any of the configured scopes from the filter is found
+header. There are two rejection scenarios for this filter. If the token
+is not successfully validated by the oauth server, then a 401 Unauthorised
+response will be returned. However, if the token is successfully validated
+but the required scope match isn&rsquo;t satisfied, then a 403 Forbidden response
+will be returned. If any of the configured scopes from the filter is found
 inside the tokeninfo result for the incoming token, it will allow the
 request to pass.</p>
 <p>Examples:</p>
@@ -2121,7 +2223,11 @@ request to pass.</p>
 this filter.</p>
 <p>The filter accepts variable number of string arguments, which are used to
 validate the incoming token from the <code>Authorization: Bearer &lt;token&gt;</code>
-header. If all of the configured scopes from the filter are found
+header. There are two rejection scenarios for this filter. If the token
+is not successfully validated by the oauth server, then a 401 Unauthorised
+response will be returned. However, if the token is successfully validated
+but the required scope match isn&rsquo;t satisfied, then a 403 Forbidden response
+will be returned. If all of the configured scopes from the filter are found
 inside the tokeninfo result for the incoming token, it will allow the
 request to pass.</p>
 <p>Examples:</p>
@@ -2133,9 +2239,14 @@ request to pass.</p>
 this filter.</p>
 <p>The filter accepts an even number of variable arguments of type
 string, which are used to validate the incoming token from the
-<code>Authorization: Bearer &lt;token&gt;</code> header. If any of the configured key
-value pairs from the filter is found inside the tokeninfo result for
-the incoming token, it will allow the request to pass.</p>
+<code>Authorization: Bearer &lt;token&gt;</code> header. There are two rejection scenarios
+for this filter. If the token is not successfully validated by the oauth
+server, then a 401 Unauthorised response will be returned. However,
+if the token is successfully validated but the required scope match
+isn&rsquo;t satisfied, then a 403 Forbidden response will be returned.
+If any of the configured key value pairs from the filter is found
+inside the tokeninfo result for the incoming token, it will allow
+the request to pass.</p>
 <p>Examples:</p>
 <div class="codehilite"><pre><span></span>oauthTokeninfoAnyKV(&quot;k1&quot;, &quot;v1&quot;, &quot;k2&quot;, &quot;v2&quot;)
 </pre></div>
@@ -2145,9 +2256,14 @@ the incoming token, it will allow the request to pass.</p>
 this filter.</p>
 <p>The filter accepts an even number of variable arguments of type
 string, which are used to validate the incoming token from the
-<code>Authorization: Bearer &lt;token&gt;</code> header. If all of the configured key
-value pairs from the filter are found inside the tokeninfo result for
-the incoming token, it will allow the request to pass.</p>
+<code>Authorization: Bearer &lt;token&gt;</code> header. There are two rejection
+scenarios for this filter. If the token is not successfully validated
+by the oauth server, then a 401 Unauthorised response will be
+returned. However, if the token is successfully validated but
+the required scope match isn&rsquo;t satisfied, then a 403 Forbidden response
+will be returned. If all of the configured key value pairs from
+the filter are found inside the tokeninfo result for the incoming
+token, it will allow the request to pass.</p>
 <p>Examples:</p>
 <div class="codehilite"><pre><span></span>oauthTokeninfoAllKV(&quot;k1&quot;, &quot;v1&quot;, &quot;k2&quot;, &quot;v2&quot;)
 </pre></div>
@@ -2210,6 +2326,84 @@ it will allow the request to pass.</p>
 <div class="codehilite"><pre><span></span>oauthTokenintrospectionAllKV(&quot;k1&quot;, &quot;v1&quot;, &quot;k2&quot;, &quot;v2&quot;)
 </pre></div>
 
+<h2 id="secureoauthtokenintrospectionanyclaims">secureOauthTokenintrospectionAnyClaims<a class="headerlink" href="#secureoauthtokenintrospectionanyclaims" title="Permanent link">&para;</a></h2>
+<p>The filter accepts variable number of string arguments, which are used
+to validate the incoming token from the <code>Authorization: Bearer
+&lt;token&gt;</code> header. The first argument to the filter is the issuer URL,
+for example <code>https://accounts.google.com</code>, that will be used as
+described in <a href="https://tools.ietf.org/html/draft-ietf-oauth-discovery-06#section-5">RFC Draft</a>
+to find the configuration and for example supported claims.</p>
+<p>Use this filter if the Token Introspection endpoint requires authorization to validate and decode the incoming token.
+The filter will optionally read client-id and client-secret from environment variables: OAUTH_CLIENT_ID, OAUTH_CLIENT_SECRET</p>
+<p>If one of the configured and supported claims from the filter are
+found inside the tokenintrospection (RFC7662) result for the incoming
+token, it will allow the request to pass.</p>
+<p>Examples:</p>
+<div class="codehilite"><pre><span></span>secureOauthTokenintrospectionAnyClaims(&quot;issuerURL&quot;, &quot;client-id&quot;, &quot;client-secret&quot;, &quot;claim1&quot;, &quot;claim2&quot;)
+</pre></div>
+
+<p>Read client-id and client-secret from environment variables
+<div class="codehilite"><pre><span></span>secureOauthTokenintrospectionAnyClaims(&quot;issuerURL&quot;, &quot;&quot;, &quot;&quot;, &quot;claim1&quot;, &quot;claim2&quot;)
+</pre></div></p>
+<h2 id="secureoauthtokenintrospectionallclaims">secureOauthTokenintrospectionAllClaims<a class="headerlink" href="#secureoauthtokenintrospectionallclaims" title="Permanent link">&para;</a></h2>
+<p>The filter accepts variable number of string arguments, which are used
+to validate the incoming token from the <code>Authorization: Bearer
+&lt;token&gt;</code> header. The first argument to the filter is the issuer URL,
+for example <code>https://accounts.google.com</code>, that will be used as
+described in <a href="https://tools.ietf.org/html/draft-ietf-oauth-discovery-06#section-5">RFC Draft</a>
+to find the configuration and for example supported claims.</p>
+<p>Use this filter if the Token Introspection endpoint requires authorization to validate and decode the incoming token.
+The filter will optionally read client-id and client-secret from environment variables: OAUTH_CLIENT_ID, OAUTH_CLIENT_SECRET</p>
+<p>If all of the configured and supported claims from the filter are
+found inside the tokenintrospection (RFC7662) result for the incoming
+token, it will allow the request to pass.</p>
+<p>Examples:</p>
+<div class="codehilite"><pre><span></span>secureOauthTokenintrospectionAllClaims(&quot;issuerURL&quot;, &quot;client-id&quot;, &quot;client-secret&quot;, &quot;claim1&quot;, &quot;claim2&quot;)
+</pre></div>
+
+<p>Read client-id and client-secret from environment variables
+<div class="codehilite"><pre><span></span>secureOauthTokenintrospectionAllClaims(&quot;issuerURL&quot;, &quot;&quot;, &quot;&quot;, &quot;claim1&quot;, &quot;claim2&quot;)
+</pre></div></p>
+<h2 id="secureoauthtokenintrospectionanykv">secureOauthTokenintrospectionAnyKV<a class="headerlink" href="#secureoauthtokenintrospectionanykv" title="Permanent link">&para;</a></h2>
+<p>The filter accepts an even number of variable arguments of type
+string, which are used to validate the incoming token from the
+<code>Authorization: Bearer &lt;token&gt;</code> header.  The first argument to the
+filter is the issuer URL, for example <code>https://accounts.google.com</code>,
+that will be used as described in
+<a href="https://tools.ietf.org/html/draft-ietf-oauth-discovery-06#section-5">RFC Draft</a>
+to find the configuration and for example supported claims.</p>
+<p>Use this filter if the Token Introspection endpoint requires authorization to validate and decode the incoming token.
+The filter will optionally read client-id and client-secret from environment variables: OAUTH_CLIENT_ID, OAUTH_CLIENT_SECRET</p>
+<p>If one of the configured key value pairs from the filter are found
+inside the tokenintrospection (RFC7662) result for the incoming token,
+it will allow the request to pass.</p>
+<p>Examples:</p>
+<div class="codehilite"><pre><span></span>secureOauthTokenintrospectionAnyKV(&quot;issuerURL&quot;, &quot;client-id&quot;, &quot;client-secret&quot;, &quot;k1&quot;, &quot;v1&quot;, &quot;k2&quot;, &quot;v2&quot;)
+</pre></div>
+
+<p>Read client-id and client-secret from environment variables
+<div class="codehilite"><pre><span></span>secureOauthTokenintrospectionAnyKV(&quot;issuerURL&quot;, &quot;&quot;, &quot;&quot;, &quot;k1&quot;, &quot;v1&quot;, &quot;k2&quot;, &quot;v2&quot;)
+</pre></div></p>
+<h2 id="secureoauthtokenintrospectionallkv">secureOauthTokenintrospectionAllKV<a class="headerlink" href="#secureoauthtokenintrospectionallkv" title="Permanent link">&para;</a></h2>
+<p>The filter accepts an even number of variable arguments of type
+string, which are used to validate the incoming token from the
+<code>Authorization: Bearer &lt;token&gt;</code> header.  The first argument to the
+filter is the issuer URL, for example <code>https://accounts.google.com</code>,
+that will be used as described in
+<a href="https://tools.ietf.org/html/draft-ietf-oauth-discovery-06#section-5">RFC Draft</a>
+to find the configuration and for example supported claims.</p>
+<p>Use this filter if the Token Introspection endpoint requires authorization to validate and decode the incoming token.
+The filter will optionally read client-id and client-secret from environment variables: OAUTH_CLIENT_ID, OAUTH_CLIENT_SECRET</p>
+<p>If all of the configured key value pairs from the filter are found
+inside the tokenintrospection (RFC7662) result for the incoming token,
+it will allow the request to pass.</p>
+<p>Examples:</p>
+<div class="codehilite"><pre><span></span>secureOauthTokenintrospectionAllKV(&quot;issuerURL&quot;, &quot;client-id&quot;, &quot;client-secret&quot;, &quot;k1&quot;, &quot;v1&quot;, &quot;k2&quot;, &quot;v2&quot;)
+</pre></div>
+
+<p>Read client-id and client-secret from environment variables
+<div class="codehilite"><pre><span></span>secureOauthTokenintrospectionAllKV(&quot;issuerURL&quot;, &quot;&quot;, &quot;&quot;, &quot;k1&quot;, &quot;v1&quot;, &quot;k2&quot;, &quot;v2&quot;)
+</pre></div></p>
 <h2 id="forwardtoken">forwardToken<a class="headerlink" href="#forwardtoken" title="Permanent link">&para;</a></h2>
 <p>The filter accepts a single string as an argument. The argument is the header
 name where the result of token info or token introspection is added when the
@@ -2509,6 +2703,21 @@ log file. N defaults to 1024 and can be overidden with
 <code>-max-audit-body=&lt;int&gt;</code>. <code>N=0</code> omits logging the body.</p>
 <p>Example:</p>
 <div class="codehilite"><pre><span></span>auditLog()
+</pre></div>
+
+<h2 id="unverifiedauditlog">unverifiedAuditLog<a class="headerlink" href="#unverifiedauditlog" title="Permanent link">&para;</a></h2>
+<p>Filter <code>unverifiedAuditLog()</code> adds a Header, <code>X-Unverified-Audit</code>, to the request, the content of which, will also
+be written to the log file. By default, the value of the audit header will be equal to the value of the <code>sub</code> key, from
+the Authorization token. This can be changed by providing a <code>string</code> input to the filter which matches another key from the
+token.</p>
+<p><em>N.B.</em> It is important to note that, if the content of the <code>X-Unverified-Audit</code> header does not match the following regex, then
+a default value of <code>invalid-sub</code> will be populated in the header instead:
+    <code>^[a-zA-z0-9_/:?=&amp;%@.#-]*$</code></p>
+<p>Examples:</p>
+<div class="codehilite"><pre><span></span>unverifiedAuditLog()
+</pre></div>
+
+<div class="codehilite"><pre><span></span>unverifiedAuditLog(&quot;azp&quot;)
 </pre></div>
 
 <h2 id="setdynamicbackendhostfromheader">setDynamicBackendHostFromHeader<a class="headerlink" href="#setdynamicbackendhostfromheader" title="Permanent link">&para;</a></h2>
@@ -2871,6 +3080,50 @@ the filter assume that also non configured paths will be directed to this applic
 E.g.:</p>
 <div class="codehilite"><pre><span></span>apiUsageMonitoring.custom.my-app.{unknown}.GET.{no-match}.*.*.http_count
 </pre></div>
+
+<h2 id="lifo">lifo<a class="headerlink" href="#lifo" title="Permanent link">&para;</a></h2>
+<p>This Filter changes skipper to handle the route with a bounded last in
+first out queue (LIFO), instead of an unbounded first in first out
+queue (FIFO). The default skipper scheduler is based on Go net/http
+package, which provides an unbounded FIFO request handling. If you
+enable this filter the request scheduling will change to a LIFO.  The
+idea of a LIFO queue is based on Dropbox bandaid proxy, which is not
+opensource. Dropbox shared their idea in a
+<a href="https://blogs.dropbox.com/tech/2018/03/meet-bandaid-the-dropbox-service-proxy/">public blogpost</a>.
+All bounded scheduler filters will respond requests with server status error
+codes in case of overrun. All scheduler filters return HTTP status code:</p>
+<ul>
+<li>502, if the specified timeout is reached, because a request could not be scheduled fast enough</li>
+<li>503, if the queue is full</li>
+</ul>
+<p>Parameters:</p>
+<ul>
+<li>MaxConcurrency specifies how many goroutines are allowed to work on this queue(int)</li>
+<li>MaxStackSize sets the queue size (int)</li>
+<li>Timeout sets the timeout to get request scheduled (time)</li>
+</ul>
+<p>Example:</p>
+<div class="codehilite"><pre><span></span>lifo(100, 150, &quot;10s&quot;)
+</pre></div>
+
+<p>The above configuration will set MaxConcurrency to 100, MaxStackSize
+to 150 and Timeout to 10 seconds.</p>
+<h2 id="lifogroup">lifoGroup<a class="headerlink" href="#lifogroup" title="Permanent link">&para;</a></h2>
+<p>This filter is similar to the <a href="#lifo">lifo</a> filter.</p>
+<p>Parameters:</p>
+<ul>
+<li>GroupName to group multiple one or many routes to the same queue, which have to have the same settings (string)</li>
+<li>MaxConcurrency specifies how many goroutines are allowed to work on this queue(int)</li>
+<li>MaxStackSize sets the queue size (int)</li>
+<li>Timeout sets the timeout to get request scheduled (time)</li>
+</ul>
+<p>Example:</p>
+<div class="codehilite"><pre><span></span>lifoGroup(&quot;mygroup&quot;, 100, 150, &quot;10s&quot;)
+</pre></div>
+
+<p>The above configuration will set MaxConcurrency to 100, MaxStackSize
+to 150 and Timeout to 10 seconds for the lifoGroup &ldquo;mygroup&rdquo;, that can
+be shared between more than routes.</p>
                 
                   
                 

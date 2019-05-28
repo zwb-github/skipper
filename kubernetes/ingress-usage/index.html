@@ -1017,6 +1017,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#loadbalancer-algorithm" title="Loadbalancer Algorithm" class="md-nav__link">
+    Loadbalancer Algorithm
+  </a>
+  
+</li>
+      
       
       
       
@@ -1106,18 +1113,6 @@
 
 
   <li class="md-nav__item">
-    <a href="../../tutorials/development/" title="Development" class="md-nav__link">
-      Development
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
     <a href="../../tutorials/auth/" title="Authentication and Autorization" class="md-nav__link">
       Authentication and Autorization
     </a>
@@ -1132,6 +1127,30 @@
   <li class="md-nav__item">
     <a href="../../tutorials/ratelimit/" title="Ratelimits" class="md-nav__link">
       Ratelimits
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../tutorials/operations/" title="Operations" class="md-nav__link">
+      Operations
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../tutorials/development/" title="Development" class="md-nav__link">
+      Development
     </a>
   </li>
 
@@ -1563,6 +1582,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#loadbalancer-algorithm" title="Loadbalancer Algorithm" class="md-nav__link">
+    Loadbalancer Algorithm
+  </a>
+  
+</li>
+      
       
       
       
@@ -1630,6 +1656,11 @@ features Skipper provides</p>
 <td>zalando.org/skipper-ingress-redirect-code</td>
 <td><code>301</code></td>
 <td>change the default HTTPS redirect code for specific ingresses</td>
+</tr>
+<tr>
+<td>zalando.org/skipper-loadbalancer</td>
+<td><code>consistentHash</code></td>
+<td>defaults to <code>roundRobin</code>, <a href="../../reference/backends/#load-balancer-backend">see available choices</a></td>
 </tr>
 </tbody>
 </table>
@@ -2508,15 +2539,15 @@ and <strong>my-app-2</strong> will get <strong>20%</strong> of the traffic:</p>
 
 <h2 id="controlling-https-redirect">Controlling HTTPS redirect<a class="headerlink" href="#controlling-https-redirect" title="Permanent link">&para;</a></h2>
 <p>Skipper Ingress can provide HTTP-&gt;HTTPS redirection. Enabling it and setting the status code used by default can
-be done with the command line options: -kubernetes-https-redirect and -kubernetes-https-redirect-code. By using
+be done with the command line options: <code>-kubernetes-https-redirect</code> and <code>-kubernetes-https-redirect-code</code>. By using
 annotations, this behavior can be overridden from the individual ingress specs for the scope of routes generated
 based on these ingresses specs.</p>
 <p>Annotations:</p>
 <ul>
-<li>zalando.org/skipper-ingress-redirect: the possible values are true or false. When the global HTTPS redirect is
+<li><code>zalando.org/skipper-ingress-redirect</code>: the possible values are true or false. When the global HTTPS redirect is
   disabled, the value true enables it for the current ingress. When the global redirect is enabled, the value
   false disables it for the current ingress.</li>
-<li>zalando.org/skipper-ingress-redirect-code: the possible values are integers 300 &lt;= x &lt; 400. Sets the redirect
+<li><code>zalando.org/skipper-ingress-redirect-code</code>: the possible values are integers <code>300 &lt;= x &lt; 400</code>. Sets the redirect
   status code for the current ingress.</li>
 </ul>
 <p>Example:</p>
@@ -2530,6 +2561,37 @@ based on these ingresses specs.</p>
 <span class="n">spec</span><span class="o">:</span>
   <span class="n">rules</span><span class="o">:</span>
   <span class="o">-</span> <span class="n">host</span><span class="o">:</span> <span class="n">mobile</span><span class="o">-</span><span class="n">api</span><span class="o">.</span><span class="na">example</span><span class="o">.</span><span class="na">org</span>
+    <span class="n">http</span><span class="o">:</span>
+      <span class="n">paths</span><span class="o">:</span>
+      <span class="o">-</span> <span class="n">backend</span><span class="o">:</span>
+          <span class="n">serviceName</span><span class="o">:</span> <span class="n">app</span><span class="o">-</span><span class="n">svc</span>
+          <span class="n">servicePort</span><span class="o">:</span> <span class="mi">80</span>
+</pre></div>
+
+
+<h2 id="loadbalancer-algorithm">Loadbalancer Algorithm<a class="headerlink" href="#loadbalancer-algorithm" title="Permanent link">&para;</a></h2>
+<p>You can set the loadbalancer algorithm, which is used to find the next
+endpoint for a given request with the ingress annotation
+<code>zalando.org/skipper-loadbalancer</code>.</p>
+<p>For example, for some workloads you might want to have always the same
+endpoint for the same client. For this use case there is the
+consistent hash algorithm, that finds for a client detected by the IP
+or X-Forwarded-For header, the same backend. If the backend is not
+available it would switch to another one.</p>
+<p>Annotations:</p>
+<ul>
+<li><code>zalando.org/skipper-loadbalancer</code> <a href="../../reference/backends/#load-balancer-backend">see available choices</a></li>
+</ul>
+<p>Example:</p>
+<div class="codehilite"><pre><span></span><span class="n">apiVersion</span><span class="o">:</span> <span class="n">extensions</span><span class="o">/</span><span class="n">v1beta1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Ingress</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">annotations</span><span class="o">:</span>
+    <span class="n">zalando</span><span class="o">.</span><span class="na">org</span><span class="o">/</span><span class="n">skipper</span><span class="o">-</span><span class="n">loadbalancer</span><span class="o">:</span> <span class="n">consistentHash</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">app</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">rules</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">host</span><span class="o">:</span> <span class="n">websocket</span><span class="o">.</span><span class="na">example</span><span class="o">.</span><span class="na">org</span>
     <span class="n">http</span><span class="o">:</span>
       <span class="n">paths</span><span class="o">:</span>
       <span class="o">-</span> <span class="n">backend</span><span class="o">:</span>

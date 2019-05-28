@@ -684,18 +684,6 @@
 
 
   <li class="md-nav__item">
-    <a href="../../tutorials/development/" title="Development" class="md-nav__link">
-      Development
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
     <a href="../../tutorials/auth/" title="Authentication and Autorization" class="md-nav__link">
       Authentication and Autorization
     </a>
@@ -710,6 +698,30 @@
   <li class="md-nav__item">
     <a href="../../tutorials/ratelimit/" title="Ratelimits" class="md-nav__link">
       Ratelimits
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../tutorials/operations/" title="Operations" class="md-nav__link">
+      Operations
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../tutorials/development/" title="Development" class="md-nav__link">
+      Development
     </a>
   </li>
 
@@ -857,7 +869,12 @@ incoming calls from your clients.</p>
 
 <p>This will set IdleTimeout in
 <a href="https://golang.org/pkg/net/http/#Server">http.Server</a> handling
-incoming calls from your clients.</p>
+incoming calls from your clients. If you have another loadbalancer
+layer in front of your Skipper http routers, for example <a href="https://docs.aws.amazon.com/elasticloadbalancing/latest/application/application-load-balancers.html#connection-idle-timeout">AWS Application Load
+Balancers</a>,
+you should make sure, that Skipper&rsquo;s <code>idle-timeout-server</code> setting is
+bigger than the idle timeout from the loadbalancer in front. Wrong
+combinations of idle timeouts can lead to a few unexpected HTTP 502.</p>
 <div class="codehilite"><pre><span></span>-idle-timeout-server duration
     maximum idle connections per backend host (default 1m0s)
 </pre></div>

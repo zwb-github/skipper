@@ -928,6 +928,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#rfcpath" title="rfcPath" class="md-nav__link">
+    rfcPath
+  </a>
+  
+</li>
+      
       
       
       
@@ -1901,6 +1908,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#rfcpath" title="rfcPath" class="md-nav__link">
+    rfcPath
+  </a>
+  
+</li>
+      
       
       
       
@@ -2419,13 +2433,15 @@ it will allow the request to pass.</p>
 <div class="codehilite"><pre><span></span>secureOauthTokenintrospectionAllKV(&quot;issuerURL&quot;, &quot;&quot;, &quot;&quot;, &quot;k1&quot;, &quot;v1&quot;, &quot;k2&quot;, &quot;v2&quot;)
 </pre></div></p>
 <h2 id="forwardtoken">forwardToken<a class="headerlink" href="#forwardtoken" title="Permanent link">&para;</a></h2>
-<p>The filter accepts a single string as an argument. The argument is the header
-name where the result of token info or token introspection is added when the
-request is passed to the backend.</p>
+<p>The filter takes the (string) header name as its first argument. The result of token info or token introspection is added to
+this header when the request is passed to the backend. If there are additional arguments, these
+values are treated as a whitelisted set of JSON keys to be included in the
+header payload when forwarding to the backend service.</p>
 <p>If this filter is used when there is no token introspection or token info data
 then it does not have any effect.</p>
 <p>Examples:</p>
 <div class="codehilite"><pre><span></span>forwardToken(&quot;X-Tokeninfo-Forward&quot;)
+forwardToken(&quot;X-Tokeninfo-Forward&quot;, &quot;access_token&quot;)
 </pre></div>
 
 <h2 id="oauthoidcuserinfo">oauthOIDCUserInfo<a class="headerlink" href="#oauthoidcuserinfo" title="Permanent link">&para;</a></h2>
@@ -2561,17 +2577,18 @@ roughly 15 MB per filter for 100.000 clients.</p>
 <ul>
 <li>number of allowed requests per time period (int)</li>
 <li>time period for requests being counted (time.Duration)</li>
-<li>optional parameter to set the same client by header (string)</li>
+<li>optional parameter to set the same client by header, in case the provided string contains <code>,</code>, it will combine all these headers (string)</li>
 </ul>
 <div class="codehilite"><pre><span></span>clientRatelimit(3, &quot;1m&quot;)
 clientRatelimit(3, &quot;1m&quot;, &quot;Authorization&quot;)
+clientRatelimit(3, &quot;1m&quot;, &quot;X-Foo,Authorization,X-Bar&quot;)
 </pre></div>
 
 <p>See also the <a href="https://godoc.org/github.com/zalando/skipper/ratelimit">ratelimit docs</a>.</p>
 <h2 id="ratelimit">ratelimit<a class="headerlink" href="#ratelimit" title="Permanent link">&para;</a></h2>
-<p>Per skipper instance calculated ratelimit, that allows number of
-requests to a backend. You need to run skipper
-with command line flag <code>-enable-ratelimits</code>.</p>
+<p>Per skipper instance calculated ratelimit, that allows forwarding a
+number of requests to the backend group. You need to run skipper with
+command line flag <code>-enable-ratelimits</code>.</p>
 <p>Parameters:</p>
 <ul>
 <li>number of allowed requests per time period (int)</li>
@@ -2598,10 +2615,11 @@ You need to run skipper with command line flags <code>-enable-swarm</code> and
 <li>rate limit group (string)</li>
 <li>number of allowed requests per time period (int)</li>
 <li>time period for requests being counted (time.Duration)</li>
-<li>optional parameter to set the same client by header (string)</li>
+<li>optional parameter to set the same client by header, in case the provided string contains <code>,</code>, it will combine all these headers (string)</li>
 </ul>
 <div class="codehilite"><pre><span></span>clusterClientRatelimit(&quot;groupA&quot;, 10, &quot;1h&quot;)
 clusterClientRatelimit(&quot;groupA&quot;, 10, &quot;1h&quot;, &quot;Authorization&quot;)
+clusterClientRatelimit(&quot;groupA&quot;, 10, &quot;1h&quot;, &quot;X-Forwarded-For,Authorization,User-Agent&quot;)
 </pre></div>
 
 <p>See also the <a href="https://godoc.org/github.com/zalando/skipper/ratelimit">ratelimit docs</a>.</p>
@@ -3138,6 +3156,29 @@ to 150 and Timeout to 10 seconds.</p>
 <p>The above configuration will set MaxConcurrency to 100, MaxStackSize
 to 150 and Timeout to 10 seconds for the lifoGroup &ldquo;mygroup&rdquo;, that can
 be shared between more than routes.</p>
+<h2 id="rfcpath">rfcPath<a class="headerlink" href="#rfcpath" title="Permanent link">&para;</a></h2>
+<p>This filter forces an alternative interpretation of the RFC 2616 and RFC 3986 standards,
+where paths containing reserved characters will have these characters unescaped when the
+incoming request also has them unescaped.</p>
+<p>Example:</p>
+<div class="codehilite"><pre><span></span>Path(&quot;/api/*id) -&gt; rfcPath() -&gt; &quot;http://api-backend&quot;
+</pre></div>
+
+<p>In the above case, if the incoming request has something like foo%2Fbar in the id
+position, the api-backend service will also receive it in the format foo%2Fbar, while
+without the rfcPath() filter the outgoing request path will become /api/foo/bar.</p>
+<p>In case we want to use the id while routing the request, we can use the <loopback>
+backend. Example:</p>
+<div class="codehilite"><pre><span></span><span class="n">api</span><span class="o">:</span> <span class="n">Path</span><span class="o">(</span><span class="s2">&quot;/api/:id&quot;</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">setPath</span><span class="o">(</span><span class="s2">&quot;/api/${id}/summary&quot;</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;http://api-backend&quot;</span><span class="o">;</span>
+<span class="n">patch</span><span class="o">:</span> <span class="n">Path</span><span class="o">(</span><span class="s2">&quot;/api/*id&quot;</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">rfcPath</span><span class="o">()</span> <span class="o">-&gt;</span> <span class="o">&lt;</span><span class="n">loopback</span><span class="o">&gt;;</span>
+</pre></div>
+
+<p>In the above case, if the incoming request path is /api/foo%2Fbar, it will match
+the &lsquo;patch&rsquo; route, and then the patched request will match the api route, and
+the api-backend service will receive a request with the path /api/foo%2Fbar/summary.</p>
+<p>It is also possible to enable this behavior centrally for a Skipper instance with
+the -rfc-patch-path flag. See
+<a href="../../operation/operation/#uri-standards-interpretation">URI standards interpretation</a>.</p>
                 
                   
                 

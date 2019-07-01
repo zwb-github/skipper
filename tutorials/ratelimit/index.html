@@ -958,9 +958,10 @@ in a local view having no information about other skipper instances.</p>
 <h3 id="backend-ratelimit">Backend Ratelimit<a class="headerlink" href="#backend-ratelimit" title="Permanent link">&para;</a></h3>
 <p>The backend ratelimit filter is <code>ratelimit()</code> and it is the simplest
 one. You can define how many requests a route allows for a given
-<code>time.Duration</code>.</p>
+<code>time.Duration</code> to send to all backends of the route. This means that you
+can not limit traffic to a single backend instance.</p>
 <p>For example to limit the route to 10 requests per minute for each
- skipper instance, you can specify:</p>
+skipper instance, you can specify:</p>
 <div class="codehilite"><pre><span></span>ratelimit(10, &quot;1m&quot;)
 </pre></div>
 
@@ -977,6 +978,13 @@ header, you can specify:</p>
 <p>There is an optional third argument that selects the same client by HTTP
 header value. As an example for Authorization Header you would use:</p>
 <div class="codehilite"><pre><span></span>clientRatelimit(10, &quot;1m&quot;, &quot;Authorization&quot;)
+</pre></div>
+
+<p>The optional third argument can create an AND combined Header
+ratelimit. The header names must be separated by <code>,</code>. For example all of the
+specified headers have to be the same to recognize them as the same
+client:</p>
+<div class="codehilite"><pre><span></span>clientRatelimit(10, &quot;1m&quot;, &quot;X-Forwarded-For,Authorization,X-Foo&quot;)
 </pre></div>
 
 <p>Internally skipper has a clean interval to clean up old buckets to reduce
@@ -1050,7 +1058,14 @@ selected by the X-Forwarded-For header, you can specify:</p>
 </pre></div>
 
 <p>The same for Authorization Header you would use:</p>
-<div class="codehilite"><pre><span></span>clusterClientRatelimit(&quot;groupC&quot;, 10, &quot;1m&quot;, &quot;auth&quot;)
+<div class="codehilite"><pre><span></span>clusterClientRatelimit(&quot;groupC&quot;, 10, &quot;1m&quot;, &quot;Authorization)
+</pre></div>
+
+<p>The optional fourth argument can create an AND combined Header
+ratelimit. The header names must be separated by <code>,</code>. For example all
+of the specified headers have to be the same to recognize them as the
+same client:</p>
+<div class="codehilite"><pre><span></span>clusterClientRatelimit(&quot;groupC&quot;, 5, &quot;10s&quot;, &quot;X-Forwarded-For,Authorization,X-Foo&quot;)
 </pre></div>
 
 <p>Internally skipper has a clean interval to clean up old buckets to reduce

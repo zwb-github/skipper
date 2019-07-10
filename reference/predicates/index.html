@@ -376,6 +376,13 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#predicate-arguments" title="Predicate arguments" class="md-nav__link">
+    Predicate arguments
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#path" title="Path" class="md-nav__link">
     Path
   </a>
@@ -385,6 +392,13 @@
         <li class="md-nav__item">
   <a href="#pathsubtree" title="PathSubtree" class="md-nav__link">
     PathSubtree
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-path-tree" title="The path tree:" class="md-nav__link">
+    The path tree:
   </a>
   
 </li>
@@ -489,6 +503,13 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cron" title="Cron" class="md-nav__link">
+    Cron
+  </a>
   
 </li>
       
@@ -923,6 +944,13 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#predicate-arguments" title="Predicate arguments" class="md-nav__link">
+    Predicate arguments
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#path" title="Path" class="md-nav__link">
     Path
   </a>
@@ -932,6 +960,13 @@
         <li class="md-nav__item">
   <a href="#pathsubtree" title="PathSubtree" class="md-nav__link">
     PathSubtree
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-path-tree" title="The path tree:" class="md-nav__link">
+    The path tree:
   </a>
   
 </li>
@@ -1040,6 +1075,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#cron" title="Cron" class="md-nav__link">
+    Cron
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#queryparam" title="QueryParam" class="md-nav__link">
     QueryParam
   </a>
@@ -1093,49 +1135,69 @@
                 
                 
                 <h1 id="skipper-predicates">Skipper Predicates<a class="headerlink" href="#skipper-predicates" title="Permanent link">&para;</a></h1>
-<p>The parameters can be strings, regex or float64 / int</p>
-<ul>
-<li><code>string</code> is a string surrounded by double quotes (<code>"</code>)</li>
-<li><code>regex</code> is a <a href="https://github.com/google/re2/wiki/Syntax">re2 regular expression</a>, surrounded by <code>/</code>, e.g. <code>/^www\.example\.org(:\d+)?$/</code></li>
-<li><code>int</code> / <code>float64</code> are usual (decimal) numbers like <code>401</code> or <code>1.23456</code></li>
-<li><code>time</code> is a string in double quotes, parseable by <a href="https://godoc.org/time#ParseDuration">time.Duration</a>)</li>
-</ul>
-<p>Predicates are a generic tool and can change the route matching behavior.
-Predicates can be chained using the double ampersand operator <code>&amp;&amp;</code>.</p>
+<p>Predicates are used to decide which route will handle an incoming request. Routes can contain multiple
+predicates. A request will match a route only if all the predicates of the route match. See the description of
+the route matching mechanism here: <a href="../../tutorials/basics/#route-matching">Route matching</a>.</p>
 <p>Example route with a Host, Method and Path match predicates and a backend:</p>
 <div class="codehilite"><pre><span></span><span class="n">all</span><span class="o">:</span> <span class="n">Host</span><span class="o">(/^</span><span class="n">my</span><span class="o">-</span><span class="n">host</span><span class="o">-</span><span class="n">header</span><span class="o">\.</span><span class="n">example</span><span class="o">\.</span><span class="n">org$</span><span class="sr">/) &amp;&amp; Method(&quot;GET&quot;) &amp;&amp; Path(&quot;/hello&quot;) -&gt; &quot;http://127.0.0.1:1234/</span><span class="err">&quot;</span><span class="o">;</span>
 </pre></div>
 
-<h2 id="path">Path<a class="headerlink" href="#path" title="Permanent link">&para;</a></h2>
-<p>The route definitions may contain a single path condition, optionally
-with wildcards, used for looking up routes in the lookup tree.</p>
-<p>Parameters:</p>
+<h2 id="predicate-arguments">Predicate arguments<a class="headerlink" href="#predicate-arguments" title="Permanent link">&para;</a></h2>
+<p>The predicate arguments can be strings, regular expressions or numbers (float64, int). In the eskip syntax
+representation:</p>
 <ul>
-<li>Path (string) can contain a wildcard <code>*</code> or a named <code>:wildcard</code></li>
+<li>strings are surrounded by double quotes (<code>"</code>). When necessary, characters can be escaped by <code>\</code>, e.g. <code>\\</code> or <code>\"</code>.</li>
+<li>regular expressions are a <a href="https://github.com/google/re2/wiki/Syntax">re2 regular expression</a>, surrounded by</li>
+<li><code>/</code>, e.g. <code>/^www\.example\.org(:\d+)?$/</code>. When a predicate expects a regular expression as an argument, the string representation with double quotes can be used, as well.</li>
+<li>numbers are regular (decimal) numbers like <code>401</code> or <code>1.23456</code>. The eskip syntax doesn&rsquo;t define a limitation on the size of the numbers, but the underlying implementation currently relies on the float64 values of the Go runtime.</li>
 </ul>
-<p>Examples:</p>
-<div class="codehilite"><pre><span></span>Path(&quot;/foo/bar&quot;)
-Path(&quot;/foo/:bar&quot;)
-Path(&quot;/foo*&quot;)
-Path(&quot;/foo/*&quot;)
-Path(&quot;/foo/**&quot;)
+<p>Other higher level argument types must be represented as one of the above types. E.g. it is a convention to
+represent time duration values as strings, parseable by <a href="https://godoc.org/time#ParseDuration">time.Duration</a>).</p>
+<h2 id="path">Path<a class="headerlink" href="#path" title="Permanent link">&para;</a></h2>
+<p>The path predicate is used to match the path in HTTP request line. It accepts a single argument, that can be a
+fixed path like &ldquo;/some/path&rdquo;, or it can contain wildcards. There can be only zero or one path predicate in a
+route.</p>
+<p><strong>Wildcards:</strong></p>
+<p>Wildcards can be put in place of one or more path segments in the path, e.g. &ldquo;/some/:dir/:name&rdquo;, or the path can
+end with a free wildcard like <code>"/some/path/*param"</code>, where the free wildcard can match against a sub-path with
+multiple segments. Note, that this solution implicitly supports the glob standard, e.g. <code>"/some/path/**"</code> will
+work as expected. The wildcards must follow a <code>/</code>.</p>
+<p>The arguments are available to the filters while processing the matched requests, but
+currently only a few built-in filters utilize them, and they can be used rather only from custom filter
+extensions.</p>
+<p><strong>Known bug:</strong></p>
+<p>There is a known bug with how predicates of the form <code>Path("/foo/*")</code> are currently handled. Note the wildcard
+defined with <code>*</code> doesn&rsquo;t have a name here. Wildcards must have a name, but Skipper currently does not reject
+these routes, resulting in undefined behavior.</p>
+<p><strong>Trailing slash:</strong></p>
+<p>By default, <code>Path("/foo")</code> and <code>Path("/foo/")</code> are not equivalent. Ignoring the trailing slash can be toggled
+with the <code>-ignore-trailing-slash</code> command line flag.</p>
+<p><strong>Examples:</strong></p>
+<div class="codehilite"><pre><span></span>Path(&quot;/foo/bar&quot;)     //   /foo/bar
+Path(&quot;/foo/bar/&quot;)    //   /foo/bar/, unless started with -ignore-trailing-slash
+Path(&quot;/foo/:id&quot;)     //   /foo/_anything
+Path(&quot;/foo/:id/baz&quot;) //   /foo/_anything/baz
+Path(&quot;/foo/*rest&quot;)   //   /foo/bar/baz
+Path(&quot;/foo/**&quot;)      //   /foo/bar/baz
 </pre></div>
 
 <h2 id="pathsubtree">PathSubtree<a class="headerlink" href="#pathsubtree" title="Permanent link">&para;</a></h2>
-<p>Similar to Path, but used to match full subtrees including the path of
-the definition.</p>
-<p>PathSubtree(&ldquo;/foo&rdquo;) predicate is equivalent to having routes with
-Path(&ldquo;/foo&rdquo;), Path(&ldquo;/foo/&rdquo;) and Path(&ldquo;/foo/**&rdquo;) predicates.</p>
-<p>Parameters:</p>
-<ul>
-<li>PathSubtree (string)</li>
-</ul>
-<p>Examples:</p>
+<p>The path subtree predicate behaves similar to the path predicate, but it matches the exact path in the
+definition and any sub path below it. The subpath is automatically provided among the path parameters with the
+name <code>*</code>. If a free wildcard is appended to the definition, e.g. <code>PathSubtree("/some/path/*rest")</code>, the free
+wildcard name is used instead of <code>*</code>. The simple wildcards behave similar to the Path predicate. The main
+difference between <code>PathSubtree("/foo")</code> and <code>Path("/foo/**")</code> is that the PathSubtree predicate always ignores
+the trailing slashes.</p>
+<p><strong>Examples:</strong></p>
 <div class="codehilite"><pre><span></span>PathSubtree(&quot;/foo/bar&quot;)
 PathSubtree(&quot;/&quot;)
-PathSubtree(&quot;/foo*&quot;)
+PathSubtree(&quot;/foo/*rest&quot;)
 </pre></div>
 
+<h2 id="the-path-tree">The path tree:<a class="headerlink" href="#the-path-tree" title="Permanent link">&para;</a></h2>
+<p>There is an important difference between the evaluation of the Path or PathSubtree predicates, and the
+evaluation of all the other predicates (PathRegexp belonging to the second group). Find an explanation in the
+<a href="../tutorials/basics.md/#route-matching">Route matching</a> section explanation section.</p>
 <h2 id="pathregexp">PathRegexp<a class="headerlink" href="#pathregexp" title="Permanent link">&para;</a></h2>
 <p>Regular expressions to match the path. It uses Go&rsquo;s standard library
 regexp package to match, which is based on
@@ -1144,7 +1206,14 @@ regexp package to match, which is based on
 <ul>
 <li>PathRegexp (regex)</li>
 </ul>
-<p>Examples:</p>
+<p>A route can contain more than one PathRegexp predicates. It can be also used in combination with the Path
+predicate.</p>
+<div class="codehilite"><pre><span></span>Path(&quot;/colors/:name/rgb-value&quot;) &amp;&amp; PathRegexp(&quot;^/colors/(red|green|blue|cyan|magenta|pink|yellow)/&quot;)
+-&gt; returnRGB()
+-&gt; &lt;shunt&gt;
+</pre></div>
+
+<p>Further examples:</p>
 <div class="codehilite"><pre><span></span>PathRegexp(&quot;^/foo/bar&quot;)
 PathRegexp(&quot;/foo/bar$&quot;)
 PathRegexp(&quot;/foo/bar/&quot;)
@@ -1277,6 +1346,23 @@ Before(1451642400)
 <p>Examples:</p>
 <div class="codehilite"><pre><span></span>Between(&quot;2016-01-01T12:00:00+02:00&quot;, &quot;2016-02-01T12:00:00+02:00&quot;)
 Between(1451642400, 1454320800)
+</pre></div>
+
+<h2 id="cron">Cron<a class="headerlink" href="#cron" title="Permanent link">&para;</a></h2>
+<p>Matches routes when the given cron-like expression matches the system time.</p>
+<p>Parameters:
+* <a href="https://en.wikipedia.org/wiki/Cron#CRON_expression">Cron</a>-like expression. See <a href="https://godoc.org/github.com/sarslanhan/cronmask#New">the package documentation</a> for supported &amp; unsupported features. Expressions are expected to be in the same time zone as the system that generates the <code>time.Time</code> instances.</p>
+<p>Examples:</p>
+<div class="codehilite"><pre><span></span>// match everything
+Cron(&quot;* * * * *&quot;)
+// match only when the hour is between 5-7 (inclusive)
+Cron(&quot;* 5-7, * * *&quot;)
+// match only when the hour is between 5-7, equal to 8, or betweeen 12-15
+Cron(&quot;* 5-7,8,12-15 * * *&quot;)
+// match only when it is weekdays
+Cron(&quot;* * * * 1-5&quot;)
+// match only when it is weekdays &amp; working hours
+Cron(&quot;* 7-18 * * 1-5&quot;)
 </pre></div>
 
 <h2 id="queryparam">QueryParam<a class="headerlink" href="#queryparam" title="Permanent link">&para;</a></h2>

@@ -371,6 +371,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../reference/egress/" title="Egress" class="md-nav__link">
+      Egress
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../../reference/scripts/" title="Scripts" class="md-nav__link">
       Scripts
     </a>
@@ -432,13 +444,13 @@
 
   <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2-9" type="checkbox" id="nav-2-9">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2-10" type="checkbox" id="nav-2-10">
     
-    <label class="md-nav__link" for="nav-2-9">
+    <label class="md-nav__link" for="nav-2-10">
       Data Clients
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
-      <label class="md-nav__title" for="nav-2-9">
+      <label class="md-nav__title" for="nav-2-10">
         Data Clients
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
@@ -504,13 +516,13 @@
 
   <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2-10" type="checkbox" id="nav-2-10">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2-11" type="checkbox" id="nav-2-11">
     
-    <label class="md-nav__link" for="nav-2-10">
+    <label class="md-nav__link" for="nav-2-11">
       Operation
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
-      <label class="md-nav__title" for="nav-2-10">
+      <label class="md-nav__title" for="nav-2-11">
         Operation
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
@@ -940,6 +952,16 @@ but the client sent <code>/foo</code>.</p>
 specified path by the client should be appended to this base path you
 can use the <code>modPath</code> filter just before the <code>redirectTo()</code> to modify
 the base path as you like.</p>
+<p>Route Example shows, that calls to <code>/a/base/foo/bar</code> would be
+redirected to <code>https://another-example.com/my/new/base/foo/bar</code>:</p>
+<div class="codehilite"><pre><span></span><span class="n">redirect</span><span class="o">:</span> <span class="n">Path</span><span class="o">(</span><span class="s2">&quot;/a/base/&quot;</span><span class="o">)</span>
+          <span class="o">-&gt;</span> <span class="n">modPath</span><span class="o">(</span><span class="s2">&quot;/a/base/&quot;</span><span class="o">,</span> <span class="s2">&quot;/my/new/base/&quot;</span><span class="o">)</span>
+          <span class="o">-&gt;</span> <span class="n">redirectTo</span><span class="o">(</span><span class="mi">308</span><span class="o">,</span> <span class="s2">&quot;https://another-example.com&quot;</span><span class="o">)</span>
+          <span class="o">-&gt;</span> <span class="o">&lt;</span><span class="n">shunt</span><span class="o">&gt;</span><span class="err">&#39;</span>
+</pre></div>
+
+<p>The next example shows how to test a redirect with changed base path
+on your computer:</p>
 <div class="codehilite"><pre><span></span><span class="c">% ./bin/skipper -address :8080 -inline-routes &#39;r: * -&gt; modPath(&quot;/&quot;, &quot;/my/new/base/&quot;) -&gt; redirectTo(308, &quot;http://127.0.0.1:9999&quot;) -&gt; &lt;shunt&gt;&#39;</span>
 <span class="p">::</span><span class="mi">1</span> <span class="o">-</span> <span class="o">-</span> <span class="p">[</span><span class="mi">01</span><span class="o">/</span><span class="n">Nov</span><span class="o">/</span><span class="mi">2018</span><span class="p">:</span><span class="mi">18</span><span class="p">:</span><span class="mi">49</span><span class="p">:</span><span class="mi">45</span> <span class="o">+</span><span class="mi">0100</span><span class="p">]</span> &quot;<span class="n">GET</span> <span class="o">/</span><span class="n">foo</span> <span class="n">HTTP</span><span class="o">/</span><span class="mf">1.1</span>&quot; <span class="mi">308</span> <span class="mi">0</span> &quot;<span class="o">-</span>&quot; &quot;<span class="n">curl</span><span class="o">/</span><span class="mf">7.49</span><span class="p">.</span><span class="mi">0</span>&quot; <span class="mi">0</span> <span class="n">localhost</span><span class="p">:</span><span class="mi">8080</span> <span class="o">-</span> <span class="o">-</span>
 

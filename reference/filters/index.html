@@ -935,6 +935,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#bearerinjector" title="Bearerinjector" class="md-nav__link">
+    Bearerinjector
+  </a>
+  
+</li>
+      
       
       
       
@@ -966,6 +973,18 @@
   <li class="md-nav__item">
     <a href="../backends/" title="Backends" class="md-nav__link">
       Backends
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../egress/" title="Egress" class="md-nav__link">
+      Egress
     </a>
   </li>
 
@@ -1037,13 +1056,13 @@
 
   <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2-9" type="checkbox" id="nav-2-9">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2-10" type="checkbox" id="nav-2-10">
     
-    <label class="md-nav__link" for="nav-2-9">
+    <label class="md-nav__link" for="nav-2-10">
       Data Clients
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
-      <label class="md-nav__title" for="nav-2-9">
+      <label class="md-nav__title" for="nav-2-10">
         Data Clients
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
@@ -1109,13 +1128,13 @@
 
   <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2-10" type="checkbox" id="nav-2-10">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2-11" type="checkbox" id="nav-2-11">
     
-    <label class="md-nav__link" for="nav-2-10">
+    <label class="md-nav__link" for="nav-2-11">
       Operation
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
-      <label class="md-nav__title" for="nav-2-10">
+      <label class="md-nav__title" for="nav-2-11">
         Operation
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
@@ -1915,6 +1934,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#bearerinjector" title="Bearerinjector" class="md-nav__link">
+    Bearerinjector
+  </a>
+  
+</li>
+      
       
       
       
@@ -1998,9 +2024,10 @@ Filter can be chained using the arrow operator <code>-&gt;</code>.</p>
 <li>location (string)</li>
 </ul>
 <p>Example:</p>
-<div class="codehilite"><pre><span></span><span class="n">redir</span><span class="o">:</span> <span class="n">PathRegex</span><span class="o">(/^\/</span><span class="n">foo</span><span class="o">\/</span><span class="n">bar</span><span class="sr">/) -&gt; redirectTo(302, &quot;/foo/</span><span class="n">newBar</span><span class="err">&quot;</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">&lt;</span><span class="n">shunt</span><span class="o">&gt;;</span>
+<div class="codehilite"><pre><span></span><span class="n">redirect</span><span class="o">:</span> <span class="n">PathRegex</span><span class="o">(/^\/</span><span class="n">foo</span><span class="o">\/</span><span class="n">bar</span><span class="sr">/) -&gt; redirectTo(302, &quot;/foo/</span><span class="n">newBar</span><span class="err">&quot;</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">&lt;</span><span class="n">shunt</span><span class="o">&gt;;</span>
 </pre></div>
 
+<p>see also <a href="../../tutorials/common-use-cases/#redirect-handling">redirect-handling</a></p>
 <h2 id="redirecttolower">redirectToLower<a class="headerlink" href="#redirecttolower" title="Permanent link">&para;</a></h2>
 <p>Same as <a href="#redirectTo">redirectTo</a>, but replaces all strings to lower case.</p>
 <h2 id="static">static<a class="headerlink" href="#static" title="Permanent link">&para;</a></h2>
@@ -2535,6 +2562,7 @@ open state. If all succeed, it goes to closed state again.</p>
 <li>idle-ttl (time string, parseable by <a href="https://godoc.org/time#ParseDuration">time.Duration</a>) - optional</li>
 </ul>
 <p>See also the <a href="https://godoc.org/github.com/zalando/skipper/circuit">circuit breaker docs</a>.</p>
+<p>Can be used as <a href="../egress/">egress</a> feature.</p>
 <h2 id="ratebreaker">rateBreaker<a class="headerlink" href="#ratebreaker" title="Permanent link">&para;</a></h2>
 <p>The &ldquo;rate breaker&rdquo; works similar to the <a href="#consecutivebreaker">consecutiveBreaker</a>, but
 instead of considering N consecutive failures for going open, it maintains a sliding
@@ -2549,6 +2577,7 @@ and allows the same breaker characteristics for low and high rate traffic.</p>
 <li>idle-ttl (time string, parseable by <a href="https://godoc.org/time#ParseDuration">time.Duration</a>) - optional</li>
 </ul>
 <p>See also the <a href="https://godoc.org/github.com/zalando/skipper/circuit">circuit breaker docs</a>.</p>
+<p>Can be used as <a href="../egress/">egress</a> feature.</p>
 <h2 id="disablebreaker">disableBreaker<a class="headerlink" href="#disablebreaker" title="Permanent link">&para;</a></h2>
 <p>Change (or set) the breaker configurations for an individual route and disable for another, in eskip:</p>
 <div class="codehilite"><pre><span></span><span class="n">updates</span><span class="o">:</span> <span class="n">Method</span><span class="o">(</span><span class="s2">&quot;POST&quot;</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="n">Host</span><span class="o">(</span><span class="s2">&quot;foo.example.org&quot;</span><span class="o">)</span>
@@ -2561,6 +2590,7 @@ and allows the same breaker characteristics for low and high rate traffic.</p>
 </pre></div>
 
 <p>See also the <a href="https://godoc.org/github.com/zalando/skipper/circuit">circuit breaker docs</a>.</p>
+<p>Can be used as <a href="../egress/">egress</a> feature.</p>
 <h2 id="localratelimit">~~localRatelimit~~<a class="headerlink" href="#localratelimit" title="Permanent link">&para;</a></h2>
 <p><strong>DEPRECATED</strong> use <a href="#clientratelimit">clientRatelimit</a> with the same
   settings instead.</p>
@@ -3179,6 +3209,26 @@ the api-backend service will receive a request with the path /api/foo%2Fbar/summ
 <p>It is also possible to enable this behavior centrally for a Skipper instance with
 the -rfc-patch-path flag. See
 <a href="../../operation/operation/#uri-standards-interpretation">URI standards interpretation</a>.</p>
+<h2 id="bearerinjector">Bearerinjector<a class="headerlink" href="#bearerinjector" title="Permanent link">&para;</a></h2>
+<p>This filter injects <code>Bearer</code> tokens into <code>Authorization</code> headers read
+from file providing the token as content. This is only for use cases
+using skipper as sidecar to inject tokens for the application on the
+<a href="../egress/"><strong>egress</strong></a> path, if it&rsquo;s used in the <strong>ingress</strong> path you likely
+create a security issue for your application.</p>
+<p>This filter should be used as an <a href="../egress/">egress</a> only feature.</p>
+<p>Example:</p>
+<div class="codehilite"><pre><span></span><span class="n">egress1</span><span class="o">:</span> <span class="n">Method</span><span class="o">(</span><span class="s2">&quot;POST&quot;</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="n">Host</span><span class="o">(</span><span class="s2">&quot;api.example.com&quot;</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">bearerinjector</span><span class="o">(</span><span class="s2">&quot;write-token&quot;</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;https://api.example.com/shoes&quot;</span><span class="o">;</span>
+<span class="n">egress2</span><span class="o">:</span> <span class="n">Method</span><span class="o">(</span><span class="s2">&quot;GET&quot;</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="n">Host</span><span class="o">(</span><span class="s2">&quot;api.example.com&quot;</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">bearerinjector</span><span class="o">(</span><span class="s2">&quot;read-token&quot;</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;https://api.example.com/shoes&quot;</span><span class="o">;</span>
+</pre></div>
+
+<p>To integrate with the <code>bearerinjector</code> filter you need to run skipper
+with <code>-credentials-paths=/tmp/secrets</code> and specify an update interval
+<code>-credentials-update-interval=10s</code>. Files in the credentials path can
+be a directory, which will be able to find all files within this
+directory, but it won&rsquo;t walk subtrees. For the example case, there
+have to be filenames <code>write-token</code> and <code>read-token</code> within the
+specified credential paths <code>/tmp/secrets/</code>, resulting in
+<code>/tmp/secrets/write-token</code> and <code>/tmp/secrets/read-token</code>.</p>
                 
                   
                 

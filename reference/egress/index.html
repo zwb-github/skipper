@@ -11,7 +11,7 @@
       <meta http-equiv="x-ua-compatible" content="ie=edge">
       
       
-        <link rel="canonical" href="https://opensource.zalando.com/skipper/kubernetes/ingress-backends/">
+        <link rel="canonical" href="https://opensource.zalando.com/skipper/reference/egress/">
       
       
       
@@ -38,7 +38,7 @@
     
     
       
-        <title>Ingress Backends - Skipper</title>
+        <title>Egress - Skipper</title>
       
     
     
@@ -100,7 +100,7 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
     
-      <a href="#kubernetes-backend-deployments" tabindex="1" class="md-skip">
+      <a href="#egress-proxy" tabindex="1" class="md-skip">
         Skip to content
       </a>
     
@@ -126,7 +126,7 @@
                 Skipper
               </span>
               <span class="md-header-nav__topic">
-                Ingress Backends
+                Egress
               </span>
             
           
@@ -219,7 +219,7 @@
   
     <li class="md-tabs__item">
       
-        <a href="../../reference/filters/" title="Reference" class="md-tabs__link">
+        <a href="../filters/" title="Reference" class="md-tabs__link md-tabs__link--active">
           Reference
         </a>
       
@@ -232,7 +232,7 @@
   
     <li class="md-tabs__item">
       
-        <a href="../ingress-controller/" title="Kubernetes" class="md-tabs__link md-tabs__link--active">
+        <a href="../../kubernetes/ingress-controller/" title="Kubernetes" class="md-tabs__link">
           Kubernetes
         </a>
       
@@ -314,10 +314,12 @@
       
       
 
+  
 
-  <li class="md-nav__item md-nav__item--nested">
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2" checked>
     
     <label class="md-nav__link" for="nav-2">
       Reference
@@ -335,7 +337,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../reference/filters/" title="Filters" class="md-nav__link">
+    <a href="../filters/" title="Filters" class="md-nav__link">
       Filters
     </a>
   </li>
@@ -347,7 +349,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../reference/predicates/" title="Predicates" class="md-nav__link">
+    <a href="../predicates/" title="Predicates" class="md-nav__link">
       Predicates
     </a>
   </li>
@@ -359,7 +361,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../reference/backends/" title="Backends" class="md-nav__link">
+    <a href="../backends/" title="Backends" class="md-nav__link">
       Backends
     </a>
   </li>
@@ -369,11 +371,82 @@
           
           
 
+  
 
-  <li class="md-nav__item">
-    <a href="../../reference/egress/" title="Egress" class="md-nav__link">
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Egress
+      </label>
+    
+    <a href="./" title="Egress" class="md-nav__link md-nav__link--active">
       Egress
     </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#secrets-module" title="Secrets Module" class="md-nav__link">
+    Secrets Module
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#automated-secrets-rotation" title="Automated Secrets rotation" class="md-nav__link">
+    Automated Secrets rotation
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-bearer-injection" title="Example bearer injection" class="md-nav__link">
+    Example bearer injection
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#future-todos" title="Future - TODOs" class="md-nav__link">
+    Future - TODOs
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
   </li>
 
         
@@ -383,7 +456,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../reference/scripts/" title="Scripts" class="md-nav__link">
+    <a href="../scripts/" title="Scripts" class="md-nav__link">
       Scripts
     </a>
   </li>
@@ -395,7 +468,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../reference/plugins/" title="Plugins" class="md-nav__link">
+    <a href="../plugins/" title="Plugins" class="md-nav__link">
       Plugins
     </a>
   </li>
@@ -407,7 +480,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../reference/architecture/" title="Architecture" class="md-nav__link">
+    <a href="../architecture/" title="Architecture" class="md-nav__link">
       Architecture
     </a>
   </li>
@@ -419,7 +492,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../reference/development/" title="Development" class="md-nav__link">
+    <a href="../development/" title="Development" class="md-nav__link">
       Development
     </a>
   </li>
@@ -566,12 +639,10 @@
       
       
 
-  
 
-
-  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+  <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" checked>
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
     
     <label class="md-nav__link" for="nav-3">
       Kubernetes
@@ -589,7 +660,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../ingress-controller/" title="Ingress Controller Deployment" class="md-nav__link">
+    <a href="../../kubernetes/ingress-controller/" title="Ingress Controller Deployment" class="md-nav__link">
       Ingress Controller Deployment
     </a>
   </li>
@@ -601,7 +672,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../ingress-usage/" title="Ingress Usage" class="md-nav__link">
+    <a href="../../kubernetes/ingress-usage/" title="Ingress Usage" class="md-nav__link">
       Ingress Usage
     </a>
   </li>
@@ -611,76 +682,11 @@
           
           
 
-  
 
-
-  <li class="md-nav__item md-nav__item--active">
-    
-    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-    
-      
-    
-    
-      <label class="md-nav__link md-nav__link--active" for="__toc">
-        Ingress Backends
-      </label>
-    
-    <a href="./" title="Ingress Backends" class="md-nav__link md-nav__link--active">
+  <li class="md-nav__item">
+    <a href="../../kubernetes/ingress-backends/" title="Ingress Backends" class="md-nav__link">
       Ingress Backends
     </a>
-    
-      
-<nav class="md-nav md-nav--secondary">
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">Table of contents</label>
-    <ul class="md-nav__list" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#kubernetes-race-condition-problem" title="Kubernetes Race Condition problem" class="md-nav__link">
-    Kubernetes Race Condition problem
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#teardown-strategies" title="Teardown strategies" class="md-nav__link">
-    Teardown strategies
-  </a>
-  
-    <nav class="md-nav">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#pod-lifecycle-hooks" title="Pod Lifecycle Hooks" class="md-nav__link">
-    Pod Lifecycle Hooks
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#sigterm-handling-in-containers" title="SIGTERM handling in Containers" class="md-nav__link">
-    SIGTERM handling in Containers
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-      
-      
-      
-      
-    </ul>
-  
-</nav>
-    
   </li>
 
         
@@ -690,7 +696,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../east-west-usage/" title="East-West aka svc-to-svc" class="md-nav__link">
+    <a href="../../kubernetes/east-west-usage/" title="East-West aka svc-to-svc" class="md-nav__link">
       East-West aka svc-to-svc
     </a>
   </li>
@@ -818,36 +824,42 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#kubernetes-race-condition-problem" title="Kubernetes Race Condition problem" class="md-nav__link">
-    Kubernetes Race Condition problem
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#teardown-strategies" title="Teardown strategies" class="md-nav__link">
-    Teardown strategies
+  <a href="#secrets-module" title="Secrets Module" class="md-nav__link">
+    Secrets Module
   </a>
   
     <nav class="md-nav">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#pod-lifecycle-hooks" title="Pod Lifecycle Hooks" class="md-nav__link">
-    Pod Lifecycle Hooks
+  <a href="#automated-secrets-rotation" title="Automated Secrets rotation" class="md-nav__link">
+    Automated Secrets rotation
   </a>
   
-</li>
+    <nav class="md-nav">
+      <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#sigterm-handling-in-containers" title="SIGTERM handling in Containers" class="md-nav__link">
-    SIGTERM handling in Containers
+  <a href="#example-bearer-injection" title="Example bearer injection" class="md-nav__link">
+    Example bearer injection
   </a>
   
 </li>
         
       </ul>
     </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#future-todos" title="Future - TODOs" class="md-nav__link">
+    Future - TODOs
+  </a>
   
 </li>
       
@@ -867,69 +879,105 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/zalando/skipper/edit/master/docs/kubernetes/ingress-backends.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="https://github.com/zalando/skipper/edit/master/docs/reference/egress.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
-                <h1 id="kubernetes-backend-deployments">Kubernetes Backend Deployments<a class="headerlink" href="#kubernetes-backend-deployments" title="Permanent link">&para;</a></h1>
-<h2 id="kubernetes-race-condition-problem">Kubernetes Race Condition problem<a class="headerlink" href="#kubernetes-race-condition-problem" title="Permanent link">&para;</a></h2>
-<p>As described in <a href="https://github.com/zalando/skipper/issues/652">#652</a>,
-there is a problem that exists in Kubernetes, while terminating Pods.
-Terminating Pods could be graceful, but the nature of distributed
-environments will show failures, because not all components in the
-distributed system changed already their state. When a Pod terminates,
-the controller-manager has to update the <code>endpoints</code> of the Kubernetes
-<code>service</code>.  Additionally Skipper has to get this endpoints
-list. Skipper polls the kube-apiserver every <code>-source-poll-timeout=&lt;ms&gt;</code>,
-which defaults to 3000.
-Reducing this interval or implementing watch will only reduce the
-timeframe, but not fix the underlying race condition.</p>
-<p>Mitigation strategies can be different and the next section document
-strategies for application developers to mitigate the problem.</p>
-<h2 id="teardown-strategies">Teardown strategies<a class="headerlink" href="#teardown-strategies" title="Permanent link">&para;</a></h2>
-<p>An application that is target of an ingress can circumvent HTTP code
-504s Gateway Timeouts with these strategies:</p>
-<ol>
-<li>use <a href="#pod-lifecycle-hooks">Pod lifecycle hooks</a></li>
-<li>use a SIGTERM handler to switch <code>readinessProbe</code> to unhealthy and
-exit later, or just wait for SIGKILL terminating the process.</li>
-</ol>
-<h3 id="pod-lifecycle-hooks">Pod Lifecycle Hooks<a class="headerlink" href="#pod-lifecycle-hooks" title="Permanent link">&para;</a></h3>
-<p><a href="https://kubernetes.io/docs/tasks/configure-pod-container/attach-handler-lifecycle-event/#define-poststart-and-prestop-handlers">Kubernetes Pod Lifecycle
-Hooks</a>
-in the Pod spec can have a <code>preStop</code> command which executes for
-example a binary. The following will execute the binary <code>sleep</code> with
-argument <code>20</code> to wait 20 seconds before terminating the containers
-within the Pod:</p>
-<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">lifecycle</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">preStop</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">exec</span><span class="p p-Indicator">:</span>
-      <span class="l l-Scalar l-Scalar-Plain">command</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">[</span><span class="s">&quot;sleep&quot;</span><span class="p p-Indicator">,</span><span class="s">&quot;20&quot;</span><span class="p p-Indicator">]</span>
+                <h1 id="egress-proxy">Egress Proxy<a class="headerlink" href="#egress-proxy" title="Permanent link">&para;</a></h1>
+<p><strong>Disclaimer</strong>: Egress features are probably not feature
+complete. Please create <a href="https://github.com/zalando/skipper/issues">Github Issues</a>
+to show your ideas about this topic.</p>
+<p>The picture below shows an authentication use case with Bearer token
+injection, to show the egress traffic flow:
+<img alt="egress traffic flow" src="../../img/egress-traffic-flow.svg" /></p>
+<p>Skipper has some features, which are egress specific. Some features,
+for example <a href="../filters/#droprequestheader">dropRequestHeader</a> or
+<a href="../filters/#ratelimit">ratelimit</a>, might also be used, but are not
+listed here:</p>
+<ul>
+<li>circuit breaker filters</li>
+<li><a href="../filters/#consecutivebreaker">consecutiveBreaker</a></li>
+<li><a href="../filters/#ratebreaker">rateBreaker</a></li>
+<li><a href="../filters/#disablebreaker">disableBreaker</a></li>
+<li><a href="../filters/#bearerinjector">bearerinjector</a> filter, that injects tokens for an app</li>
+<li>The secrets module that does</li>
+<li>automated secrets rotation read from files used by <code>bearerinjector filter</code></li>
+<li>dynamic secrets lookup used by <code>bearerinjector filter</code></li>
+<li>encryption and decryption used by <a href="../filters/#oauthoidcuserinfo">OpenID Connect filters</a></li>
+</ul>
+<h2 id="secrets-module">Secrets Module<a class="headerlink" href="#secrets-module" title="Permanent link">&para;</a></h2>
+<p><strong>Disclaimer</strong>: the specified features might be changed to make use
+  cases work in the future.</p>
+<h3 id="automated-secrets-rotation">Automated Secrets rotation<a class="headerlink" href="#automated-secrets-rotation" title="Permanent link">&para;</a></h3>
+<p>Secrets are read from files. Files can be rewritten by third party
+tools to integrate whatever provider you want.
+In Kubernetes you can write
+<a href="https://kubernetes.io/docs/concepts/configuration/secret/">Secrets</a>
+with an API and read them using a rotated, mounted files from skipper
+for example.</p>
+<p>To specify files or directories to find secrets, you can use
+<code>-credentials-paths</code> command line flag. Filenames are used to define
+the name of the secret, which will be used as a lookup key.</p>
+<p>The files need to be created before skipper is started, and as of today
+skipper doesn&rsquo;t find new files automatically. This might change in the
+future.</p>
+<p>To change the default update interval, which defaults to <code>10m</code>, you
+can use the <code>-credentials-update-interval</code> command line flag.</p>
+<h4 id="example-bearer-injection">Example bearer injection<a class="headerlink" href="#example-bearer-injection" title="Permanent link">&para;</a></h4>
+<p>Create file <code>/tmp/secrets/mytoken</code>, that contains <code>mytoken</code>:</p>
+<div class="codehilite"><pre><span></span>mkdir /tmp/secrets; echo mytoken &gt;/tmp/secrets/mytoken`.
 </pre></div>
 
-<p>20 seconds should be enough to fade your Pod out of the endpoints list
-and Skipper&rsquo;s routing table.</p>
-<h3 id="sigterm-handling-in-containers">SIGTERM handling in Containers<a class="headerlink" href="#sigterm-handling-in-containers" title="Permanent link">&para;</a></h3>
-<p>An application can implement a SIGTERM handler, that changes the
-<code>readinessProbe</code> target to unhealthy for the application
-instance. This will make sure it will be deleted from the endpoints
-list and from Skipper&rsquo;s routing table. Similar to <a href="#pod-lifecycle-hooks">Pod Lifecycle
-Hooks</a> you could sleep 20 seconds and after that
-terminate your application or you just wait until SIGKILL will cleanup
-the instance after 60s.</p>
-<div class="codehilite"><pre><span></span><span class="k">go</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">sigs</span> <span class="kd">chan</span> <span class="nx">os</span><span class="p">.</span><span class="nx">Signal</span>
-    <span class="nx">sigs</span> <span class="p">=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="nx">os</span><span class="p">.</span><span class="nx">Signal</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="nx">signal</span><span class="p">.</span><span class="nx">Notify</span><span class="p">(</span><span class="nx">sigs</span><span class="p">,</span> <span class="nx">syscall</span><span class="p">.</span><span class="nx">SIGTERM</span><span class="p">)</span>
-    <span class="k">for</span> <span class="p">{</span>
-        <span class="k">select</span> <span class="p">{</span>
-            <span class="k">case</span> <span class="o">&lt;-</span><span class="nx">sigs</span><span class="p">:</span>
-               <span class="nx">healthCheck</span> <span class="p">=</span> <span class="nx">unhealthy</span>
-               <span class="nx">time</span><span class="p">.</span><span class="nx">Sleep</span><span class="p">(</span><span class="mi">20</span><span class="o">*</span><span class="nx">time</span><span class="p">.</span><span class="nx">Second</span><span class="p">)</span>
-               <span class="nx">os</span><span class="p">.</span><span class="nx">Exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-<span class="p">}()</span>
+<p>start fake service</p>
+<div class="codehilite"><pre><span></span>nc -l 8080
 </pre></div>
+
+<p>start skipper proxy</p>
+<div class="codehilite"><pre><span></span>skipper -inline-routes=&#39;Host(&quot;host1&quot;) -&gt; bearerinjector(&quot;sec1&quot;) -&gt; &quot;http://127.0.0.1:8080/&quot;&#39; -credentials-paths=/tmp/secrets -credentials-update-interval=10s
+</pre></div>
+
+<p>Client calls skipper proxy</p>
+<div class="codehilite"><pre><span></span><span class="c">% curl -H&quot;Host: host1&quot; localhost:9090/foo</span>
+^<span class="n">C</span>
+</pre></div>
+
+<p>fake service shows</p>
+<div class="codehilite"><pre><span></span><span class="nf">GET</span> <span class="nn">/foo</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">127.0.0.1:8080</span>
+<span class="na">User-Agent</span><span class="o">:</span> <span class="l">curl/7.49.0</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">*/*</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Bearer mytoken</span>
+<span class="na">Accept-Encoding</span><span class="o">:</span> <span class="l">gzip</span>
+</pre></div>
+
+<p>Change the secret: <code>echo changedtoken &gt;/tmp/secrets/mytoken</code>.
+Wait until skipper logs: <code>[APP]INFO[0010] update secret file: mytoken</code></p>
+<p>Restart fake service (CTRL-c to stop)</p>
+<div class="codehilite"><pre><span></span>nc -l 8080
+</pre></div>
+
+<p>Client calls skipper proxy retry:</p>
+<div class="codehilite"><pre><span></span><span class="c">% curl -H&quot;Host: host1&quot; localhost:9090/foo</span>
+^<span class="n">C</span>
+</pre></div>
+
+<p>fake service shows</p>
+<div class="codehilite"><pre><span></span><span class="nf">GET</span> <span class="nn">/foo</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">127.0.0.1:8080</span>
+<span class="na">User-Agent</span><span class="o">:</span> <span class="l">curl/7.49.0</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">*/*</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Bearer changedtoken</span>
+<span class="na">Accept-Encoding</span><span class="o">:</span> <span class="l">gzip</span>
+</pre></div>
+
+<p>This example showed bearer injection with secrets rotation.</p>
+<h2 id="future-todos">Future - TODOs<a class="headerlink" href="#future-todos" title="Permanent link">&para;</a></h2>
+<p>We want to experiment in how to best use skipper as egress proxy.  One
+idea is to implement <a href="https://github.com/zalando/skipper/issues/929">forward proxy via HTTP CONNECT</a>
+and being able to use the routing to inject the right Authorization headers with the
+<a href="../filters/#bearerinjector">bearerinjector filter</a>, for example.</p>
+<p>If you have ideas please add your thoughts in
+<a href="https://github.com/zalando/skipper/labels/egress">one of the issues</a>,
+that match your idea or create a new one.</p>
                 
                   
                 
@@ -950,7 +998,7 @@ the instance after 60s.</p>
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
-          <a href="../ingress-usage/" title="Ingress Usage" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../backends/" title="Backends" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-flex__cell md-flex__cell--shrink">
               <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
             </div>
@@ -959,19 +1007,19 @@ the instance after 60s.</p>
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Ingress Usage
+                Backends
               </span>
             </div>
           </a>
         
         
-          <a href="../east-west-usage/" title="East-West aka svc-to-svc" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../scripts/" title="Scripts" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                East-West aka svc-to-svc
+                Scripts
               </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink">

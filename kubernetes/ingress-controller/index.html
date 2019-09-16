@@ -1112,7 +1112,7 @@ example daemonset, create a deployment and a service.</p>
 expose the TCP port 9999 on each Kubernetes worker node for incoming ingress
 traffic.</p>
 <div class="codehilite"><pre><span></span><span class="c1"># cat skipper-ingress-ds.yaml</span>
-<span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">extensions/v1beta1</span>
+<span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">apps/v1</span>
 <span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">DaemonSet</span>
 <span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
   <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">skipper-ingress</span>
@@ -1192,7 +1192,7 @@ release</a>, we do
 not maintain the <strong>latest</strong> tag.</p>
 <p>We now deploy a simple demo application serving html:</p>
 <div class="codehilite"><pre><span></span><span class="c1"># cat demo-deployment.yaml</span>
-<span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">apps/v1beta1</span>
+<span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">apps/v1</span>
 <span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">Deployment</span>
 <span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
   <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">skipper-demo</span>
@@ -1364,7 +1364,7 @@ a <code>ClusterRoleBinding</code> has to be created:</p>
 
 <p>Last but not least the <code>ServiceAccount</code> has to be assigned to the Skipper daemonset.</p>
 <p>daemonset:</p>
-<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">extensions/v1beta1</span>
+<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">apps/v1</span>
 <span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">DaemonSet</span>
 <span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
   <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">skipper-ingress</span>

@@ -1674,6 +1674,11 @@ features Skipper provides</p>
 <td><code>consistentHash</code></td>
 <td>defaults to <code>roundRobin</code>, <a href="../../reference/backends/#load-balancer-backend">see available choices</a></td>
 </tr>
+<tr>
+<td>zalando.org/skipper-ingress-path-mode</td>
+<td><code>path-prefix</code></td>
+<td>defaults to <code>kubernetes-ingress</code>, <a href="#ingress-path-handling">see available choices</a>, to change the default use <code>-kubernetes-path-mode</code></td>
+</tr>
 </tbody>
 </table>
 <h2 id="supported-service-types">Supported Service types<a class="headerlink" href="#supported-service-types" title="Permanent link">&para;</a></h2>
@@ -1818,17 +1823,19 @@ default behavior with the zalando.org/skipper-ingress-path-mode annotation.</p>
 
 
 <h3 id="kubernetes-ingress-specification-base-path">Kubernetes ingress specification base path<a class="headerlink" href="#kubernetes-ingress-specification-base-path" title="Permanent link">&para;</a></h3>
-<p>By default, the ingress path is interpreted as a regular expression with a
-mandatory leading &ldquo;/&rdquo;, and is automatically prepended by a &ldquo;^&rdquo; control character,
-enforcing that the path has to be at the start of the incoming request path.</p>
+<p>By default, the ingress path mode is set to <code>kubernetes-ingress</code>,
+which is interpreted as a regular expression with a mandatory leading
+<code>/</code>, and is automatically prepended by a <code>^</code> control character,
+enforcing that the path has to be at the start of the incoming request
+path.</p>
 <h3 id="plain-regular-expression">Plain regular expression<a class="headerlink" href="#plain-regular-expression" title="Permanent link">&para;</a></h3>
-<p>When the path mode is set to &ldquo;path-regexp&rdquo;, the ingress path is interpreted similar
-to the default kubernetes ingress specification way, but is not prepended by the &ldquo;^&rdquo;
+<p>When the path mode is set to <code>path-regexp</code>, the ingress path is interpreted similar
+to the default kubernetes ingress specification way, but is not prepended by the <code>^</code>
 control character.</p>
 <h3 id="path-prefix">Path prefix<a class="headerlink" href="#path-prefix" title="Permanent link">&para;</a></h3>
-<p>When the path mode is set to &ldquo;path-prefix&rdquo;, the ingress path is not a regular
-expression. As an example, &ldquo;/foo/bar&rdquo; will match &ldquo;/foo/bar&rdquo; or &ldquo;/foo/bar/baz&rdquo;, but
-won&rsquo;t match &ldquo;/foo/barooz&rdquo;.</p>
+<p>When the path mode is set to <code>path-prefix</code>, the ingress path is not a regular
+expression. As an example, <code>/foo/bar</code> will match <code>/foo/bar</code> or <code>/foo/bar/baz</code>, but
+won&rsquo;t match <code>/foo/barooz</code>.</p>
 <p>When PathPrefix is used, the path matching becomes deterministic when
 a request could match more than one ingress routes otherwise.</p>
 <p>In PathPrefix mode, when a Path or PathSubtree predicate is set in an
@@ -2090,7 +2097,7 @@ jsCookie(&quot;test-session-info&quot;, &quot;abc-debug&quot;, 31536000, &quot;c
 
 
 <h3 id="authorization">Authorization<a class="headerlink" href="#authorization" title="Permanent link">&para;</a></h3>
-<p>Our <a href="../tutorials/auth/">autnetication and authorization tutorial</a>
+<p>Our <a href="../../tutorials/auth/">autnetication and authorization tutorial</a>
 or <a href="https://godoc.org/github.com/zalando/skipper/filters/auth">filter auth godoc</a>
 shows how to use filters for authorization.</p>
 <h4 id="basic-auth">Basic Auth<a class="headerlink" href="#basic-auth" title="Permanent link">&para;</a></h4>

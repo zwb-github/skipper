@@ -1044,6 +1044,13 @@ entered the directory.</p>
 <span class="p">[</span><span class="n">APP</span><span class="p">]</span><span class="n">INFO</span><span class="p">[</span><span class="mi">0000</span><span class="p">]</span> <span class="n">route</span> <span class="n">settings</span> <span class="n">applied</span>
 </pre></div>
 
+<p>Or passing a yaml file via <code>config-file</code> flag:</p>
+<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">inline-routes</span><span class="p p-Indicator">:</span> <span class="s">&#39;*</span><span class="nv"> </span><span class="s">-&gt;</span><span class="nv"> </span><span class="s">geoip()</span><span class="nv"> </span><span class="s">-&gt;</span><span class="nv"> </span><span class="s">&quot;http://127.0.0.1:9000&quot;&#39;</span>
+<span class="l l-Scalar l-Scalar-Plain">filter-plugin</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">geoip</span><span class="p p-Indicator">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">db=$HOME/Downloads/GeoLite2-City_20181127/GeoLite2-City.mmdb</span>
+</pre></div>
+
 <p>Use a client to lookup geoip:</p>
 <div class="codehilite"><pre><span></span><span class="c">% curl -H&quot;X-Forwarded-For: 107.12.53.5&quot; localhost:9090/</span>
 ^<span class="n">C</span>

@@ -826,6 +826,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#yaml-configuration" title="YAML Configuration" class="md-nav__link">
+    YAML Configuration
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#current-routing-table" title="Current routing table" class="md-nav__link">
     Current routing table
   </a>
@@ -1082,6 +1089,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#yaml-configuration" title="YAML Configuration" class="md-nav__link">
+    YAML Configuration
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#current-routing-table" title="Current routing table" class="md-nav__link">
     Current routing table
   </a>
@@ -1234,10 +1248,10 @@ special case, for example kubernetes dataclient automatically adds
 HTTP-&gt;HTTPS redirects if skipper is started with <code>-kubernetes-https-redirect</code>.</p>
 <p>Dataclients:</p>
 <ul>
-<li><a href="../data-clients/eskip-file">eskip-file</a></li>
-<li><a href="../data-clients/route-string">route string</a></li>
-<li><a href="../data-clients/kubernetes">kubernetes</a></li>
-<li><a href="../data-clients/etcd">etcd</a></li>
+<li><a href="../../data-clients/eskip-file/">eskip-file</a></li>
+<li><a href="../../data-clients/route-string/">route string</a></li>
+<li><a href="../../data-clients/kubernetes/">kubernetes</a></li>
+<li><a href="../../data-clients/etcd/">etcd</a></li>
 </ul>
 <h2 id="route-processing">Route processing<a class="headerlink" href="#route-processing" title="Permanent link">&para;</a></h2>
 <p>Package <code>skipper</code> has a Go <code>http.Server</code> and does the <code>ListenAndServe</code>
@@ -1336,7 +1350,7 @@ certain route was matched for a request instead of another.</p>
    selected. It is unspecified which one.</p>
 </li>
 </ol>
-<p>See more details about the predicates here: (Predicates)[../../reference/predicates.md].</p>
+<p>See more details about the predicates here: <a href="../../reference/predicates/">Predicates</a>.</p>
 <h2 id="building-skipper">Building skipper<a class="headerlink" href="#building-skipper" title="Permanent link">&para;</a></h2>
 <p>We use Go modules to build skipper, therefore you need <a href="https://golang.org/dl">Go</a> version <code>&gt;= 1.11</code>.</p>
 <h3 id="local-build">Local build<a class="headerlink" href="#local-build" title="Permanent link">&para;</a></h3>
@@ -1396,6 +1410,34 @@ Mac OS X computers.</p>
 <span class="n">Hello</span> <span class="n">world</span>!
 </pre></div>
 
+<h2 id="yaml-configuration">YAML Configuration<a class="headerlink" href="#yaml-configuration" title="Permanent link">&para;</a></h2>
+<p>The usage of flags to configure the <code>skipper</code> binary can get quickly out
+of hand. You can use a <code>yaml</code> file instead to populate the flags presented
+in the <code>skipper -help</code> command.</p>
+<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">kubernetes</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="l l-Scalar l-Scalar-Plain">kubernetes-in-cluster</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="l l-Scalar l-Scalar-Plain">kubernetes-https-redirect</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="l l-Scalar l-Scalar-Plain">proxy-preserve-host</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="l l-Scalar l-Scalar-Plain">serve-host-metrics</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="l l-Scalar l-Scalar-Plain">address</span><span class="p p-Indicator">:</span> <span class="s">&quot;:8080&quot;</span>
+<span class="l l-Scalar l-Scalar-Plain">enable-ratelimits</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="l l-Scalar l-Scalar-Plain">experimental-upgrade</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="l l-Scalar l-Scalar-Plain">metrics-exp-decay-sample</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="l l-Scalar l-Scalar-Plain">lb-healthcheck-interval</span><span class="p p-Indicator">:</span> <span class="s">&quot;3s&quot;</span>
+<span class="l l-Scalar l-Scalar-Plain">metrics-flavour</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">[</span><span class="s">&quot;codahale&quot;</span><span class="p p-Indicator">,</span><span class="s">&quot;prometheus&quot;</span><span class="p p-Indicator">]</span>
+<span class="l l-Scalar l-Scalar-Plain">enable-connection-metrics</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="l l-Scalar l-Scalar-Plain">whitelisted-healthcheck-cidr</span><span class="p p-Indicator">:</span> <span class="s">&quot;172.20.0.0/16&quot;</span>
+<span class="l l-Scalar l-Scalar-Plain">ignore-trailing-slash</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="l l-Scalar l-Scalar-Plain">inline-routes</span><span class="p p-Indicator">:</span> <span class="s">&#39;r:</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">-&gt;</span><span class="nv"> </span><span class="s">inlineContent(&quot;Hello</span><span class="nv"> </span><span class="s">world!&quot;)</span><span class="nv"> </span><span class="s">-&gt;</span><span class="nv"> </span><span class="s">status(200)</span><span class="nv"> </span><span class="s">-&gt;</span><span class="nv"> </span><span class="s">&lt;shunt&gt;&#39;</span>
+</pre></div>
+
+<p>Considering that this file would be named <code>config.yaml</code> you can use it to populate
+the flags using the <code>config-file</code> flag:</p>
+<div class="codehilite"><pre><span></span>./bin/skipper -config-file=config.yaml
+</pre></div>
+
+<p>Performing the same call to the address as exemplified in the previous section should
+yield the same results.</p>
 <h2 id="current-routing-table">Current routing table<a class="headerlink" href="#current-routing-table" title="Permanent link">&para;</a></h2>
 <p>To investigate the current routing table skipper has loaded into its
 memory, you can use the <code>-support-listener</code>, which defaults to port

@@ -2059,9 +2059,16 @@ Filter can be chained using the arrow operator <code>-&gt;</code>.</p>
 <li>location (string)</li>
 </ul>
 <p>Example:</p>
-<div class="codehilite"><pre><span></span><span class="n">redirect</span><span class="o">:</span> <span class="n">PathRegex</span><span class="o">(/^\/</span><span class="n">foo</span><span class="o">\/</span><span class="n">bar</span><span class="sr">/) -&gt; redirectTo(302, &quot;/foo/</span><span class="n">newBar</span><span class="err">&quot;</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">&lt;</span><span class="n">shunt</span><span class="o">&gt;;</span>
+<div class="codehilite"><pre><span></span><span class="n">redirect1</span><span class="o">:</span> <span class="n">PathRegexp</span><span class="o">(/^\/</span><span class="n">foo</span><span class="o">\/</span><span class="n">bar</span><span class="sr">/) -&gt; redirectTo(302, &quot;/foo/</span><span class="n">newBar</span><span class="s2">&quot;) -&gt; &lt;shunt&gt;;</span>
+<span class="s2">redirect2: * -&gt; redirectTo(301, &quot;</span><span class="err">&quot;</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">&lt;</span><span class="n">shunt</span><span class="o">&gt;;</span>
 </pre></div>
 
+<ul>
+<li>Route redirect1 will do a redirect with status code 302 to https
+  with new path <code>/foo/newBar</code> for requests, that match the path <code>/foo/bar</code>.</li>
+<li>Route redirect2 will do a <code>https</code> redirect with status code 301 for all
+  incoming requests that match no other route</li>
+</ul>
 <p>see also <a href="../../tutorials/common-use-cases/#redirect-handling">redirect-handling</a></p>
 <h2 id="redirecttolower">redirectToLower<a class="headerlink" href="#redirecttolower" title="Permanent link">&para;</a></h2>
 <p>Same as <a href="#redirectTo">redirectTo</a>, but replaces all strings to lower case.</p>
@@ -3304,13 +3311,13 @@ specified credential paths <code>/tmp/secrets/</code>, resulting in
 </pre></div></p>
 <h2 id="originmarker">originMarker<a class="headerlink" href="#originmarker" title="Permanent link">&para;</a></h2>
 <p>This filter is used to measure the time it took to create a route. Other than that, it&rsquo;s a no-op.
-You can include the same origin marker when you re-create the route. As long as the <code>origin</code> and <code>id</code> are the same, the route creation time will not be measured again. 
+You can include the same origin marker when you re-create the route. As long as the <code>origin</code> and <code>id</code> are the same, the route creation time will not be measured again.
 If there are multiple origin markers with the same origin, the earliest timestamp will be used.</p>
 <p>Parameters:</p>
 <ul>
 <li>the name of the origin</li>
 <li>the ID of the object that is the logical source for the route</li>
-<li>the creation timestamp (rfc3339) </li>
+<li>the creation timestamp (rfc3339)</li>
 </ul>
 <p>Example:</p>
 <div class="codehilite"><pre><span></span>originMarker(&quot;apiUsageMonitoring&quot;, &quot;deployment1&quot;, &quot;2019-08-30T09:55:51Z&quot;)

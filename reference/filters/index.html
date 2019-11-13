@@ -950,6 +950,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#tracingtag" title="tracingTag" class="md-nav__link">
+    tracingTag
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#originmarker" title="originMarker" class="md-nav__link">
     originMarker
   </a>
@@ -1958,6 +1965,13 @@
         <li class="md-nav__item">
   <a href="#tracingbaggagetotag" title="tracingBaggageToTag" class="md-nav__link">
     tracingBaggageToTag
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tracingtag" title="tracingTag" class="md-nav__link">
+    tracingTag
   </a>
   
 </li>
@@ -3308,6 +3322,14 @@ specified credential paths <code>/tmp/secrets/</code>, resulting in
 </pre></div></p>
 <p>Example: If a trace consists of baggage item named <code>foo</code> with a value <code>bar</code>. Adding below filter will add a tag named <code>baz</code> with value <code>bar</code>
 <div class="codehilite"><pre><span></span>tracingBaggageToTag(&quot;foo&quot;, &quot;baz&quot;)
+</pre></div></p>
+<h2 id="tracingtag">tracingTag<a class="headerlink" href="#tracingtag" title="Permanent link">&para;</a></h2>
+<p>This filter adds an opentracing tag.</p>
+<p>Syntax:
+<div class="codehilite"><pre><span></span>tracingTag(&quot;&lt;tag_name&gt;&quot;, &quot;&lt;tag_value&gt;&quot;)
+</pre></div></p>
+<p>Example: Adding the below filter will add a tag named <code>foo</code> with the value <code>bar</code>.
+<div class="codehilite"><pre><span></span>tracingTag(&quot;foo&quot;, &quot;bar&quot;)
 </pre></div></p>
 <h2 id="originmarker">originMarker<a class="headerlink" href="#originmarker" title="Permanent link">&para;</a></h2>
 <p>This filter is used to measure the time it took to create a route. Other than that, it&rsquo;s a no-op.

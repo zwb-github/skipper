@@ -746,6 +746,19 @@
     Client Ratelimit
   </a>
   
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#security-consideration" title="Security Consideration" class="md-nav__link">
+    Security Consideration
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
       </ul>
@@ -786,6 +799,19 @@
   <a href="#client-ratelimit_1" title="Client Ratelimit" class="md-nav__link">
     Client Ratelimit
   </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#security-consideration_1" title="Security Consideration" class="md-nav__link">
+    Security Consideration
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -879,6 +905,19 @@
     Client Ratelimit
   </a>
   
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#security-consideration" title="Security Consideration" class="md-nav__link">
+    Security Consideration
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
       </ul>
@@ -919,6 +958,19 @@
   <a href="#client-ratelimit_1" title="Client Ratelimit" class="md-nav__link">
     Client Ratelimit
   </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#security-consideration_1" title="Security Consideration" class="md-nav__link">
+    Security Consideration
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -1001,6 +1053,12 @@ client:</p>
 
 <p>Internally skipper has a clean interval to clean up old buckets to reduce
 the memory footprint in the long run.</p>
+<h4 id="security-consideration">Security Consideration<a class="headerlink" href="#security-consideration" title="Permanent link">&para;</a></h4>
+<p>ClientRatelimit works on data provided by the client. In theory an
+attacker likely can workaround all of your configurations. On the
+other hand there is always a pattern in attacks, and you are more
+likely being able to find the pattern and mitigate the attack, if you
+have a powerful tool like the provided <code>clientRatelimit</code>.</p>
 <h2 id="cluster-ratelimit">Cluster Ratelimit<a class="headerlink" href="#cluster-ratelimit" title="Permanent link">&para;</a></h2>
 <p>A cluster ratelimit computes all requests for all skipper peers. This
 requires, that you run skipper with <code>-enable-swarm</code> and select one of
@@ -1082,6 +1140,12 @@ same client:</p>
 
 <p>Internally skipper has a clean interval to clean up old buckets to reduce
 the memory footprint in the long run.</p>
+<h4 id="security-consideration_1">Security Consideration<a class="headerlink" href="#security-consideration_1" title="Permanent link">&para;</a></h4>
+<p>ClusterClientRatelimit works on data provided by the client. In theory an
+attacker likely can workaround all of your configurations. On the
+other hand there is always a pattern in attacks, and you are more
+likely being able to find the pattern and mitigate the attack, if you
+have a powerful tool like the provided <code>clusterClientRatelimit</code>.</p>
                 
                   
                 

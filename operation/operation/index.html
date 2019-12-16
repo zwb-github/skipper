@@ -673,6 +673,54 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#opentracing" title="OpenTracing" class="md-nav__link">
+    OpenTracing
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ingress-span" title="Ingress span" class="md-nav__link">
+    Ingress span
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#proxy-span" title="Proxy span" class="md-nav__link">
+    Proxy span
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#request-filters-span" title="Request filters span" class="md-nav__link">
+    Request filters span
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#response-filters-span" title="Response filters span" class="md-nav__link">
+    Response filters span
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#auth-filters-span" title="Auth filters span" class="md-nav__link">
+    Auth filters span
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#dataclient" title="Dataclient" class="md-nav__link">
     Dataclient
   </a>
@@ -1087,6 +1135,54 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#opentracing" title="OpenTracing" class="md-nav__link">
+    OpenTracing
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ingress-span" title="Ingress span" class="md-nav__link">
+    Ingress span
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#proxy-span" title="Proxy span" class="md-nav__link">
+    Proxy span
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#request-filters-span" title="Request filters span" class="md-nav__link">
+    Request filters span
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#response-filters-span" title="Response filters span" class="md-nav__link">
+    Response filters span
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#auth-filters-span" title="Auth filters span" class="md-nav__link">
+    Auth filters span
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#dataclient" title="Dataclient" class="md-nav__link">
     Dataclient
   </a>
@@ -1253,6 +1349,14 @@ of sockets.</p>
 <p>This will set MaxIdleConns on the
 <a href="https://golang.org/pkg/net/http/#Transport">http.Transport</a> to limit
 the number for all backends such that we do not run out of sockets.</p>
+<div class="codehilite"><pre><span></span>-disable-http-keepalives bool
+    forces backend to always create a new connection
+</pre></div>
+
+
+<p>This will set DisableKeepAlives on the
+<a href="https://golang.org/pkg/net/http/#Transport">http.Transport</a> to disable
+HTTP keep-alives and to only use the connection for single request.</p>
 <div class="codehilite"><pre><span></span>-max-idle-connection-backend int
     sets the maximum idle connections for all backend connections
 </pre></div>
@@ -1644,6 +1748,76 @@ are exposed from skipper to the metrics endpoint, default listener
 
 
 <p>}</p>
+<h2 id="opentracing">OpenTracing<a class="headerlink" href="#opentracing" title="Permanent link">&para;</a></h2>
+<p>Skipper has support for different <a href="http://opentracing.io/">OpenTracing API</a> vendors, including
+<a href="https://www.jaegertracing.io/">jaeger</a>,
+<a href="https://lightstep.com/">lightstep</a> and
+<a href="https://www.instana.com/supported-technologies/opentracing/">instana</a>.</p>
+<p>You can configure tracing implementations with a flag and pass
+information and tags to the tracer:</p>
+<div class="codehilite"><pre><span></span>-opentracing=&lt;vendor&gt; component-name=skipper-ingress ... tag=cluster=mycluster ...
+</pre></div>
+
+<p>The best tested tracer is the lightstep tracer, because we use it in
+our setup. In case you miss something for your chosen tracer, please
+open an issue or pull request in our <a href="https://github.com/zalando/skipper">repository</a>.</p>
+<p>Skipper creates up to 5 different
+<a href="https://godoc.org/github.com/opentracing/opentracing-go#Span">spans</a>:
+<img alt="Spans" src="../../img/skipper_opentracing_spans.png" /></p>
+<p>Some Tag details are added to all spans.
+<img alt="Span details" src="../../img/skipper_opentracing_details.png" /></p>
+<h3 id="ingress-span">Ingress span<a class="headerlink" href="#ingress-span" title="Permanent link">&para;</a></h3>
+<p>The Ingress span is active from getting the request in Skipper&rsquo;s main
+http handler, until we served the response to the client of the request.</p>
+<p>Tags:
+- component: skipper
+- hostname: ip-10-149-64-142
+- http.host: hostname.example.org
+- http.method: GET
+- http.path: /
+- http.remote_addr: 10.149.66.207:14574
+- http.url: /
+- span.kind: server</p>
+<p><img alt="Ingress span with tags" src="../../img/skipper_opentracing_ingress_tags.png" /></p>
+<h3 id="proxy-span">Proxy span<a class="headerlink" href="#proxy-span" title="Permanent link">&para;</a></h3>
+<p>The Proxy span starts just before executing the backend call.</p>
+<p>Tags:
+- component: skipper
+- hostname: ip-10-149-65-70
+- http.host: hostname.example.org
+- http.method: GET
+- http.path: /
+- http.remote_addr:
+- http.status_code: 200
+- http.url: <a href="http://10.2.0.11:9090/">http://10.2.0.11:9090/</a>
+- skipper.route_id: <code>kube_default__example_ingress_hostname_example_org____example_backend</code>
+- span.kind: client</p>
+<p><img alt="Proxy span with tags" src="../../img/skipper_opentracing_proxy_span_with_tags.png" /></p>
+<p>Proxy span has logs to measure
+<a href="https://golang.org/pkg/net/http/#Transport.DialContext">connect</a> (<code>dial_context</code>),
+<a href="https://golang.org/pkg/net/http/#Transport.RoundTrip">http roundtrip</a>
+(<code>http_roundtrip</code>), stream headers from backend to client
+(<code>stream_Headers</code>) and stream body from backend to client
+(<code>streamBody.byte</code>).</p>
+<p><img alt="Proxy span with logs" src="../../img/skipper_opentracing_proxy_span_with_logs.png" /></p>
+<h3 id="request-filters-span">Request filters span<a class="headerlink" href="#request-filters-span" title="Permanent link">&para;</a></h3>
+<p>The request filters span logs shows <code>start</code> and <code>end</code> values for each
+filter applied.</p>
+<p><img alt="request filter span with logs" src="../../img/skipper_opentracing_request_filters_span_with_logs.png" /></p>
+<h3 id="response-filters-span">Response filters span<a class="headerlink" href="#response-filters-span" title="Permanent link">&para;</a></h3>
+<p>The response filters span logs shows <code>start</code> and <code>end</code> values for each
+filter applied.</p>
+<p><img alt="response filter span with logs" src="../../img/skipper_opentracing_response_filters_span_with_logs.png" /></p>
+<h3 id="auth-filters-span">Auth filters span<a class="headerlink" href="#auth-filters-span" title="Permanent link">&para;</a></h3>
+<p>Auth filters are special, because they might call an authorization
+endpoint, which should be also visible in the trace. This span can
+have the name &ldquo;tokeninfo&rdquo;, &ldquo;tokenintrospection&rdquo; or &ldquo;webhook&rdquo; depending
+on the filter used by the matched route.</p>
+<p>Tags:
+- http.url: <a href="https://auth.example.org">https://auth.example.org</a></p>
+<p>The auth filters have trace log values <code>start</code> and <code>end</code> for DNS, TCP
+connect, TLS handshake and connection pool:</p>
+<p><img alt="tokeninfo auth filter span with logs" src="../../img/skipper_opentracing_auth_filter_tokeninfo_span_with_logs.png" /></p>
 <h2 id="dataclient">Dataclient<a class="headerlink" href="#dataclient" title="Permanent link">&para;</a></h2>
 <p>Dataclients poll some kind of data source for routes. To change the
 timeout for calls that polls a dataclient, which could be the
@@ -1780,8 +1954,8 @@ some fraction of requests instead of timing out all requests. LIFO
 would not time out all requests within the queue, if the backend is
 capable of responding some requests fast enough.</p>
 <h3 id="a-solution">A solution<a class="headerlink" href="#a-solution" title="Permanent link">&para;</a></h3>
-<p>Skipper has two filters <a href="../../reference/filters/#lifo"><code>lifo()</code></a> and
-<a href="../../reference/filters/#lifogroup"><code>lifoGroup()</code></a>, that can limit
+<p>Skipper has two filters <a href="../reference/filters/#lifo"><code>lifo()</code></a> and
+<a href="../reference/filters/#lifogroup"><code>lifoGroup()</code></a>, that can limit
 the number of requests for a route.  A <a href="https://github.com/zalando/skipper/pull/1030#issuecomment-485714338">documented load
 test</a>
 shows the behavior with an enabled <code>lifo(100,100,"10s")</code> filter for
@@ -1796,9 +1970,9 @@ shared their idea in a <a href="https://blogs.dropbox.com/tech/2018/03/meet-band
 blogpost</a>.</p>
 <p>Skipper&rsquo;s scheduler implementation makes sure, that one route will not
 interfere with other routes, if these routes are not in the same
-scheduler group. <a href="../../reference/filters/#lifogroup"><code>LifoGroup</code></a> has
+scheduler group. <a href="../reference/filters/#lifogroup"><code>LifoGroup</code></a> has
 a user chosen scheduler group and
-<a href="../../reference/filters/#lifo"><code>lifo()</code></a> will get a per route unique
+<a href="../reference/filters/#lifo"><code>lifo()</code></a> will get a per route unique
 scheduler group.</p>
 <h2 id="uri-standards-interpretation">URI standards interpretation<a class="headerlink" href="#uri-standards-interpretation" title="Permanent link">&para;</a></h2>
 <p>Considering the following request path: /foo%2Fbar, Skipper can handle
@@ -1810,7 +1984,7 @@ This is possible to achieve centrally, when Skipper is started with
 the -rfc-patch-path flag. It is also possible to allow the default
 behavior and only force the alternative interpretation on a per-route
 basis with the rfcPath() filter. See
-<a href="../../reference/filters/#rfcPath"><code>rfcPath()</code></a>.</p>
+<a href="../reference/filters/#rfcPath"><code>rfcPath()</code></a>.</p>
 <p>If the second interpretation gets considered the right way, and the
 other one a bug, then the default value for this flag may become to
 be on.</p>

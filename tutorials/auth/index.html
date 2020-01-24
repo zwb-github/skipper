@@ -1024,7 +1024,7 @@ which need to be specified are the URL of the provider which in the above exampl
 <code>https://accounts.identity-provider.com</code>. The client ID and the client secret. The callback URL which is specified
 while generating the client id and client secret. Then the scopes and finally the claims which should be present along
 with the return id token.</p>
-<div class="codehilite"><pre><span></span><span class="nt">oauthOIDCUserInfo</span><span class="o">(</span><span class="s2">&quot;https://oidc-provider.example.com&quot;</span><span class="o">,</span> <span class="s2">&quot;client_id&quot;</span><span class="o">,</span> <span class="s2">&quot;client_secret&quot;</span><span class="o">,</span>
+<div class="codehilite"><pre><span></span><span class="nt">oauthOidcUserInfo</span><span class="o">(</span><span class="s2">&quot;https://oidc-provider.example.com&quot;</span><span class="o">,</span> <span class="s2">&quot;client_id&quot;</span><span class="o">,</span> <span class="s2">&quot;client_secret&quot;</span><span class="o">,</span>
     <span class="s2">&quot;http://target.example.com/subpath/callback&quot;</span><span class="o">,</span> <span class="s2">&quot;email profile&quot;</span><span class="o">,</span> 
     <span class="s2">&quot;name email picture&quot;</span><span class="o">)</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="s2">&quot;https://internal.example.org&quot;</span><span class="o">;</span>
 </pre></div>

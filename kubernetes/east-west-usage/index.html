@@ -623,6 +623,30 @@
           
           
 
+
+  <li class="md-nav__item">
+    <a href="../routegroups/" title="RouteGroups" class="md-nav__link">
+      RouteGroups
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../routegroup-crd/" title="RouteGroup CRD Semantics" class="md-nav__link">
+      RouteGroup CRD Semantics
+    </a>
+  </li>
+
+        
+          
+          
+          
+
   
 
 
@@ -821,19 +845,37 @@ cluster. It depends on the configuration, but the default is that you
 can connect via HTTP to  <code>&lt;name&gt;.&lt;namespace&gt;.skipper.cluster.local</code>
 to your application based on the ingress configuration.</p>
 <p>Example:</p>
-<div class="codehilite"><pre><span></span><span class="n">apiVersion</span><span class="o">:</span> <span class="n">extensions</span><span class="o">/</span><span class="n">v1beta1</span>
-<span class="n">kind</span><span class="o">:</span> <span class="n">Ingress</span>
-<span class="n">metadata</span><span class="o">:</span>
-  <span class="n">name</span><span class="o">:</span> <span class="n">demo</span>
-  <span class="kd">namespace</span><span class="o">:</span> <span class="k">default</span>
-<span class="n">spec</span><span class="o">:</span>
-  <span class="n">rules</span><span class="o">:</span>
-  <span class="o">-</span> <span class="n">host</span><span class="o">:</span> <span class="n">demo</span><span class="o">.</span><span class="na">example</span><span class="o">.</span><span class="na">org</span>
-    <span class="n">http</span><span class="o">:</span>
-      <span class="n">paths</span><span class="o">:</span>
-      <span class="o">-</span> <span class="n">backend</span><span class="o">:</span>
-          <span class="n">serviceName</span><span class="o">:</span> <span class="n">example</span>
-          <span class="n">servicePort</span><span class="o">:</span> <span class="mi">80</span>
+<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">extensions/v1beta1</span>
+<span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">Ingress</span>
+<span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">demo</span>
+  <span class="l l-Scalar l-Scalar-Plain">namespace</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">default</span>
+<span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">rules</span><span class="p p-Indicator">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">host</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">demo.example.org</span>
+    <span class="l l-Scalar l-Scalar-Plain">http</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">paths</span><span class="p p-Indicator">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">backend</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">serviceName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">example</span>
+          <span class="l l-Scalar l-Scalar-Plain">servicePort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
+</pre></div>
+
+<p>Or as a <a href="../routegroups/">RouteGroup</a>:</p>
+<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">zalando.org/v1</span>
+<span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">RouteGroup</span>
+<span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">demo</span>
+  <span class="l l-Scalar l-Scalar-Plain">namespace</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">default</span>
+<span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">hosts</span><span class="p p-Indicator">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">demo.example.org</span>
+  <span class="l l-Scalar l-Scalar-Plain">backends</span><span class="p p-Indicator">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">backend</span>
+    <span class="l l-Scalar l-Scalar-Plain">type</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">service</span>
+    <span class="l l-Scalar l-Scalar-Plain">serviceName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">example</span>
+    <span class="l l-Scalar l-Scalar-Plain">servicePort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
+  <span class="l l-Scalar l-Scalar-Plain">defaultBackends</span><span class="p p-Indicator">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">backendName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">backend</span>
 </pre></div>
 
 <p>Your clients inside the cluster should call this example with
@@ -869,7 +911,7 @@ before</a> and also <a href="../ingress-usage/#custom-routes">custom-routes</a>.
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
-          <a href="../ingress-backends/" title="Ingress Backends" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../routegroup-crd/" title="RouteGroup CRD Semantics" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-flex__cell md-flex__cell--shrink">
               <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
             </div>
@@ -878,7 +920,7 @@ before</a> and also <a href="../ingress-usage/#custom-routes">custom-routes</a>.
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Ingress Backends
+                RouteGroup CRD Semantics
               </span>
             </div>
           </a>

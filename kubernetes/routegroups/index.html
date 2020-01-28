@@ -1,0 +1,1879 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+      
+        <link rel="canonical" href="https://opensource.zalando.com/skipper/kubernetes/routegroups/">
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../../favicon.ico">
+      <meta name="generator" content="mkdocs-1.0.1, mkdocs-material-3.0.6">
+    
+    
+      
+        <title>RouteGroups - Skipper</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/application.451f80e5.css">
+      
+        <link rel="stylesheet" href="../../assets/stylesheets/application-palette.22915126.css">
+      
+      
+        
+        
+        <meta name="theme-color" content="">
+      
+    
+    
+      <script src="../../assets/javascripts/modernizr.1aa3b519.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../assets/fonts/material-icons.css">
+    
+    
+  </head>
+  
+    
+    
+    <body dir="ltr" data-md-color-primary="white" data-md-color-accent="">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448"
+    viewBox="0 0 416 448" id="__github">
+  <path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19-18.125
+        8.5-18.125-8.5-10.75-19-3.125-20.5 3.125-20.5 10.75-19 18.125-8.5
+        18.125 8.5 10.75 19 3.125 20.5zM320 304q0 10-3.125 20.5t-10.75
+        19-18.125 8.5-18.125-8.5-10.75-19-3.125-20.5 3.125-20.5 10.75-19
+        18.125-8.5 18.125 8.5 10.75 19 3.125 20.5zM360
+        304q0-30-17.25-51t-46.75-21q-10.25 0-48.75 5.25-17.75 2.75-39.25
+        2.75t-39.25-2.75q-38-5.25-48.75-5.25-29.5 0-46.75 21t-17.25 51q0 22 8
+        38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0
+        37.25-1.75t35-7.375 30.5-15 20.25-25.75 8-38.375zM416 260q0 51.75-15.25
+        82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5-41.75
+        1.125q-19.5 0-35.5-0.75t-36.875-3.125-38.125-7.5-34.25-12.875-30.25-20.25-21.5-28.75q-15.5-30.75-15.5-82.75
+        0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25
+        30.875q36.75-8.75 77.25-8.75 37 0 70 8 26.25-20.5
+        46.75-30.25t47.25-9.75q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34
+        99.5z" />
+</svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#route-groups" tabindex="1" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="https://opensource.zalando.com/skipper/" title="Skipper" class="md-header-nav__button md-logo">
+          
+            <img src="../../favicon.ico" width="24" height="24">
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            
+              <span class="md-header-nav__topic">
+                Skipper
+              </span>
+              <span class="md-header-nav__topic">
+                RouteGroups
+              </span>
+            
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          
+            <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+            
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+          
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+
+  <a href="https://github.com/zalando/skipper/" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#__github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      GitHub
+    </div>
+  </a>
+
+          </div>
+        </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+        
+
+  
+
+<nav class="md-tabs md-tabs--active" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  <li class="md-tabs__item">
+    
+      <a href="../.." title="Introduction" class="md-tabs__link">
+        Introduction
+      </a>
+    
+  </li>
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../../reference/filters/" title="Reference" class="md-tabs__link">
+          Reference
+        </a>
+      
+    </li>
+  
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../ingress-controller/" title="Kubernetes" class="md-tabs__link md-tabs__link--active">
+          Kubernetes
+        </a>
+      
+    </li>
+  
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../../tutorials/basics/" title="Tutorials" class="md-tabs__link">
+          Tutorials
+        </a>
+      
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="https://opensource.zalando.com/skipper/" title="Skipper" class="md-nav__button md-logo">
+      
+        <img src="../../favicon.ico" width="48" height="48">
+      
+    </a>
+    Skipper
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+
+  <a href="https://github.com/zalando/skipper/" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#__github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      GitHub
+    </div>
+  </a>
+
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../.." title="Introduction" class="md-nav__link">
+      Introduction
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+    
+    <label class="md-nav__link" for="nav-2">
+      Reference
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        Reference
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../reference/filters/" title="Filters" class="md-nav__link">
+      Filters
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../reference/predicates/" title="Predicates" class="md-nav__link">
+      Predicates
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../reference/backends/" title="Backends" class="md-nav__link">
+      Backends
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../reference/egress/" title="Egress" class="md-nav__link">
+      Egress
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../reference/scripts/" title="Scripts" class="md-nav__link">
+      Scripts
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../reference/plugins/" title="Plugins" class="md-nav__link">
+      Plugins
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../reference/architecture/" title="Architecture" class="md-nav__link">
+      Architecture
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../reference/development/" title="Development" class="md-nav__link">
+      Development
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../tutorials/video-howto-build/" title="Video - How to build" class="md-nav__link">
+      Video - How to build
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2-10" type="checkbox" id="nav-2-10">
+    
+    <label class="md-nav__link" for="nav-2-10">
+      Data Clients
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-2-10">
+        Data Clients
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../data-clients/eskip-file/" title="Eskip File" class="md-nav__link">
+      Eskip File
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../data-clients/etcd/" title="Etcd" class="md-nav__link">
+      Etcd
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../data-clients/kubernetes/" title="Kubernetes" class="md-nav__link">
+      Kubernetes
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../data-clients/route-string/" title="Route String" class="md-nav__link">
+      Route String
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2-11" type="checkbox" id="nav-2-11">
+    
+    <label class="md-nav__link" for="nav-2-11">
+      Operation
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-2-11">
+        Operation
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../operation/deployment/" title="Deployment" class="md-nav__link">
+      Deployment
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../operation/operation/" title="Operation" class="md-nav__link">
+      Operation
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" checked>
+    
+    <label class="md-nav__link" for="nav-3">
+      Kubernetes
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        Kubernetes
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../ingress-controller/" title="Ingress Controller Deployment" class="md-nav__link">
+      Ingress Controller Deployment
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../ingress-usage/" title="Ingress Usage" class="md-nav__link">
+      Ingress Usage
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../ingress-backends/" title="Ingress Backends" class="md-nav__link">
+      Ingress Backends
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        RouteGroups
+      </label>
+    
+    <a href="./" title="RouteGroups" class="md-nav__link md-nav__link--active">
+      RouteGroups
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#skipper-as-kubernetes-ingress-controller" title="Skipper as Kubernetes Ingress controller" class="md-nav__link">
+    Skipper as Kubernetes Ingress controller
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#routegroups" title="RouteGroups" class="md-nav__link">
+    RouteGroups
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#current-limitations" title="Current Limitations" class="md-nav__link">
+    Current Limitations
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation" title="Installation" class="md-nav__link">
+    Installation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usage" title="Usage" class="md-nav__link">
+    Usage
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hosts" title="Hosts" class="md-nav__link">
+    Hosts
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#backends" title="Backends" class="md-nav__link">
+    Backends
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#typeservice" title="type=service" class="md-nav__link">
+    type=service
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#typelb" title="type=lb" class="md-nav__link">
+    type=lb
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#typenetwork" title="type=network" class="md-nav__link">
+    type=network
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#typeshunt-typeloopback-typedynamic" title="type=shunt, type=loopback, type=dynamic" class="md-nav__link">
+    type=shunt, type=loopback, type=dynamic
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#default-backends" title="Default Backends" class="md-nav__link">
+    Default Backends
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#routes" title="Routes" class="md-nav__link">
+    Routes
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gradual-traffic-switching" title="Gradual traffic switching" class="md-nav__link">
+    Gradual traffic switching
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mapping-from-ingress-to-routegroups" title="Mapping from Ingress to RouteGroups" class="md-nav__link">
+    Mapping from Ingress to RouteGroups
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ingress-with-default-backend" title="Ingress with default backend" class="md-nav__link">
+    Ingress with default backend
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ingress-with-path-rule" title="Ingress with path rule" class="md-nav__link">
+    Ingress with path rule
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ingress-with-multiple-hosts" title="Ingress with multiple hosts" class="md-nav__link">
+    Ingress with multiple hosts
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ingress-with-multiple-hosts-and-different-routing" title="Ingress with multiple hosts, and different routing" class="md-nav__link">
+    Ingress with multiple hosts, and different routing
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mapping-skipper-ingress-extensions-to-routegroups" title="Mapping Skipper Ingress extensions to RouteGroups" class="md-nav__link">
+    Mapping Skipper Ingress extensions to RouteGroups
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#zalandoorgbackend-weights" title="zalando.org/backend-weights" class="md-nav__link">
+    zalando.org/backend-weights
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#zalandoorgskipper-filter-and-zalandoorgskipper-predicate" title="zalando.org/skipper-filter and zalando.org/skipper-predicate" class="md-nav__link">
+    zalando.org/skipper-filter and zalando.org/skipper-predicate
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#zalandoorgskipper-routes" title="zalando.org/skipper-routes" class="md-nav__link">
+    zalando.org/skipper-routes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#zalandoorgratelimit" title="zalando.org/ratelimit" class="md-nav__link">
+    zalando.org/ratelimit
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#zalandoorgskipper-ingress-redirect-and-zalandoorgskipper-ingress-redirect-code" title="zalando.org/skipper-ingress-redirect and zalando.org/skipper-ingress-redirect-code" class="md-nav__link">
+    zalando.org/skipper-ingress-redirect and zalando.org/skipper-ingress-redirect-code
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#zalandoorgskipper-loadbalancer" title="zalando.org/skipper-loadbalancer" class="md-nav__link">
+    zalando.org/skipper-loadbalancer
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#zalandoorgskipper-ingress-path-mode" title="zalando.org/skipper-ingress-path-mode" class="md-nav__link">
+    zalando.org/skipper-ingress-path-mode
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../routegroup-crd/" title="RouteGroup CRD Semantics" class="md-nav__link">
+      RouteGroup CRD Semantics
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../east-west-usage/" title="East-West aka svc-to-svc" class="md-nav__link">
+      East-West aka svc-to-svc
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      Tutorials
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        Tutorials
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../tutorials/basics/" title="Basics" class="md-nav__link">
+      Basics
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../tutorials/common-use-cases/" title="Common Use Cases" class="md-nav__link">
+      Common Use Cases
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../tutorials/auth/" title="Authentication and Autorization" class="md-nav__link">
+      Authentication and Autorization
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../tutorials/ratelimit/" title="Ratelimits" class="md-nav__link">
+      Ratelimits
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../tutorials/operations/" title="Operations" class="md-nav__link">
+      Operations
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../tutorials/development/" title="Development" class="md-nav__link">
+      Development
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#skipper-as-kubernetes-ingress-controller" title="Skipper as Kubernetes Ingress controller" class="md-nav__link">
+    Skipper as Kubernetes Ingress controller
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#routegroups" title="RouteGroups" class="md-nav__link">
+    RouteGroups
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#current-limitations" title="Current Limitations" class="md-nav__link">
+    Current Limitations
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation" title="Installation" class="md-nav__link">
+    Installation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usage" title="Usage" class="md-nav__link">
+    Usage
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hosts" title="Hosts" class="md-nav__link">
+    Hosts
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#backends" title="Backends" class="md-nav__link">
+    Backends
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#typeservice" title="type=service" class="md-nav__link">
+    type=service
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#typelb" title="type=lb" class="md-nav__link">
+    type=lb
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#typenetwork" title="type=network" class="md-nav__link">
+    type=network
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#typeshunt-typeloopback-typedynamic" title="type=shunt, type=loopback, type=dynamic" class="md-nav__link">
+    type=shunt, type=loopback, type=dynamic
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#default-backends" title="Default Backends" class="md-nav__link">
+    Default Backends
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#routes" title="Routes" class="md-nav__link">
+    Routes
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gradual-traffic-switching" title="Gradual traffic switching" class="md-nav__link">
+    Gradual traffic switching
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mapping-from-ingress-to-routegroups" title="Mapping from Ingress to RouteGroups" class="md-nav__link">
+    Mapping from Ingress to RouteGroups
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ingress-with-default-backend" title="Ingress with default backend" class="md-nav__link">
+    Ingress with default backend
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ingress-with-path-rule" title="Ingress with path rule" class="md-nav__link">
+    Ingress with path rule
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ingress-with-multiple-hosts" title="Ingress with multiple hosts" class="md-nav__link">
+    Ingress with multiple hosts
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ingress-with-multiple-hosts-and-different-routing" title="Ingress with multiple hosts, and different routing" class="md-nav__link">
+    Ingress with multiple hosts, and different routing
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mapping-skipper-ingress-extensions-to-routegroups" title="Mapping Skipper Ingress extensions to RouteGroups" class="md-nav__link">
+    Mapping Skipper Ingress extensions to RouteGroups
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#zalandoorgbackend-weights" title="zalando.org/backend-weights" class="md-nav__link">
+    zalando.org/backend-weights
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#zalandoorgskipper-filter-and-zalandoorgskipper-predicate" title="zalando.org/skipper-filter and zalando.org/skipper-predicate" class="md-nav__link">
+    zalando.org/skipper-filter and zalando.org/skipper-predicate
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#zalandoorgskipper-routes" title="zalando.org/skipper-routes" class="md-nav__link">
+    zalando.org/skipper-routes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#zalandoorgratelimit" title="zalando.org/ratelimit" class="md-nav__link">
+    zalando.org/ratelimit
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#zalandoorgskipper-ingress-redirect-and-zalandoorgskipper-ingress-redirect-code" title="zalando.org/skipper-ingress-redirect and zalando.org/skipper-ingress-redirect-code" class="md-nav__link">
+    zalando.org/skipper-ingress-redirect and zalando.org/skipper-ingress-redirect-code
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#zalandoorgskipper-loadbalancer" title="zalando.org/skipper-loadbalancer" class="md-nav__link">
+    zalando.org/skipper-loadbalancer
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#zalandoorgskipper-ingress-path-mode" title="zalando.org/skipper-ingress-path-mode" class="md-nav__link">
+    zalando.org/skipper-ingress-path-mode
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/zalando/skipper/edit/master/docs/kubernetes/routegroups.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                
+                
+                <h1 id="route-groups">Route groups<a class="headerlink" href="#route-groups" title="Permanent link">&para;</a></h1>
+<p>Route groups are an alternative to the Kubernetes Ingress format for defining ingress rules. They allow to
+define Skipper routing in Kubernetes, while providing a straightforward way to configure the routing features
+supported by Skipper and not defined by the generic Ingress.</p>
+<p><strong>Important Note:</strong></p>
+<p><em>The integration of the RouteGroup CRD with the load balancer and DNS configuration solutions is a work in
+progress.</em></p>
+<h2 id="skipper-as-kubernetes-ingress-controller">Skipper as Kubernetes Ingress controller<a class="headerlink" href="#skipper-as-kubernetes-ingress-controller" title="Permanent link">&para;</a></h2>
+<p>Skipper is an extensible HTTP router with rich route matching, and request flow and traffic shaping
+capabilities. Through its integration with Kubernetes, it can be used in the role of an ingress controller for
+forwarding incoming external requests to the right services in a cluster. Kubernetes provides the Ingress
+specification to define the rules by which an ingress controller should handle the incoming traffic. The
+specification is simple and generic, but doesn&rsquo;t offer a straightforward way to benefit from Skipper&rsquo;s rich HTTP
+related functionality.</p>
+<h2 id="routegroups">RouteGroups<a class="headerlink" href="#routegroups" title="Permanent link">&para;</a></h2>
+<p>A RouteGroup is a custom Kubernetes resource definition. It provides a way to define the ingress routing for
+Kubernetes services. It allows route matching based on any HTTP request attributes, and provides a clean way for
+the request flow augmentation and traffic shaping. It supports higher level features like gradual traffic
+switching, A/B testing, and more.</p>
+<p>Example:</p>
+<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">zalando.org/v1</span>
+<span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">RouteGroup</span>
+<span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my-routes</span>
+<span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">backends</span><span class="p p-Indicator">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">variant-a</span>
+    <span class="l l-Scalar l-Scalar-Plain">type</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">service</span>
+    <span class="l l-Scalar l-Scalar-Plain">serviceName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">service-a</span>
+    <span class="l l-Scalar l-Scalar-Plain">servicePort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">variant-b</span>
+    <span class="l l-Scalar l-Scalar-Plain">type</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">service</span>
+    <span class="l l-Scalar l-Scalar-Plain">serviceName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">service-b</span>
+    <span class="l l-Scalar l-Scalar-Plain">servicePort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
+  <span class="l l-Scalar l-Scalar-Plain">defaultBackends</span><span class="p p-Indicator">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">backendName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">variant-b</span>
+  <span class="l l-Scalar l-Scalar-Plain">routes</span><span class="p p-Indicator">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">pathSubtree</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">/</span>
+    <span class="l l-Scalar l-Scalar-Plain">filters</span><span class="p p-Indicator">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">responseCookie(&quot;canary&quot;, &quot;A&quot;)</span>
+    <span class="l l-Scalar l-Scalar-Plain">predicates</span><span class="p p-Indicator">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">Traffic(.1)</span>
+    <span class="l l-Scalar l-Scalar-Plain">backends</span><span class="p p-Indicator">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">backendName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">variant-a</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">pathSubtree</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">/</span>
+    <span class="l l-Scalar l-Scalar-Plain">filters</span><span class="p p-Indicator">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">responseCookie(&quot;canary&quot;, &quot;B&quot;)</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">pathSubtree</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">/</span>
+    <span class="l l-Scalar l-Scalar-Plain">predicates</span><span class="p p-Indicator">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">Cookie(&quot;canary&quot;, &quot;A&quot;)</span>
+    <span class="l l-Scalar l-Scalar-Plain">backends</span><span class="p p-Indicator">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">backendName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">variant-a</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">pathSubtree</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">/</span>
+    <span class="l l-Scalar l-Scalar-Plain">predicates</span><span class="p p-Indicator">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">Cookie(&quot;canary&quot;, &quot;B&quot;)</span>
+</pre></div>
+
+<p>(See a more detailed explanation of the above example <a href="#gradual-traffic-switching">further down</a> in this
+document.)</p>
+<p>Links:</p>
+<ul>
+<li><a href="../routegroup-crd/">RouteGroup semantics</a></li>
+<li><a href="https://github.com/zalando/skipper/blob/master/dataclients/kubernetes/deploy/apply/routegroups_crd.yaml">CRD definition</a></li>
+</ul>
+<h2 id="current-limitations">Current Limitations<a class="headerlink" href="#current-limitations" title="Permanent link">&para;</a></h2>
+<p>As mentioned above, the interagtion with load balancer and DNS configuration solutions is a work in progress.
+This means that when using route groups, updating the DNS entries and the load balancer configurations based on
+the host names defined in a route group, currently needs to be done manually. As near milestones, the
+integration will be done in:</p>
+<ul>
+<li><a href="https://github.com/kubernetes-sigs/external-dns">Extenral DNS</a></li>
+<li><a href="https://github.com/zalando-incubator/kube-ingress-aws-controller">Kubernetes Ingress Controller for AWS</a></li>
+</ul>
+<h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h2>
+<p>The definition file of the CRD can be found as part of Skipper&rsquo;s source code, at:</p>
+<p><a href="https://github.com/zalando/skipper/blob/master/dataclients/kubernetes/deploy/apply/routegroups_crd.yaml">https://github.com/zalando/skipper/blob/master/dataclients/kubernetes/deploy/apply/routegroups_crd.yaml</a></p>
+<p>To install it manually in a cluster, assuming the current directory is the root of Skipper&rsquo;s source, call this
+command:</p>
+<div class="codehilite"><pre><span></span>kubectl apply -f dataclients/kubernetes/deploy/apply/routegroups_crd.yaml
+</pre></div>
+
+<p>This will install a namespaced resource definition, providing the RouteGroup kind:</p>
+<ul>
+<li>full name: routegroups.zalando.org</li>
+<li>resource group: zalando.org/v1</li>
+<li>resource names: routegroup, routegroups, rg, rgs</li>
+<li>kind: RouteGroup</li>
+</ul>
+<p>The route groups, once any is defined, can be displayed then via kubectl as:</p>
+<div class="codehilite"><pre><span></span>kubectl get rgs
+</pre></div>
+
+<p>The API URL of the routegroup resources will be:</p>
+<p>https://kubernetes-api-hostname/apis/zalando.org/v1/routegroups</p>
+<h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">&para;</a></h2>
+<p>The absolute minimal route group configuration for a Kubernetes service (my-service) looks as follows:</p>
+<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">zalando.org/v1</span>
+<span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">RouteGroup</span>
+<span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my-route-group</span>
+<span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">backends</span><span class="p p-Indicator">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my-backend</span>
+    <span class="l l-Scalar l-Scalar-Plain">type</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">service</span>
+    <span class="l l-Scalar l-Scalar-Plain">serviceName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my-service</span>
+    <span class="l l-Scalar l-Scalar-Plain">servicePort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
+  <span class="l l-Scalar l-Scalar-Plain">defaultBackends</span><span class="p p-Indicator">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">backendName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my-service</span>
+</pre></div>
+
+<p>This is equivalent to the ingress:</p>
+<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">extensions/v1beta1</span>
+<span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">Ingress</span>
+<span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my-ingress</span>
+<span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">backend</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">serviceName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my-service</span>
+    <span class="l l-Scalar l-Scalar-Plain">servicePort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
+</pre></div>
+
+<p>Notice that the route group contains a list of actual backends, and the defined service backend is then
+referenced as the default backend. This structure plays a role in supporting scenarios like A/B testing and
+gradual traffic switching, <a href="#gradual-traffic-switching">explained below</a>. The backend definition also has a type
+field, whose values can be service, lb, network, shunt, loopback or dynamic. More details on that
+<a href="#backends">below</a>.</p>
+<p>Creating, updating and deleting route groups happens the same way as with ingress objects. E.g, manually
+applying a route group definition:</p>
+<div class="codehilite"><pre><span></span>kubectl apply -f my-route-group.yaml
+</pre></div>
+
+<h2 id="hosts">Hosts<a class="headerlink" href="#hosts" title="Permanent link">&para;</a></h2>
+<ul>
+<li><em><a href="../routegroup-crd/#routegroup-top-level-object">Format</a></em></li>
+</ul>
+<p>Hosts contain hostnames that are used to match the requests handled by a given route group. They are also used
+to update the required DNS entries and load balancer configuration if the cluster is set up that way.</p>
+<p>Note that it is also possible to use any Skipper predicate in the routes of a route group, with the Host
+predicate included, but the hostnames defined that way will not serve as input for the DNS configuration.</p>
+<h2 id="backends">Backends<a class="headerlink" href="#backends" title="Permanent link">&para;</a></h2>
+<ul>
+<li><em><a href="../routegroup-crd/#backend_1">Format</a></em></li>
+<li><em><a href="../../reference/backends/">General backend reference</a></em></li>
+</ul>
+<p>RouteGroups support different backends. The most typical backend type is the &lsquo;service&rsquo;, and it works the same
+way as in case of ingress definitions.</p>
+<p>In a RouteGroup, there can be multiple backends and they are listed on the top level of the route group spec,
+and are referenced from the actual routes or as default backends.</p>
+<h3 id="typeservice">type=service<a class="headerlink" href="#typeservice" title="Permanent link">&para;</a></h3>
+<p>This backend resolves to a Kubernetes service. It works the same way as in case of Ingress definitions. Skipper
+resolves the Services to the available Endpoints belonging to the Service, and generates load balanced routes
+using them. (This basically means that under the hood, a <code>service</code> backend becomes an <code>lb</code> backend.)</p>
+<h3 id="typelb">type=lb<a class="headerlink" href="#typelb" title="Permanent link">&para;</a></h3>
+<p>This backend provides load balancing between multiple network endpoints. Keep in mind that the service type
+backend automatically generates load balanced routes for the service endpoints, so this backend type typically
+doesn&rsquo;t need to be used for services.</p>
+<h3 id="typenetwork">type=network<a class="headerlink" href="#typenetwork" title="Permanent link">&para;</a></h3>
+<p>This backend type results in routes that proxy incoming requests to the defined network address, regardless of
+the Kubernetes semantics, and allows URLs that point somewhere else, potentially outside of the cluster, too.</p>
+<h3 id="typeshunt-typeloopback-typedynamic">type=shunt, type=loopback, type=dynamic<a class="headerlink" href="#typeshunt-typeloopback-typedynamic" title="Permanent link">&para;</a></h3>
+<p>These backend types allow advanced routing setups. Please check the <a href="../../reference/backends/">reference
+manual</a> for more details.</p>
+<h2 id="default-backends">Default Backends<a class="headerlink" href="#default-backends" title="Permanent link">&para;</a></h2>
+<ul>
+<li><em><a href="../routegroup-crd/#backend-reference">Format</a></em></li>
+</ul>
+<p>A default backend is a reference to one of the defined backends. When a route doesn&rsquo;t specify which backend(s)
+to use, the ones referenced in the default backends will be used.</p>
+<p>In case there are no individual routes at all in the route group, a default set of routes (one or more) will be
+generated and will proxy the incoming traffic to the default backends.</p>
+<p>The reason, why multiple backends can be referenced as default, is that this makes it easy to execute gradual
+traffic switching between different versions, even more than two, of the same application. <a href="#gradual-traffic-switching">See
+more</a>.</p>
+<h2 id="routes">Routes<a class="headerlink" href="#routes" title="Permanent link">&para;</a></h2>
+<ul>
+<li><em><a href="../routegroup-crd/#route_1">Format</a></em></li>
+</ul>
+<p>Routes define where to and how the incoming requests will be proxied. The predicates, including the path,
+pathSubtree, pathRegexp and methods fields, and any free-form predicate listed under the predicates field,
+control which requests are matched by a route, the filters can apply changes to the forwarded requests and the
+returned responses, and the backend refs, if defined, override the default backends, where the requests will be
+proxied to. If a route group doesn&rsquo;t contain any explicit routes, but it contains default backends, a default
+set of routes will be generated for the route group.</p>
+<p>Important to bear in mind about the path fields, that the plain &lsquo;path&rsquo; means exact path match, while
+&lsquo;pathSubtree&rsquo; behaves as a path prefix, and so it is more similar to the path in the Ingress specification.</p>
+<p>See also:</p>
+<ul>
+<li><a href="../../reference/predicates/">predicates</a></li>
+<li><a href="../../reference/filters/">filters</a></li>
+</ul>
+<h2 id="gradual-traffic-switching">Gradual traffic switching<a class="headerlink" href="#gradual-traffic-switching" title="Permanent link">&para;</a></h2>
+<p>The weighted backend references allow to split the traffic of a single route and send it to different backends
+with the ratio defined by the weights of the backend references. E.g:</p>
+<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">zalando.org/v1</span>
+<span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">RouteGroup</span>
+<span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my-routes</span>
+<span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">hosts</span><span class="p p-Indicator">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">api.example.org</span>
+  <span class="l l-Scalar l-Scalar-Plain">backends</span><span class="p p-Indicator">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">api-svc-v1</span>
+    <span class="l l-Scalar l-Scalar-Plain">type</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">service</span>
+    <span class="l l-Scalar l-Scalar-Plain">serviceName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">api-service-v1</span>
+    <span class="l l-Scalar l-Scalar-Plain">servicePort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">api-svc-v2</span>
+    <span class="l l-Scalar l-Scalar-Plain">type</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">service</span>
+    <span class="l l-Scalar l-Scalar-Plain">serviceName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">foo-service-v2</span>
+    <span class="l l-Scalar l-Scalar-Plain">servicePort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
+  <span class="l l-Scalar l-Scalar-Plain">routes</span><span class="p p-Indicator">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">pathSubtree</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">/api</span>
+    <span class="l l-Scalar l-Scalar-Plain">backends</span><span class="p p-Indicator">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">backendName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">api-svc</span>
+      <span class="l l-Scalar l-Scalar-Plain">weight</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">backendName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">api-svc-v2</span>
+      <span class="l l-Scalar l-Scalar-Plain">weight</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">20</span>
+</pre></div>
+
+<p>In case of the above example, 80% of the requests is sent to api-service-v1 and the rest is sent to
+api-service-v2.</p>
+<p>Since this type of weighted traffic switching can be used in combination with the Traffic predicate, it is
+possible to control the routing of a long running A/B test, while still executing gradual traffic switching
+independently to deploy a new version of the variants, maybe to deploy a fix only to one variant. E.g:</p>
+<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">zalando.org/v1</span>
+<span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">RouteGroup</span>
+<span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my-routes</span>
+<span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">hosts</span><span class="p p-Indicator">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">api.example.org</span>
+  <span class="l l-Scalar l-Scalar-Plain">backends</span><span class="p p-Indicator">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">variant-a</span>
+    <span class="l l-Scalar l-Scalar-Plain">type</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">service</span>
+    <span class="l l-Scalar l-Scalar-Plain">serviceName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">service-a</span>
+    <span class="l l-Scalar l-Scalar-Plain">servicePort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">variant-b</span>
+    <span class="l l-Scalar l-Scalar-Plain">type</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">service</span>
+    <span class="l l-Scalar l-Scalar-Plain">serviceName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">service-b-v1</span>
+    <span class="l l-Scalar l-Scalar-Plain">servicePort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">variant-b-v2</span>
+    <span class="l l-Scalar l-Scalar-Plain">type</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">service</span>
+    <span class="l l-Scalar l-Scalar-Plain">serviceName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">service-b-v2</span>
+    <span class="l l-Scalar l-Scalar-Plain">servicePort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
+  <span class="l l-Scalar l-Scalar-Plain">defaultBackends</span><span class="p p-Indicator">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">backendName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">variant-b</span>
+    <span class="l l-Scalar l-Scalar-Plain">weight</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">backendName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">variant-b-v2</span>
+    <span class="l l-Scalar l-Scalar-Plain">weight</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">20</span>
+  <span class="l l-Scalar l-Scalar-Plain">routes</span><span class="p p-Indicator">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">filters</span><span class="p p-Indicator">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">responseCookie(&quot;canary&quot;, &quot;A&quot;)</span>
+    <span class="l l-Scalar l-Scalar-Plain">predicates</span><span class="p p-Indicator">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">Traffic(.1)</span>
+    <span class="l l-Scalar l-Scalar-Plain">backends</span><span class="p p-Indicator">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">backendName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">variant-a</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">filters</span><span class="p p-Indicator">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">responseCookie(&quot;canary&quot;, &quot;B&quot;)</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">predicates</span><span class="p p-Indicator">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">Cookie(&quot;canary&quot;, &quot;A&quot;)</span>
+    <span class="l l-Scalar l-Scalar-Plain">backends</span><span class="p p-Indicator">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">backendName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">variant-a</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">predicates</span><span class="p p-Indicator">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">Cookie(&quot;canary&quot;, &quot;B&quot;)</span>
+</pre></div>
+
+<p>See also:</p>
+<ul>
+<li><a href="../../reference/predicates/#traffic">Traffic predicate</a></li>
+</ul>
+<h2 id="mapping-from-ingress-to-routegroups">Mapping from Ingress to RouteGroups<a class="headerlink" href="#mapping-from-ingress-to-routegroups" title="Permanent link">&para;</a></h2>
+<p>RouteGroups are one-way compatible with Ingress, meaning that every Ingress specification can be expressed in
+the RouteGroup format, as well. In the following, we describe the mapping from Ingress fields to RouteGroup
+fields.</p>
+<h3 id="ingress-with-default-backend">Ingress with default backend<a class="headerlink" href="#ingress-with-default-backend" title="Permanent link">&para;</a></h3>
+<p>Ingress:</p>
+<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">extensions/v1beta1</span>
+<span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">Ingress</span>
+<span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my-ingress</span>
+<span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">backend</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">serviceName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my-service</span>
+    <span class="l l-Scalar l-Scalar-Plain">servicePort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
+</pre></div>
+
+<p>RouteGroup:</p>
+<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">zalando.org/v1</span>
+<span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">RouteGroup</span>
+<span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my-route-group</span>
+<span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">backends</span><span class="p p-Indicator">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my-backend</span>
+    <span class="l l-Scalar l-Scalar-Plain">type</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">service</span>
+    <span class="l l-Scalar l-Scalar-Plain">serviceName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my-service</span>
+    <span class="l l-Scalar l-Scalar-Plain">servicePort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
+  <span class="l l-Scalar l-Scalar-Plain">defaultBackends</span><span class="p p-Indicator">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">backendName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my-service</span>
+</pre></div>
+
+<h3 id="ingress-with-path-rule">Ingress with path rule<a class="headerlink" href="#ingress-with-path-rule" title="Permanent link">&para;</a></h3>
+<p>Ingress:</p>
+<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">extensions/v1beta1</span>
+<span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">Ingress</span>
+<span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my-ingress</span>
+<span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">rules</span><span class="p p-Indicator">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">host</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">api.example.org</span>
+    <span class="l l-Scalar l-Scalar-Plain">http</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">paths</span><span class="p p-Indicator">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">path</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">/api</span>
+        <span class="l l-Scalar l-Scalar-Plain">backend</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">serviceName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my-service</span>
+          <span class="l l-Scalar l-Scalar-Plain">servicePort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
+</pre></div>
+
+<p>RouteGroup:</p>
+<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">zalando.org/v1</span>
+<span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">RouteGroup</span>
+<span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my-route-group</span>
+<span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">hosts</span><span class="p p-Indicator">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">api.example.org</span>
+  <span class="l l-Scalar l-Scalar-Plain">backends</span><span class="p p-Indicator">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my-backend</span>
+    <span class="l l-Scalar l-Scalar-Plain">type</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">service</span>
+    <span class="l l-Scalar l-Scalar-Plain">serviceName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my-service</span>
+    <span class="l l-Scalar l-Scalar-Plain">servicePort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
+  <span class="l l-Scalar l-Scalar-Plain">routes</span><span class="p p-Indicator">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">pathSubtree</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">/api</span>
+</pre></div>
+
+<h3 id="ingress-with-multiple-hosts">Ingress with multiple hosts<a class="headerlink" href="#ingress-with-multiple-hosts" title="Permanent link">&para;</a></h3>
+<p>Ingress (we need to define two rules):</p>
+<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">extensions/v1beta1</span>
+<span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">Ingress</span>
+<span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my-ingress</span>
+<span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">rules</span><span class="p p-Indicator">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">host</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">api.example.org</span>
+    <span class="l l-Scalar l-Scalar-Plain">http</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">paths</span><span class="p p-Indicator">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">path</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">/api</span>
+        <span class="l l-Scalar l-Scalar-Plain">backend</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">serviceName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my-service</span>
+          <span class="l l-Scalar l-Scalar-Plain">servicePort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">host</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">legacy-name.example.org</span>
+    <span class="l l-Scalar l-Scalar-Plain">http</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">paths</span><span class="p p-Indicator">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">path</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">/api</span>
+        <span class="l l-Scalar l-Scalar-Plain">backend</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">serviceName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my-service</span>
+          <span class="l l-Scalar l-Scalar-Plain">servicePort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
+</pre></div>
+
+<p>RouteGroup (we just define an additional host):</p>
+<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">zalando.org/v1</span>
+<span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">RouteGroup</span>
+<span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my-route-group</span>
+<span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">hosts</span><span class="p p-Indicator">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">api.example.org</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">legacy-name.example.org</span>
+  <span class="l l-Scalar l-Scalar-Plain">backends</span><span class="p p-Indicator">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my-backend</span>
+    <span class="l l-Scalar l-Scalar-Plain">type</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">service</span>
+    <span class="l l-Scalar l-Scalar-Plain">serviceName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my-service</span>
+    <span class="l l-Scalar l-Scalar-Plain">servicePort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
+  <span class="l l-Scalar l-Scalar-Plain">routes</span><span class="p p-Indicator">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">pathSubtree</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">/api</span>
+</pre></div>
+
+<h3 id="ingress-with-multiple-hosts-and-different-routing">Ingress with multiple hosts, and different routing<a class="headerlink" href="#ingress-with-multiple-hosts-and-different-routing" title="Permanent link">&para;</a></h3>
+<p>For those cases when using multiple hostnames in the same ingress with different rules, we need to apply a
+small workaround for the equivalent route group spec. Ingress:</p>
+<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">extensions/v1beta1</span>
+<span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">Ingress</span>
+<span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my-ingress</span>
+<span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">rules</span><span class="p p-Indicator">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">host</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">api.example.org</span>
+    <span class="l l-Scalar l-Scalar-Plain">http</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">paths</span><span class="p p-Indicator">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">path</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">/api</span>
+        <span class="l l-Scalar l-Scalar-Plain">backend</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">serviceName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my-service</span>
+          <span class="l l-Scalar l-Scalar-Plain">servicePort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">host</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">legacy-name.example.org</span>
+    <span class="l l-Scalar l-Scalar-Plain">http</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">paths</span><span class="p p-Indicator">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">path</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">/application</span>
+        <span class="l l-Scalar l-Scalar-Plain">backend</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">serviceName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my-service</span>
+          <span class="l l-Scalar l-Scalar-Plain">servicePort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
+</pre></div>
+
+<p>RouteGroup (we need to use additional host predicates):</p>
+<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">zalando.org/v1</span>
+<span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">RouteGroup</span>
+<span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my-route-group</span>
+<span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">hosts</span><span class="p p-Indicator">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">api.example.org</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">legacy-name.example.org</span>
+  <span class="l l-Scalar l-Scalar-Plain">backends</span><span class="p p-Indicator">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my-backend</span>
+    <span class="l l-Scalar l-Scalar-Plain">type</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">service</span>
+    <span class="l l-Scalar l-Scalar-Plain">serviceName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my-service</span>
+    <span class="l l-Scalar l-Scalar-Plain">servicePort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
+  <span class="l l-Scalar l-Scalar-Plain">routes</span><span class="p p-Indicator">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">pathSubtree</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">/api</span>
+    <span class="l l-Scalar l-Scalar-Plain">predicates</span><span class="p p-Indicator">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">Host(&quot;api.example.org&quot;)</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">pathSubtree</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">/application</span>
+    <span class="l l-Scalar l-Scalar-Plain">predicates</span><span class="p p-Indicator">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">Host(&quot;legacy-name.example.org&quot;)</span>
+</pre></div>
+
+<p>The RouteGroups allow multiple hostnames for each route group, but by default, their union is used during
+routing. If we want to distinguish between them, then we need to use an additional Host predicate in the routes.
+Importantly, only the hostnames listed under the hosts field serve as input for the DNS and LB configuration.</p>
+<h2 id="mapping-skipper-ingress-extensions-to-routegroups">Mapping Skipper Ingress extensions to RouteGroups<a class="headerlink" href="#mapping-skipper-ingress-extensions-to-routegroups" title="Permanent link">&para;</a></h2>
+<p>Skipper accepts a set of annotations in Ingress objects that give access to certain Skipper features that would
+not be possible with the native fields of the Ingress spec, e.g. improved path handling or rate limiting. These
+annotations can be expressed now natively in the RouteGroups.</p>
+<h3 id="zalandoorgbackend-weights">zalando.org/backend-weights<a class="headerlink" href="#zalandoorgbackend-weights" title="Permanent link">&para;</a></h3>
+<p>Backend weights are now part of the backend references, and they can be controlled for multiple backend sets
+within the same route group. See <a href="#gradual-traffic-switching">Gradual traffic switching</a>.</p>
+<h3 id="zalandoorgskipper-filter-and-zalandoorgskipper-predicate">zalando.org/skipper-filter and zalando.org/skipper-predicate<a class="headerlink" href="#zalandoorgskipper-filter-and-zalandoorgskipper-predicate" title="Permanent link">&para;</a></h3>
+<p>Filters and predicates are now part of the route objects, and different set of filters or predicates can be set
+for different routes.</p>
+<h3 id="zalandoorgskipper-routes">zalando.org/skipper-routes<a class="headerlink" href="#zalandoorgskipper-routes" title="Permanent link">&para;</a></h3>
+<p>&ldquo;Custom routes&rdquo; in a route group are unnecessary, because every route can be configured with predicates, filters
+and backends without limitations. E.g where an ingress annotation&rsquo;s metadata may look like this:</p>
+<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">extensions/v1beta1</span>
+<span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">Ingress</span>
+<span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my-ingress</span>
+  <span class="l l-Scalar l-Scalar-Plain">zalando.org/skipper-routes</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">|</span>
+    <span class="no">Method(&quot;OPTIONS&quot;) -&gt; status(200) -&gt; &lt;shunt&gt;</span>
+<span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">backend</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">serviceName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my-service</span>
+    <span class="l l-Scalar l-Scalar-Plain">servicePort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
+</pre></div>
+
+<p>the equivalent RouteGroup would look like this:</p>
+<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">zalando.org/v1</span>
+<span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">RouteGroup</span>
+<span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my-route-group</span>
+<span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">backends</span><span class="p p-Indicator">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my-backend</span>
+    <span class="l l-Scalar l-Scalar-Plain">type</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">service</span>
+    <span class="l l-Scalar l-Scalar-Plain">serviceName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my-service</span>
+    <span class="l l-Scalar l-Scalar-Plain">servicePort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">options200</span>
+    <span class="l l-Scalar l-Scalar-Plain">type</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">shunt</span>
+  <span class="l l-Scalar l-Scalar-Plain">defaultBackends</span><span class="p p-Indicator">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">backendName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my-service</span>
+  <span class="l l-Scalar l-Scalar-Plain">routes</span><span class="p p-Indicator">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">pathSubtree</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">/</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">pathSubtree</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">/</span>
+    <span class="l l-Scalar l-Scalar-Plain">methods</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">OPTIONS</span>
+    <span class="l l-Scalar l-Scalar-Plain">filters</span><span class="p p-Indicator">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">status(200)</span>
+    <span class="l l-Scalar l-Scalar-Plain">backends</span><span class="p p-Indicator">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">options200</span>
+</pre></div>
+
+<h3 id="zalandoorgratelimit">zalando.org/ratelimit<a class="headerlink" href="#zalandoorgratelimit" title="Permanent link">&para;</a></h3>
+<p>The ratelimiting can be defined on the route level among the filters, in the same format as in this annotation.</p>
+<h3 id="zalandoorgskipper-ingress-redirect-and-zalandoorgskipper-ingress-redirect-code">zalando.org/skipper-ingress-redirect and zalando.org/skipper-ingress-redirect-code<a class="headerlink" href="#zalandoorgskipper-ingress-redirect-and-zalandoorgskipper-ingress-redirect-code" title="Permanent link">&para;</a></h3>
+<p>Skipper ingress provides global HTTPS redirect, but it allows individual ingresses to override the global
+settings: enabling/disabling it and changing the default redirect code. With route groups, this override can be
+achieved by simply defining an addtional route, with the same matching rules, and therefore the override can be
+controlled eventually on a route basis. E.g:</p>
+<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">zalando.org/v1</span>
+<span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">RouteGroup</span>
+<span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my-route-group</span>
+<span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">backends</span><span class="p p-Indicator">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my-backend</span>
+    <span class="l l-Scalar l-Scalar-Plain">type</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">service</span>
+    <span class="l l-Scalar l-Scalar-Plain">serviceName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my-service</span>
+    <span class="l l-Scalar l-Scalar-Plain">servicePort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">redirectShunt</span>
+    <span class="l l-Scalar l-Scalar-Plain">type</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">shunt</span>
+  <span class="l l-Scalar l-Scalar-Plain">defaultBackends</span><span class="p p-Indicator">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">backendName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my-service</span>
+  <span class="l l-Scalar l-Scalar-Plain">routes</span><span class="p p-Indicator">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">pathSubtree</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">/</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">pathSubtree</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">/</span>
+    <span class="l l-Scalar l-Scalar-Plain">predicates</span><span class="p p-Indicator">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">Header(&quot;X-Forwarded-Proto&quot;, &quot;http&quot;)</span>
+    <span class="l l-Scalar l-Scalar-Plain">filters</span><span class="p p-Indicator">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">redirectTo(302, &quot;https:&quot;)</span>
+    <span class="l l-Scalar l-Scalar-Plain">backends</span><span class="p p-Indicator">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">redirectShunt</span>
+</pre></div>
+
+<h3 id="zalandoorgskipper-loadbalancer">zalando.org/skipper-loadbalancer<a class="headerlink" href="#zalandoorgskipper-loadbalancer" title="Permanent link">&para;</a></h3>
+<p>Skipper Ingress doesn&rsquo;t use the ClusterIP of the Service for forwarding the traffic to, but sends it directly to
+the Endpoints represented by the Service, and balances the load between them with the round-robin algorithm. The
+algorithm choice can be overridden by this annotation. In case of the RouteGroups, the algorithm is simply an
+attribute of the backend definition, and it can be set individually for each backend. E.g:</p>
+<div class="codehilite"><pre><span></span>  backends:
+  - name: my-backend
+    type: service
+    serviceName: my-service
+    servicePort: 80
+    algorithm: consistentHash
+</pre></div>
+
+<p>See also:</p>
+<ul>
+<li><a href="https://opensource.zalando.com/skipper/reference/backends/#load-balancer-backend">Load Balancer backend</a></li>
+</ul>
+<h3 id="zalandoorgskipper-ingress-path-mode">zalando.org/skipper-ingress-path-mode<a class="headerlink" href="#zalandoorgskipper-ingress-path-mode" title="Permanent link">&para;</a></h3>
+<p>The route objects support the different path lookup modes, by using the path, pathSubtree or the
+pathRegexp field. See also the <a href="../../reference/architecture/#route-matching">route matching</a>
+explained for the internals. The mapping is as follows:</p>
+<table>
+<thead>
+<tr>
+<th>Ingress:</th>
+<th>RouteGroup:</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>kubernetes-ingress</code> and <code>/foo</code></td>
+<td>pathRegexp: <code>^/foo</code></td>
+</tr>
+<tr>
+<td><code>path-regexp</code> and <code>/foo</code></td>
+<td>pathRegexp: <code>/foo</code></td>
+</tr>
+<tr>
+<td><code>path-prefix</code> and <code>/foo</code></td>
+<td>pathSubtree: <code>/foo</code></td>
+</tr>
+<tr>
+<td><code>kubernetes-ingress</code> and /foo$</td>
+<td>path: <code>/foo</code></td>
+</tr>
+</tbody>
+</table>
+                
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../ingress-backends/" title="Ingress Backends" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Ingress Backends
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../routegroup-crd/" title="RouteGroup CRD Semantics" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                RouteGroup CRD Semantics
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        powered by
+        <a href="https://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+      </div>
+      
+        
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/application.5e60981f.js"></script>
+      
+      <script>app.initialize({version:"1.0.1",url:{base:"../.."}})</script>
+      
+    
+    
+      
+    
+  </body>
+</html>

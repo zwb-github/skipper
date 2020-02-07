@@ -553,6 +553,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#absorb" title="absorb" class="md-nav__link">
+    absorb
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#tee" title="tee" class="md-nav__link">
     tee
   </a>
@@ -1604,6 +1611,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#absorb" title="absorb" class="md-nav__link">
+    absorb
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#tee" title="tee" class="md-nav__link">
     tee
   </a>
@@ -2333,6 +2347,15 @@ the response path.</p>
 <h2 id="backendchunks">backendChunks<a class="headerlink" href="#backendchunks" title="Permanent link">&para;</a></h2>
 <p>Same as <a href="#chunks">chunks filter</a>, but on the request path and not on
 the response path.</p>
+<h2 id="absorb">absorb<a class="headerlink" href="#absorb" title="Permanent link">&para;</a></h2>
+<p>The absorb filter reads and discards the payload of the incoming requests.
+It logs with INFO level and a unique ID per request:</p>
+<ul>
+<li>the event of receiving the request</li>
+<li>partial and final events for consuming request payload and total consumed byte count</li>
+<li>the finishing event of the request</li>
+<li>any read errors other than EOF</li>
+</ul>
 <h2 id="tee">tee<a class="headerlink" href="#tee" title="Permanent link">&para;</a></h2>
 <p>Provides a unix-like <code>tee</code> feature for routing.</p>
 <p>Using this filter, the request will be sent to a &ldquo;shadow&rdquo; backend in addition

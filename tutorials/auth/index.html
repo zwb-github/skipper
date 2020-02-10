@@ -770,6 +770,19 @@
     OpenID Connect
   </a>
   
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#authz-and-access-control" title="AuthZ and access control" class="md-nav__link">
+    AuthZ and access control
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
       
@@ -880,6 +893,19 @@
   <a href="#openid-connect" title="OpenID Connect" class="md-nav__link">
     OpenID Connect
   </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#authz-and-access-control" title="AuthZ and access control" class="md-nav__link">
+    AuthZ and access control
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1089,6 +1115,22 @@ header value is in the format.</p>
 for which it needs a secret key. This key is in a file which can be rotated periodically
 because it is reread by Skipper. The path to this file can be passed with the flag
 <code>-oidc-secret-file</code> when Skipper is started.</p>
+<h3 id="authz-and-access-control">AuthZ and access control<a class="headerlink" href="#authz-and-access-control" title="Permanent link">&para;</a></h3>
+<p>Authorization validation and access control is available by means of a subsequent filter <a href="../../reference/filters/#oidcClaimsQuery">oidcClaimsQuery</a>. It inspects the ID token, which exists after a successful <code>oauthOidc*</code> filter step, and validates the defined query with the request path.</p>
+<p>Given following example ID token:</p>
+<div class="codehilite"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;someone@example.org&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;groups&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="s2">&quot;CD-xyz&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;appX-Tester&quot;</span>
+  <span class="p">],</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Some One&quot;</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>Access to path <code>/</code> would be granted to everyone in <code>example.org</code>, however path <code>/login</code> only to those being member of <code>group "appX-Tester"</code>:</p>
+<div class="codehilite"><pre><span></span>oauthOidcAnyClaims(...) -&gt; oidcClaimsQuery(&quot;/login:groups.#[==\&quot;appX-Tester\&quot;]&quot;, &quot;/:@_:email%\&quot;*@example.org\&quot;&quot;)
+</pre></div>
                 
                   
                 

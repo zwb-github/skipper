@@ -707,6 +707,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#oidcclaimsquery" title="oidcClaimsQuery" class="md-nav__link">
+    oidcClaimsQuery
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#responsecookie" title="responseCookie" class="md-nav__link">
     responseCookie
   </a>
@@ -1765,6 +1772,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#oidcclaimsquery" title="oidcClaimsQuery" class="md-nav__link">
+    oidcClaimsQuery
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#responsecookie" title="responseCookie" class="md-nav__link">
     responseCookie
   </a>
@@ -2679,6 +2693,37 @@ The filter needs the following parameters:</p>
 <div class="codehilite"><pre><span></span>requestCookie(&quot;test-session&quot;, &quot;abc&quot;)
 </pre></div>
 
+<h2 id="oidcclaimsquery">oidcClaimsQuery<a class="headerlink" href="#oidcclaimsquery" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span>oidcClaimsQuery(&quot;&lt;path&gt;:[&lt;query&gt;]&quot;, ...)
+</pre></div>
+
+<p>The filter is chained after <code>oauthOidc*</code> authentication as it parses the ID token that has been saved in the internal <code>StateBag</code> for this request. It validates access control of the requested path against the defined query.<br />
+It accepts one or more arguments, thats is a path prefix which is granted access to when the query definition evaluates positive.<br />
+It supports exact matches of keys, key-value pairs, introspecting of arrays or exact and wildcard matching of nested structures.
+The query definition can be one or more queries per path, space delimited. The query syntax is <a href="https://github.com/tidwall/gjson/blob/master/SYNTAX.md">GJSON</a> with a convenience modifier of <code>@_</code> which unfolds to <code>[@this].#("+arg+")</code></p>
+<p>Given following example ID token:</p>
+<div class="codehilite"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;someone@example.org&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;groups&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="s2">&quot;CD-xyz&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;appX-Test-Users&quot;</span>
+    <span class="s2">&quot;Purchasing-Department&quot;</span><span class="p">,</span>
+  <span class="p">],</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Some One&quot;</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>Access to path <code>/</code> would be granted to everyone in <code>example.org</code>, however path <code>/login</code> only to those being member of <code>group "appX-Tester"</code>:</p>
+<div class="codehilite"><pre><span></span>oauthOidcAnyClaims(...) -&gt; oidcClaimsQuery(&quot;/login:groups.#[==\&quot;appX-Tester\&quot;]&quot;, &quot;/:@_:email%\&quot;*@example.org\&quot;&quot;)
+</pre></div>
+
+<p>For above ID token following query definitions would also be positive:</p>
+<div class="codehilite"><pre><span></span>oidcClaimsQuery(&quot;/:email&quot;)
+oidcClaimsQuery(&quot;/another/path:groups.#[%\&quot;CD-*\&quot;]&quot;)
+oidcClaimsQuery(&quot;/:name%\&quot;*One\&quot;&quot;, &quot;/path:groups.#[%\&quot;*-Test-Users\&quot;] groups.#[==\&quot;Purchasing-Department\&quot;]&quot;)
+</pre></div>
+
+<p>As of now there is no negative/deny rule possible. The first matching path is evaluated against the defined query/queries and if positive, permitted.</p>
 <h2 id="responsecookie">responseCookie<a class="headerlink" href="#responsecookie" title="Permanent link">&para;</a></h2>
 <p>Appends cookies to responses in the &ldquo;Set-Cookie&rdquo; header. The response cookie
 accepts an optional argument to control the max-age property of the cookie,

@@ -1541,12 +1541,29 @@ skipper-ingress is allowed to listen on the hostnetwork.</p>
 <span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
   <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">skipper-ingress</span>
 <span class="l l-Scalar l-Scalar-Plain">rules</span><span class="p p-Indicator">:</span>
-<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">apiGroups</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">[</span><span class="s">&quot;extensions&quot;</span><span class="p p-Indicator">]</span>
-  <span class="l l-Scalar l-Scalar-Plain">resources</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">[</span><span class="s">&quot;ingresses&quot;</span><span class="p p-Indicator">,</span> <span class="p p-Indicator">]</span>
-  <span class="l l-Scalar l-Scalar-Plain">verbs</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">[</span><span class="s">&quot;get&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;list&quot;</span><span class="p p-Indicator">]</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">apiGroups</span><span class="p p-Indicator">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">extensions</span>
+  <span class="l l-Scalar l-Scalar-Plain">resources</span><span class="p p-Indicator">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">ingresses</span>
+  <span class="l l-Scalar l-Scalar-Plain">verbs</span><span class="p p-Indicator">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">get</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">list</span>
 <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">apiGroups</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">[</span><span class="s">&quot;&quot;</span><span class="p p-Indicator">]</span>
-  <span class="l l-Scalar l-Scalar-Plain">resources</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">[</span><span class="s">&quot;namespaces&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;services&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;endpoints&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;pods&quot;</span><span class="p p-Indicator">]</span>
-  <span class="l l-Scalar l-Scalar-Plain">verbs</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">[</span><span class="s">&quot;get&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;list&quot;</span><span class="p p-Indicator">]</span>
+  <span class="l l-Scalar l-Scalar-Plain">resources</span><span class="p p-Indicator">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">namespaces</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">services</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">endpoints</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">pods</span>
+  <span class="l l-Scalar l-Scalar-Plain">verbs</span><span class="p p-Indicator">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">get</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">list</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">apiGroups</span><span class="p p-Indicator">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">zalando.org</span>
+  <span class="l l-Scalar l-Scalar-Plain">resources</span><span class="p p-Indicator">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">routegroups</span>
+  <span class="l l-Scalar l-Scalar-Plain">verbs</span><span class="p p-Indicator">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">get</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">list</span>
 <span class="nn">---</span>
 <span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">rbac.authorization.k8s.io/v1beta1</span>
 <span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">ClusterRoleBinding</span>
@@ -1586,7 +1603,7 @@ skipper, that you should care in a basic production setup.</p>
   <span class="l l-Scalar l-Scalar-Plain">namespace</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">kube-system</span>
   <span class="l l-Scalar l-Scalar-Plain">labels</span><span class="p p-Indicator">:</span>
     <span class="l l-Scalar l-Scalar-Plain">application</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">skipper-ingress</span>
-    <span class="l l-Scalar l-Scalar-Plain">version</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">v0.11.1</span>
+    <span class="l l-Scalar l-Scalar-Plain">version</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">v0.11.40</span>
     <span class="l l-Scalar l-Scalar-Plain">component</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">ingress</span>
 <span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
   <span class="l l-Scalar l-Scalar-Plain">strategy</span><span class="p p-Indicator">:</span>
@@ -1599,7 +1616,7 @@ skipper, that you should care in a basic production setup.</p>
     <span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
       <span class="l l-Scalar l-Scalar-Plain">labels</span><span class="p p-Indicator">:</span>
         <span class="l l-Scalar l-Scalar-Plain">application</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">skipper-ingress</span>
-        <span class="l l-Scalar l-Scalar-Plain">version</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">v0.11.1</span>
+        <span class="l l-Scalar l-Scalar-Plain">version</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">v0.11.40</span>
         <span class="l l-Scalar l-Scalar-Plain">component</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">ingress</span>
     <span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
       <span class="l l-Scalar l-Scalar-Plain">affinity</span><span class="p p-Indicator">:</span>
@@ -1620,7 +1637,7 @@ skipper, that you should care in a basic production setup.</p>
       <span class="l l-Scalar l-Scalar-Plain">hostNetwork</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
       <span class="l l-Scalar l-Scalar-Plain">containers</span><span class="p p-Indicator">:</span>
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">skipper-ingress</span>
-        <span class="l l-Scalar l-Scalar-Plain">image</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">registry.opensource.zalan.do/pathfinder/skipper:v0.11.1</span>
+        <span class="l l-Scalar l-Scalar-Plain">image</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">registry.opensource.zalan.do/pathfinder/skipper:v0.11.40</span>
         <span class="l l-Scalar l-Scalar-Plain">ports</span><span class="p p-Indicator">:</span>
         <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">ingress-port</span>
           <span class="l l-Scalar l-Scalar-Plain">containerPort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">9999</span>
@@ -1775,8 +1792,9 @@ clients can access skipper via Kubernetes service.</p>
 <div class="codehilite"><pre><span></span>kubectl create -f docs/kubernetes/deploy/demo/
 </pre></div>
 
-<p>Now we have a skipper-ingress running as daemonset exposing the TCP
-port 9999 on each worker node, a backend application running with 2
+<p>Now we have a skipper-ingress running as daemonset or deployment
+exposing the TCP port 9999 on each worker nodes, which has a running
+skipper-ingress instance, a backend application running with 2
 replicas that serves some html on TCP port 9090, and we expose a
 cluster service on TCP port 80. Besides skipper-ingress, deployment
 and service can not be reached from outside the cluster. Now we expose
@@ -1808,7 +1826,9 @@ spec:
 <p>The answer depends on your setup and complexity requirements. In the
 simplest case you could add one A record in your DNS <code>*.&lt;mydomain.org&gt;</code>
 to your frontend load balancer IP that directs all traffic from <code>*.&lt;mydomain.org&gt;</code>
-to all Kubernetes worker nodes on TCP port 9999.</p>
+to all Kubernetes worker nodes on TCP port 9999. The load balancer
+health check should make sure, that only nodes with ready skipper-ingress
+instances will get traffic.</p>
 <p>A more complex setup we use in production and can be done with
 something that configures your frontend load balancer, for example
 <a href="https://github.com/zalando-incubator/kube-ingress-aws-controller">kube-aws-ingress-controller</a>,

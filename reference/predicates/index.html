@@ -383,30 +383,36 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#the-path-tree" title="The path tree" class="md-nav__link">
+    The path tree
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#path" title="Path" class="md-nav__link">
     Path
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#pathsubtree" title="PathSubtree" class="md-nav__link">
     PathSubtree
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#the-path-tree" title="The path tree:" class="md-nav__link">
-    The path tree:
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#pathregexp" title="PathRegexp" class="md-nav__link">
     PathRegexp
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -420,6 +426,13 @@
         <li class="md-nav__item">
   <a href="#method" title="Method" class="md-nav__link">
     Method
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#methods" title="Methods" class="md-nav__link">
+    Methods
   </a>
   
 </li>
@@ -994,30 +1007,36 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#the-path-tree" title="The path tree" class="md-nav__link">
+    The path tree
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#path" title="Path" class="md-nav__link">
     Path
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#pathsubtree" title="PathSubtree" class="md-nav__link">
     PathSubtree
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#the-path-tree" title="The path tree:" class="md-nav__link">
-    The path tree:
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#pathregexp" title="PathRegexp" class="md-nav__link">
     PathRegexp
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1031,6 +1050,13 @@
         <li class="md-nav__item">
   <a href="#method" title="Method" class="md-nav__link">
     Method
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#methods" title="Methods" class="md-nav__link">
+    Methods
   </a>
   
 </li>
@@ -1203,7 +1229,11 @@ representation:</p>
 </ul>
 <p>Other higher level argument types must be represented as one of the above types. E.g. it is a convention to
 represent time duration values as strings, parseable by <a href="https://godoc.org/time#ParseDuration">time.Duration</a>).</p>
-<h2 id="path">Path<a class="headerlink" href="#path" title="Permanent link">&para;</a></h2>
+<h2 id="the-path-tree">The path tree<a class="headerlink" href="#the-path-tree" title="Permanent link">&para;</a></h2>
+<p>There is an important difference between the evaluation of the <a href="#Path">Path</a> or <a href="#PathSubtree">PathSubtree</a> predicates, and the
+evaluation of all the other predicates (<a href="#PathRegexp">PathRegexp</a> belonging to the second group). Find an explanation in the
+<a href="../tutorials/basics.md/#route-matching">Route matching</a> section explanation section.</p>
+<h3 id="path">Path<a class="headerlink" href="#path" title="Permanent link">&para;</a></h3>
 <p>The path predicate is used to match the path in HTTP request line. It accepts a single argument, that can be a
 fixed path like &ldquo;/some/path&rdquo;, or it can contain wildcards. There can be only zero or one path predicate in a
 route.</p>
@@ -1231,7 +1261,7 @@ Path(&quot;/foo/*rest&quot;)   //   /foo/bar/baz
 Path(&quot;/foo/**&quot;)      //   /foo/bar/baz
 </pre></div>
 
-<h2 id="pathsubtree">PathSubtree<a class="headerlink" href="#pathsubtree" title="Permanent link">&para;</a></h2>
+<h3 id="pathsubtree">PathSubtree<a class="headerlink" href="#pathsubtree" title="Permanent link">&para;</a></h3>
 <p>The path subtree predicate behaves similar to the path predicate, but it matches the exact path in the
 definition and any sub path below it. The subpath is automatically provided among the path parameters with the
 name <code>*</code>. If a free wildcard is appended to the definition, e.g. <code>PathSubtree("/some/path/*rest")</code>, the free
@@ -1244,11 +1274,7 @@ PathSubtree(&quot;/&quot;)
 PathSubtree(&quot;/foo/*rest&quot;)
 </pre></div>
 
-<h2 id="the-path-tree">The path tree:<a class="headerlink" href="#the-path-tree" title="Permanent link">&para;</a></h2>
-<p>There is an important difference between the evaluation of the Path or PathSubtree predicates, and the
-evaluation of all the other predicates (PathRegexp belonging to the second group). Find an explanation in the
-<a href="../tutorials/basics.md/#route-matching">Route matching</a> section explanation section.</p>
-<h2 id="pathregexp">PathRegexp<a class="headerlink" href="#pathregexp" title="Permanent link">&para;</a></h2>
+<h3 id="pathregexp">PathRegexp<a class="headerlink" href="#pathregexp" title="Permanent link">&para;</a></h3>
 <p>Regular expressions to match the path. It uses Go&rsquo;s standard library
 regexp package to match, which is based on
 <a href="https://github.com/google/re2/wiki/Syntax">re2 regular expression syntax</a>.</p>
@@ -1291,6 +1317,19 @@ GET, HEAD, PATCH, POST, PUT, DELETE, OPTIONS, CONNECT.</p>
 <p>Examples:</p>
 <div class="codehilite"><pre><span></span>Method(&quot;GET&quot;)
 Method(&quot;OPTIONS&quot;)
+</pre></div>
+
+<h2 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link">&para;</a></h2>
+<p>The HTTP method that the request must match. HTTP methods are one of
+GET, HEAD, PATCH, POST, PUT, DELETE, OPTIONS, CONNECT, TRACE.</p>
+<p>Parameters:</p>
+<ul>
+<li>Method (&hellip;string) methods names</li>
+</ul>
+<p>Examples:</p>
+<div class="codehilite"><pre><span></span>Methods(&quot;GET&quot;)
+Methods(&quot;OPTIONS&quot;, &quot;POST&quot;)
+Methods(&quot;OPTIONS&quot;, &quot;POST&quot;, &quot;patch&quot;)
 </pre></div>
 
 <h2 id="header">Header<a class="headerlink" href="#header" title="Permanent link">&para;</a></h2>

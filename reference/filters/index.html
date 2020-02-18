@@ -2198,6 +2198,14 @@ e.g. the request <code>GET /.well-known/acme-challenge/foo</code> will serve the
 <li>does a simple directory listing of files / directories when no <code>index.html</code> is present</li>
 </ul>
 <h2 id="stripquery">stripQuery<a class="headerlink" href="#stripquery" title="Permanent link">&para;</a></h2>
+<p>Removes the query parameter from the request URL, and if the first filter
+parameter is <code>"true"</code>, preserves the query parameter in the form of
+<code>x-query-param-&lt;queryParamName&gt;: &lt;queryParamValue&gt;</code> headers, so that <code>?foo=bar</code>
+becomes <code>x-query-param-foo: bar</code></p>
+<p>Example:
+<div class="codehilite"><pre><span></span><span class="o">*</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="nt">stripQuery</span><span class="o">()</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="s2">&quot;http://backend.example.org&quot;</span><span class="o">;</span>
+<span class="o">*</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="nt">stripQuery</span><span class="o">(</span><span class="s2">&quot;true&quot;</span><span class="o">)</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="s2">&quot;http://backend.example.org&quot;</span><span class="o">;</span>
+</pre></div></p>
 <h2 id="preservehost">preserveHost<a class="headerlink" href="#preservehost" title="Permanent link">&para;</a></h2>
 <p>Sets the incoming <code>Host:</code> header on the outgoing backend connection.</p>
 <p>It can be used to override the <code>proxyPreserveHost</code> behavior for individual routes.</p>

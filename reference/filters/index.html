@@ -560,6 +560,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#logheader" title="logHeader" class="md-nav__link">
+    logHeader
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#tee" title="tee" class="md-nav__link">
     tee
   </a>
@@ -1625,6 +1632,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#logheader" title="logHeader" class="md-nav__link">
+    logHeader
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#tee" title="tee" class="md-nav__link">
     tee
   </a>
@@ -2378,6 +2392,11 @@ It logs with INFO level and a unique ID per request:</p>
 <li>the finishing event of the request</li>
 <li>any read errors other than EOF</li>
 </ul>
+<h2 id="logheader">logHeader<a class="headerlink" href="#logheader" title="Permanent link">&para;</a></h2>
+<p>The logHeader filter prints the request line and the header, but not the body, to
+stderr. Note that this filter should be used only in diagnostics setup and with care,
+since the request headers may contain sensitive data, and they also can explode the
+amount of logs.</p>
 <h2 id="tee">tee<a class="headerlink" href="#tee" title="Permanent link">&para;</a></h2>
 <p>Provides a unix-like <code>tee</code> feature for routing.</p>
 <p>Using this filter, the request will be sent to a &ldquo;shadow&rdquo; backend in addition

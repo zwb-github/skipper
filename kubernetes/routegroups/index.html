@@ -1245,7 +1245,7 @@
 define Skipper routing in Kubernetes, while providing a straightforward way to configure the routing features
 supported by Skipper and not defined by the generic Ingress.</p>
 <p><strong>Important Note:</strong></p>
-<p><em>The integration of the RouteGroup CRD with the load balancer and DNS configuration solutions is a work in
+<p><em>The integration of the RouteGroup CRD with DNS configuration solutions is a work in
 progress.</em></p>
 <h2 id="skipper-as-kubernetes-ingress-controller">Skipper as Kubernetes Ingress controller<a class="headerlink" href="#skipper-as-kubernetes-ingress-controller" title="Permanent link">&para;</a></h2>
 <p>Skipper is an extensible HTTP router with rich route matching, and request flow and traffic shaping
@@ -1305,13 +1305,14 @@ document.)</p>
 <li><a href="https://github.com/zalando/skipper/blob/master/dataclients/kubernetes/deploy/apply/routegroups_crd.yaml">CRD definition</a></li>
 </ul>
 <h2 id="current-limitations">Current Limitations<a class="headerlink" href="#current-limitations" title="Permanent link">&para;</a></h2>
-<p>As mentioned above, the interagtion with load balancer and DNS configuration solutions is a work in progress.
-This means that when using route groups, updating the DNS entries and the load balancer configurations based on
-the host names defined in a route group, currently needs to be done manually. As near milestones, the
+<p>As mentioned above, the integration with DNS configuration solutions
+is a work in progress.  This means that when using route groups,
+updating the DNS entries based on the host names defined in a route
+group, currently needs to be done manually. As near milestones, the
 integration will be done in:</p>
 <ul>
-<li><a href="https://github.com/kubernetes-sigs/external-dns">Extenral DNS</a></li>
-<li><a href="https://github.com/zalando-incubator/kube-ingress-aws-controller">Kubernetes Ingress Controller for AWS</a></li>
+<li><a href="https://github.com/kubernetes-sigs/external-dns">External DNS</a> <a href="https://github.com/kubernetes-sigs/external-dns/issues/1403">Issue</a></li>
+<li>DONE since v0.10.0: <a href="https://github.com/zalando-incubator/kube-ingress-aws-controller">Kubernetes Ingress Controller for AWS</a></li>
 </ul>
 <h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h2>
 <p>The definition file of the CRD can be found as part of Skipper&rsquo;s source code, at:</p>

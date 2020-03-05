@@ -371,15 +371,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#setrequestheader" title="setRequestHeader" class="md-nav__link">
-    setRequestHeader
+  <a href="#modrequestheader" title="modRequestHeader" class="md-nav__link">
+    modRequestHeader
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#setresponseheader" title="setResponseHeader" class="md-nav__link">
-    setResponseHeader
+  <a href="#setrequestheader" title="setRequestHeader" class="md-nav__link">
+    setRequestHeader
   </a>
   
 </li>
@@ -392,15 +392,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#appendresponseheader" title="appendResponseHeader" class="md-nav__link">
-    appendResponseHeader
+  <a href="#droprequestheader" title="dropRequestHeader" class="md-nav__link">
+    dropRequestHeader
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#droprequestheader" title="dropRequestHeader" class="md-nav__link">
-    dropRequestHeader
+  <a href="#setresponseheader" title="setResponseHeader" class="md-nav__link">
+    setResponseHeader
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendresponseheader" title="appendResponseHeader" class="md-nav__link">
+    appendResponseHeader
   </a>
   
 </li>
@@ -1443,15 +1450,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#setrequestheader" title="setRequestHeader" class="md-nav__link">
-    setRequestHeader
+  <a href="#modrequestheader" title="modRequestHeader" class="md-nav__link">
+    modRequestHeader
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#setresponseheader" title="setResponseHeader" class="md-nav__link">
-    setResponseHeader
+  <a href="#setrequestheader" title="setRequestHeader" class="md-nav__link">
+    setRequestHeader
   </a>
   
 </li>
@@ -1464,15 +1471,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#appendresponseheader" title="appendResponseHeader" class="md-nav__link">
-    appendResponseHeader
+  <a href="#droprequestheader" title="dropRequestHeader" class="md-nav__link">
+    dropRequestHeader
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#droprequestheader" title="dropRequestHeader" class="md-nav__link">
-    dropRequestHeader
+  <a href="#setresponseheader" title="setResponseHeader" class="md-nav__link">
+    setResponseHeader
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendresponseheader" title="appendResponseHeader" class="md-nav__link">
+    appendResponseHeader
   </a>
   
 </li>
@@ -2122,6 +2136,18 @@ filter.</p>
   <span class="nt">-</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nt">dynamic</span><span class="o">&gt;;</span>
 </pre></div>
 
+<h2 id="modrequestheader">modRequestHeader<a class="headerlink" href="#modrequestheader" title="Permanent link">&para;</a></h2>
+<p>Replace all matched regex expressions in the given header.</p>
+<p>Parameters:</p>
+<ul>
+<li>header name (string)</li>
+<li>the expression to match (regex)</li>
+<li>the replacement (string)</li>
+</ul>
+<p>Example:</p>
+<div class="codehilite"><pre><span></span><span class="nt">enforce_www</span><span class="o">:</span> <span class="o">*</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="nt">modRequestHeader</span><span class="o">(</span><span class="s2">&quot;Host&quot;</span><span class="o">,</span> <span class="s2">&quot;^zalando\.(\w+)$&quot;</span><span class="o">,</span> <span class="s2">&quot;www.zalando.$1&quot;</span><span class="o">)</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="nt">redirectTo</span><span class="o">(</span><span class="nt">301</span><span class="o">);</span>
+</pre></div>
+
 <h2 id="setrequestheader">setRequestHeader<a class="headerlink" href="#setrequestheader" title="Permanent link">&para;</a></h2>
 <p>Set headers for requests.</p>
 <p>Parameters:</p>
@@ -2133,12 +2159,8 @@ filter.</p>
 <div class="codehilite"><pre><span></span><span class="nt">foo</span><span class="o">:</span> <span class="o">*</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="nt">setRequestHeader</span><span class="o">(</span><span class="s2">&quot;X-Passed-Skipper&quot;</span><span class="o">,</span> <span class="s2">&quot;true&quot;</span><span class="o">)</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="s2">&quot;https://backend.example.org&quot;</span><span class="o">;</span>
 </pre></div>
 
-<h2 id="setresponseheader">setResponseHeader<a class="headerlink" href="#setresponseheader" title="Permanent link">&para;</a></h2>
-<p>Same as <a href="#setrequestheader">setRequestHeader</a>, only for responses</p>
 <h2 id="appendrequestheader">appendRequestHeader<a class="headerlink" href="#appendrequestheader" title="Permanent link">&para;</a></h2>
 <p>Same as <a href="#setrequestheader">setRequestHeader</a>, does not remove a possibly existing value, but adds a new header value</p>
-<h2 id="appendresponseheader">appendResponseHeader<a class="headerlink" href="#appendresponseheader" title="Permanent link">&para;</a></h2>
-<p>Same as <a href="#appendrequestheader">appendRequestHeader</a>, only for responses</p>
 <h2 id="droprequestheader">dropRequestHeader<a class="headerlink" href="#droprequestheader" title="Permanent link">&para;</a></h2>
 <p>Removes a header from the request</p>
 <p>Parameters:</p>
@@ -2149,6 +2171,10 @@ filter.</p>
 <div class="codehilite"><pre><span></span><span class="nt">foo</span><span class="o">:</span> <span class="o">*</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="nt">dropRequestHeader</span><span class="o">(</span><span class="s2">&quot;User-Agent&quot;</span><span class="o">)</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="s2">&quot;https://backend.example.org&quot;</span><span class="o">;</span>
 </pre></div>
 
+<h2 id="setresponseheader">setResponseHeader<a class="headerlink" href="#setresponseheader" title="Permanent link">&para;</a></h2>
+<p>Same as <a href="#setrequestheader">setRequestHeader</a>, only for responses</p>
+<h2 id="appendresponseheader">appendResponseHeader<a class="headerlink" href="#appendresponseheader" title="Permanent link">&para;</a></h2>
+<p>Same as <a href="#appendrequestheader">appendRequestHeader</a>, only for responses</p>
 <h2 id="dropresponseheader">dropResponseHeader<a class="headerlink" href="#dropresponseheader" title="Permanent link">&para;</a></h2>
 <p>Same as <a href="#droprequestheader">dropRequestHeader</a> but for responses from the backend</p>
 <h2 id="modpath">modPath<a class="headerlink" href="#modpath" title="Permanent link">&para;</a></h2>
@@ -2176,11 +2202,11 @@ filter.</p>
 <p>Parameters:</p>
 <ul>
 <li>redirect status code (int)</li>
-<li>location (string)</li>
+<li>location (string) - optional</li>
 </ul>
 <p>Example:</p>
-<div class="codehilite"><pre><span></span><span class="n">redirect1</span><span class="o">:</span> <span class="n">PathRegexp</span><span class="o">(/^\/</span><span class="n">foo</span><span class="o">\/</span><span class="n">bar</span><span class="sr">/) -&gt; redirectTo(302, &quot;/foo/</span><span class="n">newBar</span><span class="s2">&quot;) -&gt; &lt;shunt&gt;;</span>
-<span class="s2">redirect2: * -&gt; redirectTo(301, &quot;</span><span class="err">&quot;</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">&lt;</span><span class="n">shunt</span><span class="o">&gt;;</span>
+<div class="codehilite"><pre><span></span><span class="n">redirect1</span><span class="o">:</span> <span class="n">PathRegexp</span><span class="o">(/^\/</span><span class="n">foo</span><span class="o">\/</span><span class="n">bar</span><span class="sr">/) -&gt; redirectTo(302, &quot;/foo/</span><span class="n">newBar</span><span class="err">&quot;</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">&lt;</span><span class="n">shunt</span><span class="o">&gt;;</span>
+<span class="n">redirect2</span><span class="o">:</span> <span class="o">*</span> <span class="o">-&gt;</span> <span class="n">redirectTo</span><span class="o">(</span><span class="mi">301</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">&lt;</span><span class="n">shunt</span><span class="o">&gt;;</span>
 </pre></div>
 
 <ul>
@@ -2303,12 +2329,15 @@ given key.</p>
 <p>Returns arbitrary content in the HTTP body.</p>
 <p>Parameters:</p>
 <ul>
-<li>arbitrary (string)</li>
+<li>content (string)</li>
+<li>content type (string) - optional</li>
 </ul>
 <p>Example:</p>
 <div class="codehilite"><pre><span></span>* -&gt; inlineContent(&quot;<span class="nt">&lt;h1&gt;</span>Hello<span class="nt">&lt;/h1&gt;</span>&quot;) -&gt; <span class="nt">&lt;shunt&gt;</span>
+* -&gt; inlineContent(&quot;[1,2,3]&quot;, &quot;application/json&quot;) -&gt; <span class="nt">&lt;shunt&gt;</span>
 </pre></div>
 
+<p>Content type will be automatically detected when not provided.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p><code>inlineContent</code> filter is special and must be the last in the filter chain.</p>

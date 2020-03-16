@@ -588,6 +588,47 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#sed" title="sed" class="md-nav__link">
+    sed
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#memory-handling-and-limitations" title="Memory handling and limitations" class="md-nav__link">
+    Memory handling and limitations
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#seddelim" title="sedDelim" class="md-nav__link">
+    sedDelim
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sedrequest" title="sedRequest" class="md-nav__link">
+    sedRequest
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sedrequestdelim" title="sedRequestDelim" class="md-nav__link">
+    sedRequestDelim
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#basicauth" title="basicAuth" class="md-nav__link">
     basicAuth
   </a>
@@ -1667,6 +1708,47 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#sed" title="sed" class="md-nav__link">
+    sed
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#memory-handling-and-limitations" title="Memory handling and limitations" class="md-nav__link">
+    Memory handling and limitations
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#seddelim" title="sedDelim" class="md-nav__link">
+    sedDelim
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sedrequest" title="sedRequest" class="md-nav__link">
+    sedRequest
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sedrequestdelim" title="sedRequestDelim" class="md-nav__link">
+    sedRequestDelim
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#basicauth" title="basicAuth" class="md-nav__link">
     basicAuth
   </a>
@@ -2451,6 +2533,74 @@ and a copy of the body stream. The <code>tee</code> response is ignored for this
 incoming requests.</p>
 <h2 id="teenf">teenf<a class="headerlink" href="#teenf" title="Permanent link">&para;</a></h2>
 <p>The same as <a href="#tee">tee filter</a>, but does not follow redirects from the backend.</p>
+<h2 id="sed">sed<a class="headerlink" href="#sed" title="Permanent link">&para;</a></h2>
+<p>The filter sed replaces all occurences of a pattern with a replacement string
+in the response body.</p>
+<p>Example:</p>
+<div class="codehilite"><pre><span></span><span class="nt">editorRoute</span><span class="o">:</span> <span class="o">*</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="nt">sed</span><span class="o">(</span><span class="s2">&quot;foo&quot;</span><span class="o">,</span> <span class="s2">&quot;bar&quot;</span><span class="o">)</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="s2">&quot;https://www.example.org&quot;</span><span class="o">;</span>
+</pre></div>
+
+<p>Example with larger max buffer:</p>
+<div class="codehilite"><pre><span></span><span class="nt">editorRoute</span><span class="o">:</span> <span class="o">*</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="nt">sed</span><span class="o">(</span><span class="s2">&quot;foo&quot;</span><span class="o">,</span> <span class="s2">&quot;bar&quot;</span><span class="o">,</span> <span class="nt">64000000</span><span class="o">)</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="s2">&quot;https://www.example.org&quot;</span><span class="o">;</span>
+</pre></div>
+
+<p>This filter expects a regexp pattern and a replacement string as arguments.
+During the streaming of the response body, every occurence of the pattern will
+be replaced with the replacement string. The editing doesn&rsquo;t happen right when
+the filter is executed, only later when the streaming normally happens, after
+all response filters were called.</p>
+<p>The sed() filter accepts two optional arguments, the max editor buffer size in
+bytes, and max buffer handling flag. The max buffer size, when set, defines how
+much data can be buffered at a given time by the editor. The default value is
+2MiB. The max buffer handling flag can take one of two values: &ldquo;abort&rdquo; or
+&ldquo;best-effort&rdquo; (default). Setting &ldquo;abort&rdquo; means that the stream will be aborted
+when reached the limit. Setting &ldquo;best-effort&rdquo;, will run the replacement on the
+available content, in case of certain patterns, this may result in content that
+is different from one that would have been edited in a single piece. See more
+details below.</p>
+<p>The filter uses the go regular expression implementation:
+<a href="https://github.com/google/re2/wiki/Syntax">https://github.com/google/re2/wiki/Syntax</a> . Due to the streaming nature, matches
+with zero length are ignored.</p>
+<h3 id="memory-handling-and-limitations">Memory handling and limitations<a class="headerlink" href="#memory-handling-and-limitations" title="Permanent link">&para;</a></h3>
+<p>In order to avoid unbound buffering of unprocessed data, the sed* filters need to
+apply some limitations. Some patterns, e.g. <code>.*</code> would allow to match the complete
+payload, and it could result in trying to buffer it all and potentially causing
+running out of available memory. Similarly, in case of certain expressions, when
+they don&rsquo;t match, it&rsquo;s impossible to tell if they would match without reading more
+data from the source, and so would potentially need to buffer the entire payload.</p>
+<p>To prevent too high memory usage, the max buffer size is limited in case of each
+variant of the filter, by default to 2MiB, which is the same limit as the one we
+apply when reading the request headers by default. When the limit is reached, and
+the buffered content matches the pattern, then it is processed by replacing it,
+when it doesn&rsquo;t match the pattern, then it is forwarded unchanged. This way, e.g.
+<code>sed(".*", "")</code> can be used safely to consume and discard the payload.</p>
+<p>As a result of this, with large payloads, it is possible that the resulting content
+will be different than if we had run the replacement on the entire content at once.
+If we have enough preliminary knowledge about the payload, then it may be better to
+use the delimited variant of the filters, e.g. for line based editing.</p>
+<p>If the max buffer handling is set to &ldquo;abort&rdquo;, then the stream editing is stopped
+and the rest of the payload is dropped.</p>
+<h2 id="seddelim">sedDelim<a class="headerlink" href="#seddelim" title="Permanent link">&para;</a></h2>
+<p>Like <a href="#sed">sed()</a>, but it expects an additional argument, before the optional max buffer
+size argument, that is used to delimit chunks to be processed at once. The pattern
+replacement is executed only within the boundaries of the chunks defined by the
+delimiter, and matches across the chunk boundaries are not considered.</p>
+<p>Example:</p>
+<div class="codehilite"><pre><span></span><span class="nt">editorRoute</span><span class="o">:</span> <span class="o">*</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="nt">sedDelim</span><span class="o">(</span><span class="s2">&quot;foo&quot;</span><span class="o">,</span> <span class="s2">&quot;bar&quot;</span><span class="o">,</span> <span class="s2">&quot;\n&quot;</span><span class="o">)</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="s2">&quot;https://www.example.org&quot;</span><span class="o">;</span>
+</pre></div>
+
+<h2 id="sedrequest">sedRequest<a class="headerlink" href="#sedrequest" title="Permanent link">&para;</a></h2>
+<p>Like <a href="#sed">sed()</a>, but for the request content.</p>
+<p>Example:</p>
+<div class="codehilite"><pre><span></span><span class="nt">editorRoute</span><span class="o">:</span> <span class="o">*</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="nt">sedRequest</span><span class="o">(</span><span class="s2">&quot;foo&quot;</span><span class="o">,</span> <span class="s2">&quot;bar&quot;</span><span class="o">)</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="s2">&quot;https://www.example.org&quot;</span><span class="o">;</span>
+</pre></div>
+
+<h2 id="sedrequestdelim">sedRequestDelim<a class="headerlink" href="#sedrequestdelim" title="Permanent link">&para;</a></h2>
+<p>Like <a href="#seddelim">sedDelim()</a>, but for the request content.</p>
+<p>Example:</p>
+<div class="codehilite"><pre><span></span><span class="nt">editorRoute</span><span class="o">:</span> <span class="o">*</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="nt">sedRequestDelim</span><span class="o">(</span><span class="s2">&quot;foo&quot;</span><span class="o">,</span> <span class="s2">&quot;bar&quot;</span><span class="o">,</span> <span class="s2">&quot;\n&quot;</span><span class="o">)</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="s2">&quot;https://www.example.org&quot;</span><span class="o">;</span>
+</pre></div>
+
 <h2 id="basicauth">basicAuth<a class="headerlink" href="#basicauth" title="Permanent link">&para;</a></h2>
 <p>Enable Basic Authentication</p>
 <p>The filter accepts two parameters, the first mandatory one is the path to the

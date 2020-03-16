@@ -424,6 +424,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#weight-priority" title="Weight (priority)" class="md-nav__link">
+    Weight (priority)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#method" title="Method" class="md-nav__link">
     Method
   </a>
@@ -1048,6 +1055,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#weight-priority" title="Weight (priority)" class="md-nav__link">
+    Weight (priority)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#method" title="Method" class="md-nav__link">
     Method
   </a>
@@ -1305,6 +1319,23 @@ PathRegexp(&quot;^/foo/(bar|qux)&quot;)
 <p>Examples:</p>
 <div class="codehilite"><pre><span></span>Host(/^my-host-header\.example\.org$/)
 Host(/header\.example\.org$/)
+</pre></div>
+
+<h2 id="weight-priority">Weight (priority)<a class="headerlink" href="#weight-priority" title="Permanent link">&para;</a></h2>
+<p>By default, the weight (priority) of a route is determined by the number of defined predicates.</p>
+<p>If you want to give a route more priority, you can give it more weight.</p>
+<p>Parameters:</p>
+<ul>
+<li>Weight (int)</li>
+</ul>
+<p>Example where <code>route2</code> has more priority because it has more predicates:</p>
+<div class="codehilite"><pre><span></span><span class="n">route1</span><span class="o">:</span> <span class="n">Path</span><span class="o">(</span><span class="s2">&quot;/test&quot;</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;http://www.zalando.de&quot;</span><span class="o">;</span>
+<span class="n">route2</span><span class="o">:</span> <span class="n">Path</span><span class="o">(</span><span class="s2">&quot;/test&quot;</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="n">True</span><span class="o">()</span> <span class="o">-&gt;</span> <span class="s2">&quot;http://www.zalando.de&quot;</span><span class="o">;</span>
+</pre></div>
+
+<p>Example where <code>route1</code> has more priority because it has more weight:</p>
+<div class="codehilite"><pre><span></span><span class="n">route1</span><span class="o">:</span> <span class="n">Path</span><span class="o">(</span><span class="s2">&quot;/test&quot;</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="n">Weight</span><span class="o">(</span><span class="mi">100</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;http://www.zalando.de&quot;</span><span class="o">;</span>
+<span class="n">route2</span><span class="o">:</span> <span class="n">Path</span><span class="o">(</span><span class="s2">&quot;/test&quot;</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="n">True</span><span class="o">()</span> <span class="o">&amp;&amp;</span> <span class="n">True</span><span class="o">()</span> <span class="o">-&gt;</span> <span class="s2">&quot;http://www.zalando.de&quot;</span><span class="o">;</span>
 </pre></div>
 
 <h2 id="method">Method<a class="headerlink" href="#method" title="Permanent link">&para;</a></h2>

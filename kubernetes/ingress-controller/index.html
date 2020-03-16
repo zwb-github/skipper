@@ -1515,6 +1515,15 @@ skipper-ingress is allowed to listen on the hostnetwork.</p>
   <span class="l l-Scalar l-Scalar-Plain">hostPorts</span><span class="p p-Indicator">:</span>
   <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">max</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">10000</span>
     <span class="l l-Scalar l-Scalar-Plain">min</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">50</span>
+  <span class="l l-Scalar l-Scalar-Plain">supplementalGroups</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">rule</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">RunAsAny</span>
+  <span class="l l-Scalar l-Scalar-Plain">fsGroup</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">rule</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">RunAsAny</span>
+  <span class="l l-Scalar l-Scalar-Plain">runAsUser</span><span class="p p-Indicator">:</span>
+    <span class="c1"># Require the container to run without root privileges.</span>
+    <span class="l l-Scalar l-Scalar-Plain">rule</span><span class="p p-Indicator">:</span> <span class="s">&#39;MustRunAsNonRoot&#39;</span>
+  <span class="l l-Scalar l-Scalar-Plain">seLinux</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">rule</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">RunAsAny</span>
 <span class="nn">---</span>
 <span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">rbac.authorization.k8s.io/v1</span>
 <span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">ClusterRole</span>

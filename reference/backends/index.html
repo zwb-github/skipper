@@ -418,6 +418,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#backend-protocols" title="Backend Protocols" class="md-nav__link">
+    Backend Protocols
+  </a>
+  
+</li>
+      
       
       
       
@@ -871,6 +878,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#backend-protocols" title="Backend Protocols" class="md-nav__link">
+    Backend Protocols
+  </a>
+  
+</li>
+      
       
       
       
@@ -1167,6 +1181,16 @@ $ curl -s http://localhost:9090/
 A
 $ curl -s http://localhost:9090/
 B
+</pre></div></p>
+<h2 id="backend-protocols">Backend Protocols<a class="headerlink" href="#backend-protocols" title="Permanent link">&para;</a></h2>
+<p>Current implemented protocols:</p>
+<ul>
+<li><code>http</code>: (default) http protocol</li>
+<li><code>fastcgi</code>: (<em>experimental</em>) directly connect Skipper with a FastCGI backend like PHP FPM.</li>
+</ul>
+<p>Route example that uses FastCGI (<em>experimental</em>):
+<div class="codehilite"><pre><span></span><span class="nt">php</span><span class="o">:</span> <span class="o">*</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="nt">SetFastCgiFilename</span><span class="o">(</span><span class="s2">&quot;index.php&quot;</span><span class="o">)</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="s2">&quot;fastcgi://127.0.0.1:9000&quot;</span><span class="o">;</span>
+<span class="nt">php_lb</span><span class="o">:</span> <span class="o">*</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="nt">SetFastCgiFilename</span><span class="o">(</span><span class="s2">&quot;index.php&quot;</span><span class="o">)</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nt">roundRobin</span><span class="o">,</span> <span class="s2">&quot;fastcgi://127.0.0.1:9000&quot;</span><span class="o">,</span> <span class="s2">&quot;fastcgi://127.0.0.1:9001&quot;</span><span class="o">&gt;;</span>
 </pre></div></p>
                 
                   

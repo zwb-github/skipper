@@ -666,8 +666,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#current-limitations" title="Current Limitations" class="md-nav__link">
-    Current Limitations
+  <a href="#requirements" title="Requirements" class="md-nav__link">
+    Requirements
   </a>
   
 </li>
@@ -1029,8 +1029,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#current-limitations" title="Current Limitations" class="md-nav__link">
-    Current Limitations
+  <a href="#requirements" title="Requirements" class="md-nav__link">
+    Requirements
   </a>
   
 </li>
@@ -1244,9 +1244,6 @@
 <p>Route groups are an alternative to the Kubernetes Ingress format for defining ingress rules. They allow to
 define Skipper routing in Kubernetes, while providing a straightforward way to configure the routing features
 supported by Skipper and not defined by the generic Ingress.</p>
-<p><strong>Important Note:</strong></p>
-<p><em>The integration of the RouteGroup CRD with DNS configuration solutions is a work in
-progress.</em></p>
 <h2 id="skipper-as-kubernetes-ingress-controller">Skipper as Kubernetes Ingress controller<a class="headerlink" href="#skipper-as-kubernetes-ingress-controller" title="Permanent link">&para;</a></h2>
 <p>Skipper is an extensible HTTP router with rich route matching, and request flow and traffic shaping
 capabilities. Through its integration with Kubernetes, it can be used in the role of an ingress controller for
@@ -1304,15 +1301,10 @@ document.)</p>
 <li><a href="../routegroup-crd/">RouteGroup semantics</a></li>
 <li><a href="https://github.com/zalando/skipper/blob/master/dataclients/kubernetes/deploy/apply/routegroups_crd.yaml">CRD definition</a></li>
 </ul>
-<h2 id="current-limitations">Current Limitations<a class="headerlink" href="#current-limitations" title="Permanent link">&para;</a></h2>
-<p>As mentioned above, the integration with DNS configuration solutions
-is a work in progress.  This means that when using route groups,
-updating the DNS entries based on the host names defined in a route
-group, currently needs to be done manually. As near milestones, the
-integration will be done in:</p>
+<h2 id="requirements">Requirements<a class="headerlink" href="#requirements" title="Permanent link">&para;</a></h2>
 <ul>
-<li><a href="https://github.com/kubernetes-sigs/external-dns">External DNS</a> <a href="https://github.com/kubernetes-sigs/external-dns/issues/1403">Issue</a></li>
-<li>DONE since v0.10.0: <a href="https://github.com/zalando-incubator/kube-ingress-aws-controller">Kubernetes Ingress Controller for AWS</a></li>
+<li><a href="https://github.com/kubernetes-sigs/external-dns/releases/tag/v0.7.0">External DNS v0.7.0 or higher</a></li>
+<li><a href="https://github.com/zalando-incubator/kube-ingress-aws-controller/releases/tag/v0.10.0">Kubernetes Ingress Controller for AWS v0.10.0 or higher</a></li>
 </ul>
 <h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h2>
 <p>The definition file of the CRD can be found as part of Skipper&rsquo;s source code, at:</p>

@@ -420,6 +420,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#setcontextrequestheader" title="setContextRequestHeader" class="md-nav__link">
+    setContextRequestHeader
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendcontextrequestheader" title="appendContextRequestHeader" class="md-nav__link">
+    appendContextRequestHeader
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setcontextresponseheader" title="setContextResponseHeader" class="md-nav__link">
+    setContextResponseHeader
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendcontextresponseheader" title="appendContextResponseHeader" class="md-nav__link">
+    appendContextResponseHeader
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#modpath" title="modPath" class="md-nav__link">
     modPath
   </a>
@@ -1540,6 +1568,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#setcontextrequestheader" title="setContextRequestHeader" class="md-nav__link">
+    setContextRequestHeader
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendcontextrequestheader" title="appendContextRequestHeader" class="md-nav__link">
+    appendContextRequestHeader
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setcontextresponseheader" title="setContextResponseHeader" class="md-nav__link">
+    setContextResponseHeader
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendcontextresponseheader" title="appendContextResponseHeader" class="md-nav__link">
+    appendContextResponseHeader
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#modpath" title="modPath" class="md-nav__link">
     modPath
   </a>
@@ -2242,7 +2298,8 @@ filter.</p>
 </pre></div>
 
 <h2 id="appendrequestheader">appendRequestHeader<a class="headerlink" href="#appendrequestheader" title="Permanent link">&para;</a></h2>
-<p>Same as <a href="#setrequestheader">setRequestHeader</a>, does not remove a possibly existing value, but adds a new header value</p>
+<p>Same as <a href="#setRequestHeader">setRequestHeader</a>,
+but appends the provided value to the already existing ones.</p>
 <h2 id="droprequestheader">dropRequestHeader<a class="headerlink" href="#droprequestheader" title="Permanent link">&para;</a></h2>
 <p>Removes a header from the request</p>
 <p>Parameters:</p>
@@ -2259,6 +2316,29 @@ filter.</p>
 <p>Same as <a href="#appendrequestheader">appendRequestHeader</a>, only for responses</p>
 <h2 id="dropresponseheader">dropResponseHeader<a class="headerlink" href="#dropresponseheader" title="Permanent link">&para;</a></h2>
 <p>Same as <a href="#droprequestheader">dropRequestHeader</a> but for responses from the backend</p>
+<h2 id="setcontextrequestheader">setContextRequestHeader<a class="headerlink" href="#setcontextrequestheader" title="Permanent link">&para;</a></h2>
+<p>Set headers for requests using values from the filter context (state bag). If the
+provided key (second parameter) cannot be found in the state bag, then it doesn&rsquo;t
+set the header.</p>
+<p>Parameters:</p>
+<ul>
+<li>header name (string)</li>
+<li>key in the state bag (string)</li>
+</ul>
+<p>The the route in the following example checkes whether the request is authorized with the
+oauthTokeninfoAllScope() filter. This filter stores the authenticated user with &ldquo;auth-user&rdquo;
+key in the context, and the setContextRequestHeader() filter in the next step stores it in
+the header of the outgoing request with the X-Uid name:</p>
+<div class="codehilite"><pre><span></span><span class="nt">foo</span><span class="o">:</span> <span class="o">*</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="nt">oauthTokeninfoAllScope</span><span class="o">(</span><span class="s2">&quot;address_service.all&quot;</span><span class="o">)</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="nt">setContextRequestHeader</span><span class="o">(</span><span class="s2">&quot;X-Uid&quot;</span><span class="o">,</span> <span class="s2">&quot;auth-user&quot;</span><span class="o">)</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="s2">&quot;https://backend.example.org&quot;</span><span class="o">;</span>
+</pre></div>
+
+<h2 id="appendcontextrequestheader">appendContextRequestHeader<a class="headerlink" href="#appendcontextrequestheader" title="Permanent link">&para;</a></h2>
+<p>Same as <a href="#setContextRequestHeader">setContextRequestHeader</a>,
+but appends the provided value to the already existing ones.</p>
+<h2 id="setcontextresponseheader">setContextResponseHeader<a class="headerlink" href="#setcontextresponseheader" title="Permanent link">&para;</a></h2>
+<p>Same as <a href="#setContextRequestHeader">setContextRequestHeader</a>, except for responses.</p>
+<h2 id="appendcontextresponseheader">appendContextResponseHeader<a class="headerlink" href="#appendcontextresponseheader" title="Permanent link">&para;</a></h2>
+<p>Same as <a href="#appendContextRequestHeader">appendContextRequestHeader</a>, except for responses.</p>
 <h2 id="modpath">modPath<a class="headerlink" href="#modpath" title="Permanent link">&para;</a></h2>
 <p>Replace all matched regex expressions in the path.</p>
 <p>Parameters:</p>

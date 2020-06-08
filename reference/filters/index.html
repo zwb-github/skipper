@@ -511,6 +511,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#decompress" title="decompress" class="md-nav__link">
+    decompress
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#setquery" title="setQuery" class="md-nav__link">
     setQuery
   </a>
@@ -532,8 +539,29 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#inlinecontentifstatus" title="inlineContentIfStatus" class="md-nav__link">
+    inlineContentIfStatus
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#flowid" title="flowId" class="md-nav__link">
     flowId
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#xforward" title="xforward" class="md-nav__link">
+    xforward
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#xforwardfirst" title="xforwardFirst" class="md-nav__link">
+    xforwardFirst
   </a>
   
 </li>
@@ -1659,6 +1687,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#decompress" title="decompress" class="md-nav__link">
+    decompress
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#setquery" title="setQuery" class="md-nav__link">
     setQuery
   </a>
@@ -1680,8 +1715,29 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#inlinecontentifstatus" title="inlineContentIfStatus" class="md-nav__link">
+    inlineContentIfStatus
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#flowid" title="flowId" class="md-nav__link">
     flowId
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#xforward" title="xforward" class="md-nav__link">
+    xforward
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#xforwardfirst" title="xforwardFirst" class="md-nav__link">
+    xforwardFirst
   </a>
   
 </li>
@@ -2465,6 +2521,18 @@ Accept-Encoding header is not set. It ignores * in the Accept-Encoding header.</
 transfer encoding, sets the Content-Encoding to the selected encoding and sets the
 <code>Vary: Accept-Encoding</code> header, if missing.</p>
 <p>The compression happens in a streaming way, using only a small internal buffer.</p>
+<h2 id="decompress">decompress<a class="headerlink" href="#decompress" title="Permanent link">&para;</a></h2>
+<p>The filter, when executed on the response path, checks if the response entity is
+compressed by a supported algorithm. To decide, it checks the Content-Encoding
+header.</p>
+<p>When compressing the response, it updates the response header. It deletes the
+<code>Content-Length</code> value triggering the proxy to always return the response with chunked
+transfer encoding, deletes the Content-Encoding and the Vary headers, if set.</p>
+<p>The decompression happens in a streaming way, using only a small internal buffer.</p>
+<p>Example:</p>
+<div class="codehilite"><pre><span></span>* -&gt; decompress() -&gt; &quot;https://www.example.org&quot;
+</pre></div>
+
 <h2 id="setquery">setQuery<a class="headerlink" href="#setquery" title="Permanent link">&para;</a></h2>
 <p>Set the query string <code>?k=v</code> in the request to the backend to a given value.</p>
 <p>Parameters:</p>
@@ -2504,6 +2572,20 @@ given key.</p>
 <p class="admonition-title">Note</p>
 <p><code>inlineContent</code> filter is special and must be the last in the filter chain.</p>
 </div>
+<h2 id="inlinecontentifstatus">inlineContentIfStatus<a class="headerlink" href="#inlinecontentifstatus" title="Permanent link">&para;</a></h2>
+<p>Returns arbitrary content in the HTTP body, if the response has the specified status code.</p>
+<p>Parameters:</p>
+<ul>
+<li>status code (int)</li>
+<li>content (string)</li>
+<li>content type (string) - optional</li>
+</ul>
+<p>Example:</p>
+<div class="codehilite"><pre><span></span>* -&gt; inlineContentIfStatus(404, &quot;<span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">\&quot;problem\&quot;</span><span class="nt">&gt;</span>We don&#39;t have what you&#39;re looking for.<span class="nt">&lt;/p&gt;</span>&quot;) -&gt; &quot;https://www.example.org&quot;
+* -&gt; inlineContentIfStatus(401, &quot;{\&quot;error\&quot;: \&quot;unauthorized\&quot;}&quot;, &quot;application/json&quot;) -&gt; &quot;https://www.example.org&quot;
+</pre></div>
+
+<p>The content type will be automatically detected when not provided.</p>
 <h2 id="flowid">flowId<a class="headerlink" href="#flowid" title="Permanent link">&para;</a></h2>
 <p>Sets an X-Flow-Id header, if it&rsquo;s not already in the request.
 This allows you to have a trace in your logs, that traces from
@@ -2521,6 +2603,12 @@ length 16 matching the following regex: <code>^[0-9a-zA-Z+-]+$</code></p>
 <span class="o">*</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="nt">flowId</span><span class="o">(</span><span class="s2">&quot;reuse&quot;</span><span class="o">)</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="s2">&quot;https://some-backend.example.org&quot;</span><span class="o">;</span>
 </pre></div>
 
+<h2 id="xforward">xforward<a class="headerlink" href="#xforward" title="Permanent link">&para;</a></h2>
+<p>Standard proxy headers. Appends the client remote IP to the X-Forwarded-For and sets the X-Forwarded-Host
+header.</p>
+<h2 id="xforwardfirst">xforwardFirst<a class="headerlink" href="#xforwardfirst" title="Permanent link">&para;</a></h2>
+<p>Same as <a href="xforward">xforward</a>, but instead of appending the last remote IP, it prepends it to comply with the
+approach of certain LB implementations.</p>
 <h2 id="randomcontent">randomContent<a class="headerlink" href="#randomcontent" title="Permanent link">&para;</a></h2>
 <p>Generate response with random text of specified length.</p>
 <p>Parameters:</p>
@@ -2927,7 +3015,8 @@ forwardToken(&quot;X-Tokeninfo-Forward&quot;, &quot;access_token&quot;)
 
 <h2 id="oauthoidcuserinfo">oauthOidcUserInfo<a class="headerlink" href="#oauthoidcuserinfo" title="Permanent link">&para;</a></h2>
 <div class="codehilite"><pre><span></span>oauthOidcUserInfo(&quot;https://oidc-provider.example.com&quot;, &quot;client_id&quot;, &quot;client_secret&quot;,
-    &quot;http://target.example.com/subpath/callback&quot;, &quot;email profile&quot;, &quot;name email picture&quot;)
+    &quot;http://target.example.com/subpath/callback&quot;, &quot;email profile&quot;, &quot;name email picture&quot;,
+    &quot;parameter=value&quot;, &quot;X-Auth-Authorization:claims.email&quot;)
 </pre></div>
 
 <p>The filter needs the following parameters:</p>
@@ -2939,12 +3028,16 @@ forwardToken(&quot;X-Tokeninfo-Forward&quot;, &quot;access_token&quot;)
     It can be any value which is a subpath on which the filter is applied.</li>
 <li><strong>Scopes</strong> The OpenID scopes separated by spaces which need to be specified when requesting the token from the provider.</li>
 <li><strong>Claims</strong> The claims which should be present in the token returned by the provider.</li>
+<li><strong>Auth Code Options</strong> (optional) Passes key/value parameters to a provider&rsquo;s authorization endpoint.</li>
+<li><strong>Upstream Headers</strong> (optional) The upstream endpoint will receive these headers which values are parsed from the OIDC information. The header definition can be one or more header-query pairs, space delimited. The query syntax is <a href="https://github.com/tidwall/gjson/blob/master/SYNTAX.md">GJSON</a>.</li>
 </ul>
 <h2 id="oauthoidcanyclaims">oauthOidcAnyClaims<a class="headerlink" href="#oauthoidcanyclaims" title="Permanent link">&para;</a></h2>
-<p><div class="codehilite"><pre><span></span>oauthOidcAnyClaims(&quot;https://oidc-provider.example.com&quot;, &quot;client_id&quot;, &quot;client_secret&quot;,
-    &quot;http://target.example.com/subpath/callback&quot;, &quot;email profile&quot;, &quot;name email picture&quot;)
+<div class="codehilite"><pre><span></span>oauthOidcAnyClaims(&quot;https://oidc-provider.example.com&quot;, &quot;client_id&quot;, &quot;client_secret&quot;,
+    &quot;http://target.example.com/subpath/callback&quot;, &quot;email profile&quot;, &quot;name email picture&quot;,
+    &quot;parameter=value&quot;, &quot;X-Auth-Authorization:claims.email&quot;)
 </pre></div>
-The filter needs the following parameters:</p>
+
+<p>The filter needs the following parameters:</p>
 <ul>
 <li><strong>OpenID Connect Provider URL</strong> For example Google OpenID Connect is available on <code>https://accounts.google.com</code></li>
 <li><strong>Client ID</strong> This value is obtained from the provider upon registration of the application.</li>
@@ -2953,12 +3046,16 @@ The filter needs the following parameters:</p>
     It can be any value which is a subpath on which the filter is applied.</li>
 <li><strong>Scopes</strong> The OpenID scopes separated by spaces which need to be specified when requesting the token from the provider.</li>
 <li><strong>Claims</strong> Several claims can be specified and the request is allowed as long as at least one of them is present.</li>
+<li><strong>Auth Code Options</strong> (optional) Passes key/value parameters to a provider&rsquo;s authorization endpoint.</li>
+<li><strong>Upstream Headers</strong> (optional) The upstream endpoint will receive these headers which values are parsed from the OIDC information. The header definition can be one or more header-query pairs, space delimited. The query syntax is <a href="https://github.com/tidwall/gjson/blob/master/SYNTAX.md">GJSON</a>.</li>
 </ul>
 <h2 id="oauthoidcallclaims">oauthOidcAllClaims<a class="headerlink" href="#oauthoidcallclaims" title="Permanent link">&para;</a></h2>
-<p><div class="codehilite"><pre><span></span>oauthOidcAllClaims(&quot;https://oidc-provider.example.com&quot;, &quot;client_id&quot;, &quot;client_secret&quot;,
-    &quot;http://target.example.com/subpath/callback&quot;, &quot;email profile&quot;, &quot;name email picture&quot;)
+<div class="codehilite"><pre><span></span>oauthOidcAllClaims(&quot;https://oidc-provider.example.com&quot;, &quot;client_id&quot;, &quot;client_secret&quot;,
+    &quot;http://target.example.com/subpath/callback&quot;, &quot;email profile&quot;, &quot;name email picture&quot;,
+    &quot;parameter=value&quot;, &quot;X-Auth-Authorization:claims.email&quot;)
 </pre></div>
-The filter needs the following parameters:</p>
+
+<p>The filter needs the following parameters:</p>
 <ul>
 <li><strong>OpenID Connect Provider URL</strong> For example Google OpenID Connect is available on <code>https://accounts.google.com</code></li>
 <li><strong>Client ID</strong> This value is obtained from the provider upon registration of the application.</li>
@@ -2967,6 +3064,8 @@ The filter needs the following parameters:</p>
     It can be any value which is a subpath on which the filter is applied.</li>
 <li><strong>Scopes</strong> The OpenID scopes separated by spaces which need to be specified when requesting the token from the provider.</li>
 <li><strong>Claims</strong> Several claims can be specified and the request is allowed only when all claims are present.</li>
+<li><strong>Auth Code Options</strong> (optional) Passes key/value parameters to a provider&rsquo;s authorization endpoint.</li>
+<li><strong>Upstream Headers</strong> (optional) The upstream endpoint will receive these headers which values are parsed from the OIDC information. The header definition can be one or more header-query pairs, space delimited. The query syntax is <a href="https://github.com/tidwall/gjson/blob/master/SYNTAX.md">GJSON</a>.</li>
 </ul>
 <h2 id="requestcookie">requestCookie<a class="headerlink" href="#requestcookie" title="Permanent link">&para;</a></h2>
 <p>Append a cookie to the request header.</p>

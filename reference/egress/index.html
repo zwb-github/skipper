@@ -956,7 +956,10 @@ can use the <code>-credentials-update-interval</code> command line flag.</p>
 </pre></div>
 
 <p>start skipper proxy</p>
-<div class="codehilite"><pre><span></span>skipper -inline-routes=&#39;Host(&quot;host1&quot;) -&gt; bearerinjector(&quot;sec1&quot;) -&gt; &quot;http://127.0.0.1:8080/&quot;&#39; -credentials-paths=/tmp/secrets -credentials-update-interval=10s
+<div class="codehilite"><pre><span></span>skipper -inline-routes=&#39;Host(&quot;host1&quot;) -&gt; bearerinjector(&quot;/tmp/secrets/mytoken&quot;) -&gt; &quot;http://127.0.0.1:8080/&quot;&#39; -credentials-paths=/tmp/secrets -credentials-update-interval=10s
+..
+[APP]INFO[0004] Updated secret file: /tmp/secrets/mytoken
+..
 </pre></div>
 
 <p>Client calls skipper proxy</p>
@@ -974,7 +977,7 @@ can use the <code>-credentials-update-interval</code> command line flag.</p>
 </pre></div>
 
 <p>Change the secret: <code>echo changedtoken &gt;/tmp/secrets/mytoken</code>.
-Wait until skipper logs: <code>[APP]INFO[0010] update secret file: mytoken</code></p>
+Wait until skipper logs: <code>[APP]INFO[0010] update secret file: /tmp/secrets/mytoken</code></p>
 <p>Restart fake service (CTRL-c to stop)</p>
 <div class="codehilite"><pre><span></span>nc -l 8080
 </pre></div>

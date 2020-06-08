@@ -952,6 +952,8 @@ an empty string deletes the header - setting to <code>nil</code> is preferred.</
 <ul>
 <li><code>backend_url</code> - (read only) returns the backend url specified in the route
   or an empty value in case it&rsquo;s a shunt or loopback</li>
+<li><code>host</code> - (read only) the &lsquo;Host&rsquo; header that was in the incoming
+  request to the proxy</li>
 <li><code>outgoing_host</code> - (read/write) the host that will be set for the outgoing
   proxy request as the &lsquo;Host&rsquo; header.</li>
 <li><code>remote_addr</code> - (read only) the remote host, usually IP:port</li>

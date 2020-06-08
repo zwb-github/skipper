@@ -431,6 +431,20 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#true" title="True" class="md-nav__link">
+    True
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#false" title="False" class="md-nav__link">
+    False
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#method" title="Method" class="md-nav__link">
     Method
   </a>
@@ -1062,6 +1076,20 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#true" title="True" class="md-nav__link">
+    True
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#false" title="False" class="md-nav__link">
+    False
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#method" title="Method" class="md-nav__link">
     Method
   </a>
@@ -1338,6 +1366,20 @@ Host(/header\.example\.org$/)
 <span class="n">route2</span><span class="o">:</span> <span class="n">Path</span><span class="o">(</span><span class="s2">&quot;/test&quot;</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="n">True</span><span class="o">()</span> <span class="o">&amp;&amp;</span> <span class="n">True</span><span class="o">()</span> <span class="o">-&gt;</span> <span class="s2">&quot;http://www.zalando.de&quot;</span><span class="o">;</span>
 </pre></div>
 
+<h2 id="true">True<a class="headerlink" href="#true" title="Permanent link">&para;</a></h2>
+<p>Does always match. Before <code>Weight</code> predicate existed this was used to give a route more weight.</p>
+<p>Example where <code>route2</code> has more weight.</p>
+<div class="codehilite"><pre><span></span><span class="n">route1</span><span class="o">:</span> <span class="n">Path</span><span class="o">(</span><span class="s2">&quot;/test&quot;</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;http://www.zalando.de&quot;</span><span class="o">;</span>
+<span class="n">route2</span><span class="o">:</span> <span class="n">Path</span><span class="o">(</span><span class="s2">&quot;/test&quot;</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="n">True</span><span class="o">()</span> <span class="o">-&gt;</span> <span class="s2">&quot;http://www.github.com&quot;</span><span class="o">;</span>
+</pre></div>
+
+<h2 id="false">False<a class="headerlink" href="#false" title="Permanent link">&para;</a></h2>
+<p>Does not match. Can be used to disable certain routes.</p>
+<p>Example where <code>route2</code> is disabled.</p>
+<div class="codehilite"><pre><span></span><span class="n">route1</span><span class="o">:</span> <span class="n">Path</span><span class="o">(</span><span class="s2">&quot;/test&quot;</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;http://www.zalando.de&quot;</span><span class="o">;</span>
+<span class="n">route2</span><span class="o">:</span> <span class="n">Path</span><span class="o">(</span><span class="s2">&quot;/test&quot;</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="n">False</span><span class="o">()</span> <span class="o">-&gt;</span> <span class="s2">&quot;http://www.github.com&quot;</span><span class="o">;</span>
+</pre></div>
+
 <h2 id="method">Method<a class="headerlink" href="#method" title="Permanent link">&para;</a></h2>
 <p>The HTTP method that the request must match. HTTP methods are one of
 GET, HEAD, PATCH, POST, PUT, DELETE, OPTIONS, CONNECT.</p>
@@ -1556,7 +1598,7 @@ put the client-IP as last part of the X-Forwarded-For headers.</p>
 a given route by setting its weight.</p>
 <p>The probability for matching a route is defined by the mandatory first
 parameter, that must be a decimal number between 0.0 and 1.0 (both
-exclusive).</p>
+inclusive).</p>
 <p>The optional second argument is used to specify the cookie name for
 the traffic group, in case you want to use stickiness. Stickiness
 allows all subsequent requests from the same client to match the same

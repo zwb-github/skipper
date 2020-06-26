@@ -420,6 +420,19 @@
     Example bearer injection
   </a>
   
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reach-multiple-services" title="Reach multiple services" class="md-nav__link">
+    Reach multiple services
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
       </ul>
@@ -804,6 +817,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../tutorials/shadow-traffic/" title="Shadow Traffic" class="md-nav__link">
+      Shadow Traffic
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../../tutorials/operations/" title="Operations" class="md-nav__link">
       Operations
     </a>
@@ -867,6 +892,19 @@
   <a href="#example-bearer-injection" title="Example bearer injection" class="md-nav__link">
     Example bearer injection
   </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reach-multiple-services" title="Reach multiple services" class="md-nav__link">
+    Reach multiple services
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -997,6 +1035,29 @@ Wait until skipper logs: <code>[APP]INFO[0010] update secret file: /tmp/secrets/
 </pre></div>
 
 <p>This example showed bearer injection with secrets rotation.</p>
+<h5 id="reach-multiple-services">Reach multiple services<a class="headerlink" href="#reach-multiple-services" title="Permanent link">&para;</a></h5>
+<p>Often your service wants to reach multiple services, so you need to
+differentiate these routes, somehow.</p>
+<p>For example your service needs to access <code>a.example.com</code> and
+<code>b.example.com</code>.</p>
+<p>One example is to use <code>.localhost</code> domain, so <code>a.localhost</code> and
+<code>b.localhost</code> in your application and in skipper routes you would
+have:</p>
+<div class="codehilite"><pre><span></span><span class="n">a</span><span class="o">:</span> <span class="n">Host</span><span class="o">(</span><span class="s2">&quot;a.localhost&quot;</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">bearerinjector</span><span class="o">(</span><span class="s2">&quot;/tmp/secrets/mytoken&quot;</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;https://a.example.com&quot;</span>
+<span class="n">b</span><span class="o">:</span> <span class="n">Host</span><span class="o">(</span><span class="s2">&quot;b.localhost&quot;</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">bearerinjector</span><span class="o">(</span><span class="s2">&quot;/tmp/secrets/mytoken&quot;</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;https://b.example.com&quot;</span>
+</pre></div>
+
+<p>You can also use host aliases, in Linux <code>/etc/hosts</code>, or in Kubernetes
+<code>hostAliases</code>:</p>
+<p>Pod spec:</p>
+<div class="codehilite"><pre><span></span><span class="n">spec</span><span class="o">:</span>
+  <span class="n">hostAliases</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">ip</span><span class="o">:</span> <span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span>
+    <span class="n">hostnames</span><span class="o">:</span>
+    <span class="o">-</span> <span class="n">a</span><span class="o">.</span><span class="na">local</span>
+    <span class="o">-</span> <span class="n">b</span><span class="o">.</span><span class="na">local</span>
+</pre></div>
+
 <h2 id="future-todos">Future - TODOs<a class="headerlink" href="#future-todos" title="Permanent link">&para;</a></h2>
 <p>We want to experiment in how to best use skipper as egress proxy.  One
 idea is to implement <a href="https://github.com/zalando/skipper/issues/929">forward proxy via HTTP CONNECT</a>

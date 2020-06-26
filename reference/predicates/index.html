@@ -582,6 +582,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#tee" title="Tee" class="md-nav__link">
+    Tee
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#traffic" title="Traffic" class="md-nav__link">
     Traffic
   </a>
@@ -977,6 +984,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../tutorials/shadow-traffic/" title="Shadow Traffic" class="md-nav__link">
+      Shadow Traffic
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../../tutorials/operations/" title="Operations" class="md-nav__link">
       Operations
     </a>
@@ -1223,6 +1242,13 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tee" title="Tee" class="md-nav__link">
+    Tee
+  </a>
   
 </li>
       
@@ -1593,6 +1619,20 @@ put the client-IP as last part of the X-Forwarded-For headers.</p>
 <div class="codehilite"><pre><span></span>SourceFromLast(&quot;1.2.3.4&quot;, &quot;2.2.2.0/24&quot;)
 </pre></div>
 
+<h2 id="tee">Tee<a class="headerlink" href="#tee" title="Permanent link">&para;</a></h2>
+<p>The Tee predicate matches a route when a request is spawn from the
+<a href="../filters/#teeloopback">teeLoopback</a> filter as a tee request, using
+the same provided label.</p>
+<p>Parameters:</p>
+<ul>
+<li>tee label (string): the predicate will match only those requests that
+  were spawn from a teeLoopback filter using the same label.</li>
+</ul>
+<p>See also:</p>
+<ul>
+<li><a href="../filters/#teeloopback">teeLoopback filter</a></li>
+<li><a href="../../tutorials/shadow-traffic/">Shadow Traffic Tutorial</a></li>
+</ul>
 <h2 id="traffic">Traffic<a class="headerlink" href="#traffic" title="Permanent link">&para;</a></h2>
 <p>Traffic implements a predicate to control the matching probability for
 a given route by setting its weight.</p>

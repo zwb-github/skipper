@@ -792,6 +792,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../tutorials/shadow-traffic/" title="Shadow Traffic" class="md-nav__link">
+      Shadow Traffic
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../../tutorials/operations/" title="Operations" class="md-nav__link">
       Operations
     </a>
@@ -1058,31 +1070,72 @@ use that instead. The overhead of calling lua is 4-5 times slower than pure go.<
 <p>See skptesting/benchmark-lua.sh</p>
 <p>Route for &ldquo;skipper&rdquo; is <code>* -&gt; redirectTo(302, "http://localhost:9980") -&gt; &lt;shunt&gt;</code>,
 route for &ldquo;lua&rdquo; is <code>* -&gt; lua("function request(c,p); c.serve({status_code=302, header={location='http://localhost:9980'}});end") -&gt; &lt;shunt&gt;</code></p>
-<p><div class="codehilite"><pre><span></span><span class="k">[benchmarking skipper]</span>
+<p><div class="codehilite"><pre><span></span><span class="k">[benchmarking skipper-redirectTo]</span>
 <span class="na">Running 12s test @ http://127.0.0.1:9990/lorem.html</span>
   <span class="na">2 threads and 128 connections</span>
   <span class="na">Thread Stats   Avg      Stdev     Max   +/- Stdev</span>
-    <span class="na">Latency     6.75ms   14.22ms 260.28ms   92.19%</span>
-    <span class="na">Req/Sec    23.87k     2.93k   32.22k    70.42%</span>
-  <span class="na">572695 requests in 12.06s, 100.49MB read</span>
-  <span class="na">Non-2xx or 3xx responses: 572695</span>
-<span class="na">Requests/sec:  47474.31</span>
-<span class="na">Transfer/sec:      8.33MB</span>
-<span class="k">[benchmarking skipper done]</span>
+    <span class="na">Latency     3.91ms    4.87ms  59.40ms   85.80%</span>
+    <span class="na">Req/Sec    24.92k     6.05k   36.78k    60.83%</span>
+  <span class="na">Latency Distribution</span>
+     <span class="na">50%    1.83ms</span>
+     <span class="na">75%    6.01ms</span>
+     <span class="na">90%   10.37ms</span>
+     <span class="na">99%   21.33ms</span>
+  <span class="na">596683 requests in 12.04s, 87.07MB read</span>
+<span class="na">Requests/sec:  49542.84</span>
+<span class="na">Transfer/sec:      7.23MB</span>
+<span class="k">[benchmarking skipper-redirectTo done]</span>
 
-<span class="k">[benchmarking lua]</span>
+<span class="k">[benchmarking redirect-lua]</span>
 <span class="na">Running 12s test @ http://127.0.0.1:9991/lorem.html</span>
   <span class="na">2 threads and 128 connections</span>
   <span class="na">Thread Stats   Avg      Stdev     Max   +/- Stdev</span>
-    <span class="na">Latency    38.31ms   53.48ms 580.80ms   83.69%</span>
-    <span class="na">Req/Sec     5.44k     1.03k    8.23k    71.25%</span>
-  <span class="na">130123 requests in 12.01s, 20.97MB read</span>
-<span class="na">Requests/sec:  10831.94</span>
-<span class="na">Transfer/sec:      1.75MB</span>
-<span class="k">[benchmarking lua done]</span>
+    <span class="na">Latency    14.86ms   21.87ms 342.03ms   87.17%</span>
+    <span class="na">Req/Sec    10.44k     2.00k   15.07k    67.08%</span>
+  <span class="na">Latency Distribution</span>
+     <span class="na">50%    4.48ms</span>
+     <span class="na">75%   22.31ms</span>
+     <span class="na">90%   42.07ms</span>
+     <span class="na">99%   98.44ms</span>
+  <span class="na">250358 requests in 12.05s, 33.90MB read</span>
+<span class="na">Requests/sec:  20775.38</span>
+<span class="na">Transfer/sec:      2.81MB</span>
+<span class="k">[benchmarking redirect-lua done]</span>
 </pre></div>
 The benchmark was run with the default pool size of <code>script.InitialPoolSize = 3; script.MaxPoolSize = 10</code>.
-With <code>script.InitialPoolSize = 128; script.MaxPoolSize = 128</code> (tweaked for this benchmark) you get about 12k req/s in lua.</p>
+With <code>script.InitialPoolSize = 128; script.MaxPoolSize = 128</code> (tweaked for this benchmark) you get about 31k req/s in lua:
+<div class="codehilite"><pre><span></span><span class="k">[benchmarking skipper-redirectTo]</span>
+<span class="na">Running 12s test @ http://127.0.0.1:9990/lorem.html</span>
+  <span class="na">2 threads and 128 connections</span>
+  <span class="na">Thread Stats   Avg      Stdev     Max   +/- Stdev</span>
+    <span class="na">Latency     3.96ms    4.89ms  78.09ms   85.34%</span>
+    <span class="na">Req/Sec    24.45k     3.74k   37.68k    77.92%</span>
+  <span class="na">Latency Distribution</span>
+     <span class="na">50%    1.78ms</span>
+     <span class="na">75%    6.13ms</span>
+     <span class="na">90%   10.57ms</span>
+     <span class="na">99%   21.11ms</span>
+  <span class="na">585192 requests in 12.04s, 85.39MB read</span>
+<span class="na">Requests/sec:  48617.36</span>
+<span class="na">Transfer/sec:      7.09MB</span>
+<span class="k">[benchmarking skipper-redirectTo done]</span>
+
+<span class="k">[benchmarking redirect-lua]</span>
+<span class="na">Running 12s test @ http://127.0.0.1:9991/lorem.html</span>
+  <span class="na">2 threads and 128 connections</span>
+  <span class="na">Thread Stats   Avg      Stdev     Max   +/- Stdev</span>
+    <span class="na">Latency     8.25ms   12.37ms 170.95ms   87.93%</span>
+    <span class="na">Req/Sec    15.82k     1.96k   22.00k    69.33%</span>
+  <span class="na">Latency Distribution</span>
+     <span class="na">50%    2.80ms</span>
+     <span class="na">75%   10.20ms</span>
+     <span class="na">90%   23.99ms</span>
+     <span class="na">99%   57.44ms</span>
+  <span class="na">378803 requests in 12.05s, 51.30MB read</span>
+<span class="na">Requests/sec:  31447.98</span>
+<span class="na">Transfer/sec:      4.26MB</span>
+<span class="k">[benchmarking redirect-lua done]</span>
+</pre></div></p>
 <p>Similar results are achieved when testing <code>stripQuery()</code> vs the lua version from above.</p>
                 
                   

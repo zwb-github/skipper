@@ -644,6 +644,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#teeloopback" title="teeLoopback" class="md-nav__link">
+    teeLoopback
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#sed" title="sed" class="md-nav__link">
     sed
   </a>
@@ -1496,6 +1503,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../tutorials/shadow-traffic/" title="Shadow Traffic" class="md-nav__link">
+      Shadow Traffic
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../../tutorials/operations/" title="Operations" class="md-nav__link">
       Operations
     </a>
@@ -1815,6 +1834,13 @@
         <li class="md-nav__item">
   <a href="#teenf" title="teenf" class="md-nav__link">
     teenf
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#teeloopback" title="teeLoopback" class="md-nav__link">
+    teeLoopback
   </a>
   
 </li>
@@ -2701,6 +2727,36 @@ and a copy of the body stream. The <code>tee</code> response is ignored for this
 incoming requests.</p>
 <h2 id="teenf">teenf<a class="headerlink" href="#teenf" title="Permanent link">&para;</a></h2>
 <p>The same as <a href="#tee">tee filter</a>, but does not follow redirects from the backend.</p>
+<h2 id="teeloopback">teeLoopback<a class="headerlink" href="#teeloopback" title="Permanent link">&para;</a></h2>
+<p>This filter provides a unix-like tee feature for routing, but unlike the <a href="#tee">tee</a>,
+this filter feeds the copied request to the start of the routing, including the
+route lookup and executing the filters on the matched route.</p>
+<p>It is recommended to use this solution instead of the tee filter, because the same
+routing facilities are used for the outgoing tee requests as for the normal
+requests, and all the filters and backend types are supported.</p>
+<p>To ensure that the right route, or one of the right set of routes, is matched
+after the loopback, use the filter together with the <a href="../predicates/#tee">Tee</a>
+predicate, however, this is not mandatory if the request is changed via other
+filters, such that other predicates ensure matching the right route. To avoid
+infinite looping, the number of requests spawn from a single incoming request
+is limited similarly as in case of the
+<a href="../backends/#loopback-backend">loopback backend</a>.</p>
+<p>Parameters:</p>
+<ul>
+<li>tee group (string): a label identifying which routes should match the loopback
+  request, marked with the <a href="../predicates/#tee">Tee</a> predicate</li>
+</ul>
+<p>Example, generate shadow traffic from 10% of the production traffic:</p>
+<div class="codehilite"><pre><span></span><span class="nt">main</span><span class="o">:</span> <span class="o">*</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="s2">&quot;https://main-backend.example.org;</span>
+<span class="s2">main-split: Traffic(.1) -&gt; teeLoopback(&quot;</span><span class="nt">test-A</span><span class="s2">&quot;) -&gt; &quot;</span><span class="nt">https</span><span class="o">://</span><span class="nt">main-backend</span><span class="p">.</span><span class="nc">example</span><span class="p">.</span><span class="nc">org</span><span class="s2">&quot;;</span>
+<span class="s2">shadow: Tee(&quot;</span><span class="nt">test-A</span><span class="s2">&quot;) &amp;&amp; True() -&gt; &quot;</span><span class="nt">https</span><span class="o">://</span><span class="nt">test-backend</span><span class="p">.</span><span class="nc">example</span><span class="p">.</span><span class="nc">org</span><span class="err">&quot;</span><span class="o">;</span>
+</pre></div>
+
+<p>See also:</p>
+<ul>
+<li><a href="../predicates/#tee">Tee predicate</a></li>
+<li><a href="../../tutorials/shadow-traffic/">Shadow Traffic Tutorial</a></li>
+</ul>
 <h2 id="sed">sed<a class="headerlink" href="#sed" title="Permanent link">&para;</a></h2>
 <p>The filter sed replaces all occurences of a pattern with a replacement string
 in the response body.</p>

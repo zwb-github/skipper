@@ -802,6 +802,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../tutorials/shadow-traffic/" title="Shadow Traffic" class="md-nav__link">
+      Shadow Traffic
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../../tutorials/operations/" title="Operations" class="md-nav__link">
       Operations
     </a>
@@ -1068,6 +1080,8 @@ $ curl -sv localhost:9090/api &gt;/dev/null
 &lt;
 <span class="o">{</span> <span class="o">[</span><span class="m">3491</span> bytes data<span class="o">]</span>
 </pre></div></p>
+<p>If the request processing reaches the maximum number of loopbacks (by default max=9), the routing will
+result in an error.</p>
 <h2 id="dynamic-backend">Dynamic backend<a class="headerlink" href="#dynamic-backend" title="Permanent link">&para;</a></h2>
 <p>The dynamic backend, <code>&lt;dynamic&gt;</code>, will get the backend to call by data
 provided by filters.  This allows skipper as library users to do proxy

@@ -964,7 +964,7 @@ same label as we did in the <a href="../../reference/predicates/#tee">Tee</a> pr
 <span class="nt">shadow</span><span class="o">:</span> <span class="nt">Tee</span><span class="o">(</span><span class="s2">&quot;shadow-test-1&quot;</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="nt">True</span><span class="o">()</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="s2">&quot;https://shadow.example.org&quot;</span><span class="o">;</span>
 </pre></div>
 
-<p><em>Note that as of now, we need to increase the weight of the &lsquo;shadow&rsquo; route in order to avoid that the &lsquo;split&rsquo;
+<p><em>Note that as of now, we need to increase the weight of the &lsquo;shadow&rsquo; route by adding the <code>True()</code> predicate in order to avoid that the &lsquo;split&rsquo;
 route would match the cloned request again.</em></p>
 <p>After this, the &lsquo;split&rsquo; route will still send all the handled requests, 10% of the total traffic, to the main
 backend, while the rest of the traffic is routed there by the &lsquo;main&rsquo; route. However, the

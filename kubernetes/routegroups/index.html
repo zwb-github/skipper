@@ -858,6 +858,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#multiple-skipper-deployments" title="Multiple skipper deployments" class="md-nav__link">
+    Multiple skipper deployments
+  </a>
+  
+</li>
+      
       
       
       
@@ -1233,6 +1240,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#multiple-skipper-deployments" title="Multiple skipper deployments" class="md-nav__link">
+    Multiple skipper deployments
+  </a>
+  
+</li>
+      
       
       
       
@@ -1457,7 +1471,7 @@ with the ratio defined by the weights of the backend references. E.g:</p>
   <span class="l l-Scalar l-Scalar-Plain">routes</span><span class="p p-Indicator">:</span>
   <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">pathSubtree</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">/api</span>
     <span class="l l-Scalar l-Scalar-Plain">backends</span><span class="p p-Indicator">:</span>
-    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">backendName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">api-svc</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">backendName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">api-svc-v1</span>
       <span class="l l-Scalar l-Scalar-Plain">weight</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
     <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">backendName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">api-svc-v2</span>
       <span class="l l-Scalar l-Scalar-Plain">weight</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">20</span>
@@ -1801,6 +1815,30 @@ explained for the internals. The mapping is as follows:</p>
 </tr>
 </tbody>
 </table>
+<h2 id="multiple-skipper-deployments">Multiple skipper deployments<a class="headerlink" href="#multiple-skipper-deployments" title="Permanent link">&para;</a></h2>
+<p>If you want to split for example <code>internal</code> and <code>public</code> traffic, it
+might be a good choice to split your RouteGroups. Skipper has
+the flag <code>--kubernetes-routegroup-class=&lt;string&gt;</code> to only select RouteGroup
+objects that have the annotation <code>zalando.org/routegroup.class</code> set to
+<code>&lt;string&gt;</code>. Skipper will only create routes for RouteGroup objects with
+it&rsquo;s annotation or RouteGroup objects that do not have this annotation. The
+default class is <code>skipper</code>, if not set. </p>
+<p>Example RouteGroup:</p>
+<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">zalando.org/v1</span>
+<span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">RouteGroup</span>
+<span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my-route-group</span>
+  <span class="l l-Scalar l-Scalar-Plain">annotations</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">zalando.org/routegroup.class</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">internal</span>
+<span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">backends</span><span class="p p-Indicator">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my-backend</span>
+    <span class="l l-Scalar l-Scalar-Plain">type</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">service</span>
+    <span class="l l-Scalar l-Scalar-Plain">serviceName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my-service</span>
+    <span class="l l-Scalar l-Scalar-Plain">servicePort</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
+  <span class="l l-Scalar l-Scalar-Plain">defaultBackends</span><span class="p p-Indicator">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">backendName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my-service</span>
+</pre></div>
                 
                   
                 

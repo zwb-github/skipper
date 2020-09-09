@@ -1089,6 +1089,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#statebagtotag" title="stateBagToTag" class="md-nav__link">
+    stateBagToTag
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#tracingtag" title="tracingTag" class="md-nav__link">
     tracingTag
   </a>
@@ -1098,6 +1105,20 @@
         <li class="md-nav__item">
   <a href="#originmarker" title="originMarker" class="md-nav__link">
     originMarker
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fadein" title="fadeIn" class="md-nav__link">
+    fadeIn
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#endpointcreated" title="endpointCreated" class="md-nav__link">
+    endpointCreated
   </a>
   
 </li>
@@ -2284,6 +2305,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#statebagtotag" title="stateBagToTag" class="md-nav__link">
+    stateBagToTag
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#tracingtag" title="tracingTag" class="md-nav__link">
     tracingTag
   </a>
@@ -2293,6 +2321,20 @@
         <li class="md-nav__item">
   <a href="#originmarker" title="originMarker" class="md-nav__link">
     originMarker
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fadein" title="fadeIn" class="md-nav__link">
+    fadeIn
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#endpointcreated" title="endpointCreated" class="md-nav__link">
+    endpointCreated
   </a>
   
 </li>
@@ -2370,13 +2412,19 @@ filter.</p>
 
 <h2 id="setrequestheader">setRequestHeader<a class="headerlink" href="#setrequestheader" title="Permanent link">&para;</a></h2>
 <p>Set headers for requests.</p>
+<p>Header value may contain template variables (<code>${var}</code>) resolved from filter context path params and state bag.
+If a template variable can&rsquo;t be found then filter does not set the header.</p>
 <p>Parameters:</p>
 <ul>
 <li>header name (string)</li>
 <li>header value (string)</li>
 </ul>
-<p>Example:</p>
+<p>Examples:</p>
 <div class="codehilite"><pre><span></span><span class="nt">foo</span><span class="o">:</span> <span class="o">*</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="nt">setRequestHeader</span><span class="o">(</span><span class="s2">&quot;X-Passed-Skipper&quot;</span><span class="o">,</span> <span class="s2">&quot;true&quot;</span><span class="o">)</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="s2">&quot;https://backend.example.org&quot;</span><span class="o">;</span>
+</pre></div>
+
+<div class="codehilite"><pre><span></span>// oauthTokeninfoAllScope checks whether request is authorized and stores the authenticated user with &quot;auth-user&quot; key in the context
+foo: * -&gt; oauthTokeninfoAllScope(&quot;address_service.all&quot;) -&gt; setRequestHeader(&quot;X-Uid&quot;, &quot;<span class="cp">${</span><span class="n">auth</span><span class="o">-</span><span class="n">user</span><span class="cp">}</span>&quot;) -&gt; &quot;https://backend.example.org&quot;;
 </pre></div>
 
 <h2 id="appendrequestheader">appendRequestHeader<a class="headerlink" href="#appendrequestheader" title="Permanent link">&para;</a></h2>
@@ -2394,6 +2442,14 @@ but appends the provided value to the already existing ones.</p>
 
 <h2 id="setresponseheader">setResponseHeader<a class="headerlink" href="#setresponseheader" title="Permanent link">&para;</a></h2>
 <p>Same as <a href="#setrequestheader">setRequestHeader</a>, only for responses</p>
+<p>Example:</p>
+<div class="codehilite"><pre><span></span><span class="n">set_cookie_with_path_param</span><span class="o">:</span>
+  <span class="n">Path</span><span class="o">(</span><span class="s2">&quot;/path/:id&quot;</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="n">Method</span><span class="o">(</span><span class="s2">&quot;GET&quot;</span><span class="o">)</span>
+  <span class="o">-&gt;</span> <span class="n">setResponseHeader</span><span class="o">(</span><span class="s2">&quot;Set-Cookie&quot;</span><span class="o">,</span> <span class="s2">&quot;cid=${id}; Max-Age=36000; Secure&quot;</span><span class="o">)</span>
+  <span class="o">-&gt;</span> <span class="n">redirectTo</span><span class="o">(</span><span class="mi">302</span><span class="o">,</span> <span class="s2">&quot;/&quot;</span><span class="o">)</span>
+  <span class="o">-&gt;</span> <span class="o">&lt;</span><span class="n">shunt</span><span class="o">&gt;</span>
+</pre></div>
+
 <h2 id="appendresponseheader">appendResponseHeader<a class="headerlink" href="#appendresponseheader" title="Permanent link">&para;</a></h2>
 <p>Same as <a href="#appendrequestheader">appendRequestHeader</a>, only for responses</p>
 <h2 id="dropresponseheader">dropResponseHeader<a class="headerlink" href="#dropresponseheader" title="Permanent link">&para;</a></h2>
@@ -2407,7 +2463,7 @@ set the header.</p>
 <li>header name (string)</li>
 <li>key in the state bag (string)</li>
 </ul>
-<p>The the route in the following example checkes whether the request is authorized with the
+<p>The route in the following example checks whether the request is authorized with the
 oauthTokeninfoAllScope() filter. This filter stores the authenticated user with &ldquo;auth-user&rdquo;
 key in the context, and the setContextRequestHeader() filter in the next step stores it in
 the header of the outgoing request with the X-Uid name:</p>
@@ -3914,6 +3970,21 @@ specified credential paths <code>/tmp/secrets/</code>, resulting in
 <p>Example: If a trace consists of baggage item named <code>foo</code> with a value <code>bar</code>. Adding below filter will add a tag named <code>baz</code> with value <code>bar</code>
 <div class="codehilite"><pre><span></span>tracingBaggageToTag(&quot;foo&quot;, &quot;baz&quot;)
 </pre></div></p>
+<h2 id="statebagtotag">stateBagToTag<a class="headerlink" href="#statebagtotag" title="Permanent link">&para;</a></h2>
+<p>This filter sets an opentracing tag from the filter context (state bag). 
+If the provided key (first parameter) cannot be found in the state bag, then it doesn&rsquo;t set the tag.</p>
+<p>Parameters:</p>
+<ul>
+<li>key in the state bag (string)</li>
+<li>tag name (string)</li>
+</ul>
+<p>The route in the following example checks whether the request is authorized with the
+oauthTokeninfoAllScope() filter. This filter stores the authenticated user with &ldquo;auth-user&rdquo;
+key in the context, and the stateBagToTag() filter in the next step stores it in
+the opentracing tag &ldquo;client_id&rdquo;:</p>
+<div class="codehilite"><pre><span></span><span class="nt">foo</span><span class="o">:</span> <span class="o">*</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="nt">oauthTokeninfoAllScope</span><span class="o">(</span><span class="s2">&quot;address_service.all&quot;</span><span class="o">)</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="nt">stateBagToTag</span><span class="o">(</span><span class="s2">&quot;auth-user&quot;</span><span class="o">,</span> <span class="s2">&quot;client_id&quot;</span><span class="o">)</span> <span class="nt">-</span><span class="o">&gt;</span> <span class="s2">&quot;https://backend.example.org&quot;</span><span class="o">;</span>
+</pre></div>
+
 <h2 id="tracingtag">tracingTag<a class="headerlink" href="#tracingtag" title="Permanent link">&para;</a></h2>
 <p>This filter adds an opentracing tag.</p>
 <p>Syntax:
@@ -3934,6 +4005,39 @@ If there are multiple origin markers with the same origin, the earliest timestam
 </ul>
 <p>Example:</p>
 <div class="codehilite"><pre><span></span>originMarker(&quot;apiUsageMonitoring&quot;, &quot;deployment1&quot;, &quot;2019-08-30T09:55:51Z&quot;)
+</pre></div>
+
+<h2 id="fadein">fadeIn<a class="headerlink" href="#fadein" title="Permanent link">&para;</a></h2>
+<p>When this filter is set, and the route has a load balanced backend, then the newly added endpoints will receive
+the traffic in a gradually increasing way, starting from their detection for the specified duration, after which
+they receive equal amount traffic as the previously existing routes. The detection time of an load balanced
+backend endpoint is preserved over multiple generations of the route configuration (over route changes). This
+filter can be used to saturate the load of autoscaling applications that require a warm-up time and therefore a
+smooth ramp-up. The fade-in feature can be used together with the round-robin and random LB algorithms.</p>
+<p>While the default fade-in curve is linear, the optional exponent parameter can be used to adjust the shape of
+the fade-in curve, based on the following equation:</p>
+<p>current_rate = proportional_rate * min((now - detected) / duration, 1) ^ exponent</p>
+<p>Parameters:</p>
+<ul>
+<li>duration: duration of the fade-in in milliseconds or as a duration string</li>
+<li>fade-in curve exponent - optional: a floating point number, default: 1</li>
+</ul>
+<p>Examples:</p>
+<div class="codehilite"><pre><span></span>fadeIn(&quot;3m&quot;)
+fadeIn(&quot;3m&quot;, 1.5)
+</pre></div>
+
+<h2 id="endpointcreated">endpointCreated<a class="headerlink" href="#endpointcreated" title="Permanent link">&para;</a></h2>
+<p>This filter marks the creation time of a load balanced endpoint. When used together with the fadeIn
+filter, it prevents missing the detection of a new backend instance with the same hostname. This filter is
+typically automatically appended, and it&rsquo;s parameters are based on external sources, e.g. the Kubernetes API.</p>
+<p>Parameters:</p>
+<ul>
+<li>the address of the endpoint</li>
+<li>timestamp, either as a number of seconds since the unix epocs, or a string in RFC3339 format</li>
+</ul>
+<p>Example:</p>
+<div class="codehilite"><pre><span></span>endpointCreated(&quot;http://10.0.0.1:8080&quot;, &quot;2020-12-18T15:30:00Z01:00&quot;)
 </pre></div>
                 
                   

@@ -426,6 +426,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#print-builtin" title="print builtin" class="md-nav__link">
+    print builtin
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#available-lua-modules" title="Available lua modules" class="md-nav__link">
     Available lua modules
   </a>
@@ -862,6 +869,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#print-builtin" title="print builtin" class="md-nav__link">
+    print builtin
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#available-lua-modules" title="Available lua modules" class="md-nav__link">
     Available lua modules
   </a>
@@ -898,7 +912,7 @@
 <p><a href="https://www.lua.org/">LUA</a> scripts can be used as filters in skipper. The
 current implementation supports <a href="https://www.lua.org/manual/5.1/">Lua 5.1</a>.</p>
 <h2 id="route-filters">Route filters<a class="headerlink" href="#route-filters" title="Permanent link">&para;</a></h2>
-<p>The lua scripts can be added to a route description with the lua() filter,
+<p>The lua scripts can be added to a route description with the <code>lua()</code> filter,
 the first parameter for the filter is the script. This can be either a file
 name (ending with <code>.lua</code>) or inline code, e.g. as</p>
 <ul>
@@ -906,22 +920,36 @@ name (ending with <code>.lua</code>) or inline code, e.g. as</p>
  is relative to skipper&rsquo;s working directory.</li>
 <li>inline <code>lua("function request(c, p); print(c.request.url); end")</code></li>
 </ul>
-<p>Any other additional parameters for the filter must be <code>key=value</code> strings.
-These will be passed as table to the called functions as second parameter.
-<strong>NOTE</strong>: Any parameter starting with &ldquo;lua-&rdquo; should not be used to pass
+<p>Any other additional parameters for the filter will be passed as
+a second table parameter to the called functions.</p>
+<blockquote>
+<p>Any parameter starting with &ldquo;lua-&rdquo; should not be used to pass
 values for the script - those will be used for configuring the filter.</p>
+</blockquote>
 <h2 id="script-requirements">Script requirements<a class="headerlink" href="#script-requirements" title="Permanent link">&para;</a></h2>
 <p>A filter script needs at least one global function: <code>request</code> or <code>response</code>.
 If present, they are called with a skipper filter context and the params passed
 in the route as table like
 <div class="codehilite"><pre><span></span><span class="c1">-- route looks like</span>
 <span class="c1">--</span>
-<span class="c1">-- any: * -&gt; lua(&quot;./test.lua&quot;, &quot;myparam=foo&quot;, &quot;other=bar&quot;) -&gt; &lt;shunt&gt;</span>
+<span class="c1">-- any: * -&gt; lua(&quot;./test.lua&quot;, &quot;myparam=foo&quot;, &quot;other=bar&quot;, &quot;justkey&quot;) -&gt; &lt;shunt&gt;</span>
 <span class="c1">--</span>
 <span class="kr">function</span> <span class="nf">request</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">ctx</span><span class="p">.</span><span class="n">request</span><span class="p">.</span><span class="n">method</span> <span class="o">..</span> <span class="s2">&quot; &quot;</span> <span class="o">..</span> <span class="n">ctx</span><span class="p">.</span><span class="n">request</span><span class="p">.</span><span class="n">url</span> <span class="o">..</span> <span class="s2">&quot; -&gt; &quot;</span> <span class="o">..</span> <span class="n">params</span><span class="p">.</span><span class="n">myparam</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>      <span class="c1">-- myparam=foo</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>      <span class="c1">-- other=bar</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>      <span class="c1">-- justkey</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>      <span class="c1">-- nil</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">params</span><span class="p">.</span><span class="n">myparam</span><span class="p">)</span> <span class="c1">-- foo</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">params</span><span class="p">.</span><span class="n">other</span><span class="p">)</span>   <span class="c1">-- bar</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">params</span><span class="p">.</span><span class="n">justkey</span><span class="p">)</span> <span class="c1">-- (empty string)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">params</span><span class="p">.</span><span class="n">x</span><span class="p">)</span>       <span class="c1">-- nil</span>
 <span class="kr">end</span>
 </pre></div></p>
+<blockquote>
+<p>Parameter table allows index access as well as key-value access</p>
+</blockquote>
+<h2 id="print-builtin">print builtin<a class="headerlink" href="#print-builtin" title="Permanent link">&para;</a></h2>
+<p>Lua <code>print</code> builtin function writes skipper info log messages.</p>
 <h2 id="available-lua-modules">Available lua modules<a class="headerlink" href="#available-lua-modules" title="Permanent link">&para;</a></h2>
 <p>Besides the <a href="https://www.lua.org/manual/5.1/manual.html#5">standard modules</a> - except
 for <code>debug</code> - the following modules have been preloaded and can be used with e.g.
@@ -944,22 +972,32 @@ lua script run in the same lua state during one request. Setting a variable
 in the request and accessing it in the response will most likely fail and lead
 to hard debuggable errors. Use the <code>ctx.state_bag</code> to propagate values from
 <code>request</code> to <code>response</code> - and any other filter in the chain.</p>
-<h1 id="request">Request<a class="headerlink" href="#request" title="Permanent link">&para;</a></h1>
-<p>The <code>request()</code> function is run for an incoming request.</p>
+<h1 id="request-and-response">Request and response<a class="headerlink" href="#request-and-response" title="Permanent link">&para;</a></h1>
+<p>The <code>request()</code> function is run for an incoming request and <code>response()</code> for backend response.</p>
 <h2 id="headers">Headers<a class="headerlink" href="#headers" title="Permanent link">&para;</a></h2>
-<p>Request headers can be accessed by accessing the <code>ctx.request.header</code> map like
+<p>Request headers can be accessed via <code>ctx.request.header</code> table like
 <div class="codehilite"><pre><span></span><span class="n">ua</span> <span class="o">=</span> <span class="n">ctx</span><span class="p">.</span><span class="n">request</span><span class="p">.</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;user-agent&quot;</span><span class="p">]</span>
+</pre></div>
+and iterated like
+<div class="codehilite"><pre><span></span><span class="kr">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="kr">in</span> <span class="n">ctx</span><span class="p">.</span><span class="n">request</span><span class="p">.</span><span class="n">header</span><span class="p">()</span> <span class="kr">do</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="s2">&quot;=&quot;</span><span class="p">,</span> <span class="n">v</span><span class="p">);</span>
+<span class="kr">end</span>
 </pre></div></p>
+<blockquote>
+<p>Header table is a <a href="http://lua-users.org/wiki/FuncTables">functable</a> that returns <a href="https://www.lua.org/pil/7.2.html">iterator</a></p>
+</blockquote>
 <p>Header names are normalized by the <code>net/http</code> go module
 <a href="https://godoc.org/net/http#CanonicalHeaderKey">like usual</a>. Setting a
-header is done by assigning to the headers map. Setting a header to <code>nil</code> or
+header is done by assigning to the header table. Setting a header to <code>nil</code> or
 an empty string deletes the header - setting to <code>nil</code> is preferred.</p>
 <div class="codehilite"><pre><span></span><span class="n">ctx</span><span class="p">.</span><span class="n">request</span><span class="p">.</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;user-agent&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;skipper.lua/0.0.1&quot;</span>
 <span class="n">ctx</span><span class="p">.</span><span class="n">request</span><span class="p">.</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;Authorization&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">nil</span> <span class="c1">-- delete authorization header</span>
 </pre></div>
 
-<p>Response headers work the same way by accessing / assigning to
-<code>ctx.response.header</code> - this is of course only valid in the <code>response()</code> phase.</p>
+<blockquote>
+<p><code>header</code> table returns empty string for missing keys</p>
+</blockquote>
+<p>Response headers <code>ctx.response.header</code> work the same way - this is of course only valid in the <code>response()</code> phase.</p>
 <h2 id="other-request-fields">Other request fields<a class="headerlink" href="#other-request-fields" title="Permanent link">&para;</a></h2>
 <ul>
 <li><code>backend_url</code> - (read only) returns the backend url specified in the route
@@ -973,6 +1011,13 @@ an empty string deletes the header - setting to <code>nil</code> is preferred.</
 <li><code>proto</code> - (read only) something like &ldquo;HTTP/1.1&rdquo;</li>
 <li><code>method</code> - (read only) request method, e.g. &ldquo;GET&rdquo; or &ldquo;POST&rdquo;</li>
 <li><code>url</code> - (read/write) request URL as string</li>
+<li><code>url_path</code> - (read/write) request URL path as string</li>
+<li><code>url_query</code> - (read/write) request URL query parameter table, similar to header table but returns <code>nil</code> for missing keys</li>
+<li><code>url_raw_query</code> - (read/write) encoded request URL query values, without &lsquo;?&rsquo; as string</li>
+</ul>
+<h2 id="other-response-fields">Other response fields<a class="headerlink" href="#other-response-fields" title="Permanent link">&para;</a></h2>
+<ul>
+<li><code>status_code</code> - (read/write) response status code as number, e.g. 200</li>
 </ul>
 <h2 id="serving-requests-from-lua">Serving requests from lua<a class="headerlink" href="#serving-requests-from-lua" title="Permanent link">&para;</a></h2>
 <p>Requests can be served with <code>ctx.serve(table)</code>, you must return after this
@@ -984,6 +1029,13 @@ call. Possible keys for the table:</p>
 </ul>
 <p>See also <a href="#redirect">redirect</a> and <a href="#internal-server-error">internal server error</a>
 examples below</p>
+<h2 id="path-parameters">Path parameters<a class="headerlink" href="#path-parameters" title="Permanent link">&para;</a></h2>
+<p>Path parameters (if any) can be read via <code>ctx.path_param</code> table
+<div class="codehilite"><pre><span></span>Path(&quot;/api/:id&quot;) -&gt; lua(&quot;function request(ctx, params); print(ctx.path_param.id); end&quot;) -&gt; &lt;shunt&gt;
+</pre></div></p>
+<blockquote>
+<p><code>path_param</code> table returns <code>nil</code> for missing keys</p>
+</blockquote>
 <h2 id="statebag">StateBag<a class="headerlink" href="#statebag" title="Permanent link">&para;</a></h2>
 <p>The state bag can be used to pass values from one filter to another in the same
 chain. It is shared by all filters in one request.
@@ -996,9 +1048,14 @@ chain. It is shared by all filters in one request.
     <span class="nb">print</span><span class="p">(</span><span class="n">ctx</span><span class="p">.</span><span class="n">state_bag</span><span class="p">[</span><span class="s2">&quot;mykey&quot;</span><span class="p">])</span>
 <span class="kr">end</span>
 </pre></div></p>
+<blockquote>
+<p><code>state_bag</code> table returns <code>nil</code> for missing keys</p>
+</blockquote>
 <h1 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h1>
-<p>Note: the examples serve as examples. If there is a go based plugin available,
-use that instead. The overhead of calling lua is 4-5 times slower than pure go.</p>
+<blockquote>
+<p>The examples serve as examples. If there is a go based plugin available,
+use that instead. For overhead estimate see <a href="#Benchmark">benchmark</a>.</p>
+</blockquote>
 <h2 id="oauth2-token-as-basic-auth-password">OAuth2 token as basic auth password<a class="headerlink" href="#oauth2-token-as-basic-auth-password" title="Permanent link">&para;</a></h2>
 <div class="codehilite"><pre><span></span><span class="kd">local</span> <span class="n">base64</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="s2">&quot;base64&quot;</span><span class="p">)</span>
 
@@ -1065,75 +1122,86 @@ use that instead. The overhead of calling lua is 4-5 times slower than pure go.<
 <span class="kr">end</span>
 </pre></div>
 
+<h2 id="set-request-header-from-params">set request header from params<a class="headerlink" href="#set-request-header-from-params" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><span class="kr">function</span> <span class="nf">request</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+    <span class="n">ctx</span><span class="p">.</span><span class="n">request</span><span class="p">.</span><span class="n">header</span><span class="p">[</span><span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="kr">if</span> <span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;host&quot;</span> <span class="kr">then</span>
+        <span class="n">ctx</span><span class="p">.</span><span class="n">request</span><span class="p">.</span><span class="n">outgoing_host</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="kr">end</span>
+<span class="kr">end</span>
+</pre></div>
+
 <h1 id="benchmark">Benchmark<a class="headerlink" href="#benchmark" title="Permanent link">&para;</a></h1>
 <h2 id="redirectto-vs-lua-redirect">redirectTo vs lua redirect<a class="headerlink" href="#redirectto-vs-lua-redirect" title="Permanent link">&para;</a></h2>
 <p>See skptesting/benchmark-lua.sh</p>
 <p>Route for &ldquo;skipper&rdquo; is <code>* -&gt; redirectTo(302, "http://localhost:9980") -&gt; &lt;shunt&gt;</code>,
 route for &ldquo;lua&rdquo; is <code>* -&gt; lua("function request(c,p); c.serve({status_code=302, header={location='http://localhost:9980'}});end") -&gt; &lt;shunt&gt;</code></p>
-<p><div class="codehilite"><pre><span></span><span class="k">[benchmarking skipper-redirectTo]</span>
-<span class="na">Running 12s test @ http://127.0.0.1:9990/lorem.html</span>
-  <span class="na">2 threads and 128 connections</span>
-  <span class="na">Thread Stats   Avg      Stdev     Max   +/- Stdev</span>
-    <span class="na">Latency     3.91ms    4.87ms  59.40ms   85.80%</span>
-    <span class="na">Req/Sec    24.92k     6.05k   36.78k    60.83%</span>
-  <span class="na">Latency Distribution</span>
-     <span class="na">50%    1.83ms</span>
-     <span class="na">75%    6.01ms</span>
-     <span class="na">90%   10.37ms</span>
-     <span class="na">99%   21.33ms</span>
-  <span class="na">596683 requests in 12.04s, 87.07MB read</span>
-<span class="na">Requests/sec:  49542.84</span>
-<span class="na">Transfer/sec:      7.23MB</span>
-<span class="k">[benchmarking skipper-redirectTo done]</span>
-
-<span class="k">[benchmarking redirect-lua]</span>
-<span class="na">Running 12s test @ http://127.0.0.1:9991/lorem.html</span>
-  <span class="na">2 threads and 128 connections</span>
-  <span class="na">Thread Stats   Avg      Stdev     Max   +/- Stdev</span>
-    <span class="na">Latency    14.86ms   21.87ms 342.03ms   87.17%</span>
-    <span class="na">Req/Sec    10.44k     2.00k   15.07k    67.08%</span>
-  <span class="na">Latency Distribution</span>
-     <span class="na">50%    4.48ms</span>
-     <span class="na">75%   22.31ms</span>
-     <span class="na">90%   42.07ms</span>
-     <span class="na">99%   98.44ms</span>
-  <span class="na">250358 requests in 12.05s, 33.90MB read</span>
-<span class="na">Requests/sec:  20775.38</span>
-<span class="na">Transfer/sec:      2.81MB</span>
-<span class="k">[benchmarking redirect-lua done]</span>
-</pre></div>
-The benchmark was run with the default pool size of <code>script.InitialPoolSize = 3; script.MaxPoolSize = 10</code>.
-With <code>script.InitialPoolSize = 128; script.MaxPoolSize = 128</code> (tweaked for this benchmark) you get about 31k req/s in lua:
+<p>Benchmark results
 <div class="codehilite"><pre><span></span><span class="k">[benchmarking skipper-redirectTo]</span>
 <span class="na">Running 12s test @ http://127.0.0.1:9990/lorem.html</span>
   <span class="na">2 threads and 128 connections</span>
   <span class="na">Thread Stats   Avg      Stdev     Max   +/- Stdev</span>
-    <span class="na">Latency     3.96ms    4.89ms  78.09ms   85.34%</span>
-    <span class="na">Req/Sec    24.45k     3.74k   37.68k    77.92%</span>
+    <span class="na">Latency     4.19ms    5.38ms  69.50ms   85.10%</span>
+    <span class="na">Req/Sec    26.16k     2.63k   33.22k    64.58%</span>
   <span class="na">Latency Distribution</span>
-     <span class="na">50%    1.78ms</span>
-     <span class="na">75%    6.13ms</span>
-     <span class="na">90%   10.57ms</span>
-     <span class="na">99%   21.11ms</span>
-  <span class="na">585192 requests in 12.04s, 85.39MB read</span>
-<span class="na">Requests/sec:  48617.36</span>
-<span class="na">Transfer/sec:      7.09MB</span>
+     <span class="na">50%    1.85ms</span>
+     <span class="na">75%    6.38ms</span>
+     <span class="na">90%   11.66ms</span>
+     <span class="na">99%   23.34ms</span>
+  <span class="na">626122 requests in 12.04s, 91.36MB read</span>
+<span class="na">Requests/sec:  51996.22</span>
+<span class="na">Transfer/sec:      7.59MB</span>
 <span class="k">[benchmarking skipper-redirectTo done]</span>
 
 <span class="k">[benchmarking redirect-lua]</span>
 <span class="na">Running 12s test @ http://127.0.0.1:9991/lorem.html</span>
   <span class="na">2 threads and 128 connections</span>
   <span class="na">Thread Stats   Avg      Stdev     Max   +/- Stdev</span>
-    <span class="na">Latency     8.25ms   12.37ms 170.95ms   87.93%</span>
-    <span class="na">Req/Sec    15.82k     1.96k   22.00k    69.33%</span>
+    <span class="na">Latency     6.81ms    9.69ms 122.19ms   85.95%</span>
+    <span class="na">Req/Sec    21.17k     2.83k   30.63k    73.75%</span>
   <span class="na">Latency Distribution</span>
-     <span class="na">50%    2.80ms</span>
-     <span class="na">75%   10.20ms</span>
-     <span class="na">90%   23.99ms</span>
-     <span class="na">99%   57.44ms</span>
-  <span class="na">378803 requests in 12.05s, 51.30MB read</span>
-<span class="na">Requests/sec:  31447.98</span>
-<span class="na">Transfer/sec:      4.26MB</span>
+     <span class="na">50%    2.21ms</span>
+     <span class="na">75%   10.22ms</span>
+     <span class="na">90%   19.88ms</span>
+     <span class="na">99%   42.54ms</span>
+  <span class="na">507434 requests in 12.06s, 68.72MB read</span>
+<span class="na">Requests/sec:  42064.69</span>
+<span class="na">Transfer/sec:      5.70MB</span>
+<span class="k">[benchmarking redirect-lua done]</span>
+</pre></div>
+show lua performance is ~80% of native.</p>
+<p>The benchmark was run with the default pool size of <code>script.InitialPoolSize = 3; script.MaxPoolSize = 10</code>.
+With <code>script.InitialPoolSize = 128; script.MaxPoolSize = 128</code> (tweaked for this benchmark) you get &gt;95% of native performance in lua:
+<div class="codehilite"><pre><span></span><span class="k">[benchmarking skipper-redirectTo]</span>
+<span class="na">Running 12s test @ http://127.0.0.1:9990/lorem.html</span>
+  <span class="na">2 threads and 128 connections</span>
+  <span class="na">Thread Stats   Avg      Stdev     Max   +/- Stdev</span>
+    <span class="na">Latency     4.15ms    5.24ms  62.27ms   84.88%</span>
+    <span class="na">Req/Sec    25.81k     2.64k   32.74k    70.00%</span>
+  <span class="na">Latency Distribution</span>
+     <span class="na">50%    1.88ms</span>
+     <span class="na">75%    6.49ms</span>
+     <span class="na">90%   11.43ms</span>
+     <span class="na">99%   22.49ms</span>
+  <span class="na">617499 requests in 12.03s, 90.10MB read</span>
+<span class="na">Requests/sec:  51336.87</span>
+<span class="na">Transfer/sec:      7.49MB</span>
+<span class="k">[benchmarking skipper-redirectTo done]</span>
+
+<span class="k">[benchmarking redirect-lua]</span>
+<span class="na">Running 12s test @ http://127.0.0.1:9991/lorem.html</span>
+  <span class="na">2 threads and 128 connections</span>
+  <span class="na">Thread Stats   Avg      Stdev     Max   +/- Stdev</span>
+    <span class="na">Latency     3.79ms    4.98ms  91.19ms   87.15%</span>
+    <span class="na">Req/Sec    25.14k     4.71k   51.45k    72.38%</span>
+  <span class="na">Latency Distribution</span>
+     <span class="na">50%    1.61ms</span>
+     <span class="na">75%    5.17ms</span>
+     <span class="na">90%   10.05ms</span>
+     <span class="na">99%   21.83ms</span>
+  <span class="na">602630 requests in 12.10s, 81.61MB read</span>
+<span class="na">Requests/sec:  49811.24</span>
+<span class="na">Transfer/sec:      6.75MB</span>
 <span class="k">[benchmarking redirect-lua done]</span>
 </pre></div></p>
 <p>Similar results are achieved when testing <code>stripQuery()</code> vs the lua version from above.</p>

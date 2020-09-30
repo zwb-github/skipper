@@ -667,6 +667,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#redis-rate-limiting-metrics" title="Redis - Rate limiting metrics" class="md-nav__link">
+    Redis - Rate limiting metrics
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -712,6 +719,40 @@
   <a href="#auth-filters-span" title="Auth filters span" class="md-nav__link">
     Auth filters span
   </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#redis-rate-limiting-spans" title="Redis rate limiting spans" class="md-nav__link">
+    Redis rate limiting spans
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#operation-redis_allow_check_card" title="Operation: redis_allow_check_card" class="md-nav__link">
+    Operation: redis_allow_check_card
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#operation-redis_allow_add_card" title="Operation: redis_allow_add_card" class="md-nav__link">
+    Operation: redis_allow_add_card
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#operation-redis_oldest_score" title="Operation: redis_oldest_score" class="md-nav__link">
+    Operation: redis_oldest_score
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -1172,6 +1213,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#redis-rate-limiting-metrics" title="Redis - Rate limiting metrics" class="md-nav__link">
+    Redis - Rate limiting metrics
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1217,6 +1265,40 @@
   <a href="#auth-filters-span" title="Auth filters span" class="md-nav__link">
     Auth filters span
   </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#redis-rate-limiting-spans" title="Redis rate limiting spans" class="md-nav__link">
+    Redis rate limiting spans
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#operation-redis_allow_check_card" title="Operation: redis_allow_check_card" class="md-nav__link">
+    Operation: redis_allow_check_card
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#operation-redis_allow_add_card" title="Operation: redis_allow_add_card" class="md-nav__link">
+    Operation: redis_allow_add_card
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#operation-redis_oldest_score" title="Operation: redis_oldest_score" class="md-nav__link">
+    Operation: redis_oldest_score
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -1798,6 +1880,19 @@ are exposed from skipper to the metrics endpoint, default listener
 
 
 <p>}</p>
+<h3 id="redis-rate-limiting-metrics">Redis - Rate limiting metrics<a class="headerlink" href="#redis-rate-limiting-metrics" title="Permanent link">&para;</a></h3>
+<p>Timer metrics for the latencies and errors of the communication with the auxiliary Redis instances are enabled
+by the default, and exposed among the timers via the following keys:</p>
+<ul>
+<li>skipper.swarm.redis.query.allow.success: successful allow requests to the rate limiter, ungrouped</li>
+<li>skipper.swarm.redis.query.allow.failure: failed allow requests to the rate limiter, ungrouped, where the redis
+  communication failed</li>
+<li>skipper.swarm.redis.query.retryafter.success.<group>: successful allow requests to the rate limiter, grouped
+  by the rate limiter group name when used</li>
+<li>skipper.swarm.redis.query.retryafter.failure.<group>: failed allow requests to the rate limiter, ungrouped,
+  where the redis communication faileds, grouped by the rate limiter group name when used</li>
+</ul>
+<p>See more details about rate limiting at <a href="../../reference/filters/#clusterclientratelimit">Rate limiting</a>.</p>
 <h2 id="opentracing">OpenTracing<a class="headerlink" href="#opentracing" title="Permanent link">&para;</a></h2>
 <p>Skipper has support for different <a href="http://opentracing.io/">OpenTracing API</a> vendors, including
 <a href="https://www.jaegertracing.io/">jaeger</a>,
@@ -1872,6 +1967,16 @@ on the filter used by the matched route.</p>
 <p>The auth filters have trace log values <code>start</code> and <code>end</code> for DNS, TCP
 connect, TLS handshake and connection pool:</p>
 <p><img alt="tokeninfo auth filter span with logs" src="../../img/skipper_opentracing_auth_filter_tokeninfo_span_with_logs.png" /></p>
+<h3 id="redis-rate-limiting-spans">Redis rate limiting spans<a class="headerlink" href="#redis-rate-limiting-spans" title="Permanent link">&para;</a></h3>
+<h4 id="operation-redis_allow_check_card">Operation: redis_allow_check_card<a class="headerlink" href="#operation-redis_allow_check_card" title="Permanent link">&para;</a></h4>
+<p>Operation executed when the cluster rate limiting relies on the auxiliary Redis instances, and the Allow method
+checks if the rate exceeds the configured limit.</p>
+<h4 id="operation-redis_allow_add_card">Operation: redis_allow_add_card<a class="headerlink" href="#operation-redis_allow_add_card" title="Permanent link">&para;</a></h4>
+<p>Operation setting the counter of the measured request rate for cluster rate limiting with auxiliary Redis
+instances.</p>
+<h4 id="operation-redis_oldest_score">Operation: redis_oldest_score<a class="headerlink" href="#operation-redis_oldest_score" title="Permanent link">&para;</a></h4>
+<p>Operation querying the oldest request event for the rate limiting Retry-After header with cluster rate limiting
+when used with auxiliary Redis instances.</p>
 <h2 id="dataclient">Dataclient<a class="headerlink" href="#dataclient" title="Permanent link">&para;</a></h2>
 <p>Dataclients poll some kind of data source for routes. To change the
 timeout for calls that polls a dataclient, which could be the

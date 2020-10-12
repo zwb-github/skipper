@@ -335,11 +335,11 @@ func (c *Client) loadAndConvert() (*clusterState, []*eskip.Route, error) {
 func shuntRoute(r *eskip.Route) {
 	r.Filters = []*eskip.Filter{
 		{
-			Name: "status",
+			Name: builtin.StatusName,
 			Args: []interface{}{502},
 		},
 		{
-			Name: "inlineContent",
+			Name: builtin.InlineContentName,
 			Args: []interface{}{"no endpoints"},
 		},
 	}

@@ -332,6 +332,21 @@ func (c *Client) loadAndConvert() (*clusterState, []*eskip.Route, error) {
 	return state, append(ri, rg...), nil
 }
 
+func shortCircuitRoute(r *eskip.Route) {
+	r.Filters = []*eskip.Filter{
+		{
+			Name: "status",
+			Args: []interface{}{502},
+		},
+		{
+			Name: "inlineContent",
+			Args: []interface{}{"no endpoints"},
+		},
+	}
+	r.BackendType = eskip.ShuntBackend
+	r.Backend = ""
+}
+
 func healthcheckRoute(healthy, reverseSourcePredicate bool) *eskip.Route {
 	status := http.StatusOK
 	if !healthy {

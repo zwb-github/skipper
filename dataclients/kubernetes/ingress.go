@@ -218,10 +218,6 @@ func convertPathRule(
 	}
 	log.Debugf("%d routes for %s/%s/%s", len(eps), ns, svcName, svcPort)
 
-	if len(eps) == 0 {
-		return nil, nil
-	}
-
 	// Consider: if there is only a single endpoint, wouldn't it be better to use the cluster IP?
 	if len(eps) == 1 {
 		r := &eskip.Route{
@@ -245,21 +241,6 @@ func convertPathRule(
 	setPath(pathMode, r, prule.Path)
 	setTraffic(r, svcName, prule.Backend.Traffic, prule.Backend.NoopCount)
 	return r, nil
-}
-
-func shortCircuitRoute(r *eskip.Route) {
-	r.Filters = []*eskip.Filter{
-		{
-			Name: "status",
-			Args: []interface{}{502},
-		},
-		{
-			Name: "inlineContent",
-			Args: []interface{}{"no endpoints"},
-		},
-	}
-	r.BackendType = eskip.ShuntBackend
-	r.Backend = ""
 }
 
 func setTraffic(r *eskip.Route, svcName string, weight float64, noopCount int) {

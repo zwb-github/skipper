@@ -203,23 +203,16 @@ func convertPathRule(
 		log.Debugf("convertPathRule: Found %d endpoints %s for %s", len(eps), targetPort, svcName)
 	}
 
-	// TODO: errors may get ignored if err != nil && err != errEndpointNotFound && len(eps) == 0
 	if len(eps) == 0 || err == errEndpointNotFound {
-
-		address, err2 := getServiceURL(svc, svcPort)
-		if err2 != nil {
-			return nil, err2
-		}
+		// add short circuit route https://github.com/zalando/skipper/issues/1525
 		r := &eskip.Route{
 			Id:          routeID(ns, name, host, prule.Path, svcName),
-			Backend:     address,
 			HostRegexps: hostRegexp,
 		}
-
 		setPath(pathMode, r, prule.Path)
 		setTraffic(r, svcName, prule.Backend.Traffic, prule.Backend.NoopCount)
+		shortCircuitRoute(r)
 		return r, nil
-
 	} else if err != nil {
 		return nil, err
 	}
@@ -252,6 +245,21 @@ func convertPathRule(
 	setPath(pathMode, r, prule.Path)
 	setTraffic(r, svcName, prule.Backend.Traffic, prule.Backend.NoopCount)
 	return r, nil
+}
+
+func shortCircuitRoute(r *eskip.Route) {
+	r.Filters = []*eskip.Filter{
+		{
+			Name: "status",
+			Args: []interface{}{502},
+		},
+		{
+			Name: "inlineContent",
+			Args: []interface{}{"no endpoints"},
+		},
+	}
+	r.BackendType = eskip.ShuntBackend
+	r.Backend = ""
 }
 
 func setTraffic(r *eskip.Route, svcName string, weight float64, noopCount int) {
@@ -545,15 +553,12 @@ func (ing *ingress) convertDefaultBackend(state *clusterState, i *definitions.In
 	}
 
 	if len(eps) == 0 || err == errEndpointNotFound {
-		address, err2 := getServiceURL(svc, svcPort)
-		if err2 != nil {
-			return nil, false, err2
+		// add short circuit route https://github.com/zalando/skipper/issues/1525
+		r := &eskip.Route{
+			Id: routeID(ns, name, "", "", ""),
 		}
-
-		return &eskip.Route{
-			Id:      routeID(ns, name, "", "", ""),
-			Backend: address,
-		}, true, nil
+		shortCircuitRoute(r)
+		return r, true, nil
 	} else if len(eps) == 1 {
 		return &eskip.Route{
 			Id:      routeID(ns, name, "", "", ""),

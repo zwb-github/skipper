@@ -260,21 +260,15 @@ func applyServiceBackend(ctx *routeGroupContext, backend *definitions.SkipperBac
 	)
 
 	if len(eps) == 0 {
-		b, err := createClusterIPBackend(s, backend)
-		if err != nil {
-			return err
-		}
-
 		log.Infof(
-			"[routegroup] Target endpoints not found, using service cluster IP as a fallback for %s/%s %s:%d",
+			"[routegroup] Target endpoints not found, short-circuit for %s/%s %s:%d",
 			namespaceString(ctx.routeGroup.Metadata.Namespace),
 			ctx.routeGroup.Metadata.Name,
 			backend.ServiceName,
 			backend.ServicePort,
 		)
 
-		r.BackendType = eskip.NetworkBackend
-		r.Backend = b
+		shortCircuitRoute(r)
 		return nil
 	}
 

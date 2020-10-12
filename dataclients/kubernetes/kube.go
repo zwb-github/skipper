@@ -336,7 +336,7 @@ func shuntRoute(r *eskip.Route) {
 	r.Filters = []*eskip.Filter{
 		{
 			Name: builtin.StatusName,
-			Args: []interface{}{502},
+			Args: []interface{}{502.0},
 		},
 		{
 			Name: builtin.InlineContentName,

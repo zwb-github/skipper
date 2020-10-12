@@ -211,7 +211,7 @@ func convertPathRule(
 		}
 		setPath(pathMode, r, prule.Path)
 		setTraffic(r, svcName, prule.Backend.Traffic, prule.Backend.NoopCount)
-		shortCircuitRoute(r)
+		shuntRoute(r)
 		return r, nil
 	} else if err != nil {
 		return nil, err
@@ -538,7 +538,7 @@ func (ing *ingress) convertDefaultBackend(state *clusterState, i *definitions.In
 		r := &eskip.Route{
 			Id: routeID(ns, name, "", "", ""),
 		}
-		shortCircuitRoute(r)
+		shuntRoute(r)
 		return r, true, nil
 	} else if len(eps) == 1 {
 		return &eskip.Route{

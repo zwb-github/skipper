@@ -268,7 +268,7 @@ func applyServiceBackend(ctx *routeGroupContext, backend *definitions.SkipperBac
 			backend.ServicePort,
 		)
 
-		shortCircuitRoute(r)
+		shuntRoute(r)
 		return nil
 	}
 

@@ -332,7 +332,7 @@ func (c *Client) loadAndConvert() (*clusterState, []*eskip.Route, error) {
 	return state, append(ri, rg...), nil
 }
 
-func shortCircuitRoute(r *eskip.Route) {
+func shuntRoute(r *eskip.Route) {
 	r.Filters = []*eskip.Filter{
 		{
 			Name: "status",

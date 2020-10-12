@@ -261,7 +261,7 @@ func applyServiceBackend(ctx *routeGroupContext, backend *definitions.SkipperBac
 
 	if len(eps) == 0 {
 		log.Infof(
-			"[routegroup] Target endpoints not found, short-circuit for %s/%s %s:%d",
+			"[routegroup] Target endpoints not found, shuntroute for %s/%s %s:%d",
 			namespaceString(ctx.routeGroup.Metadata.Namespace),
 			ctx.routeGroup.Metadata.Name,
 			backend.ServiceName,

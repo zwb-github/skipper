@@ -1,7 +1,6 @@
 package kubernetes
 
 import (
-	"errors"
 	"fmt"
 	"strings"
 
@@ -50,8 +49,6 @@ type calculatedTraffic struct {
 	value   float64
 	balance int
 }
-
-var errMissingClusterIP = errors.New("missing cluster IP")
 
 func eskipError(typ, e string, err error) error {
 	if len(e) > 48 {
@@ -232,14 +229,6 @@ func getBackendService(ctx *routeGroupContext, backend *definitions.SkipperBacke
 	}
 
 	return s, nil
-}
-
-func createClusterIPBackend(s *service, backend *definitions.SkipperBackend) (string, error) {
-	if s.Spec.ClusterIP == "" {
-		return "", errMissingClusterIP
-	}
-
-	return fmt.Sprintf("http://%s:%d", s.Spec.ClusterIP, backend.ServicePort), nil
 }
 
 func applyServiceBackend(ctx *routeGroupContext, backend *definitions.SkipperBackend, r *eskip.Route) error {

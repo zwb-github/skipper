@@ -70,24 +70,6 @@ func newIngress(o Options) *ingress {
 	}
 }
 
-func getServiceURL(svc *service, port definitions.BackendPort) (string, error) {
-	if p, ok := port.Number(); ok {
-		log.Debugf("service port as number: %d", p)
-		return fmt.Sprintf("http://%s:%d", svc.Spec.ClusterIP, p), nil
-	}
-
-	pn, _ := port.Name()
-	for _, pi := range svc.Spec.Ports {
-		if pi.Name == pn {
-			log.Debugf("service port found by name: %s -> %d", pn, pi.Port)
-			return fmt.Sprintf("http://%s:%d", svc.Spec.ClusterIP, pi.Port), nil
-		}
-	}
-
-	log.Debugf("service port not found by name: %s", pn)
-	return "", errServiceNotFound
-}
-
 func getLoadBalancerAlgorithm(m *definitions.Metadata) string {
 	algorithm := defaultLoadBalancerAlgorithm
 	if algorithmAnnotationValue, ok := m.Annotations[skipperLoadBalancerAnnotationKey]; ok {
@@ -172,9 +154,12 @@ func convertPathRule(
 
 	targetPort, err := svc.getTargetPort(svcPort)
 	if err != nil {
-		// fallback to service, but service definition is wrong or no pods
-		log.Errorf("Failed to find target port for service %s, fallback to service: %v", svcName, err)
+		// service definition is wrong or no pods
 		err = nil
+		if len(eps) > 0 {
+			// should never happen
+			log.Errorf("convertPathRule: Failed to find target port for service %s, but %d endpoints exist. Kubernetes has inconsistent data", svcName, len(eps))
+		}
 	} else if svc.Spec.Type == "ExternalName" {
 		scheme := "https"
 		if targetPort != "443" {
@@ -202,9 +187,9 @@ func convertPathRule(
 		eps, err = state.getEndpoints(ns, svcName, svcPort.String(), targetPort, protocol)
 		log.Debugf("convertPathRule: Found %d endpoints %s for %s", len(eps), targetPort, svcName)
 	}
-
 	if len(eps) == 0 || err == errEndpointNotFound {
 		// add short circuit route https://github.com/zalando/skipper/issues/1525
+		log.Errorf("convertPathRule: add shuntroute to return 502 for service %s with %d endpoints: %v", svcName, len(eps), err)
 		r := &eskip.Route{
 			Id:          routeID(ns, name, host, prule.Path, svcName),
 			HostRegexps: hostRegexp,
@@ -216,9 +201,8 @@ func convertPathRule(
 	} else if err != nil {
 		return nil, err
 	}
-	log.Debugf("%d routes for %s/%s/%s", len(eps), ns, svcName, svcPort)
 
-	// Consider: if there is only a single endpoint, wouldn't it be better to use the cluster IP?
+	log.Debugf("convertPathRule: %d routes for %s/%s/%s", len(eps), ns, svcName, svcPort)
 	if len(eps) == 1 {
 		r := &eskip.Route{
 			Id:          routeID(ns, name, host, prule.Path, svcName),
@@ -499,8 +483,8 @@ func (ing *ingress) convertDefaultBackend(state *clusterState, i *definitions.In
 
 	targetPort, err := svc.getTargetPort(svcPort)
 	if err != nil {
+		log.Errorf("convertDefaultBackend: Failed to find target port %v, %s, add shuntroute: %v", svc.Spec.Ports, svcPort, err)
 		err = nil
-		log.Errorf("Failed to find target port %v, %s, fallback to service", svc.Spec.Ports, svcPort)
 	} else if svc.Spec.Type == "ExternalName" {
 		scheme := "https"
 		if targetPort != "443" {
@@ -518,7 +502,7 @@ func (ing *ingress) convertDefaultBackend(state *clusterState, i *definitions.In
 			Filters:     f,
 		}, true, nil
 	} else {
-		log.Debugf("Found target port %v, for service %s", targetPort, svcName)
+		log.Debugf("convertDefaultBackend: Found target port %v, for service %s", targetPort, svcName)
 		protocol := "http"
 		if p, ok := i.Metadata.Annotations[skipperBackendProtocolAnnotationKey]; ok {
 			protocol = p
@@ -535,6 +519,7 @@ func (ing *ingress) convertDefaultBackend(state *clusterState, i *definitions.In
 
 	if len(eps) == 0 || err == errEndpointNotFound {
 		// add short circuit route https://github.com/zalando/skipper/issues/1525
+		log.Errorf("convertDefaultBackend: add shuntroute to return 502 for service %s with %d endpoints: %v", svcName, len(eps), err)
 		r := &eskip.Route{
 			Id: routeID(ns, name, "", "", ""),
 		}

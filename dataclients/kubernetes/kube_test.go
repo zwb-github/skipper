@@ -59,16 +59,16 @@ func init() {
 // testService("namespace2", "service4", "10.0.1.2", map[string]int{"port4": 4444, "port5": 5555}),
 func testEndpointList() *endpointList {
 	eps := make([]*endpoint, 0)
-	eps = append(eps, testEndpoints("namespace1", "service1", "1.1.1", 1, 8080)...)
-	eps = append(eps, testEndpoints("namespace1", "service2", "1.1.2", 1, 8181)...)
-	eps = append(eps, testEndpoints("namespace2", "service3", "2.1.3", 1, 7272)...)
-	eps = append(eps, testEndpoints("namespace2", "service4", "2.1.4", 1, 4444)...)
+	eps = append(eps, testEndpoints("namespace1", "service1", "1.1.1", 1, map[string]int{"port1": 8080})...)
+	eps = append(eps, testEndpoints("namespace1", "service2", "1.1.2", 1, map[string]int{"port2": 8181})...)
+	eps = append(eps, testEndpoints("namespace2", "service3", "2.1.3", 1, map[string]int{"port3": 7272})...)
+	eps = append(eps, testEndpoints("namespace2", "service4", "2.1.4", 1, map[string]int{"port4": 4444, "port5": 5555})...)
 	return &endpointList{
 		Items: eps,
 	}
 }
 
-func testEndpoints(namespace, name, base string, n, p int) []*endpoint {
+func testEndpoints(namespace, name, base string, n int, ports map[string]int) []*endpoint {
 	eps := make([]*endpoint, 0, 1)
 
 	eps = append(eps, &endpoint{
@@ -81,12 +81,14 @@ func testEndpoints(namespace, name, base string, n, p int) []*endpoint {
 	for j := range eps {
 		s := &subset{
 			Addresses: []*address{},
-			Ports: []*port{
-				{
-					Name: "baz",
-					Port: p,
-				},
-			},
+			Ports:     []*port{},
+		}
+
+		for k, v := range ports {
+			s.Ports = append(s.Ports, &port{
+				Name: k,
+				Port: v,
+			})
 		}
 
 		for i := 0; i < n; i++ {
@@ -98,8 +100,6 @@ func testEndpoints(namespace, name, base string, n, p int) []*endpoint {
 		}
 		eps[j].Subsets = append(eps[j].Subsets, s)
 	}
-	// println("eps:", len(eps))
-	// println(cmp.Diff(eps, nil))
 	return eps
 }
 
@@ -507,7 +507,6 @@ func (api *testAPI) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 		return
 	case EndpointsClusterURI:
-		println("hit endpoints handler with", len(api.endpoints.Items), "endpoints")
 		if err := respondJSON(w, api.endpoints); err != nil {
 			api.test.Error(err)
 		}
@@ -531,7 +530,7 @@ func TestIngressData(t *testing.T) {
 		expectedRoutes map[string]string
 	}{{
 		msg:       "service backend from ingress and service, default",
-		endpoints: testEndpoints("foo", "bar", "1.1.1", 1, 8080),
+		endpoints: testEndpoints("foo", "bar", "1.1.1", 1, map[string]int{"port1": 8080}),
 		services: []*service{
 			testService("foo", "bar", "1.2.3.4", nil),
 		},
@@ -541,7 +540,7 @@ func TestIngressData(t *testing.T) {
 		},
 	}, {
 		msg:       "service backend from ingress and invalid service without ports, path rule",
-		endpoints: testEndpoints("foo", "bar", "1.1.1", 1, 8080),
+		endpoints: testEndpoints("foo", "bar", "1.1.1", 1, map[string]int{"port1": 8080}),
 		services: []*service{
 			testService("foo", "bar", "1.2.3.4", nil),
 		},
@@ -571,8 +570,8 @@ func TestIngressData(t *testing.T) {
 		},
 	}, {
 		msg: "service backend from ingress and service, default and path rule",
-		endpoints: append(testEndpoints("foo", "bar", "1.1.1", 1, 8080),
-			testEndpoints("foo", "baz", "1.1.2", 1, 8181)...),
+		endpoints: append(testEndpoints("foo", "bar", "1.1.1", 1, map[string]int{"port1": 8080}),
+			testEndpoints("foo", "baz", "1.1.2", 1, map[string]int{"port2": 8181})...),
 		services: []*service{
 			testService("foo", "bar", "1.2.3.4", nil),
 			testService("foo", "baz", "5.6.7.8", nil),
@@ -604,7 +603,7 @@ func TestIngressData(t *testing.T) {
 		},
 	}, {
 		msg:       "service backend from ingress and service, with port name",
-		endpoints: testEndpoints("foo", "bar", "1.1.1", 1, 8080),
+		endpoints: testEndpoints("foo", "bar", "1.1.1", 1, map[string]int{"baz": 8080}),
 		services: []*service{
 			testService("foo", "bar", "1.2.3.4", map[string]int{"baz": 8181}),
 		},
@@ -634,7 +633,6 @@ func TestIngressData(t *testing.T) {
 		},
 	}, {
 		msg: "ingress with service type ExternalName should proxy to externalName",
-		//endpoints: testEndpoints("foo", "extname", "1.1.1", 1, 8080),
 		services: []*service{
 			{
 				Meta: &definitions.Metadata{
@@ -682,7 +680,7 @@ func TestIngressData(t *testing.T) {
 		},
 	}, {
 		msg:       "ignore ingress entries with missing Metadata",
-		endpoints: testEndpoints("foo", "bar", "1.1.1", 1, 8080),
+		endpoints: testEndpoints("foo", "bar", "1.1.1", 1, map[string]int{"baz": 8080}),
 		services: []*service{
 			testService("foo", "bar", "1.2.3.4", map[string]int{"baz": 8181}),
 		},
@@ -728,7 +726,7 @@ func TestIngressData(t *testing.T) {
 		},
 	}, {
 		msg:       "skipper-routes annotation",
-		endpoints: testEndpoints("foo", "bar", "1.1.1", 1, 8080),
+		endpoints: testEndpoints("foo", "bar", "1.1.1", 1, map[string]int{"baz": 8080}),
 		services: []*service{
 			testService("foo", "bar", "1.2.3.4", map[string]int{"baz": 8181}),
 		},
@@ -960,7 +958,6 @@ func TestIngressClassFilter(t *testing.T) {
 
 func TestIngress(t *testing.T) {
 	api := newTestAPI(t, nil, &definitions.IngressList{})
-
 	defer api.Close()
 
 	t.Run("no services, no ingresses, load empty initial and update", func(t *testing.T) {
@@ -1114,10 +1111,10 @@ func TestIngress(t *testing.T) {
 			return
 		}
 
-		// unclear what we want to test here
+		// TODO(sszuecs): unclear what we want to test here
 		api.ingresses.Items[0].Spec.DefaultBackend.ServicePort = definitions.BackendPort{Value: 6363}
 		api.ingresses.Items[2].Spec.Rules[0].Http.Paths[0].Backend.ServicePort = definitions.BackendPort{Value: 9999}
-		//api.endpoints.Items[0].Subsets[0].Ports[0].Port = 9999
+		// api.endpoints.Items[0].Subsets[0].Ports[0].Port = 9999
 
 		r, d, err := dc.LoadUpdate()
 		if err != nil || len(d) != 0 {
@@ -1587,15 +1584,8 @@ func TestConvertPathRule(t *testing.T) {
 			return
 		}
 
-		eps := testEndpoints("namespace1", "svcname1", "2.2.2", 1, 8080)
-		eps[0].Subsets[0].Ports[0].Name = "svcname1"
-		eps[0].Subsets[0].Ports = append(eps[0].Subsets[0].Ports,
-			&port{
-				Name: "svcname1",
-				Port: 8181,
-			})
 		api.endpoints = &endpointList{
-			Items: eps,
+			Items: testEndpoints("namespace1", "svcname1", "2.2.2", 1, map[string]int{"port1": 8080, "svcname1": 8181}),
 		}
 
 		api.services = &serviceList{
@@ -1834,16 +1824,10 @@ func TestConvertPathRuleEastWestEnabled(t *testing.T) {
 			return
 		}
 
-		eps := testEndpoints("namespace1", "svcname1", "2.2.2", 1, 8080)
-		eps[0].Subsets[0].Ports[0].Name = "svcname1"
-		eps[0].Subsets[0].Ports = append(eps[0].Subsets[0].Ports,
-			&port{
-				Name: "svcname1",
-				Port: 8181,
-			})
 		api.endpoints = &endpointList{
-			Items: eps,
+			Items: testEndpoints("namespace1", "svcname1", "2.2.2", 1, map[string]int{"port1": 8080, "svcname1": 8181}),
 		}
+
 		api.services = &serviceList{
 			Items: []*service{
 				{
@@ -3317,7 +3301,7 @@ func TestSkipperCustomRoutes(t *testing.T) {
 		expectedRoutes map[string]string
 	}{{
 		msg:       "ingress with 1 host definitions and 1 additional custom route",
-		endpoints: testEndpoints("foo", "bar", "1.1.1", 1, 8181),
+		endpoints: testEndpoints("foo", "bar", "1.1.1", 1, map[string]int{"baz": 8181}),
 		services: []*service{
 			testService("foo", "bar", "1.2.3.4", map[string]int{"baz": 8181}),
 		},
@@ -3332,7 +3316,7 @@ func TestSkipperCustomRoutes(t *testing.T) {
 		},
 	}, {
 		msg:       "ingress with 1 host definitions with path and 1 additional custom route",
-		endpoints: testEndpoints("foo", "bar", "1.1.1", 1, 8181),
+		endpoints: testEndpoints("foo", "bar", "1.1.1", 1, map[string]int{"baz": 8181}),
 		services: []*service{
 			testService("foo", "bar", "1.2.3.4", map[string]int{"baz": 8181}),
 		},
@@ -3348,7 +3332,7 @@ func TestSkipperCustomRoutes(t *testing.T) {
 		},
 	}, {
 		msg:       "ingress with 2 host definitions and 1 additional custom route",
-		endpoints: testEndpoints("foo", "bar", "1.1.1", 1, 8181),
+		endpoints: testEndpoints("foo", "bar", "1.1.1", 1, map[string]int{"baz": 8181}),
 		services: []*service{
 			testService("foo", "bar", "1.2.3.4", map[string]int{"baz": 8181}),
 		},
@@ -3366,7 +3350,7 @@ func TestSkipperCustomRoutes(t *testing.T) {
 		},
 	}, {
 		msg:       "ingress with 2 host definitions with path and 1 additional custom route",
-		endpoints: testEndpoints("foo", "bar", "1.1.1", 1, 8181),
+		endpoints: testEndpoints("foo", "bar", "1.1.1", 1, map[string]int{"baz": 8181}),
 		services: []*service{
 			testService("foo", "bar", "1.2.3.4", map[string]int{"baz": 8181}),
 		},
@@ -3386,8 +3370,8 @@ func TestSkipperCustomRoutes(t *testing.T) {
 		},
 	}, {
 		msg: "ingress with 3 host definitions with one path and 3 additional custom routes",
-		endpoints: append(testEndpoints("foo", "bar", "1.1.1", 1, 8181),
-			testEndpoints("foo", "baz", "1.1.2", 1, 8181)...),
+		endpoints: append(testEndpoints("foo", "bar", "1.1.1", 1, map[string]int{"baz": 8181}),
+			testEndpoints("foo", "baz", "1.1.2", 1, map[string]int{"baz": 8181})...),
 		services: []*service{
 			testService("foo", "bar", "1.2.3.4", map[string]int{"baz": 8181}),
 			testService("foo", "baz", "1.2.3.6", map[string]int{"baz": 8181}),
@@ -3420,8 +3404,8 @@ func TestSkipperCustomRoutes(t *testing.T) {
 		},
 	}, {
 		msg: "ingress with 3 host definitions with one without path and 3 additional custom routes",
-		endpoints: append(testEndpoints("foo", "bar", "1.1.1", 1, 8181),
-			testEndpoints("foo", "baz", "1.1.2", 1, 8181)...),
+		endpoints: append(testEndpoints("foo", "bar", "1.1.1", 1, map[string]int{"baz": 8181}),
+			testEndpoints("foo", "baz", "1.1.2", 1, map[string]int{"baz": 8181})...),
 		services: []*service{
 			testService("foo", "bar", "1.2.3.4", map[string]int{"baz": 8181}),
 			testService("foo", "baz", "1.2.3.6", map[string]int{"baz": 8181}),
@@ -3454,7 +3438,7 @@ func TestSkipperCustomRoutes(t *testing.T) {
 		},
 	}, {
 		msg:       "ingress with 1 host definitions and 1 additional custom route, changed pathmode to PathSubtree",
-		endpoints: testEndpoints("foo", "bar", "1.1.1", 1, 8181),
+		endpoints: testEndpoints("foo", "bar", "1.1.1", 1, map[string]int{"baz": 8181}),
 		services: []*service{
 			testService("foo", "bar", "1.2.3.4", map[string]int{"baz": 8181}),
 		},
@@ -3469,7 +3453,7 @@ func TestSkipperCustomRoutes(t *testing.T) {
 		},
 	}, {
 		msg:       "ingress with 1 host definitions and 1 additional custom route with path predicate, changed pathmode to PathSubtree",
-		endpoints: testEndpoints("foo", "bar", "1.1.1", 1, 8181),
+		endpoints: testEndpoints("foo", "bar", "1.1.1", 1, map[string]int{"baz": 8181}),
 		services: []*service{
 			testService("foo", "bar", "1.2.3.4", map[string]int{"baz": 8181}),
 		},
@@ -3516,7 +3500,7 @@ func TestSkipperCustomRoutesEastWest(t *testing.T) {
 		expectedRoutes map[string]string
 	}{{
 		msg:       "ingress with 1 host definitions and 1 additional custom route",
-		endpoints: testEndpoints("foo", "bar", "1.1.1", 1, 8181),
+		endpoints: testEndpoints("foo", "bar", "1.1.1", 1, map[string]int{"baz": 8181}),
 		services: []*service{
 			testService("foo", "bar", "1.2.3.4", map[string]int{"baz": 8181}),
 		},
@@ -3533,7 +3517,7 @@ func TestSkipperCustomRoutesEastWest(t *testing.T) {
 		},
 	}, {
 		msg:       "ingress with 1 host definitions with path and 1 additional custom route",
-		endpoints: testEndpoints("foo", "bar", "1.1.1", 1, 8181),
+		endpoints: testEndpoints("foo", "bar", "1.1.1", 1, map[string]int{"baz": 8181}),
 		services: []*service{
 			testService("foo", "bar", "1.2.3.4", map[string]int{"baz": 8181}),
 		},
@@ -3552,7 +3536,7 @@ func TestSkipperCustomRoutesEastWest(t *testing.T) {
 		},
 	}, {
 		msg:       "ingress with 2 host definitions and 1 additional custom route",
-		endpoints: testEndpoints("foo", "bar", "1.1.1", 1, 8181),
+		endpoints: testEndpoints("foo", "bar", "1.1.1", 1, map[string]int{"baz": 8181}),
 		services: []*service{
 			testService("foo", "bar", "1.2.3.4", map[string]int{"baz": 8181}),
 		},
@@ -3574,7 +3558,7 @@ func TestSkipperCustomRoutesEastWest(t *testing.T) {
 		},
 	}, {
 		msg:       "ingress with 2 host definitions with path and 1 additional custom route",
-		endpoints: testEndpoints("foo", "bar", "1.1.1", 1, 8181),
+		endpoints: testEndpoints("foo", "bar", "1.1.1", 1, map[string]int{"baz": 8181}),
 		services: []*service{
 			testService("foo", "bar", "1.2.3.4", map[string]int{"baz": 8181}),
 		},
@@ -3600,8 +3584,8 @@ func TestSkipperCustomRoutesEastWest(t *testing.T) {
 		},
 	}, {
 		msg: "ingress with 3 host definitions with one path and 3 additional custom routes",
-		endpoints: append(testEndpoints("foo", "bar", "1.1.1", 1, 8181),
-			testEndpoints("foo", "baz", "1.1.2", 1, 8181)...),
+		endpoints: append(testEndpoints("foo", "bar", "1.1.1", 1, map[string]int{"baz": 8181}),
+			testEndpoints("foo", "baz", "1.1.2", 1, map[string]int{"baz": 8181})...),
 		services: []*service{
 			testService("foo", "bar", "1.2.3.4", map[string]int{"baz": 8181}),
 			testService("foo", "baz", "1.2.3.6", map[string]int{"baz": 8181}),
@@ -3649,8 +3633,8 @@ func TestSkipperCustomRoutesEastWest(t *testing.T) {
 			"kubeew___catchall__www3_example_org____":          "Host(/^qux[.]foo[.]skipper[.]cluster[.]local$/) -> <shunt>"},
 	}, {
 		msg: "ingress with 3 host definitions with one without path and 3 additional custom routes",
-		endpoints: append(testEndpoints("foo", "bar", "1.1.1", 1, 8181),
-			testEndpoints("foo", "baz", "1.1.2", 1, 8181)...),
+		endpoints: append(testEndpoints("foo", "bar", "1.1.1", 1, map[string]int{"baz": 8181}),
+			testEndpoints("foo", "baz", "1.1.2", 1, map[string]int{"baz": 8181})...),
 		services: []*service{
 			testService("foo", "bar", "1.2.3.4", map[string]int{"baz": 8181}),
 			testService("foo", "baz", "1.2.3.6", map[string]int{"baz": 8181}),
@@ -3700,7 +3684,7 @@ func TestSkipperCustomRoutesEastWest(t *testing.T) {
 		},
 	}, {
 		msg:       "ingress with 1 host definitions and 1 additional custom route, changed pathmode to PathSubtree",
-		endpoints: testEndpoints("foo", "bar", "1.1.1", 1, 8181),
+		endpoints: testEndpoints("foo", "bar", "1.1.1", 1, map[string]int{"baz": 8181}),
 		services: []*service{
 			testService("foo", "bar", "1.2.3.4", map[string]int{"baz": 8181}),
 		},
@@ -3717,7 +3701,7 @@ func TestSkipperCustomRoutesEastWest(t *testing.T) {
 		},
 	}, {
 		msg:       "ingress with 1 host definitions and 1 additional custom route with path predicate, changed pathmode to PathSubtree",
-		endpoints: testEndpoints("foo", "bar", "1.1.1", 1, 8181),
+		endpoints: testEndpoints("foo", "bar", "1.1.1", 1, map[string]int{"baz": 8181}),
 		services: []*service{
 			testService("foo", "bar", "1.2.3.4", map[string]int{"baz": 8181}),
 		},

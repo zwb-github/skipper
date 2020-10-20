@@ -34,7 +34,7 @@ func (s sortRoutes) Swap(i, j int)      { s[i], s[j] = s[j], s[i] }
 
 func newRedirectTest(t *testing.T, redirectEnabled bool) (*redirectTest, error) {
 	e := &endpointList{
-		Items: testEndpoints("namespace1", "service1", "1.1.1", 1, 8080),
+		Items: testEndpoints("namespace1", "service1", "1.1.1", 1, map[string]int{"port1": 8080}),
 	}
 	s := &serviceList{
 		Items: []*service{

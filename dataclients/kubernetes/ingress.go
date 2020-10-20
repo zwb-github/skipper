@@ -188,7 +188,7 @@ func convertPathRule(
 		log.Debugf("convertPathRule: Found %d endpoints %s for %s", len(eps), targetPort, svcName)
 	}
 	if len(eps) == 0 || err == errEndpointNotFound {
-		// add short circuit route https://github.com/zalando/skipper/issues/1525
+		// add shunt route https://github.com/zalando/skipper/issues/1525
 		log.Errorf("convertPathRule: add shuntroute to return 502 for service %s with %d endpoints: %v", svcName, len(eps), err)
 		r := &eskip.Route{
 			Id:          routeID(ns, name, host, prule.Path, svcName),
@@ -518,7 +518,7 @@ func (ing *ingress) convertDefaultBackend(state *clusterState, i *definitions.In
 	}
 
 	if len(eps) == 0 || err == errEndpointNotFound {
-		// add short circuit route https://github.com/zalando/skipper/issues/1525
+		// add shunt route https://github.com/zalando/skipper/issues/1525
 		log.Errorf("convertDefaultBackend: add shuntroute to return 502 for service %s with %d endpoints: %v", svcName, len(eps), err)
 		r := &eskip.Route{
 			Id: routeID(ns, name, "", "", ""),

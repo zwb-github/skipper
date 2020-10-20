@@ -18,13 +18,12 @@ import (
 )
 
 type redirectTest struct {
-	router          *routing.Routing
-	api             *testAPI
-	rule            *definitions.Rule
-	backend         string
-	fallbackBackend string
-	t               *testing.T
-	l               *loggingtest.Logger
+	router  *routing.Routing
+	api     *testAPI
+	rule    *definitions.Rule
+	backend string
+	t       *testing.T
+	l       *loggingtest.Logger
 }
 
 type sortRoutes []*eskip.Route
@@ -101,18 +100,15 @@ func newRedirectTest(t *testing.T, redirectEnabled bool) (*redirectTest, error) 
 	rule := ingress.Spec.Rules[0]
 	service := s.Items[0].Spec
 	ep := e.Items[0].Subsets[0]
-	fallbackService := s.Items[0].Spec
 	backend := fmt.Sprintf("http://%s:%d", ep.Addresses[0].IP, service.Ports[0].Port)
-	fallbackBackend := fmt.Sprintf("http://%s:%d", fallbackService.ClusterIP, fallbackService.Ports[0].Port)
 
 	return &redirectTest{
-		router:          router,
-		api:             api,
-		rule:            rule,
-		backend:         backend,
-		fallbackBackend: fallbackBackend,
-		t:               t,
-		l:               l,
+		router:  router,
+		api:     api,
+		rule:    rule,
+		backend: backend,
+		t:       t,
+		l:       l,
 	}, nil
 }
 
@@ -209,7 +205,6 @@ func TestNoHTTPSRedirect(t *testing.T) {
 
 	rt.testNormalHTTPS("", rt.backend)
 	rt.testRedirectHTTP("", rt.backend)
-	//rt.testRedirectNotFound("", rt.fallbackBackend)
 }
 
 func TestCustomGlobalHTTPSRedirectCode(t *testing.T) {
